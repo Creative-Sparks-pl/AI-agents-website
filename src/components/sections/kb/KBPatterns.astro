@@ -1,0 +1,146 @@
+---
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-6.svg';
+
+const categories = [
+  {
+    name: 'Uniwersalne',
+    count: 12,
+    patterns: [
+      { name: 'Hero', variants: 6 },
+      { name: 'Nawigacja', variants: 4 },
+      { name: 'Social Proof', variants: 5 },
+      { name: 'FAQ / Obiekcje', variants: 4 },
+      { name: 'Formularz', variants: 3 },
+      { name: 'Footer', variants: 3 },
+    ],
+  },
+  {
+    name: 'B2B SaaS',
+    count: 22,
+    patterns: [
+      { name: 'Hero', variants: 6 },
+      { name: 'Pricing', variants: 4 },
+      { name: 'Features', variants: 12 },
+      { name: 'Trust', variants: 9 },
+      { name: 'Integration Cloud', variants: 3 },
+      { name: 'ROI Calculator', variants: 2 },
+    ],
+  },
+  {
+    name: 'E-commerce',
+    count: 18,
+    patterns: [
+      { name: 'Product Grid', variants: 5 },
+      { name: 'Cart', variants: 3 },
+      { name: 'Checkout', variants: 4 },
+      { name: 'Reviews', variants: 3 },
+      { name: 'Urgency', variants: 2 },
+      { name: 'Upsell', variants: 3 },
+    ],
+  },
+  {
+    name: 'B2B Industrial',
+    count: 8,
+    patterns: [
+      { name: 'Product Catalog', variants: 3 },
+      { name: 'RFQ Form', variants: 2 },
+      { name: 'Technical Specs', variants: 2 },
+      { name: 'Certifications', variants: 1 },
+    ],
+  },
+  {
+    name: 'B2B Services',
+    count: 10,
+    patterns: [
+      { name: 'Case Study', variants: 4 },
+      { name: 'Process Timeline', variants: 3 },
+      { name: 'Team Showcase', variants: 2 },
+      { name: 'Service Packages', variants: 3 },
+    ],
+  },
+  {
+    name: 'Community',
+    count: 6,
+    patterns: [
+      { name: 'Activity Feed', variants: 2 },
+      { name: 'Member Profiles', variants: 2 },
+      { name: 'Event Calendar', variants: 2 },
+    ],
+  },
+  {
+    name: 'Course',
+    count: 10,
+    patterns: [
+      { name: 'Curriculum', variants: 3 },
+      { name: 'Instructor Bio', variants: 2 },
+      { name: 'Student Results', variants: 3 },
+      { name: 'Pricing', variants: 2 },
+    ],
+  },
+  {
+    name: 'Documentation',
+    count: 5,
+    patterns: [
+      { name: 'Search-first Nav', variants: 2 },
+      { name: 'Code Samples', variants: 2 },
+      { name: 'Version Switcher', variants: 1 },
+    ],
+  },
+  {
+    name: 'Event',
+    count: 8,
+    patterns: [
+      { name: 'Speaker Grid', variants: 3 },
+      { name: 'Agenda Timeline', variants: 2 },
+      { name: 'Ticket Tiers', variants: 3 },
+    ],
+  },
+];
+---
+
+<section class="py-20 md:py-28 bg-pattern" id="wzorce">
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Wzorce</span>
+        <h2 class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Wzorce sekcji (100+)
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col gap-3">
+        {categories.map((cat) => (
+          <details class="group bg-white" name="patterns">
+            <summary class="flex justify-between items-center p-5 cursor-pointer list-none hover:bg-surface transition-colors">
+              <span class="font-headline font-bold text-lg text-foreground group-open:text-primary">{cat.name}</span>
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-label text-muted">{cat.count}</span>
+                <span class="material-symbols-outlined text-muted group-open:text-primary expand-icon transition-transform duration-300">keyboard_arrow_down</span>
+              </div>
+            </summary>
+            <div class="px-5 pb-5">
+              <div class="flex flex-col">
+                {cat.patterns.map((p) => (
+                  <div class="flex items-center justify-between py-2.5 border-b border-border/15 last:border-b-0">
+                    <span class="font-bold text-sm">{p.name}</span>
+                    <span class="font-label text-xs text-muted">{p.variants} {p.variants === 1 ? 'wariant' : p.variants < 5 ? 'warianty' : 'wariantów'}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </details>
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

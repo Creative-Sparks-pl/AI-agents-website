@@ -1,0 +1,121 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-9.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const decisions = [
+  { icon: 'account_balance', label: '01', title: 'Wiedza oddzielona od instrukcji.', desc: 'Agent.md definiuje logikę, folder references/ przechowuje surową wiedzę merytoryczną.' },
+  { icon: 'bolt', label: '02', title: 'Pliki ładowane na żądanie.', desc: 'Agent dynamicznie wykrywa typ strony i ładuje tylko odpowiedni pakiet danych, oszczędzając context window.' },
+  { icon: 'sync', label: '03', title: 'Jeden agent, pełen cykl.', desc: 'Jeden agent prowadzi od discovery do wireframe\'u. Kontekst nie ginie przy przekazywaniu.' },
+  { icon: 'fact_check', label: '04', title: 'Checkpointy na każdym etapie.', desc: 'Wymuszone punkty kontrolne gwarantują, że błąd złapany na wczesnym etapie kosztuje dokładnie zero.' },
+  { icon: 'signal_cellular_alt', label: '05', title: 'Najpierw założenia, potem pytania.', desc: 'Wykorzystanie confidence tierów pozwala agentowi działać proaktywnie przy zachowaniu kontroli.' },
+  { icon: 'edit_note', label: '06', title: 'Copy prowadzi design.', desc: 'Agent najpierw projektuje strukturę treści i realny copy, zamiast polegać na pustych placeholderach.' },
+  { icon: 'save', label: '07', title: 'Pliki jako pamięć projektu.', desc: 'Stan projektu zapisywany jest w plikach markdown, niezależnie od ulotnej sesji czatu.' },
+  { icon: 'biotech', label: '08', title: 'Audyt dostarcza diagnozę.', desc: 'Agent generuje rekomendacje oparte na audycie. Zmiany wprowadzasz Ty.' },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface-primary', className]}
+  id="architektura"
+  aria-labelledby="arch-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Pod maską</span>
+        <h2 id="arch-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          To nie jest jeden prompt.<br />To przemyślana architektura.
+        </h2>
+      </Fragment>
+
+      <p class="text-lg text-muted leading-relaxed mb-4 max-w-3xl">
+        Agent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.
+      </p>
+      <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mb-10">
+        Historia zmian i aktualizacji
+        <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+      </a>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Left: File tree -->
+        <div class="lg:col-span-5 bg-primary text-white p-8">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="material-symbols-outlined text-accent" aria-hidden="true">folder_open</span>
+            <span class="font-label text-sm font-bold uppercase tracking-wider">agents/ux-designer/</span>
+          </div>
+          <div class="space-y-1 font-label text-sm text-white/60">
+            <div class="flex items-center gap-2 py-1.5 pl-4">
+              <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">description</span>
+              <span>agent.md</span>
+            </div>
+            <div class="pl-4">
+              <div class="flex items-center gap-2 py-1.5 border-l border-white/20 pl-4">
+                <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+                <span class="font-bold text-white">references/</span>
+              </div>
+              <div class="pl-8 border-l border-white/20 ml-4">
+                <div class="flex items-center gap-2 py-1.5 pl-4">
+                  <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">article</span>
+                  <span>constitution.md</span>
+                </div>
+                <div class="flex items-center gap-2 py-1.5 pl-4">
+                  <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">account_tree</span>
+                  <span>workflows.md</span>
+                </div>
+                <div class="flex items-center gap-2 py-1.5 pl-4">
+                  <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+                  <span>shared/</span>
+                </div>
+                <div class="flex items-center gap-2 py-1.5 pl-4">
+                  <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+                  <span class="font-bold text-white">domains/</span>
+                </div>
+                <div class="pl-8 border-l border-white/20 ml-4">
+                  <div class="flex items-center gap-2 py-1 pl-4"><span>b2b/</span></div>
+                  <div class="flex items-center gap-2 py-1 pl-4"><span>b2b-saas/</span></div>
+                  <div class="flex items-center gap-2 py-1 pl-4"><span>b2b-services/</span></div>
+                  <div class="flex items-center gap-2 py-1 pl-4"><span>ecommerce/</span></div>
+                  <div class="flex items-center gap-2 py-1 pl-4 text-white/30 italic"><span>+ 12 więcej...</span></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 py-1.5 border-l border-white/20 pl-4">
+                <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+                <span class="font-bold text-white">assets/</span>
+              </div>
+              <div class="pl-8 border-l border-white/20 ml-4">
+                <div class="flex items-center gap-2 py-1 pl-4"><span>templates/</span></div>
+                <div class="flex items-center gap-2 py-1 pl-4"><span>scripts/</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Decisions grid -->
+        <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {decisions.map((d) => (
+            <div class="bg-white p-6 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">{d.icon}</span>
+                <span class="font-label text-[10px] uppercase font-bold tracking-widest text-muted">{d.label}</span>
+              </div>
+              <h4 class="font-headline font-bold text-base">{d.title}</h4>
+              <p class="text-xs text-muted leading-relaxed">{d.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </SectionWithIcon>
+  </div>
+</section>

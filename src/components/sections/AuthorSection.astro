@@ -1,0 +1,81 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { Image } from 'astro:assets';
+import authorPhoto from '../../assets/author.webp';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-6.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface', className]}
+  aria-labelledby="author-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Twórca</span>
+        <h2 id="author-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Kto za tym stoi
+        </h2>
+      </Fragment>
+
+      <div class="grid grid-cols-12 gap-x-8 lg:gap-x-16 items-start">
+        <!-- Photo -->
+        <div class="col-span-12 lg:col-span-5 relative mb-16 lg:mb-0">
+          <div class="aspect-[4/5] bg-white shadow-[0_24px_48px_-12px_rgba(0,7,188,0.08)] relative overflow-hidden">
+            <Image
+              src={authorPhoto}
+              alt="Tomasz Maciąg — Founder Fuse Collective"
+              class="w-full h-full object-cover"
+              widths={[400, 600]}
+              sizes="(max-width: 1024px) 100vw, 40vw"
+            />
+          </div>
+          <!-- Floating stat -->
+          <div class="absolute -bottom-8 -left-4 md:-left-8 bg-primary p-6 text-white shadow-xl hidden md:block">
+            <p class="font-label text-xs text-white/70 mb-1">Doświadczenie</p>
+            <p class="font-headline font-bold text-3xl">15+ lat</p>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="col-span-12 lg:col-span-6 lg:col-start-7 flex flex-col justify-center lg:self-center">
+          <h3 class="font-headline font-bold text-4xl md:text-5xl text-foreground leading-[1.1] tracking-tight mb-2">
+            Tomasz <span class="text-primary">Maciąg</span>,
+          </h3>
+          <p class="font-headline font-bold text-2xl md:text-3xl text-muted mb-8">
+            Founder Fuse Collective.
+          </p>
+
+          <div class="space-y-6 max-w-xl">
+            <p class="text-lg md:text-xl text-muted leading-relaxed font-body">
+              Projektuję strony i systemy identyfikacji dla firm od ponad 15 lat. Agenta UX zbudowałem, bo sam potrzebowałem procesu, który mogę powtarzać w każdym projekcie klienckim. Używam go na co dzień.
+            </p>
+
+            <div class="pt-8 border-l-4 border-accent pl-6">
+              <p class="font-label text-sm text-muted mb-3">Kontakt bezpośredni</p>
+              <a class="group flex items-center gap-3" href="mailto:tomasz@creativesparks.pl">
+                <span class="font-headline font-bold text-xl md:text-2xl text-primary group-hover:text-foreground transition-colors">
+                  tomasz@creativesparks.pl
+                </span>
+                <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward" aria-hidden="true">arrow_forward</span>
+              </a>
+              <p class="text-sm text-muted mt-2 font-body">Masz pytania? Napisz na powyższy adres.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>

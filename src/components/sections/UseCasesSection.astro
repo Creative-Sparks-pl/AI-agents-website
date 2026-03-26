@@ -1,0 +1,165 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-1.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const cases = [
+  {
+    number: 'Case 01',
+    title: 'Od briefu do wireframe\'u w 2-3 godziny.',
+    audience: 'Designer',
+    description: 'Dostajesz brief na stronę. W 2-3h masz discovery, strategię i wireframe z realnym copy. Otwierasz Figmę z gotowym planem.',
+    bullets: [
+      'Strategia z sitemapą i voice briefem. Wiesz co projektować zanim otworzysz Figmę.',
+      'Wireframe z realnym copy. Layout budowany pod faktyczne treści.',
+      'Decision log. Uzasadnienie dla klienta, dlaczego tak a nie inaczej.',
+    ],
+    quote: 'Wrzuciłem plik od agenta do Figma AI i w 5 minut miałem gotowy wireframe. Bez rysowania od zera.',
+    links: [
+      { label: 'Wireframe w Google Doc', href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.ekvmpfo1wwbv#heading=h.ogx4l5ybijpi', icon: 'description', sub: 'Wireframe z realnym copy i uzasadnieniem sekcji' },
+      { label: 'Wireframe w Figma AI', href: 'https://www.figma.com/make/OSB3mL1TOg5r9CF1gwXfGy/Product-website-wireframe?t=lwcLAZIDfSyJYvrE-20&fullscreen=1', icon: 'brush', sub: 'Wygenerowany z wireframe\'u przez Figma AI' },
+    ],
+  },
+  {
+    number: 'Case 02',
+    title: 'Vibe coding z uzasadnioną strukturą.',
+    audience: 'Twórca',
+    description: 'Budujesz stronę w Cursor czy Bolt. Wygląd jest, ale skąd te sekcje? Agent daje wireframe z uzasadnionymi decyzjami jako input do codingu.',
+    bullets: [
+      'Wireframe z sekwencją sekcji i uzasadnieniem. Cursor/Bolt dostaje plan i buduje z niego.',
+      'Project context z personą i awareness level. Cursor/Bolt generuje kod pod konkretny przekaz.',
+      'Strategia z messaging hierarchy. Wiesz co strona ma komunikować.',
+    ],
+    quote: 'Wrzuciłem wireframe do Google Stitch i Gemini. Wstępne wersje designu w kilka minut, z gotowym copy i strukturą.',
+    links: [
+      { label: 'Wireframe', href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.ekvmpfo1wwbv#heading=h.ogx4l5ybijpi', icon: 'description', sub: 'Input do vibe codingu z uzasadnionymi sekcjami' },
+      { label: 'Projekt w Google Stitch', href: '/examples/Google-Stitich-v1.html', icon: 'web', sub: 'Design wygenerowany z wireframe\'u przez Google Stitch' },
+      { label: 'Projekt w Gemini', href: '/examples/Google-Gemini-v1.html', icon: 'web', sub: 'Design wygenerowany z wireframe\'u przez Gemini' },
+    ],
+  },
+  {
+    number: 'Case 03',
+    title: 'Profesjonalny brief dla agencji maksymalnie w 2-3 godziny.',
+    audience: 'Marketer',
+    description: 'Zlecasz stronę agencji. Dostarczasz project context z personami, celami i strategię z sitemapą. Agencja zaczyna pracę od razu.',
+    bullets: [
+      'Project context z personami, celami i top taskami. Brief, z którego agencja zaczyna pracę.',
+      'Strategia z sitemapą. Struktura strony z notatkami per podstrona.',
+      'Voice brief. Ton komunikacji ustalony przed designem.',
+    ],
+    quote: 'Agencja dostaje project context i strategię zamiast luźnego briefu. Zaczyna pracować od razu, bez rundy pytań.',
+    links: [
+      { label: 'Project context', href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.1563r8rcgwei#heading=h.k41uisqxr9s9', icon: 'description', sub: 'Persony, cele, top taski — gotowy brief' },
+      { label: 'Strategia UX', href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.0#heading=h.subsvx34ajvb', icon: 'hub', sub: 'Sitemap z notatkami i voice brief' },
+    ],
+  },
+  {
+    number: 'Case 04',
+    title: 'Koncept do akceptacji klienta w kilka godzin.',
+    audience: 'Project Manager',
+    description: 'Klient czeka na strukturę strony. Dostajesz architekturę z uzasadnieniem, włącznie z odrzuconymi sekcjami i powodem. Mniej rund poprawek.',
+    bullets: [
+      'Strategia z uzasadnieniem i odrzuconymi opcjami. Klient widzi uzasadnienie za każdą decyzją.',
+      'Decision log. Dokumentacja dla zespołu i przyszłych sesji.',
+      'Wireframe z annotacjami. Specyfikacja do wyceny i realizacji.',
+    ],
+    links: [
+      { label: 'Strategia z uzasadnieniem', href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.0#heading=h.subsvx34ajvb', icon: 'hub', sub: 'Architektura z odrzuconymi opcjami' },
+      { label: 'Decision log', href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.oe7dbonebttw#heading=h.y98b37evqd4c', icon: 'history_edu', sub: 'Dokumentacja decyzji z uzasadnieniem' },
+    ],
+    quote: 'Zamiast trzech rund poprawek, jedna. Klient widzi uzasadnienie za każdą decyzją.',
+  },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 px-6 bg-surface-primary', className]}
+  aria-labelledby="use-cases-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="font-label text-primary text-sm mb-4">Zastosowanie</span>
+        <h2 id="use-cases-heading" class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+          Co możesz z tym zrobić?<br class="hidden md:block" /> Ta strona to jeden z przykładów.
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col">
+      {cases.map((item, i) => (
+        <details
+          class="group border-b border-border/30 overflow-hidden bg-white"
+          name="use-cases"
+        >
+          <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface transition-colors">
+            <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+              <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                {item.number}
+              </span>
+              <div class="flex flex-col gap-3 flex-1">
+                <span class="font-label text-sm text-primary leading-none">{item.audience}</span>
+                <h3 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                  {item.title}
+                </h3>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" data-icon="expand_more" aria-hidden="true">expand_more</span>
+          </summary>
+          <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+            <div class="max-w-3xl">
+              <p class="text-muted text-lg leading-relaxed mb-6">
+                {item.description}
+              </p>
+              <ul class="space-y-3 mb-8">
+                {item.bullets.map((bullet) => (
+                  <li class="flex items-start gap-3 text-base text-muted">
+                    <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                    {bullet}
+                  </li>
+                ))}
+              </ul>
+              <div class="bg-surface-primary p-6 space-y-4">
+                <div class="flex flex-wrap gap-x-12 gap-y-3">
+                  {item.links.map((link) => (
+                    <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                      <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
+                      {link.label}
+                      <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                    </a>
+                  ))}
+                </div>
+                <p class="text-sm font-label text-muted">{item.quote}</p>
+              </div>
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    </SectionWithIcon>
+  </div>
+</section>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

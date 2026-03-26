@@ -1,0 +1,151 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-12.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const plans = [
+  {
+    name: 'Solo',
+    sub: '1 użytkownik',
+    oldPrice: '1 299',
+    price: '599',
+    highlight: false,
+    features: [
+      '92 pliki wiedzy',
+      '16 typów stron',
+      'Pliki agenta w aktualnej wersji (v2.6)',
+      '6 mies. aktualizacji',
+      'Community Discord',
+    ],
+  },
+  {
+    name: 'Studio',
+    sub: 'Do 5 użytkowników',
+    oldPrice: '2 499',
+    price: '799',
+    highlight: true,
+    bg: 'bg-accent',
+    features: [
+      '92 pliki wiedzy',
+      '16 typów stron',
+      'Pliki agenta w aktualnej wersji (v2.6)',
+      '6 mies. aktualizacji',
+      'Community Discord',
+    ],
+  },
+  {
+    name: 'Agencja',
+    sub: 'Bez limitu użytkowników',
+    oldPrice: '4 999',
+    price: '1 499',
+    highlight: false,
+    features: [
+      '92 pliki wiedzy',
+      '16 typów stron',
+      'Pliki agenta w aktualnej wersji (v2.6)',
+      '6 mies. aktualizacji',
+      'Community Discord',
+      '1x konsultacja z autorem',
+    ],
+  },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-white', className]}
+  id="cennik"
+  aria-labelledby="pricing-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <div class="inline-flex items-center gap-2 bg-primary/5 px-4 py-1.5 border border-primary/20 mb-6">
+          <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
+          <span class="text-sm font-bold text-primary font-label">Cennik private beta. Limit 30 miejsc.</span>
+        </div>
+        <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Jednorazowy zakup. 14 dni na zwrot.<br />Bez subskrypcji. Bez ukrytych kosztów.
+        </h2>
+      </Fragment>
+
+      <div class="text-lg font-body mb-6 max-w-3xl leading-relaxed">
+        <p class="text-muted">Konsultant UX za sam discovery i strategię weźmie 3 000–8 000 zł.</p>
+        <p class="text-muted">Samodzielne wypracowanie procesu to tygodnie prób i błędów.</p>
+        <p class="text-primary font-medium">Ten agent daje Ci sprawdzony proces za ułamek tej kwoty.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {plans.map((plan) => (
+          <div class:list={[
+            'flex flex-col p-10',
+            plan.highlight ? 'bg-accent text-foreground' : 'bg-surface'
+          ]}>
+            <div class="mb-8">
+              <span class="text-xs font-label text-primary mb-2 block">Pakiet</span>
+              <h3 class="font-headline font-bold text-3xl mb-2">{plan.name}</h3>
+              <p class:list={['text-sm', plan.highlight ? 'text-foreground/70' : 'text-muted']}>{plan.sub}</p>
+            </div>
+
+            <div class="mb-8">
+              <span class="text-xs font-label text-primary font-bold mb-1 block">Private beta</span>
+              <span class:list={['text-lg font-label line-through', plan.highlight ? 'text-foreground/40' : 'text-muted/60']}>{plan.oldPrice} zł</span>
+              <div>
+                <span class="font-headline font-bold text-5xl">{plan.price}</span>
+                <span class:list={['text-lg ml-1', plan.highlight ? 'text-foreground/70' : 'text-muted']}>zł</span>
+              </div>
+              <p class:list={['text-xs font-label mt-1', plan.highlight ? 'text-foreground/50' : 'text-muted/70']}>netto + VAT 23%</p>
+            </div>
+
+            <div class:list={['border-t mb-8 pt-8', plan.highlight ? 'border-foreground/10' : 'border-border/30']}>
+              <ul class="space-y-4">
+                {plan.features.map((feature) => (
+                  <li class="flex items-start gap-3 text-base">
+                    <span class:list={['material-symbols-outlined text-lg shrink-0', plan.highlight ? 'text-primary' : 'text-primary']} data-icon="check" aria-hidden="true">check</span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="mt-auto">
+              <a
+                href="https://cart.creativesparks.pl/checkout/ux-design-lead"
+                target="_blank"
+                rel="noopener noreferrer"
+                class:list={[
+                  'inline-flex items-center justify-center gap-2 w-full py-4 font-extrabold text-base tracking-tight transition-all duration-300',
+                  plan.highlight
+                    ? 'bg-primary text-white hover:bg-black'
+                    : 'bg-primary text-white hover:bg-black',
+                ]}
+              >
+                Odblokuj beta
+                <span class="material-symbols-outlined text-base" aria-hidden="true">lock_open</span>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="mt-8 text-center max-w-2xl mx-auto">
+        <p class="text-sm text-muted font-label">
+          Jednorazowy zakup. Działa na Twoim koncie Claude, ChatGPT lub Gemini. Ceny private beta — po zakończeniu bety wrócą do standardowych.
+        </p>
+        <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mt-3">
+          6 miesięcy aktualizacji — zobacz changelog
+          <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+        </a>
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>

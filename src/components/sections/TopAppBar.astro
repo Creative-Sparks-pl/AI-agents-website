@@ -1,0 +1,63 @@
+---
+// See coding-standards.md §TypeScript Props
+import type { HTMLAttributes } from 'astro/types';
+import Logo from '../../assets/logo.svg?raw';
+
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+interface Props extends HTMLAttributes<'header'> {
+  navLinks?: NavLink[];
+  ctaLabel?: string;
+  ctaHref?: string;
+  class?: string;
+}
+
+const {
+  navLinks = [
+    { label: 'Dla kogo', href: '#zastosowanie' },
+    { label: 'Cennik', href: '#cennik' },
+    { label: 'Demo', href: '#demo' },
+    { label: 'Jak to działa', href: '#proces' },
+    { label: 'Porównanie', href: '#porownanie' },
+  ],
+  ctaLabel = 'Private beta',
+  ctaHref = '#cennik',
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<header
+  class:list={[
+    'sticky top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-border/30',
+    className,
+  ]}
+  {...rest}
+>
+  <nav class="flex justify-between items-center max-w-screen-2xl mx-auto px-6 h-20" aria-label="Główna nawigacja">
+    <a href=/ux-designer class="text-primary block h-8 [&>svg]:h-full [&>svg]:w-auto" aria-label="Creative Sparks">
+      <Fragment set:html={Logo} />
+    </a>
+
+    <div class="hidden md:flex items-center gap-10 font-normal font-label tracking-tight text-[13px]">
+      {navLinks.map((link) => (
+        <a
+          href={link.href}
+          class="text-foreground/70 hover:text-primary transition-colors"
+        >
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <a
+      href={ctaHref}
+      class="hidden sm:inline-flex bg-primary text-white font-bold px-8 py-3 hover:bg-black transition-all duration-300 text-[13px]"
+    >
+      {ctaLabel}
+    </a>
+  </nav>
+</header>

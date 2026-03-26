@@ -1,0 +1,22 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1_189)">
+<rect x="20" y="20" width="160" height="160" fill="url(#dots)"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M31.5789 31.5789H168.421V100.164L99.8358 168.421L31.5789 100.164L99.8358 31.5789L168.421 100.164V168.421H31.5789V31.5789Z" fill="#010DFF"/>
+<g clip-path="url(#clip1_1_189)">
+
+</g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M200 0L200 19.4641L181.062 19.4641L181.062 38.9474L162.124 38.9474L162.124 19.4641L143.186 19.4641L143.186 38.9474L124.211 38.9474L124.211 19.4641L143.186 19.4641L143.186 -2.48343e-06L162.124 -1.65562e-06L162.124 19.4641L181.062 19.4641L181.062 -8.27809e-07L200 0Z" fill="#E5FA00"/>
+<rect x="131.579" y="191.579" width="68.4211" height="8.42105" fill="#E5FA00"/>
+</g>
+<defs>
+  <pattern id="dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1 4.69C9.86 5.03 8.37 6.7 8 8.38C8 6.7 6.14 5.03 3.9 4.69C6.14 4.69 8 3.01 8 1C8.37 3.01 9.86 4.69 12.1 4.69Z" fill="black" fill-opacity="0.15"/>
+  </pattern>
+<clipPath id="clip0_1_189">
+<rect width="200" height="200" fill="white"/>
+</clipPath>
+<clipPath id="clip1_1_189">
+<rect width="100" height="200" fill="white"/>
+</clipPath>
+</defs>
+</svg>

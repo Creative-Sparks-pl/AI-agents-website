@@ -1,0 +1,160 @@
+---
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-3.svg';
+
+const entries = [
+  {
+    version: 'v2.8',
+    date: '2026-03-24',
+    title: 'Filtr anty-AI, nowa domena Data Content, eksport Word/HTML',
+    description: 'Trzy duże zmiany: filtr jakości tekstu, nowa domena Data Content oraz eksport deliverables w formatach Word/HTML.',
+    changes: [
+      'Wbudowany filtr anty-AI — 32 reguły eliminujące sztampowy, „maszynowy" język z każdego tekstu generowanego przez agenta. Obejmuje zarówno angielskie, jak i polskie wzorce',
+      'Nowa domena: treści oparte na danych (raporty, dashboardy, infografiki, data stories) — 4 archetypy narracyjne, 7 person czytelnika, 17-elementowy katalog wykresów z regułami doboru',
+      'Deliverables w formatach Word i HTML na kluczowych etapach pracy — klient otrzymuje gotowe pliki do prezentacji bez ręcznego formatowania',
+    ],
+  },
+  {
+    version: 'v2.7',
+    date: '2026-03-24',
+    title: 'Pełna obsługa organizacji non-profit',
+    description: 'Od discovery po wireframe, z uwzględnieniem polskiej specyfiki (mechanizm 1,5% PIT, platformy OPP, wymogi RODO).',
+    changes: [
+      'Rozbudowane wzorce donacji: warianty formularzy, mechanika wpłat cyklicznych, pokrycie prowizji, strona podziękowania',
+      'Storytelling i podróż darczyńcy: model emocjonalnych wyzwalaczy, architektura ścieżki darczyńcy, przeciwdziałanie zmęczeniu współczuciem',
+      'Polska specyfika: OPP i 1,5% PIT, polskie platformy donacyjne, sygnały zaufania, checklisty compliance',
+    ],
+  },
+  {
+    version: 'v2.3–2.6',
+    date: '2026-03-11 – 2026-03-13',
+    title: 'Usprawnienia workflow i discovery',
+    description: 'Agent lepiej prowadzi discovery, jasniej komunikuje poziom pewności rekomendacji i precyzyjniej ładuje wiedzę domenową.',
+    changes: [
+      'Discovery rozpoczyna się od przewodnika po danych wejściowych — agent mówi, jakie informacje są kluczowe, a jakie opcjonalne',
+      'Rekomendacje oznaczone poziomem pewności (potwierdzone / prawdopodobne / spekulatywne)',
+      'Kroki workflow jawnie wskazują, którą wiedzę domenową wykorzystują',
+    ],
+  },
+  {
+    version: 'v2.2',
+    date: '2026-03-10',
+    title: 'Podział domeny B2B na trzy specjalizacje',
+    description: 'Domena B2B podzielona na bazę wspólną i trzy specjalizacje: SaaS, Services, Industrial.',
+    changes: [
+      'Wspólna baza B2B: routing dwóch person (techniczny vs. biznesowy kupujący), strategia pozycjonowania przez specjalizację',
+      'B2B Services: pełne discovery (11 założeń), typologia poleceń, 4 archetypy strategiczne',
+      'B2B Industrial: pełne discovery (12 założeń), integracja z ekosystemem CAD, compliance branżowy',
+    ],
+  },
+  {
+    version: 'v2.1',
+    date: '2026-03-10',
+    title: 'B2B Industrial i Portfolio — nowe wzorce',
+    description: 'Rozbudowa dwóch domen: B2B Industrial (zamawianie i konfiguracja) oraz Portfolio (branding i agencje kreatywne).',
+    changes: [
+      'B2B Industrial: workspace zamówień, wzorce zatwierdzania, punchout/eProcurement, konfigurator parametryczny',
+      'Portfolio: archetyp Agency-Studio-Led, anatomia case study brandingowego (7 sekcji), galeria procesu kreatywnego',
+      'Persona CMO/Marketing Director: sekwencja budowania zaufania, zachowania podczas przeglądania',
+    ],
+  },
+  {
+    version: 'v2.0',
+    date: '2026-03-09',
+    title: 'Agent generalistą — 14 typów stron',
+    description: 'Duża rozbudowa — agent stał się generalistą obsługującym 14 typów stron internetowych (wcześniej: tylko B2B).',
+    changes: [
+      '14 typów stron: B2B, E-commerce, Marketplace, SaaS, Services, Community, Course, Documentation, Media, Government, Enterprise, Event, Nonprofit, Portfolio',
+      'Wireframy zawierają 5 stanów UI (domyślny, pusty, błąd, ładowanie, sukces) i 4-warstwowe adnotacje handoff',
+      'Hierarchia komunikatów i brief głosu marki w strategii; tagi tonu w wireframach',
+    ],
+  },
+  {
+    version: 'v1.1–1.2',
+    date: '2026-03-04 – 2026-03-07',
+    title: 'Stabilizacja po pierwszym wydaniu',
+    description: 'Uproszczenie trybów pracy, uporządkowanie checkpointów, wydzielenie startupu do osobnego pliku.',
+    changes: [
+      'Uproszczony system trybów: usunięto tryb Teacher, agent pracuje w jednym trybie z pełnymi checkpointami',
+      'Ustandaryzowany format STOP checkpoint (deliverable, decyzje, pozycja, dalsze kroki)',
+      'Wydzielenie logiki startowej do dedykowanego pliku — szybsze uruchamianie agenta',
+    ],
+  },
+  {
+    version: 'v1.0',
+    date: '2026-03-01',
+    title: 'Pierwsza wersja agenta wg nowej specyfikacji',
+    description: 'Pierwsza wersja agenta UX Designer. Pełna ścieżka od discovery po log decyzji, oparta na specyfikacji architektury v3.2.',
+    changes: [],
+  },
+];
+---
+
+<section class="py-20 md:py-28 px-6 bg-surface-primary" id="changelog">
+  <div class="max-w-screen-2xl mx-auto">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="font-label text-primary text-sm mb-4">Changelog</span>
+        <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+          Historia zmian
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col">
+      {entries.map((entry, i) => (
+        <details
+          class="group border-b border-border/30 overflow-hidden bg-white"
+          name="changelog"
+        >
+          <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface transition-colors">
+            <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+              <span class="font-label text-xs font-bold text-muted w-20 hidden sm:block leading-[1.4] shrink-0">
+                {entry.version}
+              </span>
+              <div class="flex flex-col gap-3 flex-1">
+                <span class="font-label text-sm text-primary leading-none">{entry.date}</span>
+                <h3 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                  {entry.title}
+                </h3>
+              </div>
+            </div>
+            <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" aria-hidden="true">expand_more</span>
+          </summary>
+          <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+            <div class="max-w-3xl">
+              <p class="text-muted text-lg leading-relaxed mb-6">
+                {entry.description}
+              </p>
+              {entry.changes.length > 0 && (
+                <ul class="space-y-3">
+                  {entry.changes.map((change) => (
+                    <li class="flex items-start gap-3 text-base text-muted">
+                      <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                      {change}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </details>
+      ))}
+    </div>
+
+    </SectionWithIcon>
+  </div>
+</section>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopAppBar from '../../components/sections/TopAppBar.astro';
+import Footer from '../../components/sections/Footer.astro';
+import ChangelogSection from '../../components/sections/ChangelogSection.astro';
+---
+
+<BaseLayout
+  title="Changelog — Historia zmian | UX Design Agent"
+  description="Historia zmian agenta UX Designer. Nowe funkcje, domeny, usprawnienia workflow. Od v1.0 do najnowszej wersji."
+>
+  <TopAppBar
+    navLinks={[
+      { label: 'Dla kogo', href: `$/ux-designer#zastosowanie` },
+      { label: 'Cennik', href: `$/ux-designer#cennik` },
+      { label: 'Demo', href: `$/ux-designer#demo` },
+      { label: 'Jak to działa', href: `$/ux-designer#proces` },
+      { label: 'Porównanie', href: `$/ux-designer#porownanie` },
+    ]}
+  />
+  <main>
+    <ChangelogSection />
+  </main>
+  <Footer />
+</BaseLayout>

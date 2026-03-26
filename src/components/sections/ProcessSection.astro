@@ -1,0 +1,254 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-3.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const stages = [
+  {
+    title: 'Discovery',
+    description: 'Opisujesz swój projekt, nawet jednym zdaniem. Agent identyfikuje typ strony, formuje założenia o branży, odbiorcy i konkurencji z oznaczeniem pewności (🟢 🟡 🔴). Korygujesz co trzeba.',
+    output: 'project_context.md',
+    outputLink: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.1563r8rcgwei#heading=h.k41uisqxr9s9',
+    outputIcon: 'description',
+    quote: 'Agent zrozumiał projekt z krótkiego briefu i podsumował kontekst, persony i top taski. Bez godzin wywiadu.',
+    shape: 'cube',
+  },
+  {
+    title: 'Strategia i IA',
+    description: 'Agent proponuje format strony i 2–3 archetypy strategiczne, każdy z opisem co optymalizuje i czym poświęca. Wybierasz. Agent generuje sitemapę z notatkami per strona.',
+    output: 'ux_strategy.md',
+    outputLink: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.0#heading=h.subsvx34ajvb',
+    outputIcon: 'description',
+    quote: 'Strategia, sitemap i voice brief trafione za pierwszym podejściem. Nie musiałem nic zmieniać.',
+    shape: 'diamond',
+  },
+  {
+    title: 'Template Inventory',
+    description: 'Dla projektów wielostronicowych: agent analizuje sitemapę, grupuje strony po celu i typie treści, identyfikuje reusable szablony i sekcje z wariantami.',
+    output: 'template_inventory.xlsx + .md',
+    outputLink: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.xwagwtt0uc9u#heading=h.7dq1w0syivqm',
+    outputIcon: 'table_chart',
+    quote: 'Przydatne w większych projektach. Mapuje sekcje, identyfikuje powtarzalne szablony i przygotowuje grunt do wyceny.',
+    shape: 'circle',
+  },
+  {
+    title: 'Wireframing',
+    description: 'Agent proponuje sekwencję sekcji z uzasadnieniem. Po zatwierdzeniu pisze pełny wireframe z realnym copy, CTA, micro-copy, tone tagami i 5 stanami interaktywnych sekcji.',
+    output: 'wireframe.md',
+    outputLink: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.ekvmpfo1wwbv#heading=h.ogx4l5ybijpi',
+    outputIcon: 'description',
+    quote: 'Zajął 2-3 godziny. Struktura była od razu, większość czasu poszła na dopracowanie tekstów.',
+    shape: 'grid',
+  },
+  {
+    title: 'Review',
+    description: 'Agent audytuje dowolny deliverable w 6 wymiarach: kompletność, spójność, jakość, język, obciążenie kognitywne, jakość na poziomie strony. Dostarcza diagnozę i rekomendacje.',
+    output: 'Raport audytu',
+    outputLink: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.hnpvbfudyv3e#heading=h.ennp536ckr6y',
+    outputIcon: 'description',
+    quote: 'Audyt złapał 3 niespójności w copy i brakujący CTA. Bez niego bym tego nie zobaczył.',
+    shape: 'bars',
+  },
+  {
+    title: 'Decision Log',
+    description: 'Każda ważna decyzja projektowa jest zapisywana: co zdecydowano, jakie były alternatywy, jaki był powód. Po miesiącu wiesz dlaczego tak zdecydowałeś.',
+    output: 'decision_log.md',
+    outputLink: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.oe7dbonebttw#heading=h.y98b37evqd4c',
+    outputIcon: 'description',
+    quote: 'Historia zmian i decyzji z uzasadnieniem. Wiesz dlaczego tak, a nie inaczej.',
+    shape: 'nested',
+  },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface', className]}
+  aria-labelledby="process-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Proces</span>
+        <h2 id="process-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+          Ta strona to przykład procesu<br />i dokumentacji. Powstała w weekend.
+        </h2>
+      </Fragment>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
+        {stages.map((stage, i) => (
+          <div class="bg-white p-10 flex flex-col gap-6">
+            <div class="flex items-start justify-between">
+              <div class={`process-shape process-shape--${stage.shape}`} aria-hidden="true"></div>
+              <span class="font-label text-xs text-muted">{String(i + 1).padStart(2, '0')}</span>
+            </div>
+            <div class="space-y-4">
+              <h3 class="text-2xl md:text-3xl font-headline font-bold tracking-tight text-foreground">{stage.title}</h3>
+              <p class="text-base font-body text-muted leading-relaxed">{stage.description}</p>
+            </div>
+            <div class="pt-6 border-t border-border/20 space-y-3">
+              {stage.outputLink ? (
+                <a href={stage.outputLink} target="_blank" rel="noopener noreferrer" class="text-sm font-label font-bold text-primary inline-flex items-center gap-2 hover:translate-x-1 transition-transform">
+                  <span class="material-symbols-outlined text-sm" data-icon={stage.outputIcon} aria-hidden="true">{stage.outputIcon}</span>
+                  {stage.output}
+                  <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                </a>
+              ) : (
+                <p class="text-sm font-label text-primary inline-flex items-center gap-2">
+                  <span class="material-symbols-outlined text-sm" data-icon={stage.outputIcon} aria-hidden="true">{stage.outputIcon}</span>
+                  {stage.output}
+                </p>
+              )}
+              <p class="text-sm font-label text-muted">{stage.quote}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="bg-primary p-12 md:p-16">
+        <div class="flex items-start gap-8">
+          <div class="w-16 h-16 bg-accent flex items-center justify-center shrink-0 hidden md:flex">
+            <span class="material-symbols-outlined text-primary text-3xl" data-icon="pause" aria-hidden="true">pause</span>
+          </div>
+          <div>
+            <p class="text-2xl md:text-3xl font-headline font-bold text-white leading-snug mb-6">
+              Na każdym etapie agent zatrzymuje się, pokazuje <span class="text-accent">2–3 opcje z trade-offami</span> i czeka na Twoją decyzję.
+            </p>
+            <div class="flex items-center gap-8 font-label text-sm text-white/70">
+              <span class="flex items-center gap-2"><span class="w-6 h-0.5 bg-accent inline-block"></span> To Ty prowadzisz</span>
+              <span class="flex items-center gap-2"><span class="w-6 h-0.5 bg-accent inline-block"></span> Agent wykonuje</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
+
+<style>
+  .process-shape {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  /* Cube: empty square */
+  .process-shape--cube {
+    position: relative;
+  }
+  .process-shape--cube::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  /* Diamond: rotated square */
+  .process-shape--diamond {
+    transform: rotate(45deg);
+    width: 40px;
+    height: 40px;
+    margin: 4px;
+  }
+  .process-shape--diamond::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  /* Circle with dot */
+  .process-shape--circle {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .process-shape--circle::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--color-primary);
+  }
+
+  /* Grid: crossed lines */
+  .process-shape--grid {
+    position: relative;
+    overflow: hidden;
+  }
+  .process-shape--grid::before,
+  .process-shape--grid::after {
+    content: '';
+    position: absolute;
+    background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  .process-shape--grid::before {
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+  }
+  .process-shape--grid::after {
+    width: 100%;
+    height: 1px;
+    top: 50%;
+    left: 0;
+  }
+
+  /* Bars: 3 horizontal lines inside square */
+  .process-shape--bars {
+    position: relative;
+    padding: 10px;
+  }
+  .process-shape--bars::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    width: 60%;
+    height: 3px;
+    top: 13px;
+    background: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    box-shadow: 0 10px 0 color-mix(in srgb, var(--color-primary) 55%, transparent);
+  }
+  .process-shape--bars::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    width: 50%;
+    height: 3px;
+    bottom: 11px;
+    background: var(--color-primary);
+  }
+
+  /* Nested: square in square with filled center */
+  .process-shape--nested {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+  }
+  .process-shape--nested::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+  .process-shape--nested::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--color-primary);
+  }
+</style>

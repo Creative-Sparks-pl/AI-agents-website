@@ -1,0 +1,243 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopAppBar from '../../components/sections/TopAppBar.astro';
+import Footer from '../../components/sections/Footer.astro';
+import SectionWithIcon from '../../components/ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-3.svg';
+
+const sections = [
+  {
+    number: 'Paczka',
+    label: 'Po zakupie',
+    title: 'Zawartość paczki',
+    description: 'Otrzymujesz zestaw plików agenta AI w wariantach na różne platformy.',
+    bullets: [
+      'ux-designer-claude/ — Claude Projects (system prompt + pliki wiedzy)',
+      'ux-designer-chatgpt/ — ChatGPT Custom GPT (Instructions + pliki wiedzy)',
+      'ux-designer-gemini-gem/ — Gemini Gems (system prompt + pliki wiedzy, max 10 plików)',
+      'ux-designer-ide/ — Claude Code, VS Code, Cursor, Antigravity oraz inne IDE zgodne ze specyfikacją AGENTS.md',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Setup',
+    label: 'Konfiguracja',
+    title: 'Jak wgrać agenta',
+    description: 'Wybierz platformę i postępuj zgodnie z instrukcjami. Zajmuje to 2-3 minuty.',
+    bullets: [
+      'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
+      'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
+      'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
+      'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). Włącz Canvas w trakcie rozmowy',
+      'IDE (Claude Code, VS Code, Cursor) — skopiuj folder ux-designer-ide/ do roota projektu. AGENTS.md załaduje się automatycznie',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Start',
+    label: 'Pierwsza sesja',
+    title: 'Jak zacząć projekt',
+    description: 'Wpisz „start" w czacie. Agent się przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej agent zgaduje — ale wystarczy jedno zdanie.',
+    bullets: [
+      'Jeśli masz brief od klienta — wklej go. Agent wyciągnie persony, cele i wyróżniki',
+      'Sprawdzaj oznaczenia pewności (🟢🟡🔴). Zielone zostaw, żółte zweryfikuj, czerwone uzupełnij',
+      'Jeśli agent źle zakwalifikował awareness level — popraw go. To zmienia całą strategię strony',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Decyzje',
+    label: 'Decyzje',
+    title: 'Jak podejmować decyzje',
+    description: 'Agent pokazuje opcje z trade-offami. Nie musisz wiedzieć, która jest lepsza — przeczytaj co każda optymalizuje i czym poświęca.',
+    bullets: [
+      'Nie bój się miksować. „Weź nagłówek z opcji 2 i body z opcji 4" — agent to obsłuży',
+      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Agent zaproponuje nowe',
+      'Mów „pomóż mi podjąć decyzję" kiedy utkniesz. Agent podsumuje za i przeciw',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Copy',
+    label: 'Praca z treścią',
+    title: 'Jak pisać lepsze copy',
+    description: 'Praca z tekstami zajmuje najwięcej czasu — i tu jest największa różnica między przeciętnym a dobrym wynikiem. AI pisze generycznie, jeśli nie dostanie konkretnych wytycznych.',
+    bullets: [
+      'Wrzuć próbki tekstów w swoim stylu — agent złapie ton, rytm i słownictwo',
+      'Jeśli masz wytyczne językowe (tone of voice, brand book) — przekaż je na starcie',
+      'Nie akceptuj pierwszej wersji. Proś o alternatywy: „daj 3 warianty tego nagłówka"',
+      'Dyskutuj z agentem o treści — pytaj dlaczego wybrał takie sformułowanie',
+      'Weryfikuj copy pod kątem odbiorcy — agent zna personę, ale Ty znasz klienta',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Dialog',
+    label: 'Praca z agentem',
+    title: 'Jak rozmawiać z agentem',
+    description: 'Agent nie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
+    bullets: [
+      '„Dlaczego tu nie ma sekcji X?" — agent wyjaśni czy celowo pominął, czy nie rozważył',
+      '„Czy to nadal potrzebujemy?" — kiedy sekcja wydaje się zbędna po zmianach w innych miejscach',
+      '„Daj alternatywy" — wymusza opcje zamiast jednego rozwiązania',
+      '„Najpierw zidentyfikuj sens tego punktu" — zanim zmienisz tekst, zrozum co ma komunikować',
+      '„Skróć" — AI pisze za dużo, hamuj',
+      '„Czy to się nie powtarza z X?" — agent sprawdzi redundancję',
+      '„Oceń krytycznie ten wireframe" — włącza tryb audytu, szuka słabych punktów',
+      'Jeśli nie wiesz co dalej — zapytaj agenta. Zna proces i podpowie następny krok',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Sesje',
+    label: 'Między sesjami',
+    title: 'Praca na wielu sesjach',
+    description: 'Agent czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
+    bullets: [
+      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — agent przeczyta pliki i wróci do kontekstu',
+      'Jeśli zmieniłeś coś ręcznie w pliku — powiedz agentowi. Inaczej nadpisze Twoje zmiany',
+      'Decision log to Twoja pamięć między sesjami. Kluczowe decyzje powinny tam trafić',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Output',
+    label: 'Deliverables',
+    title: 'Jak wykorzystać pliki wyjściowe agenta',
+    description: 'Agent tworzy dwa typy plików. Pliki .md to historia projektu — rozumieją je inne agenty AI i możesz kontynuować pracę w kolejnych sesjach. Ale możesz też poprosić o pliki w formie zrozumiałej dla ludzi.',
+    bullets: [
+      'Pliki .md — kontekst projektu, strategia, wireframe, decision log. Uniwersalny format, który czyta każde narzędzie AI',
+      'Poproś o wireframe w HTML (low-fidelity) — do prezentacji klientowi bez Figmy',
+      'Poproś o dokument Word ze strategią — do wysyłki agencji lub wydruku',
+      'Wireframe .md → Figma AI: wklej jako kontekst, visual wireframe w minuty',
+      'Wireframe .md → Google Stitch / Gemini: wstępny design z gotowym copy',
+      'Wireframe .md → Cursor / Bolt: agent do vibe codingu dostaje plan zamiast zgadywania',
+      'Project context → brief dla agencji: wydrukuj lub wyślij jako Google Doc',
+      'Decision log → dokumentacja dla klienta: pokaż dlaczego podjęto takie decyzje',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Uwaga',
+    label: 'Pułapki',
+    title: 'Czego unikać',
+    description: 'Kilka rzeczy, które obniżają jakość wyników.',
+    bullets: [
+      'Nie akceptuj wszystkiego na „ok". Agent pójdzie dalej, ale wynik będzie gorszy',
+      'Nie pomijaj Discovery. Wireframe bez kontekstu to zgadywanie z lepszym formatowaniem',
+      'Nie próbuj robić wszystkiego w jednej sesji. 2-3h na projekt to realistyczne tempo',
+      'Nie kopiuj deliverables bez przeczytania. Agent zakłada, Ty weryfikujesz',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Kontakt',
+    label: 'Wsparcie',
+    title: 'Pomoc',
+    description: 'Masz pytania? Napisz na tomasz@creativesparks.pl',
+    bullets: [],
+    links: [
+      { label: 'tomasz@creativesparks.pl', href: 'mailto:tomasz@creativesparks.pl', icon: 'mail', sub: 'Odpowiadam w ciągu 24h' },
+    ],
+    quote: '',
+  },
+];
+---
+
+<BaseLayout title="Jak pracować z agentem — UX Design Agent | Creative Sparks">
+  <TopAppBar />
+  <main>
+    <section class="py-20 md:py-28 px-6 bg-surface-primary">
+      <div class="max-w-screen-2xl mx-auto">
+        <SectionWithIcon icon={sectionIcon}>
+          <Fragment slot="header">
+            <span class="font-label text-primary text-sm mb-4">Instrukcja</span>
+            <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+              Jak pracować z agentem
+            </h1>
+          </Fragment>
+
+          <div class="flex flex-col">
+            {sections.map((section, i) => (
+              <details
+                class="group border-b border-border/30 overflow-hidden bg-white"
+                name="instrukcja"
+                open={false}
+              >
+                <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface-hover transition-colors">
+                  <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+                    <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                      {section.number}
+                    </span>
+                    <div class="flex flex-col gap-3 flex-1">
+                      <span class="font-label text-sm text-primary leading-none">{section.label}</span>
+                      <h2 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                        {section.title}
+                      </h2>
+                    </div>
+                  </div>
+                  <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" data-icon="expand_more" aria-hidden="true">expand_more</span>
+                </summary>
+                <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+                  <div class="max-w-3xl">
+                    <p class="text-muted text-lg leading-relaxed mb-6">
+                      {section.description}
+                    </p>
+                    {section.bullets.length > 0 && (
+                      <ul class="space-y-3 mb-8">
+                        {section.bullets.map((bullet) => (
+                          <li class="flex items-start gap-3 text-base text-muted">
+                            <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                            {bullet}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {section.links.length > 0 && (
+                      <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
+                        <div class="flex flex-wrap gap-x-12 gap-y-3">
+                          {section.links.map((link) => (
+                            <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                              <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
+                              {link.label}
+                              <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                            </a>
+                          ))}
+                        </div>
+                        {section.quote && <p class="text-sm font-label text-muted">{section.quote}</p>}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </SectionWithIcon>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

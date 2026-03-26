@@ -1,0 +1,17 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_8)">
+<rect x="20" y="20" width="160" height="160" fill="url(#dots8)"/>
+<circle cx="100" cy="100" r="70" fill="#010DFF"/>
+<circle cx="100" cy="100" r="35" fill="white"/>
+<rect x="150" y="0" width="50" height="50" fill="#E5FA00"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 200L50 200L50 150L0 150L0 200ZM0 150L50 150L50 100L0 100L0 150Z" fill="#010DFF"/>
+</g>
+<defs>
+  <pattern id="dots8" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M12.1 4.69C9.86 5.03 8.37 6.7 8 8.38C8 6.7 6.14 5.03 3.9 4.69C6.14 4.69 8 3.01 8 1C8.37 3.01 9.86 4.69 12.1 4.69Z" fill="black" fill-opacity="0.15"/>
+  </pattern>
+<clipPath id="clip0_8">
+<rect width="200" height="200" fill="white"/>
+</clipPath>
+</defs>
+</svg>

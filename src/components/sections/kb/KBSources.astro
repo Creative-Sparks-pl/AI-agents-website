@@ -1,0 +1,71 @@
+---
+const experts = [
+  { name: 'Don Norman', domain: 'Design Psychology & Cognitive Science' },
+  { name: 'Jakob Nielsen', domain: 'Web Usability & Heuristics' },
+  { name: 'Steve Krug', domain: 'Common Sense Usability' },
+  { name: 'Peep Laja', domain: 'Conversion Optimization & Messaging' },
+  { name: 'Aarron Walter', domain: 'Emotional Design & User Needs' },
+  { name: 'Eugene Schwartz', domain: 'Awareness Levels & Copywriting' },
+  { name: 'Robert Cialdini', domain: 'Persuasion Psychology' },
+];
+
+const organizations = [
+  { name: 'Nielsen Norman Group', domain: 'UX Research & Standards' },
+  { name: 'Baymard Institute', domain: 'E-commerce UX Patterns' },
+  { name: 'CXL Institute', domain: 'Conversion & Data Marketing' },
+  { name: 'Reforge', domain: 'Growth & Product Strategy' },
+];
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-7.svg';
+---
+
+<section class="py-20 md:py-28" id="zrodla">
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <p class="font-label text-xs uppercase tracking-widest text-primary mb-2">Źródła</p>
+        <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight">Eksperci i źródła</h2>
+      </Fragment>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
+      <!-- Experts -->
+      <div>
+        <h3 class="font-headline text-lg font-bold uppercase text-muted mb-6">Eksperci</h3>
+        <div class="space-y-3">
+          {experts.map((expert) => (
+            <div class="flex items-center justify-between p-4 bg-surface">
+              <div>
+                <p class="font-bold text-lg">{expert.name}</p>
+                <p class="font-label text-xs uppercase text-muted tracking-wider">{expert.domain}</p>
+              </div>
+              <span class="material-symbols-outlined text-accent-dark">verified</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Organizations -->
+      <div>
+        <h3 class="font-headline text-lg font-bold uppercase text-muted mb-6">Organizacje</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-foreground/10">
+                <th class="py-4 font-label text-xs uppercase text-muted tracking-widest font-bold">Instytucja</th>
+                <th class="py-4 font-label text-xs uppercase text-muted tracking-widest font-bold text-right">Domena wiedzy</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm font-medium">
+              {organizations.map((org) => (
+                <tr class="border-b border-border/20">
+                  <td class="py-4">{org.name}</td>
+                  <td class="py-4 text-right text-muted">{org.domain}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    </SectionWithIcon>
+  </div>
+</section>

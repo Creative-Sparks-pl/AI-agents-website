@@ -1,0 +1,113 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-11.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const faqs = [
+  {
+    q: 'Czy mogę to zrobić sam?',
+    a: 'Możesz. Jeśli masz doświadczenie UX, możesz zbudować własną bazę wiedzy i instrukcje. Pytanie ile godzin chcesz na to poświęcić. Za agentem stoi kilka miesięcy pracy nad architekturą, bazą wiedzy z deep research i procesem, który łączy to w spójny workflow. Kupujesz gotowy system: architekturę, bazę wiedzy i proces w jednym pakiecie.',
+  },
+  {
+    q: 'Czy output nie brzmi jak AI?',
+    a: 'Domyślnie może. Agent buduje przekaz (co powiedzieć i dlaczego), ale styl zależy od wytycznych. Wrzuć próbkę swojego copy, a agent złapie ton i będzie pisać w Twoim stylu. Pracuję nad filtrem anti-slop, który wyeliminuje typowe konstrukcje AI.',
+  },
+  {
+    q: 'Czy to jeden prompt czy coś więcej?',
+    a: 'To system. Instrukcja agenta, 92 pliki wiedzy domenowej ładowane na żądanie, skrypt do generowania Excel. Wiedza jest oddzielona od instrukcji działania. Pliki ładują się gdy są potrzebne, żeby nie zapychać kontekstu. Dojście do tej architektury zajęło kilka miesięcy, po drodze wyrzuciłem dwa inne podejścia.',
+  },
+  {
+    q: 'Czy agent działa tak samo dobrze dla każdego typu strony?',
+    a: 'Każdy z 16 typów stron ma własny pakiet wiedzy: archetypy, wzorce sekcji, pytania discovery, checklisty. Planuję dodawanie nowych typów. Jeśli trafisz na słabszy obszar, daj znać.',
+  },
+  {
+    q: 'Ile czasu zaoszczędzę?',
+    a: 'Dla typowego projektu strony: 2-4 godziny od briefu do wireframe\'u z realnym copy. Samodzielnie ten sam zakres (discovery, strategia, sitemap, wireframe) zajmuje dni. Ile dokładnie zaoszczędzisz zależy od dopracowania copy.',
+  },
+  {
+    q: 'Co jeśli output wymaga poprawek?',
+    a: 'Będzie wymagał. Agent daje strukturę, przekaz i realny copy, ale Ty znasz swojego klienta lepiej. Checkpointy na każdym etapie pozwalają korygować na bieżąco, zamiast poprawiać na końcu. Im więcej kontekstu dasz na starcie, tym mniej poprawek potem.',
+  },
+  {
+    q: 'Czy będą aktualizacje?',
+    a: 'Tak. 6 miesięcy aktualizacji w pakiecie. Mam backlog: rozbudowa inventory (czytanie istniejącej strony klienta), anti-slop filter, nowe typy stron, lepsze pokrycie niektórych obszarów. Liczę też na feedback z bety.',
+    link: { label: 'Zobacz pełny changelog', href: '/ux-designer/changelog' },
+  },
+  {
+    q: 'Na jakich platformach to działa?',
+    a: 'Claude, ChatGPT, Gemini, VS Code. Potrzebujesz konta na jednej z tych platform. Agent nie wymaga dodatkowych zależności poza skryptem Python do generowania Excel.',
+  },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 px-6 bg-surface-primary', className]}
+  id="faq"
+  aria-labelledby="faq-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">FAQ</span>
+        <h2 id="faq-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Co warto wiedzieć przed zakupem.
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col">
+        {faqs.map((faq, i) => (
+          <details
+            class="group border-b border-border/30 overflow-hidden bg-white"
+            name="faq"
+          >
+            <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface transition-colors">
+              <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+                <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3 class="font-headline font-bold text-lg md:text-xl tracking-tight leading-tight text-foreground">
+                  {faq.q}
+                </h3>
+              </div>
+              <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" aria-hidden="true">expand_more</span>
+            </summary>
+            <div class="px-6 pb-10 md:pb-12 md:pl-[152px] md:pr-10">
+              <p class="text-muted text-lg leading-relaxed max-w-3xl">{faq.a}</p>
+              {faq.link && (
+                <a href={faq.link.href} class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mt-4">
+                  {faq.link.label}
+                  <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+                </a>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+
+    </SectionWithIcon>
+  </div>
+</section>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/Radomir-Tinkov---Gilroy-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "Gilroy";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../assets/fonts/Radomir-Tinkov---Gilroy-Bold.otf") format("opentype");
+}
+
+@theme {
+  /* Colors */
+  --color-primary: #010DFF;
+  --color-primary-dark: #020DF6;
+  --color-on-primary: #ffffff;
+  --color-accent: #E5FA00;
+  --color-accent-dark: #DAEE04;
+  --color-background: #ffffff;
+  --color-foreground: #171717;
+  --color-muted: #4C4C4C;
+  --color-border: #CDCDCD;
+  --color-surface: #FAFAFA;
+  --color-surface-primary: #F1F2FE;
+  --color-surface-accent: #FAFECC;
+  --color-pattern: #EBEBEB;
+
+  /* Typography — Gilroy + Noto Sans + Noto Sans Mono */
+  --font-headline: "Gilroy", sans-serif;
+  --font-body: "Noto Sans", sans-serif;
+  --font-label: "Noto Sans Mono", monospace;
+  --font-display: "Gilroy", sans-serif;
+  --font-sans: "Noto Sans", sans-serif;
+  --font-mono: "Noto Sans Mono", monospace;
+
+  /* Spacing */
+  --spacing-section: 80px;
+  --spacing-section-lg: 144px;
+  --spacing-grid: 64px;
+
+  /* Border Radius — Architectural Precision: 0px everywhere */
+  --radius-default: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-full: 9999px;
+}

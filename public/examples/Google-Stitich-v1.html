@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="pl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UX Designer Agent — Proces UX na wyciągnięcie ręki</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#010DFF",
+                        "on-primary": "#ffffff",
+                        background: "#ffffff",
+                        surface: "#fbf9f8",
+                        "on-surface": "#0b1326",
+                        "on-surface-variant": "#454558",
+                        outline: "#757589",
+                        "outline-variant": "#c5c4db",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container": "#f0eded",
+                        "surface-container-high": "#eae8e7"
+                    },
+                    fontFamily: {
+                        headline: ["Manrope", "sans-serif"],
+                        body: ["Manrope", "sans-serif"],
+                        label: ["Manrope", "sans-serif"],
+                        display: ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        DEFAULT: "0px",
+                        lg: "0px",
+                        xl: "0px",
+                        full: "9999px"
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .architectural-grid {
+            background-image: linear-gradient(to right, rgba(0, 13, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 13, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/20 selection:text-primary">
+<!-- TopAppBar -->
+<header class="sticky top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-outline-variant/30">
+<nav class="flex justify-between items-center max-w-7xl mx-auto px-6 h-20">
+<div class="text-xl font-extrabold tracking-tighter text-on-surface flex items-center gap-2">
+<span class="w-2 h-6 bg-primary"></span>
+                UX Designer
+            </div>
+<div class="hidden md:flex items-center gap-10 font-bold tracking-tight text-[13px] uppercase">
+<a class="text-on-surface/70 hover:text-primary transition-colors" href="#">Jak to działa</a>
+<a class="text-on-surface/70 hover:text-primary transition-colors" href="#">Deliverables</a>
+<a class="text-on-surface/70 hover:text-primary transition-colors" href="#">Porównanie</a>
+<a class="text-on-surface/70 hover:text-primary transition-colors" href="#">Cennik</a>
+</div>
+<button class="bg-primary text-on-primary font-bold px-8 py-3 rounded-none hover:bg-black transition-all duration-300 text-[13px] uppercase tracking-widest">
+                Kup — 479 zł
+            </button>
+</nav>
+</header>
+<main>
+<!-- S1: Hero Section -->
+<section class="relative pt-24 pb-32 overflow-hidden architectural-grid border-b border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+<!-- Content -->
+<div class="lg:col-span-7">
+<div class="inline-flex items-center gap-2 bg-primary/5 px-4 py-1.5 border border-primary/20 mb-8">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-[10px] font-bold tracking-[0.2em] uppercase text-primary">Pre-order dostępny</span>
+</div>
+<h1 class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter leading-[0.95] mb-8 text-on-surface">
+                        Nie musisz być ekspertem UX. <br/>
+<span class="text-primary underline decoration-4 underline-offset-8">Musisz mieć jednego pod ręką.</span>
+</h1>
+<p class="text-lg md:text-xl text-on-surface-variant leading-relaxed mb-12 max-w-2xl font-medium border-l-4 border-primary/20 pl-6">
+                        Agent AI z bazą wiedzy i procesem, który prowadzi Twój projekt strony od briefu przez strategię UX do wireframe'u.
+                    </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12 mb-16">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary font-bold shrink-0" data-icon="check">check</span>
+<span class="text-[13px] font-bold uppercase tracking-tight leading-tight">Profesjonalny proces UX bez tygodni i tysięcy złotych</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary font-bold shrink-0" data-icon="check">check</span>
+<span class="text-[13px] font-bold uppercase tracking-tight leading-tight">Realny copy zamiast lorem ipsum, w dowolnym języku</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary font-bold shrink-0" data-icon="check">check</span>
+<span class="text-[13px] font-bold uppercase tracking-tight leading-tight">Wbudowana wiedza UX. 16 typów stron, 14 obszarów od strategii po accessibility</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary font-bold shrink-0" data-icon="check">check</span>
+<span class="text-[13px] font-bold uppercase tracking-tight leading-tight">Pliki w formacie MD, który pracuje dalej. Wrzucasz do Figma AI lub Google Stitch i działasz dalej</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary font-bold shrink-0" data-icon="check">check</span>
+<span class="text-[13px] font-bold uppercase tracking-tight leading-tight">Każda decyzja zaprezentowana z alternatywami. Wiesz co zyskujesz i co tracisz</span>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary font-bold shrink-0" data-icon="check">check</span>
+<span class="text-[13px] font-bold uppercase tracking-tight leading-tight">Kupujesz raz. Działa na Twoim koncie Claude, ChatGPT lub Gemini</span>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-8">
+<div>
+<button class="bg-primary text-on-primary font-extrabold px-12 py-6 text-xl tracking-tight hover:bg-black transition-all duration-300">
+                                Kup w przedsprzedaży — 479 zł
+                            </button>
+<div class="mt-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="schedule">schedule</span>
+<p class="text-[11px] font-bold uppercase tracking-widest text-outline">
+                                    Zamiast 879 zł. Zostało <span class="text-primary">12</span> z 25 miejsc.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Anchor: Deliverable Box -->
+<div class="lg:col-span-5 relative">
+<div class="bg-white border-2 border-on-surface shadow-[24px_24px_0px_rgba(1,13,255,0.1)] overflow-hidden aspect-[4/5] flex flex-col">
+<div class="bg-on-surface px-4 py-3 flex items-center justify-between">
+<div class="flex gap-2">
+<div class="w-3 h-3 border border-white/40"></div>
+<div class="w-3 h-3 border border-white/40"></div>
+<div class="w-3 h-3 border border-white/40"></div>
+</div>
+<span class="text-[10px] font-bold text-white/60 uppercase tracking-[0.2em]">UX_ARCHITECT_OUTPUT.md</span>
+</div>
+<div class="p-8 space-y-10 flex-1">
+<div class="space-y-4">
+<div class="h-1 w-20 bg-primary/40"></div>
+<div class="h-12 w-full bg-surface-container-low border border-outline-variant/30"></div>
+<div class="h-12 w-3/4 bg-surface-container-low border border-outline-variant/30"></div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="p-5 border-t-2 border-primary bg-primary/5">
+<div class="h-1 w-8 bg-primary mb-4"></div>
+<div class="space-y-2">
+<div class="h-1 w-full bg-outline/20"></div>
+<div class="h-1 w-5/6 bg-outline/20"></div>
+</div>
+</div>
+<div class="p-5 border-t-2 border-primary bg-primary/5">
+<div class="h-1 w-8 bg-primary mb-4"></div>
+<div class="space-y-2">
+<div class="h-1 w-full bg-outline/20"></div>
+<div class="h-1 w-5/6 bg-outline/20"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-6 border-l-4 border-primary bg-primary/5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-[10px] font-black text-primary uppercase tracking-[0.2em]">UX Rationale</span>
+</div>
+<p class="text-xs text-on-surface/70 leading-relaxed font-medium">
+                                    "Zastosowano asymetryczny układ sekcji Hero, aby skierować wzrok użytkownika na główny CTA..."
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- S2: Problemy status quo -->
+<section class="py-32 bg-white">
+<div class="max-w-7xl mx-auto px-6">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
+<div class="max-w-2xl">
+<span class="text-[11px] font-black text-primary tracking-[0.4em] uppercase mb-4 block">Problem &amp; Context</span>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface tracking-tighter">UX bywa tym etapem, na który "nie ma czasu".</h2>
+</div>
+<div class="h-[2px] bg-primary flex-1 hidden md:block mb-4 ml-12 opacity-20"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-outline-variant/30 border border-outline-variant/30">
+<!-- Card 1 -->
+<div class="p-10 bg-white hover:bg-primary hover:text-white transition-all duration-300 group">
+<div class="w-12 h-12 border-2 border-primary flex items-center justify-center mb-8 group-hover:border-white">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="payments">payments</span>
+</div>
+<h3 class="text-lg font-extrabold uppercase tracking-tight mb-4 leading-tight">Zbyt wysokie koszty</h3>
+<p class="text-sm opacity-70 leading-relaxed">Porządny proces to tysiące złotych albo tygodnie pracy, na które nie każdy startup może pozwolić.</p>
+</div>
+<!-- Card 2 -->
+<div class="p-10 bg-white hover:bg-primary hover:text-white transition-all duration-300 group">
+<div class="w-12 h-12 border-2 border-primary flex items-center justify-center mb-8 group-hover:border-white">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="description">description</span>
+</div>
+<h3 class="text-lg font-extrabold uppercase tracking-tight mb-4 leading-tight">Brak fundamentów</h3>
+<p class="text-sm opacity-70 leading-relaxed">Nie ma discovery, nie ma strategii. Jest tylko pusta Figma i zbliżający się wielkimi krokami deadline.</p>
+</div>
+<!-- Card 3 -->
+<div class="p-10 bg-white hover:bg-primary hover:text-white transition-all duration-300 group">
+<div class="w-12 h-12 border-2 border-primary flex items-center justify-center mb-8 group-hover:border-white">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="format_quote">format_quote</span>
+</div>
+<h3 class="text-lg font-extrabold uppercase tracking-tight mb-4 leading-tight">Problem z treścią</h3>
+<p class="text-sm opacity-70 leading-relaxed">Projektujesz wygląd, a treść jest "na później". W efekcie design nie pasuje do realnego przekazu.</p>
+</div>
+<!-- Card 4 -->
+<div class="p-10 bg-white hover:bg-primary hover:text-white transition-all duration-300 group">
+<div class="w-12 h-12 border-2 border-primary flex items-center justify-center mb-8 group-hover:border-white">
+<span class="material-symbols-outlined text-primary group-hover:text-white" data-icon="forum">forum</span>
+</div>
+<h3 class="text-lg font-extrabold uppercase tracking-tight mb-4 leading-tight">Chatbot to nie proces</h3>
+<p class="text-sm opacity-70 leading-relaxed">Zwykłe prompty dają losowe fragmenty wiedzy, które nie układają się w logiczną całość projektu.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- S3: The Solution / Comparison -->
+<section class="py-32 bg-surface-container-low border-y border-outline-variant/20">
+<div class="max-w-7xl mx-auto px-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
+<div>
+<span class="text-[11px] font-black text-primary tracking-[0.4em] uppercase mb-4 block">Origin Story</span>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-surface leading-[1] mb-10 tracking-tighter">
+                            Stworzyłem agenta, bo sam potrzebowałem procesu UX.
+                        </h2>
+<p class="text-lg text-on-surface-variant leading-relaxed mb-12 font-medium">
+                            Dla projektanta UX agent to asystent. Dla programisty lub marketera – to kompletny dział designu ukryty w oknie czatu.
+                        </p>
+<div class="p-8 bg-white border-2 border-primary inline-flex items-center gap-6 shadow-[12px_12px_0px_rgba(1,13,255,0.05)]">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white" data-icon="robot_2">robot_2</span>
+</div>
+<span class="font-extrabold uppercase tracking-tight text-on-surface">Jeden agent. Pełen cykl. Realne pliki.</span>
+</div>
+</div>
+<!-- Comparison Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="p-8 border border-outline-variant/50 bg-white/50 opacity-60">
+<h4 class="text-[10px] font-black text-outline uppercase tracking-[0.2em] mb-3">Chatbot</h4>
+<p class="text-[13px] font-bold leading-relaxed">Tylko odpowiada na pytania. Nie prowadzi projektu krok po kroku.</p>
+</div>
+<div class="p-8 border border-outline-variant/50 bg-white/50 opacity-60">
+<h4 class="text-[10px] font-black text-outline uppercase tracking-[0.2em] mb-3">Kolekcje Promptów</h4>
+<p class="text-[13px] font-bold leading-relaxed">Dają fragmenty, ale brakuje spójnej metodologii i pamięci projektu.</p>
+</div>
+<div class="p-8 border border-outline-variant/50 bg-white/50 opacity-60">
+<h4 class="text-[10px] font-black text-outline uppercase tracking-[0.2em] mb-3">Szablony UI</h4>
+<p class="text-[13px] font-bold leading-relaxed">Ładnie wyglądają, ale są puste. Brak merytorycznej strategii pod spodem.</p>
+</div>
+<div class="p-8 border-2 border-primary bg-white shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 bg-primary">
+<span class="material-symbols-outlined text-white text-xs" data-icon="star">star</span>
+</div>
+<h4 class="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-3">UX Designer Agent</h4>
+<p class="text-[13px] font-extrabold leading-relaxed text-on-surface">
+                                Prowadzi proces od A do Z. Tworzy strategię, persony i gotowy wireframe z realnym copy.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- S4: Proces (How it works) -->
+<section class="py-32 bg-white">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center mb-24">
+<span class="text-[11px] font-black text-primary tracking-[0.4em] uppercase mb-4 block">Architecture &amp; Workflow</span>
+<h2 class="font-headline text-5xl md:text-6xl font-extrabold text-on-surface tracking-tighter mb-8">6 etapów precyzyjnego procesu.</h2>
+<p class="text-xl text-on-surface-variant max-w-2xl mx-auto font-medium">Każdy krok kończy się deliverablem. Ty decydujesz, agent wykonuje.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20 mb-24 relative">
+<!-- Step 1 -->
+<div class="relative group">
+<div class="text-[64px] font-black text-primary/5 absolute -top-12 -left-4 group-hover:text-primary/10 transition-colors">01</div>
+<div class="pt-4">
+<h3 class="text-2xl font-extrabold text-on-surface mb-4 tracking-tight uppercase">Discovery</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6 font-medium">Opisujesz swój projekt i cele w oknie czatu. Agent ekstrahuje kluczowe dane.</p>
+<div class="p-4 bg-surface-container border-l-4 border-primary font-mono text-[11px] font-bold text-primary">
+                                OUTPUT: project_context.md
+                            </div>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="relative group">
+<div class="text-[64px] font-black text-primary/5 absolute -top-12 -left-4 group-hover:text-primary/10 transition-colors">02</div>
+<div class="pt-4">
+<h3 class="text-2xl font-extrabold text-on-surface mb-4 tracking-tight uppercase">Strategia i IA</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6 font-medium">Agent proponuje format strony, hierarchię informacji i mapę serwisu.</p>
+<div class="p-4 bg-surface-container border-l-4 border-primary font-mono text-[11px] font-bold text-primary">
+                                OUTPUT: ux_strategy.md
+                            </div>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="relative group">
+<div class="text-[64px] font-black text-primary/5 absolute -top-12 -left-4 group-hover:text-primary/10 transition-colors">03</div>
+<div class="pt-4">
+<h3 class="text-2xl font-extrabold text-on-surface mb-4 tracking-tight uppercase">Inventory</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6 font-medium">Dla dużych projektów tworzy listę unikalnych szablonów i komponentów.</p>
+<div class="p-4 bg-surface-container border-l-4 border-primary font-mono text-[11px] font-bold text-primary">
+                                OUTPUT: template_inventory.xlsx
+                            </div>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="relative group">
+<div class="text-[64px] font-black text-primary/5 absolute -top-12 -left-4 group-hover:text-primary/10 transition-colors">04</div>
+<div class="pt-4">
+<h3 class="text-2xl font-extrabold text-on-surface mb-4 tracking-tight uppercase">Wireframing</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6 font-medium">Agent proponuje sekwencję sekcji z gotowym, merytorycznym copy.</p>
+<div class="p-4 bg-surface-container border-l-4 border-primary font-mono text-[11px] font-bold text-primary">
+                                OUTPUT: wireframe.md
+                            </div>
+</div>
+</div>
+<!-- Step 5 -->
+<div class="relative group">
+<div class="text-[64px] font-black text-primary/5 absolute -top-12 -left-4 group-hover:text-primary/10 transition-colors">05</div>
+<div class="pt-4">
+<h3 class="text-2xl font-extrabold text-on-surface mb-4 tracking-tight uppercase">UX Audit</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6 font-medium">Agent audytuje dowolny deliverable pod kątem zasad użyteczności i heurystyk.</p>
+<div class="p-4 bg-surface-container border-l-4 border-primary font-mono text-[11px] font-bold text-primary">
+                                OUTPUT: audit_report.md
+                            </div>
+</div>
+</div>
+<!-- Step 6 -->
+<div class="relative group">
+<div class="text-[64px] font-black text-primary/5 absolute -top-12 -left-4 group-hover:text-primary/10 transition-colors">06</div>
+<div class="pt-4">
+<h3 class="text-2xl font-extrabold text-on-surface mb-4 tracking-tight uppercase">Decision Log</h3>
+<p class="text-on-surface-variant leading-relaxed mb-6 font-medium">Każda ważna decyzja projektowa jest zapisywana wraz z uzasadnieniem.</p>
+<div class="p-4 bg-surface-container border-l-4 border-primary font-mono text-[11px] font-bold text-primary">
+                                OUTPUT: decision_log.md
+                            </div>
+</div>
+</div>
+</div>
+<!-- Callout Box -->
+<div class="max-w-5xl mx-auto bg-on-surface p-12 flex flex-col md:flex-row items-center gap-10 shadow-2xl relative">
+<div class="absolute top-0 left-0 w-2 h-full bg-primary"></div>
+<div class="w-16 h-16 bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="pause">pause</span>
+</div>
+<p class="text-xl md:text-2xl font-bold text-white leading-tight text-center md:text-left">
+                        Na każdym etapie agent zatrzymuje się i pokazuje opcje. <span class="text-primary">To Ty jesteś architektem. Agent jest Twoim narzędziem.</span>
+</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-on-surface w-full py-20">
+<div class="max-w-7xl mx-auto px-8 flex flex-col md:flex-row justify-between items-start gap-12">
+<div class="flex flex-col gap-6">
+<div class="text-2xl font-black text-white tracking-tighter flex items-center gap-2">
+<span class="w-2 h-6 bg-primary"></span>
+                    UX Designer Agent
+                </div>
+<p class="text-[13px] font-bold text-white/40 uppercase tracking-widest">© 2024 Wszystkie prawa zastrzeżone.</p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-4 font-bold text-[13px] uppercase tracking-widest">
+<a class="text-white/60 hover:text-primary transition-colors" href="#">Kontakt</a>
+<a class="text-white/60 hover:text-primary transition-colors" href="#">Polityka Prywatności</a>
+<a class="text-white/60 hover:text-primary transition-colors" href="#">Regulamin</a>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-center pb-safe md:hidden bg-white/95 backdrop-blur-lg border-t border-outline-variant/30 z-50">
+<a class="bg-primary py-5 w-full flex items-center justify-center gap-3 font-bold text-sm text-white uppercase tracking-widest active:brightness-90 transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="shopping_cart">shopping_cart</span>
+            Kup — 479 zł
+        </a>
+</nav>
+</body></html>

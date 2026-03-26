@@ -1,0 +1,142 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-4.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const pageTypes = [
+  { name: 'B2B SaaS', sub: 'Produkty subskrypcyjne' },
+  { name: 'B2B Services', sub: 'Agencje, konsulting' },
+  { name: 'B2B Industrial', sub: 'Producenci, dystrybutorzy' },
+  { name: 'E-commerce', sub: 'Sklepy online, DTC' },
+  { name: 'Portfolio', sub: 'Studia, freelancerzy' },
+  { name: 'Local Business', sub: 'Usługi lokalne' },
+  { name: 'Marketplace', sub: 'Platformy dwustronne' },
+  { name: 'Community', sub: 'Grupy, fora' },
+  { name: 'Course', sub: 'Kursy, szkolenia' },
+  { name: 'Media', sub: 'Wydawcy, blogi' },
+  { name: 'Event', sub: 'Konferencje' },
+  { name: 'Nonprofit', sub: 'Fundacje, NGO' },
+  { name: 'Enterprise', sub: 'Narzędzia korporacyjne' },
+  { name: 'Government', sub: 'Instytucje publiczne' },
+  { name: 'Documentation', sub: 'Bazy wiedzy' },
+  { name: 'Service Utility', sub: 'Narzędzia online' },
+];
+
+const frameworks = [
+  { name: 'Design Psychology', sub: 'Don Norman' },
+  { name: 'Hierarchy of User Needs', sub: 'Aarron Walter' },
+  { name: 'Usability Heuristics', sub: 'Jakob Nielsen' },
+  { name: 'LIFT Model', sub: 'Conversion Optimization' },
+  { name: 'CCD', sub: 'Customer Centric Design' },
+  { name: 'Emotional Targeting', sub: '223 triggers' },
+  { name: 'Buyer Legends', sub: 'Narrative framing' },
+  { name: 'FAST Architecture', sub: 'Persuasion sequencing' },
+  { name: 'Narrative Arc', sub: 'Hook, tension, evidence, resolution' },
+  { name: 'ResearchXL', sub: 'Structured UX research' },
+  { name: 'Messaging Hierarchy', sub: 'B2B 5-layer model' },
+  { name: 'Awareness Model', sub: '5 poziomów świadomości' },
+  { name: 'Funnel Psychology', sub: 'Awareness, consideration, decision' },
+];
+
+const patterns = [
+  { name: 'Hero', sub: 'Warianty otwarcia strony' },
+  { name: 'Nawigacja', sub: 'Sticky, mega menu, mobile' },
+  { name: 'Social proof', sub: 'Testimoniale, loga, case study' },
+  { name: 'FAQ / obiekcje', sub: 'Accordion, 4 bariery zakupowe' },
+  { name: 'Formularze', sub: 'Lead capture, kontakt, RFQ' },
+  { name: 'Cennik', sub: 'Tiery, anchor pricing, decoy' },
+  { name: 'Porównanie', sub: 'Tabele vs. konkurencja' },
+  { name: 'Case study', sub: 'Wynik + cytat + metryki' },
+  { name: 'Pricing page', sub: 'Psychologia cen, tiery' },
+  { name: 'Comparison', sub: 'vs. pages, switcher proof' },
+  { name: 'Trust bar', sub: 'Loga, badges, certyfikaty' },
+  { name: 'Stats block', sub: 'Metryki, skala, impact' },
+  { name: 'Sticky CTA', sub: 'Floating, bottom bar' },
+  { name: 'Mid-page CTA', sub: 'Kontekstowe wezwanie' },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface-accent', className]}
+  aria-labelledby="knowledge-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Baza wiedzy</span>
+        <h2 id="knowledge-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Pod spodem siedzi baza wiedzy, którą jako UX Design Lead zbierałem latami.
+        </h2>
+        <a href="/ux-designer/baza-wiedzy" class="inline-flex items-center gap-2 mt-6 text-primary font-bold text-sm hover:underline transition-colors">
+          <span class="material-symbols-outlined text-base">menu_book</span>
+          Mapa wiedzy agenta
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </a>
+      </Fragment>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <!-- Typy stron -->
+        <div>
+          <h3 class="font-label font-bold text-lg text-primary tracking-tight mb-6">
+            Typy stron (16)
+          </h3>
+          <ul class="space-y-1">
+            {pageTypes.map((type) => (
+              <li class="py-4 border-b border-border/20">
+                <span class="text-foreground font-bold text-sm block">{type.name}</span>
+                <span class="text-xs font-label text-muted">{type.sub}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Frameworki -->
+        <div>
+          <h3 class="font-label font-bold text-lg text-primary tracking-tight mb-6">
+            Frameworki UX (13)
+          </h3>
+          <ul class="space-y-1">
+            {frameworks.map((fw) => (
+              <li class="py-4 border-b border-border/20">
+                <span class="text-foreground font-bold text-sm block">{fw.name}</span>
+                <span class="text-xs font-label text-muted">{fw.sub}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Wzorce -->
+        <div>
+          <h3 class="font-label font-bold text-lg text-primary tracking-tight mb-6">
+            Wzorce sekcji (50+)
+          </h3>
+          <ul class="space-y-1">
+            {patterns.map((p) => (
+              <li class="py-4 border-b border-border/20">
+                <span class="text-foreground font-bold text-sm block">{p.name}</span>
+                <span class="text-xs font-label text-muted">{p.sub}</span>
+              </li>
+            ))}
+            <li class="py-4 border-b border-border/20">
+              <span class="font-label text-sm text-primary font-bold">+ 35 kolejnych</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="mt-12 text-sm text-muted font-label text-center">
+        92 pliki wiedzy z metodologią, gotowymi wzorcami i przykładami. 14+ obszarów: od brand strategy po accessibility.
+      </p>
+    </SectionWithIcon>
+  </div>
+</section>

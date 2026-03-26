@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopAppBar from '../../components/sections/TopAppBar.astro';
+import HeroSection from '../../components/sections/HeroSection.astro';
+import UseCasesSection from '../../components/sections/UseCasesSection.astro';
+import ProblemsSection from '../../components/sections/ProblemsSection.astro';
+import OriginSection from '../../components/sections/OriginSection.astro';
+import ComparisonSection from '../../components/sections/ComparisonSection.astro';
+import ProcessSection from '../../components/sections/ProcessSection.astro';
+import PricingSection from '../../components/sections/PricingSection.astro';
+import DemoSection from '../../components/sections/DemoSection.astro';
+import PlatformSection from '../../components/sections/PlatformSection.astro';
+import KnowledgeBaseSection from '../../components/sections/KnowledgeBaseSection.astro';
+import ArchitectureSection from '../../components/sections/ArchitectureSection.astro';
+import FAQSection from '../../components/sections/FAQSection.astro';
+import AuthorSection from '../../components/sections/AuthorSection.astro';
+import Footer from '../../components/sections/Footer.astro';
+---
+
+<BaseLayout
+  title="UX Design Agent — proces UX od briefu do wireframe'u | Creative Sparks"
+  description="Agent AI z bazą wiedzy UX. Sprawdzony proces od briefu do wireframe'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup."
+>
+  <TopAppBar />
+  <main>
+    <HeroSection />
+    <UseCasesSection id="zastosowanie" />
+    <ProcessSection id="proces" />
+    <PricingSection />
+    <DemoSection id="demo" />
+    <PlatformSection />
+    <ProblemsSection />
+    <OriginSection />
+    <ArchitectureSection />
+    <ComparisonSection id="porownanie" />
+    <KnowledgeBaseSection />
+    <FAQSection />
+    <AuthorSection />
+  </main>
+  <Footer />
+</BaseLayout>

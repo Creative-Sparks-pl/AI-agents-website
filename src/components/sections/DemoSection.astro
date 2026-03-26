@@ -1,0 +1,131 @@
+---
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-10.svg';
+
+const { id } = Astro.props;
+---
+
+<section id={id} class="py-20 md:py-28 px-6 bg-surface-primary">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <!-- Left: icon + header + text + CTA -->
+      <div class="lg:col-span-7">
+        <SectionWithIcon icon={sectionIcon}>
+          <Fragment slot="header">
+            <span class="font-label text-primary text-sm mb-4">Wypróbuj za darmo</span>
+            <h2 class="font-headline font-bold text-3xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+              Przetestuj agenta<br>na żywym projekcie dla NGO.
+            </h2>
+            <p class="text-muted text-lg leading-relaxed max-w-2xl mt-4">
+              Wersja demo zawiera wiedzę tylko o stronach NGO i prowadzi Cię przez 3 etapy. Opisz swoją organizację lub użyj gotowego scenariusza.
+            </p>
+          </Fragment>
+
+          <div class="space-y-8">
+
+            <div class="flex flex-col items-start gap-4">
+              <div class="flex flex-wrap items-center gap-4">
+                <a href="https://chatgpt.com/g/g-69c113abc168819180640bbac04e29ca-ux-designer" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-primary text-on-primary font-label font-bold text-base px-10 py-4 hover:bg-primary-dark transition-colors">
+                  Uruchom w ChatGPT
+                  <span class="material-symbols-outlined text-xl" aria-hidden="true">open_in_new</span>
+                </a>
+              </div>
+              <div class="flex flex-wrap items-center gap-6">
+                <a href="https://cart.creativesparks.pl/checkout/ux-design-lead-ngo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                  <span class="material-symbols-outlined text-lg" aria-hidden="true">download</span>
+                  Pobierz demo →
+                </a>
+                <a href="/ux-designer/instrukcja" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                  <span class="material-symbols-outlined text-lg" aria-hidden="true">description</span>
+                  Jak pracować z agentem →
+                </a>
+              </div>
+            </div>
+          </div>
+        </SectionWithIcon>
+      </div>
+
+      <!-- Right: workflow cards -->
+      <div class="lg:col-span-5 space-y-4">
+        <!-- Discovery -->
+        <div class="bg-white p-6 border border-border/20">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="process-shape process-shape--cube" aria-hidden="true"></div>
+            <h3 class="font-headline font-bold text-foreground">Etap 1: Discovery</h3>
+          </div>
+          <p class="text-sm text-muted">Zrozum projekt, odbiorców i cele organizacji.</p>
+        </div>
+
+        <!-- Strategia -->
+        <div class="bg-white p-6 border border-border/20">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="process-shape process-shape--diamond" aria-hidden="true"></div>
+            <h3 class="font-headline font-bold text-foreground">Etap 2: Strategia</h3>
+          </div>
+          <p class="text-sm text-muted">Zaplanuj strukturę i przekaz strony nonprofitowej.</p>
+        </div>
+
+        <!-- Wireframing -->
+        <div class="bg-white p-6 border border-border/20">
+          <div class="flex items-center gap-4 mb-3">
+            <div class="process-shape process-shape--grid" aria-hidden="true"></div>
+            <h3 class="font-headline font-bold text-foreground">Etap 3: Wireframing</h3>
+          </div>
+          <p class="text-sm text-muted">Wireframe z realnym copy, gotowy do designu. Domena ograniczona do stron nonprofitowych.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .process-shape {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--color-primary);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .process-shape--cube::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  .process-shape--diamond {
+    transform: rotate(45deg);
+    width: 40px;
+    height: 40px;
+    margin: 4px;
+  }
+  .process-shape--diamond::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  .process-shape--grid {
+    overflow: hidden;
+  }
+  .process-shape--grid::before,
+  .process-shape--grid::after {
+    content: '';
+    position: absolute;
+    background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  .process-shape--grid::before {
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+  }
+  .process-shape--grid::after {
+    width: 100%;
+    height: 1px;
+    top: 50%;
+    left: 0;
+  }
+</style>

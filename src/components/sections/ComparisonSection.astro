@@ -1,0 +1,156 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-5.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const columns = [
+  { key: 'agent', label: 'UX Design Agent', highlight: true },
+  { key: 'chatbot', label: 'ChatGPT / Chatboty' },
+  { key: 'prompts', label: 'Kolekcje promptów' },
+  { key: 'templates', label: 'Szablony UI' },
+  { key: 'consultant', label: 'Konsultant UX' },
+];
+
+const rows = [
+  {
+    feature: 'Pełen proces UX',
+    agent: { status: 'yes', text: '6 workflowów end-to-end' },
+    chatbot: { status: 'no', text: 'odpowiedzi bez procesu' },
+    prompts: { status: 'no', text: 'fragmenty bez kontekstu' },
+    templates: { status: 'no', text: 'wygląd bez procesu' },
+    consultant: { status: 'yes', text: 'pełen cykl' },
+  },
+  {
+    feature: 'Realne pliki',
+    agent: { status: 'yes', text: '.md, .xlsx' },
+    chatbot: { status: 'no', text: 'wiadomości czatowe' },
+    prompts: { status: 'no', text: 'prompty' },
+    templates: { status: 'no', text: 'pliki graficzne' },
+    consultant: { status: 'yes', text: 'dokumenty' },
+  },
+  {
+    feature: 'Kontekst sesji',
+    agent: { status: 'yes', text: 'pliki trwałe' },
+    chatbot: { status: 'no', text: 'każda sesja od zera' },
+    prompts: { status: 'no', text: 'każdy prompt od zera' },
+    templates: { status: 'na', text: 'n/d' },
+    consultant: { status: 'yes', text: 'w głowie konsultanta' },
+  },
+  {
+    feature: 'Decyzje',
+    agent: { status: 'yes', text: 'opcje z trade-off' },
+    chatbot: { status: 'no', text: 'brak' },
+    prompts: { status: 'no', text: 'brak' },
+    templates: { status: 'no', text: 'brak' },
+    consultant: { status: 'yes', text: 'spotkania / konsultacje' },
+  },
+  {
+    feature: 'Realny copy',
+    agent: { status: 'yes', text: 'w języku projektu' },
+    chatbot: { status: 'partial', text: 'generyczny' },
+    prompts: { status: 'no', text: 'szablonowy' },
+    templates: { status: 'no', text: 'lorem ipsum' },
+    consultant: { status: 'yes', text: 'profesjonalny' },
+  },
+  {
+    feature: 'Koszt',
+    agent: { status: 'price', text: 'jednorazowy' },
+    chatbot: { status: 'price', text: '~100 zł/mies.' },
+    prompts: { status: 'price', text: '50–300 zł' },
+    templates: { status: 'price', text: '100–500 zł' },
+    consultant: { status: 'price', text: '5 000–20 000 zł' },
+  },
+];
+
+const statusIcon = (status: string) => {
+  if (status === 'yes') return { icon: 'check_circle', class: 'text-primary' };
+  if (status === 'no') return { icon: 'close', class: 'text-muted/40' };
+  if (status === 'partial') return { icon: 'horizontal_rule', class: 'text-muted/40' };
+  if (status === 'na') return { icon: 'remove', class: 'text-muted/40' };
+  return null;
+};
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-white', className]}
+  aria-labelledby="comparison-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Porównanie</span>
+        <h2 id="comparison-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Czym to się różni od ChatGPT, promptów,<br />szablonów i konsultanta UX?
+        </h2>
+      </Fragment>
+
+      <div class="overflow-x-auto">
+        <div class="min-w-[900px]">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr>
+                <th class="p-6 text-xs font-label text-muted"></th>
+                {columns.map((col) => (
+                  <th class:list={[
+                    'p-5 font-headline font-bold text-base',
+                    col.highlight ? 'bg-primary text-white' : 'text-muted'
+                  ]}>
+                    {col.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr class="border-t border-border/20 hover:bg-white/50 transition-colors">
+                  <td class="p-6 font-headline font-bold text-foreground">{row.feature}</td>
+                  {columns.map((col) => {
+                    const cell = row[col.key as keyof typeof row] as any;
+                    const si = statusIcon(cell.status);
+                    return (
+                      <td class:list={[
+                        'p-5',
+                        col.highlight ? 'bg-surface-primary' : ''
+                      ]}>
+                        {cell.status === 'price' ? (
+                          <span class:list={[
+                            'text-sm',
+                            col.highlight ? 'font-medium text-foreground' : 'text-muted'
+                          ]}>
+                            {cell.text}
+                          </span>
+                        ) : (
+                          <div class:list={[
+                            'flex items-start gap-2',
+                            !col.highlight && cell.status !== 'yes' ? 'opacity-50' : ''
+                          ]}>
+                            {si && <span class:list={['material-symbols-outlined text-lg', si.class]} data-icon={si.icon} aria-hidden="true">{si.icon}</span>}
+                            <span class:list={[
+                              'text-sm',
+                              col.highlight ? 'font-medium text-foreground' : 'text-muted'
+                            ]}>{cell.text}</span>
+                          </div>
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </SectionWithIcon>
+  </div>
+</section>

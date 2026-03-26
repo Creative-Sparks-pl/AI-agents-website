@@ -1,0 +1,46 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  title: string;
+  class?: string;
+}
+
+const {
+  title,
+  class: className,
+  ...rest
+} = Astro.props;
+---
+
+<div class:list={['flex items-start gap-4', className]} {...rest}>
+  <span class="check-bullet shrink-0 mt-1" aria-hidden="true">
+    <span class="check-mark"></span>
+  </span>
+  <div>
+    <p class="text-xl font-normal text-foreground leading-snug">{title}</p>
+    <p class="text-base font-body text-foreground mt-1 leading-snug">
+      <slot />
+    </p>
+  </div>
+</div>
+
+<style>
+  .check-bullet {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .check-mark {
+    width: 8px;
+    height: 12px;
+    border-right: 2px solid var(--color-primary);
+    border-bottom: 2px solid var(--color-primary);
+    transform: rotate(45deg) translateY(-1px);
+  }
+</style>

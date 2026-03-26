@@ -1,0 +1,94 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-11.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const platforms = [
+  { icon: 'public', name: 'Claude / ChatGPT w przeglądarce', desc: 'Jako instrukcja projektu' },
+  { icon: 'auto_awesome', name: 'Custom GPTs / Gemini Gems', desc: 'Kompatybilny jako knowledge + instruction set' },
+  { icon: 'terminal', name: 'Claude Code (CLI)', desc: 'Pełny dostęp do plików, bezpośredni zapis deliverables' },
+  { icon: 'code', name: 'VS Code / IDE', desc: 'Zintegrowane z Twoim środowiskiem pracy' },
+];
+
+const contents = [
+  { label: 'agent.md', desc: 'Pełna definicja agenta z 6 workflow-ami' },
+  { label: 'references/', desc: '92 pliki wiedzy domenowej (16 typów stron, 14 obszarów)' },
+  { label: 'scripts/', desc: 'Skrypt Python do generowania Excel' },
+  { label: 'Dokumentacja', desc: 'Instalacja i konfiguracja' },
+];
+
+const requirements = [
+  'Konto na Claude, ChatGPT lub Gemini',
+  'Pobrany folder z agentem',
+  '5 minut na setup',
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface', className]}
+  aria-labelledby="platform-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Platformy</span>
+        <h2 id="platform-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Jeden folder.<br />Działa na platformach, których już używasz.
+        </h2>
+      </Fragment>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Left: platforms -->
+        <div class="lg:col-span-7 flex flex-col">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+            {platforms.map((p) => (
+              <div class="bg-white p-8 flex flex-col gap-6 group hover:bg-primary transition-colors duration-300">
+                <span class="material-symbols-outlined text-primary text-2xl group-hover:text-white" data-icon={p.icon} aria-hidden="true">{p.icon}</span>
+                <div>
+                  <h4 class="font-headline font-bold text-base mb-1 group-hover:text-white transition-colors">{p.name}</h4>
+                  <p class="text-sm text-muted leading-snug group-hover:text-white/70 transition-colors">{p.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Right: contents + requirements -->
+        <div class="lg:col-span-5 bg-surface-primary flex flex-col">
+          <div class="p-8">
+            <h3 class="text-2xl md:text-3xl font-headline font-bold tracking-tight leading-tight mb-6">
+              W paczce kupujesz kompletne narzędzie.
+            </h3>
+            <div class="space-y-4 mb-6">
+              {contents.map((c) => (
+                <div class="flex items-start gap-3">
+                  <svg class="w-5 h-5 shrink-0 mt-0.5 text-primary" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor"/></svg>
+                  <div>
+                    <span class="text-sm font-bold text-primary block">{c.label}</span>
+                    <p class="text-sm text-muted">{c.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="p-4 bg-white border-l-2 border-primary">
+              <p class="text-sm text-muted font-body">
+                Brak dodatkowych zależności. Wgrywasz folder, otwierasz platformę i zaczynasz pierwszy projekt.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>

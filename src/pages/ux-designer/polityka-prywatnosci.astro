@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopAppBar from '../../components/sections/TopAppBar.astro';
+import Footer from '../../components/sections/Footer.astro';
+---
+
+<BaseLayout title="Polityka prywatności — UX Design Agent | Creative Sparks">
+  <TopAppBar />
+  <main class="py-20 md:py-28">
+    <article class="max-w-3xl mx-auto px-6 prose-custom">
+      <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Polityka prywatności</h1>
+      <p class="text-sm font-label text-muted mb-12">Ostatnia aktualizacja: 2026-03-22</p>
+
+      <h2>Administrator danych</h2>
+      <p>Administratorem Twoich danych osobowych jest Tomasz Maciąg, prowadzący działalność gospodarczą pod firmą "Creative Sparks Tomasz Maciąg", Na Polance 10B/10, 51-109 Wrocław, NIP: 7722112640.</p>
+      <p>Kontakt: <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a></p>
+
+      <h2>Jakie dane zbieram</h2>
+      <ul>
+        <li><strong>Adres email</strong> — podany przy zapisie na listę oczekujących lub przy zakupie</li>
+        <li><strong>Dane do faktury</strong> — jeśli podasz dane firmy przy zakupie (nazwa firmy, NIP, adres)</li>
+        <li><strong>Dane techniczne</strong> — adres IP, typ przeglądarki (zbierane automatycznie przez serwer)</li>
+      </ul>
+
+      <h2>Po co zbieram dane</h2>
+      <ul>
+        <li>Realizacja zamówienia i dostarczenie produktu (art. 6 ust. 1 lit. b RODO)</li>
+        <li>Wystawienie faktury VAT (art. 6 ust. 1 lit. c RODO)</li>
+        <li>Informowanie o aktualizacjach produktu (art. 6 ust. 1 lit. b RODO)</li>
+        <li>Newsletter / lista oczekujących — na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO)</li>
+      </ul>
+
+      <h2>Komu udostępniam dane</h2>
+      <p>Twoje dane mogą być udostępnione wyłącznie podmiotom niezbędnym do realizacji usługi:</p>
+      <ul>
+        <li><strong>MailerLite</strong> — obsługa listy mailingowej i formularzy zapisu</li>
+        <li><strong>Operator płatności</strong> — przetwarzanie płatności online</li>
+        <li><strong>System fakturowy</strong> — wystawianie faktur VAT</li>
+      </ul>
+      <p>Nie sprzedaję, nie wypożyczam ani nie udostępniam Twoich danych w celach marketingowych osobom trzecim.</p>
+
+      <h2>Jak długo przechowuję dane</h2>
+      <ul>
+        <li>Dane do realizacji zamówienia — przez okres obowiązywania umowy + 5 lat (obowiązek podatkowy)</li>
+        <li>Dane z listy mailingowej — do momentu wypisania się</li>
+        <li>Dane techniczne (logi serwera) — do 30 dni</li>
+      </ul>
+
+      <h2>Twoje prawa</h2>
+      <p>Masz prawo do:</p>
+      <ul>
+        <li>Dostępu do swoich danych</li>
+        <li>Sprostowania danych</li>
+        <li>Usunięcia danych ("prawo do bycia zapomnianym")</li>
+        <li>Ograniczenia przetwarzania</li>
+        <li>Przenoszenia danych</li>
+        <li>Wycofania zgody (w przypadku newslettera)</li>
+        <li>Wniesienia skargi do Prezesa UODO</li>
+      </ul>
+      <p>Aby skorzystać ze swoich praw, napisz na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
+
+      <h2>Pliki cookies</h2>
+      <p>Strona używa plików cookies wyłącznie w celach technicznych (MailerLite — śledzenie zapisu na listę). Nie używam cookies do profilowania ani reklam.</p>
+
+      <h2>Zmiany polityki prywatności</h2>
+      <p>Mogę zaktualizować tę politykę. O zmianach poinformuję na stronie. Zmiany nie dotyczą danych zebranych przed ich wprowadzeniem.</p>
+    </article>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .prose-custom h2 {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-foreground);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  .prose-custom p {
+    font-family: var(--font-body);
+    color: var(--color-muted);
+    line-height: 1.75;
+    margin-bottom: 1rem;
+  }
+  .prose-custom ul, .prose-custom ol {
+    color: var(--color-muted);
+    padding-left: 0;
+    margin-bottom: 1rem;
+    list-style: none;
+  }
+  .prose-custom ul li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.75;
+  }
+  .prose-custom ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 14px;
+    height: 14px;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 19 22' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z' fill='%23010DFF'/%3E%3C/svg%3E") no-repeat center;
+    background-size: contain;
+  }
+  .prose-custom a {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  .prose-custom a:hover {
+    text-decoration: underline;
+  }
+  .prose-custom strong {
+    color: var(--color-foreground);
+  }
+</style>

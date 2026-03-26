@@ -1,0 +1,64 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-4.svg';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const {
+  class: className,
+  ...rest
+} = Astro.props;
+
+const problems = [
+  {
+    icon: 'payments',
+    title: 'Zbyt wysokie koszty',
+    description: 'Porządny proces to tysiące złotych albo tygodnie pracy, na które nie każdy startup może pozwolić.',
+  },
+  {
+    icon: 'description',
+    title: 'Brak fundamentów',
+    description: 'Nie ma discovery, nie ma strategii. Jest pusta Figma i deadline za tydzień.',
+  },
+  {
+    icon: 'format_quote',
+    title: 'Problem z treścią',
+    description: 'Projektujesz wygląd, a treść jest "na później". W efekcie design nie pasuje do realnego przekazu.',
+  },
+  {
+    icon: 'forum',
+    title: 'Chatbot to nie proces',
+    description: 'Zwykłe prompty dają losowe fragmenty wiedzy. Żaden nie pamięta co było w poprzednim.',
+  },
+];
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-white', className]}
+  aria-labelledby="problems-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Problem</span>
+        <h2 id="problems-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+          UX bywa tym etapem, na&nbsp;który "nie&nbsp;ma&nbsp;czasu".
+        </h2>
+      </Fragment>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {problems.map((item) => (
+          <div class="p-10 bg-surface-accent hover:bg-primary hover:text-white transition-all duration-300 group">
+            <span class="material-symbols-outlined text-primary group-hover:text-white text-3xl mb-8 block" data-icon={item.icon} aria-hidden="true">{item.icon}</span>
+            <h3 class="text-lg font-headline font-bold tracking-tight mb-4 leading-tight">{item.title}</h3>
+            <p class="text-base font-body opacity-70 leading-relaxed">{item.description}</p>
+          </div>
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>

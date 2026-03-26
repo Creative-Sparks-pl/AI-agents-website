@@ -1,0 +1,41 @@
+---
+const frameworks = [
+  { name: 'Design Psychology', sub: 'Don Norman', description: 'Wykorzystanie błędów poznawczych i zasad Gestalt w celu prowadzenia wzroku użytkownika.' },
+  { name: 'Hierarchy of User Needs', sub: 'Aarron Walter', description: 'Model piramidy od funkcjonalności do emocjonalnego przywiązania marki.' },
+  { name: 'Usability Heuristics', sub: 'Jakob Nielsen', description: '10 fundamentalnych zasad Jakoba Nielsena do audytu interakcji.' },
+  { name: 'LIFT Model', sub: 'Conversion Optimization', description: 'Analiza 6 czynników wpływających na konwersję (Clarity, Relevance, Urgency...).' },
+  { name: 'CCD', sub: 'Customer Centric Design', description: 'Dostarczanie treści precyzyjnie dopasowanej do etapu świadomości użytkownika.' },
+  { name: 'Emotional Targeting', sub: '223 triggers', description: 'Budowanie persony zakupowej w oparciu o wyzwalacze emocjonalne.' },
+  { name: 'Buyer Legends', sub: 'Narrative framing', description: 'Narracyjny framework mapowania ścieżki zakupowej od startu do mety.' },
+  { name: 'FAST Architecture', sub: 'Persuasion sequencing', description: 'Optymalizacja szybkości poznawczej interfejsu (Flow, Attention, Simplicity, Trust).' },
+  { name: 'Narrative Arc', sub: 'Hook, tension, evidence, resolution', description: 'Struktura narracji strony prowadząca użytkownika od problemu do rozwiązania.' },
+  { name: 'ResearchXL', sub: 'Structured UX research', description: 'Strukturalny framework do prowadzenia badań UX i analizy danych.' },
+  { name: 'Messaging Hierarchy', sub: 'B2B 5-layer model', description: 'Model 5 warstw komunikacji B2B — od nagłówka do mikrokopii.' },
+  { name: 'Awareness Model', sub: '5 poziomów świadomości', description: '5 poziomów świadomości klienta wg Schwartza. Dopasowanie przekazu do etapu.' },
+  { name: 'Funnel Psychology', sub: 'Awareness, consideration, decision', description: 'Psychologia lejka zakupowego. Taktyki konwersji na każdy etap.' },
+];
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-5.svg';
+---
+
+<section class="py-20 md:py-28 bg-surface-accent" id="frameworki">
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Frameworki</span>
+        <h2 class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Frameworki decyzyjne (13)
+        </h2>
+      </Fragment>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 lg:gap-x-16">
+        {frameworks.map((fw) => (
+          <div class="py-5 border-b border-border/20">
+            <span class="text-foreground font-headline font-bold text-lg block">{fw.name}</span>
+            <span class="text-xs font-label text-muted">{fw.sub}</span>
+          </div>
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
