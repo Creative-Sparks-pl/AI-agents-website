@@ -71,7 +71,7 @@ const plans = [
       <Fragment slot="header">
         <div class="inline-flex items-center gap-2 bg-primary/5 px-4 py-1.5 border border-primary/20 mb-6">
           <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
-          <span class="text-sm font-bold text-primary font-label">Cennik private beta. Limit 30 miejsc.</span>
+          <span class="text-sm font-bold text-primary font-label">Cennik early access. Limit 30 miejsc.</span>
         </div>
         <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
           Jednorazowy zakup. 14 dni na zwrot.<br />Bez subskrypcji. Bez ukrytych kosztów.
@@ -97,7 +97,7 @@ const plans = [
             </div>
 
             <div class="mb-8">
-              <span class="text-xs font-label text-primary font-bold mb-1 block">Private beta</span>
+              <span class="text-xs font-label text-primary font-bold mb-1 block">Early access</span>
               <span class:list={['text-lg font-label line-through', plan.highlight ? 'text-foreground/40' : 'text-muted/60']}>{plan.oldPrice} zł</span>
               <div>
                 <span class="font-headline font-bold text-5xl">{plan.price}</span>
@@ -131,7 +131,7 @@ const plans = [
                 data-umami-event="Pricing CTA"
                 data-umami-event-plan={plan.name}
               >
-                Odblokuj beta
+                Odblokuj early access
                 <span class="material-symbols-outlined text-base" aria-hidden="true">lock_open</span>
               </a>
             </div>
@@ -141,7 +141,7 @@ const plans = [
 
       <div class="mt-8 text-center max-w-2xl mx-auto">
         <p class="text-sm text-muted font-label">
-          Jednorazowy zakup. Działa na Twoim koncie Claude, ChatGPT lub Gemini. Ceny private beta — po zakończeniu bety wrócą do standardowych.
+          Jednorazowy zakup. Działa na Twoim koncie Claude, ChatGPT lub Gemini. Ceny early access — po zakończeniu early access wrócą do standardowych.
         </p>
         <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mt-3">
           6 miesięcy aktualizacji — zobacz changelog
