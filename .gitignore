@@ -26,6 +26,10 @@ projects/
 # Claude settings
 .claude/
 
+# Playwright
+playwright-report/
+test-results/
+
 # OS
 .DS_Store
 Thumbs.db
