@@ -10,7 +10,7 @@ const sections = [
     number: 'Paczka',
     label: 'Po zakupie',
     title: 'Zawartość paczki',
-    description: 'Otrzymujesz zestaw plików agenta AI w wariantach na różne platformy.',
+    description: 'Otrzymujesz zestaw plików asystenta AI w wariantach na różne platformy.',
     bullets: [
       'ux-designer-claude/ — Claude Projects (system prompt + pliki wiedzy)',
       'ux-designer-chatgpt/ — ChatGPT Custom GPT (Instructions + pliki wiedzy)',
@@ -23,7 +23,7 @@ const sections = [
   {
     number: 'Setup',
     label: 'Konfiguracja',
-    title: 'Jak wgrać agenta',
+    title: 'Jak wgrać asystenta',
     description: 'Wybierz platformę i postępuj zgodnie z instrukcjami. Zajmuje to 2-3 minuty.',
     bullets: [
       'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
@@ -39,11 +39,11 @@ const sections = [
     number: 'Start',
     label: 'Pierwsza sesja',
     title: 'Jak zacząć projekt',
-    description: 'Wpisz „start" w czacie. Agent się przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej agent zgaduje — ale wystarczy jedno zdanie.',
+    description: 'Wpisz „start" w czacie. Asystentsię przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej asystentzgaduje — ale wystarczy jedno zdanie.',
     bullets: [
-      'Jeśli masz brief od klienta — wklej go. Agent wyciągnie persony, cele i wyróżniki',
+      'Jeśli masz brief od klienta — wklej go. Asystentwyciągnie persony, cele i wyróżniki',
       'Sprawdzaj oznaczenia pewności (🟢🟡🔴). Zielone zostaw, żółte zweryfikuj, czerwone uzupełnij',
-      'Jeśli agent źle zakwalifikował awareness level — popraw go. To zmienia całą strategię strony',
+      'Jeśli asystentźle zakwalifikował awareness level — popraw go. To zmienia całą strategię strony',
     ],
     links: [],
     quote: '',
@@ -52,11 +52,11 @@ const sections = [
     number: 'Decyzje',
     label: 'Decyzje',
     title: 'Jak podejmować decyzje',
-    description: 'Agent pokazuje opcje z trade-offami. Nie musisz wiedzieć, która jest lepsza — przeczytaj co każda optymalizuje i czym poświęca.',
+    description: 'Asystentpokazuje opcje z trade-offami. Nie musisz wiedzieć, która jest lepsza — przeczytaj co każda optymalizuje i czym poświęca.',
     bullets: [
-      'Nie bój się miksować. „Weź nagłówek z opcji 2 i body z opcji 4" — agent to obsłuży',
-      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Agent zaproponuje nowe',
-      'Mów „pomóż mi podjąć decyzję" kiedy utkniesz. Agent podsumuje za i przeciw',
+      'Nie bój się miksować. „Weź nagłówek z opcji 2 i body z opcji 4" — asystentto obsłuży',
+      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Asystentzaproponuje nowe',
+      'Mów „pomóż mi podjąć decyzję" kiedy utkniesz. Asystentpodsumuje za i przeciw',
     ],
     links: [],
     quote: '',
@@ -67,29 +67,29 @@ const sections = [
     title: 'Jak pisać lepsze copy',
     description: 'Praca z tekstami zajmuje najwięcej czasu — i tu jest największa różnica między przeciętnym a dobrym wynikiem. AI pisze generycznie, jeśli nie dostanie konkretnych wytycznych.',
     bullets: [
-      'Wrzuć próbki tekstów w swoim stylu — agent złapie ton, rytm i słownictwo',
+      'Wrzuć próbki tekstów w swoim stylu — asystentzłapie ton, rytm i słownictwo',
       'Jeśli masz wytyczne językowe (tone of voice, brand book) — przekaż je na starcie',
       'Nie akceptuj pierwszej wersji. Proś o alternatywy: „daj 3 warianty tego nagłówka"',
-      'Dyskutuj z agentem o treści — pytaj dlaczego wybrał takie sformułowanie',
-      'Weryfikuj copy pod kątem odbiorcy — agent zna personę, ale Ty znasz klienta',
+      'Dyskutuj z asystentem o treści — pytaj dlaczego wybrał takie sformułowanie',
+      'Weryfikuj copy pod kątem odbiorcy — asystentzna personę, ale Ty znasz klienta',
     ],
     links: [],
     quote: '',
   },
   {
     number: 'Dialog',
-    label: 'Praca z agentem',
-    title: 'Jak rozmawiać z agentem',
-    description: 'Agent nie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
+    label: 'Praca z asystentem',
+    title: 'Jak rozmawiać z asystentem',
+    description: 'Asystentnie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
     bullets: [
-      '„Dlaczego tu nie ma sekcji X?" — agent wyjaśni czy celowo pominął, czy nie rozważył',
+      '„Dlaczego tu nie ma sekcji X?" — asystentwyjaśni czy celowo pominął, czy nie rozważył',
       '„Czy to nadal potrzebujemy?" — kiedy sekcja wydaje się zbędna po zmianach w innych miejscach',
       '„Daj alternatywy" — wymusza opcje zamiast jednego rozwiązania',
       '„Najpierw zidentyfikuj sens tego punktu" — zanim zmienisz tekst, zrozum co ma komunikować',
       '„Skróć" — AI pisze za dużo, hamuj',
-      '„Czy to się nie powtarza z X?" — agent sprawdzi redundancję',
+      '„Czy to się nie powtarza z X?" — asystentsprawdzi redundancję',
       '„Oceń krytycznie ten wireframe" — włącza tryb audytu, szuka słabych punktów',
-      'Jeśli nie wiesz co dalej — zapytaj agenta. Zna proces i podpowie następny krok',
+      'Jeśli nie wiesz co dalej — zapytaj asystenta. Zna proces i podpowie następny krok',
     ],
     links: [],
     quote: '',
@@ -98,10 +98,10 @@ const sections = [
     number: 'Sesje',
     label: 'Między sesjami',
     title: 'Praca na wielu sesjach',
-    description: 'Agent czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
+    description: 'Asystentczyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
     bullets: [
-      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — agent przeczyta pliki i wróci do kontekstu',
-      'Jeśli zmieniłeś coś ręcznie w pliku — powiedz agentowi. Inaczej nadpisze Twoje zmiany',
+      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — asystentprzeczyta pliki i wróci do kontekstu',
+      'Jeśli zmieniłeś coś ręcznie w pliku — powiedz asystentowi. Inaczej nadpisze Twoje zmiany',
       'Decision log to Twoja pamięć między sesjami. Kluczowe decyzje powinny tam trafić',
     ],
     links: [],
@@ -110,15 +110,15 @@ const sections = [
   {
     number: 'Output',
     label: 'Deliverables',
-    title: 'Jak wykorzystać pliki wyjściowe agenta',
-    description: 'Agent tworzy dwa typy plików. Pliki .md to historia projektu — rozumieją je inne agenty AI i możesz kontynuować pracę w kolejnych sesjach. Ale możesz też poprosić o pliki w formie zrozumiałej dla ludzi.',
+    title: 'Jak wykorzystać pliki wyjściowe asystenta',
+    description: 'Asystent tworzy dwa typy plików. Pliki .md to historia projektu — rozumieją je inne asystenty AI i możesz kontynuować pracę w kolejnych sesjach. Ale możesz też poprosić o pliki w formie zrozumiałej dla ludzi.',
     bullets: [
       'Pliki .md — kontekst projektu, strategia, wireframe, decision log. Uniwersalny format, który czyta każde narzędzie AI',
       'Poproś o wireframe w HTML (low-fidelity) — do prezentacji klientowi bez Figmy',
       'Poproś o dokument Word ze strategią — do wysyłki agencji lub wydruku',
       'Wireframe .md → Figma AI: wklej jako kontekst, visual wireframe w minuty',
       'Wireframe .md → Google Stitch / Gemini: wstępny design z gotowym copy',
-      'Wireframe .md → Cursor / Bolt: agent do vibe codingu dostaje plan zamiast zgadywania',
+      'Wireframe .md → Cursor / Bolt: asystentdo vibe codingu dostaje plan zamiast zgadywania',
       'Project context → brief dla agencji: wydrukuj lub wyślij jako Google Doc',
       'Decision log → dokumentacja dla klienta: pokaż dlaczego podjęto takie decyzje',
     ],
@@ -131,10 +131,10 @@ const sections = [
     title: 'Czego unikać',
     description: 'Kilka rzeczy, które obniżają jakość wyników.',
     bullets: [
-      'Nie akceptuj wszystkiego na „ok". Agent pójdzie dalej, ale wynik będzie gorszy',
+      'Nie akceptuj wszystkiego na „ok". Asystentpójdzie dalej, ale wynik będzie gorszy',
       'Nie pomijaj Discovery. Wireframe bez kontekstu to zgadywanie z lepszym formatowaniem',
       'Nie próbuj robić wszystkiego w jednej sesji. 2-3h na projekt to realistyczne tempo',
-      'Nie kopiuj deliverables bez przeczytania. Agent zakłada, Ty weryfikujesz',
+      'Nie kopiuj deliverables bez przeczytania. Asystentzakłada, Ty weryfikujesz',
     ],
     links: [],
     quote: '',
@@ -153,7 +153,7 @@ const sections = [
 ];
 ---
 
-<BaseLayout title="Jak pracować z agentem — UX Design Agent | Creative Sparks">
+<BaseLayout title="Jak pracować z asystentem — Asystent UX | Creative Sparks">
   <TopAppBar />
   <main>
     <section class="py-20 md:py-28 px-6 bg-surface-primary">
@@ -162,7 +162,7 @@ const sections = [
           <Fragment slot="header">
             <span class="font-label text-primary text-sm mb-4">Instrukcja</span>
             <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
-              Jak pracować z agentem
+              Jak pracować z asystentem
             </h1>
           </Fragment>
 

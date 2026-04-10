@@ -14,13 +14,13 @@ const {
 
 const decisions = [
   { icon: 'account_balance', label: '01', title: 'Wiedza oddzielona od instrukcji.', desc: 'Agent.md definiuje logikę, folder references/ przechowuje surową wiedzę merytoryczną.' },
-  { icon: 'bolt', label: '02', title: 'Pliki ładowane na żądanie.', desc: 'Agent dynamicznie wykrywa typ strony i ładuje tylko odpowiedni pakiet danych, oszczędzając context window.' },
-  { icon: 'sync', label: '03', title: 'Jeden agent, pełen cykl.', desc: 'Jeden agent prowadzi od discovery do wireframe\'u. Kontekst nie ginie przy przekazywaniu.' },
+  { icon: 'bolt', label: '02', title: 'Pliki ładowane na żądanie.', desc: 'Asystentdynamicznie wykrywa typ strony i ładuje tylko odpowiedni pakiet danych, oszczędzając context window.' },
+  { icon: 'sync', label: '03', title: 'Jeden asystent, pełen cykl.', desc: 'Jeden asystent prowadzi od discovery do wireframe\'u. Kontekst nie ginie przy przekazywaniu.' },
   { icon: 'fact_check', label: '04', title: 'Checkpointy na każdym etapie.', desc: 'Wymuszone punkty kontrolne gwarantują, że błąd złapany na wczesnym etapie kosztuje dokładnie zero.' },
-  { icon: 'signal_cellular_alt', label: '05', title: 'Najpierw założenia, potem pytania.', desc: 'Wykorzystanie confidence tierów pozwala agentowi działać proaktywnie przy zachowaniu kontroli.' },
-  { icon: 'edit_note', label: '06', title: 'Copy prowadzi design.', desc: 'Agent najpierw projektuje strukturę treści i realny copy, zamiast polegać na pustych placeholderach.' },
+  { icon: 'signal_cellular_alt', label: '05', title: 'Najpierw założenia, potem pytania.', desc: 'Wykorzystanie confidence tierów pozwala asystentowi działać proaktywnie przy zachowaniu kontroli.' },
+  { icon: 'edit_note', label: '06', title: 'Copy prowadzi design.', desc: 'Asystentnajpierw projektuje strukturę treści i realny copy, zamiast polegać na pustych placeholderach.' },
   { icon: 'save', label: '07', title: 'Pliki jako pamięć projektu.', desc: 'Stan projektu zapisywany jest w plikach markdown, niezależnie od ulotnej sesji czatu.' },
-  { icon: 'biotech', label: '08', title: 'Audyt dostarcza diagnozę.', desc: 'Agent generuje rekomendacje oparte na audycie. Zmiany wprowadzasz Ty.' },
+  { icon: 'biotech', label: '08', title: 'Audyt dostarcza diagnozę.', desc: 'Asystentgeneruje rekomendacje oparte na audycie. Zmiany wprowadzasz Ty.' },
 ];
 ---
 
@@ -40,7 +40,7 @@ const decisions = [
       </Fragment>
 
       <p class="text-lg text-muted leading-relaxed mb-4 max-w-3xl">
-        Agent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.
+        Asystent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.
       </p>
       <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mb-10">
         Historia zmian i aktualizacji

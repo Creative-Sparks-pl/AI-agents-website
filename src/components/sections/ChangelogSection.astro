@@ -10,8 +10,8 @@ const entries = [
     description: 'Nowy workflow: Reverse Wireframing — mapowanie istniejącej strony do lo-fi wireframes. Dostępne tylko w wersji IDE (Claude Code, Codex, Antigravity).',
     changes: [
       'Reverse Wireframing jako samodzielny punkt wejścia — nie wymaga wcześniejszego Discovery ani Strategy. Przyjmuje URL strony lub plik (HTML, sitemap, screenshoty)',
-      'Automatyczny setup Firecrawl: agent sprawdza dostępność, klonuje repozytorium, konfiguruje .env i uruchamia kontener Docker jeśli potrzeba',
-      'Identyfikacja szablonów z poziomem pewności: Pewny / Wątpliwy / Pominięty — agent loguje co rozważał i dlaczego wykluczył, użytkownik zatwierdza listę przed ekstrakcją',
+      'Automatyczny setup Firecrawl: asystentsprawdza dostępność, klonuje repozytorium, konfiguruje .env i uruchamia kontener Docker jeśli potrzeba',
+      'Identyfikacja szablonów z poziomem pewności: Pewny / Wątpliwy / Pominięty — asystentloguje co rozważał i dlaczego wykluczył, użytkownik zatwierdza listę przed ekstrakcją',
       'Wireframe odzwierciedla stan obecny bez oceny UX — ta sama jakość i format co workflow Wireframing, treść oryginalna ze strony',
     ],
   },
@@ -22,7 +22,7 @@ const entries = [
     description: 'Poprawki orchestratora z drugiego testu live — ujednolicone powitanie i skonsolidowane reguły komunikacji.',
     changes: [
       'Ujednolicony szablon startowy — jedno spójne powitanie adaptujące się do kontekstu (nowy użytkownik, kontynuacja, wiele projektów)',
-      'Reguły komunikacji skonsolidowane w jedną sekcję — eliminuje rozbieżności między różnymi częściami agenta',
+      'Reguły komunikacji skonsolidowane w jedną sekcję — eliminuje rozbieżności między różnymi częściami asystenta',
     ],
   },
   {
@@ -42,10 +42,10 @@ const entries = [
     version: 'v3.2',
     date: '2026-03-28',
     title: 'Nowy orchestrator — konwersacyjne nawigowanie',
-    description: 'Zamiast numerowanej listy workflow, agent pyta o cel i sam dobiera odpowiednią ścieżkę.',
+    description: 'Zamiast numerowanej listy workflow, asystentpyta o cel i sam dobiera odpowiednią ścieżkę.',
     changes: [
-      'Agent pyta o cel i sam dobiera odpowiednią ścieżkę — użytkownik opisuje co chce osiągnąć, agent prowadzi',
-      'Mapa zależności między workflow — agent wie, że strategia wymaga kontekstu, a wireframe wymaga strategii, i automatycznie kieruje do brakujących kroków',
+      'Asystentpyta o cel i sam dobiera odpowiednią ścieżkę — użytkownik opisuje co chce osiągnąć, asystentprowadzi',
+      'Mapa zależności między workflow — asystentwie, że strategia wymaga kontekstu, a wireframe wymaga strategii, i automatycznie kieruje do brakujących kroków',
       'Usunięte komendy /lang i /preferences — wszystko obsługiwane konwersacyjnie',
     ],
   },
@@ -66,7 +66,7 @@ const entries = [
     title: 'Filtr anty-AI, nowa domena Data Content, eksport Word/HTML',
     description: 'Trzy duże zmiany: filtr jakości tekstu, nowa domena Data Content oraz eksport deliverables w formatach Word/HTML.',
     changes: [
-      'Wbudowany filtr anty-AI — 32 reguły eliminujące sztampowy, „maszynowy" język z każdego tekstu generowanego przez agenta. Obejmuje zarówno angielskie, jak i polskie wzorce',
+      'Wbudowany filtr anty-AI — 32 reguły eliminujące sztampowy, „maszynowy" język z każdego tekstu generowanego przez asystenta. Obejmuje zarówno angielskie, jak i polskie wzorce',
       'Nowa domena: treści oparte na danych (raporty, dashboardy, infografiki, data stories) — 4 archetypy narracyjne, 7 person czytelnika, 17-elementowy katalog wykresów z regułami doboru',
       'Deliverables w formatach Word i HTML na kluczowych etapach pracy — klient otrzymuje gotowe pliki do prezentacji bez ręcznego formatowania',
     ],
@@ -86,9 +86,9 @@ const entries = [
     version: 'v2.3–2.6',
     date: '2026-03-11 – 2026-03-13',
     title: 'Usprawnienia workflow i discovery',
-    description: 'Agent lepiej prowadzi discovery, jasniej komunikuje poziom pewności rekomendacji i precyzyjniej ładuje wiedzę domenową.',
+    description: 'Asystentlepiej prowadzi discovery, jasniej komunikuje poziom pewności rekomendacji i precyzyjniej ładuje wiedzę domenową.',
     changes: [
-      'Discovery rozpoczyna się od przewodnika po danych wejściowych — agent mówi, jakie informacje są kluczowe, a jakie opcjonalne',
+      'Discovery rozpoczyna się od przewodnika po danych wejściowych — asystentmówi, jakie informacje są kluczowe, a jakie opcjonalne',
       'Rekomendacje oznaczone poziomem pewności (potwierdzone / prawdopodobne / spekulatywne)',
       'Kroki workflow jawnie wskazują, którą wiedzę domenową wykorzystują',
     ],
@@ -118,8 +118,8 @@ const entries = [
   {
     version: 'v2.0',
     date: '2026-03-09',
-    title: 'Agent generalistą — 14 typów stron',
-    description: 'Duża rozbudowa — agent stał się generalistą obsługującym 14 typów stron internetowych (wcześniej: tylko B2B).',
+    title: 'Asystentgeneralistą — 14 typów stron',
+    description: 'Duża rozbudowa — asystentstał się generalistą obsługującym 14 typów stron internetowych (wcześniej: tylko B2B).',
     changes: [
       '14 typów stron: B2B, E-commerce, Marketplace, SaaS, Services, Community, Course, Documentation, Media, Government, Enterprise, Event, Nonprofit, Portfolio',
       'Wireframy zawierają 5 stanów UI (domyślny, pusty, błąd, ładowanie, sukces) i 4-warstwowe adnotacje handoff',
@@ -132,16 +132,16 @@ const entries = [
     title: 'Stabilizacja po pierwszym wydaniu',
     description: 'Uproszczenie trybów pracy, uporządkowanie checkpointów, wydzielenie startupu do osobnego pliku.',
     changes: [
-      'Uproszczony system trybów: usunięto tryb Teacher, agent pracuje w jednym trybie z pełnymi checkpointami',
+      'Uproszczony system trybów: usunięto tryb Teacher, asystentpracuje w jednym trybie z pełnymi checkpointami',
       'Ustandaryzowany format STOP checkpoint (deliverable, decyzje, pozycja, dalsze kroki)',
-      'Wydzielenie logiki startowej do dedykowanego pliku — szybsze uruchamianie agenta',
+      'Wydzielenie logiki startowej do dedykowanego pliku — szybsze uruchamianie asystenta',
     ],
   },
   {
     version: 'v1.0',
     date: '2026-03-01',
-    title: 'Pierwsza wersja agenta wg nowej specyfikacji',
-    description: 'Pierwsza wersja agenta UX Designer. Pełna ścieżka od discovery po log decyzji, oparta na specyfikacji architektury v3.2.',
+    title: 'Pierwsza wersja asystenta wg nowej specyfikacji',
+    description: 'Pierwsza wersja asystenta UX Designer. Pełna ścieżka od discovery po log decyzji, oparta na specyfikacji architektury v3.2.',
     changes: [],
   },
 ];
