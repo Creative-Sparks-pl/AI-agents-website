@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UX Designer Agent — Wireframe Home v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* === HTML Craft Base v1.0 === */
+
+    :root {
+      --wf-bg: #ffffff;
+      --wf-bg-warm: #f8f7f5;
+      --wf-text: #111111;
+      --wf-secondary: #444444;
+      --wf-muted: #888888;
+      --wf-line: #e0e0e0;
+      --wf-fill: #eeeeee;
+      --wf-accent: #1a1a1a;
+      --wf-gap: 16px;
+      --wf-radius: 8px;
+      --wf-max-w: 1200px;
+      --wf-font: 'Inter', system-ui, -apple-system, sans-serif;
+      --wf-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+      --wf-section-py: 48px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--wf-font);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--wf-text);
+      background: var(--wf-bg);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1 { font-size: 2.5rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: var(--wf-gap); }
+    h2 { font-size: 2rem; font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; margin-bottom: calc(var(--wf-gap) * 0.75); }
+    h3 { font-size: 1.125rem; font-weight: 600; line-height: 1.4; margin-bottom: calc(var(--wf-gap) * 0.5); }
+    p, ul, ol { margin-bottom: var(--wf-gap); color: var(--wf-text); }
+
+    /* === Low-Fi Wireframe Extensions v3.1 === */
+
+    /* --- Layout --- */
+    .wf-section { padding: var(--wf-section-py) 32px; }
+    .wf-section--warm { background: var(--wf-bg-warm); }
+    .wf-section--white { background: var(--wf-bg); }
+    .wf-inner { max-width: var(--wf-max-w); margin: 0 auto; }
+
+    /* --- Cards --- */
+    .wf-card { border: 1.5px solid var(--wf-line); border-radius: var(--wf-radius); padding: var(--wf-gap); }
+    .wf-card--highlight { border: 2px solid var(--wf-accent); }
+
+    /* --- Grid --- */
+    .wf-grid { display: grid; gap: var(--wf-gap); }
+    .wf-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .wf-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .wf-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+    /* --- Media Placeholders --- */
+    .wf-media {
+      background: var(--wf-fill);
+      border: 1px solid var(--wf-line);
+      border-radius: var(--wf-radius);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--wf-muted); font-size: 0.875rem;
+      min-height: 200px; padding: var(--wf-gap); text-align: center;
+    }
+
+    /* --- Buttons --- */
+    .wf-button {
+      display: inline-block; padding: 12px 24px;
+      border: 1.5px solid var(--wf-line); border-radius: 6px;
+      font-weight: 600; font-size: 0.875rem; font-family: var(--wf-font);
+      cursor: pointer; background: transparent; color: var(--wf-text); text-decoration: none;
+    }
+    .wf-button--primary { background: var(--wf-accent); border-color: var(--wf-accent); color: #ffffff; }
+
+    .wf-field {
+      display: block; width: 100%; padding: 10px 12px;
+      border: 1.5px solid var(--wf-line); border-radius: 6px;
+      font-size: 1rem; font-family: var(--wf-font); margin-bottom: var(--wf-gap);
+    }
+
+    .wf-list { list-style: none; padding: 0; }
+    .wf-list li { padding: 8px 0; border-bottom: 1px solid var(--wf-line); }
+
+    /* --- Labels & Micro-copy --- */
+    .wf-label {
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--wf-muted); margin-bottom: 8px;
+    }
+    .wf-micro { font-size: 0.8125rem; color: var(--wf-muted); font-style: italic; line-height: 1.5; }
+
+    /* --- Annotations --- */
+    .wf-note {
+      font-family: var(--wf-font-mono); font-size: 11px; color: var(--wf-muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 8px 0; margin: var(--wf-gap) 0;
+      border-bottom: 1px dashed var(--wf-line); line-height: 1.6;
+    }
+
+    /* --- Navigation --- */
+    .wf-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--wf-bg); border-bottom: 1px solid var(--wf-line);
+      padding: 0 32px;
+    }
+    .wf-nav .wf-inner { display: flex; align-items: center; justify-content: space-between; height: 56px; }
+    .wf-nav__logo { font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em; white-space: nowrap; }
+    .wf-nav__links { display: flex; gap: 24px; list-style: none; padding: 0; margin: 0; align-items: center; }
+    .wf-nav__links a { color: var(--wf-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; }
+    .wf-nav__links a:hover { color: var(--wf-text); }
+    .wf-nav__cta { white-space: nowrap; }
+
+    /* --- Footer --- */
+    .wf-footer { border-top: 1px solid var(--wf-line); padding: var(--wf-section-py) 32px 32px; }
+    .wf-footer__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-bottom: 32px; }
+    .wf-footer__col h3 { font-size: 0.8125rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: var(--wf-gap); color: var(--wf-muted); }
+    .wf-footer__col ul { list-style: none; padding: 0; margin: 0; }
+    .wf-footer__col li { margin-bottom: 8px; }
+    .wf-footer__col a { color: var(--wf-secondary); text-decoration: none; font-size: 0.875rem; }
+    .wf-footer__col a:hover { color: var(--wf-text); }
+    .wf-footer__bottom { border-top: 1px solid var(--wf-line); padding-top: var(--wf-gap); display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--wf-muted); }
+
+    /* --- Badge --- */
+    .wf-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.06em; color: var(--wf-secondary);
+      border: 1.5px solid var(--wf-line); border-radius: 20px;
+      padding: 4px 14px; margin-bottom: var(--wf-gap);
+    }
+    .wf-badge .material-icons { font-size: 16px; }
+
+    /* --- Hero checklist --- */
+    .wf-checklist { list-style: none; padding: 0; margin: 0; }
+    .wf-checklist li {
+      padding: 8px 0;
+      line-height: 1.5;
+      display: flex; gap: 8px;
+    }
+    .wf-checklist li strong { white-space: nowrap; }
+
+    /* --- Terminal mockup --- */
+    .wf-terminal {
+      background: #18181b; color: #a1a1aa;
+      font-family: var(--wf-font-mono); font-size: 0.8125rem;
+      padding: 28px; border-radius: var(--wf-radius);
+      line-height: 1.9; min-height: 260px;
+      border-top: 3px solid var(--wf-accent);
+      box-shadow: 24px 24px 0px #E5FA00;
+      margin-top: 32px;
+    }
+    .wf-terminal .t-green { color: #4ade80; }
+    .wf-terminal .t-yellow { color: #facc15; }
+    .wf-terminal .t-dim { color: #52525b; }
+    .wf-terminal .t-white { color: #ffffff; font-weight: 600; }
+    .wf-terminal .t-red { color: #f87171; }
+
+    /* --- Accordion (Use Cases) --- */
+    .wf-accordion { margin-bottom: var(--wf-gap); }
+    .wf-accordion details { border: 1.5px solid var(--wf-line); border-radius: var(--wf-radius); margin-bottom: 12px; }
+    .wf-accordion summary {
+      padding: var(--wf-gap);
+      font-weight: 600; font-size: 1.125rem;
+      cursor: pointer; list-style: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .wf-accordion summary::-webkit-details-marker { display: none; }
+    .wf-accordion summary::before { content: "+"; font-weight: 700; font-size: 1.25rem; color: var(--wf-muted); width: 20px; }
+    .wf-accordion details[open] summary::before { content: "−"; }
+    .wf-accordion .wf-accordion__body { padding: 0 var(--wf-gap) var(--wf-gap); }
+    .wf-accordion .wf-accordion__body ul { list-style: none; padding: 0; }
+    .wf-accordion .wf-accordion__body li { padding: 4px 0; }
+    .wf-accordion .wf-accordion__links { font-size: 0.875rem; margin-top: 8px; }
+    .wf-accordion .wf-accordion__links a { color: var(--wf-accent); text-decoration: none; }
+    .wf-accordion .wf-accordion__links a:hover { text-decoration: underline; }
+
+    /* --- Responsive --- */
+    @media (max-width: 768px) {
+      .wf-grid-2, .wf-grid-3, .wf-grid-4 { grid-template-columns: 1fr; }
+      .wf-section { padding: 48px 16px; }
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.5rem; }
+      .wf-nav { padding: 0 16px; }
+      .wf-nav__links { display: none; }
+      .wf-nav::after { content: "[Menu]"; font-size: 0.875rem; color: var(--wf-muted); }
+      .wf-footer { padding: 48px 16px 16px; }
+      .wf-footer__grid { grid-template-columns: 1fr; }
+      .wf-footer__bottom { flex-direction: column; gap: 4px; }
+      .wf-terminal { box-shadow: 12px 12px 0px #E5FA00; padding: 20px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav class="wf-nav">
+    <div class="wf-inner">
+      <div class="wf-nav__logo">Creative Sparks</div>
+      <ul class="wf-nav__links">
+        <li><a href="#zastosowanie">Dla kogo</a></li>
+        <li><a href="#cennik">Cennik</a></li>
+        <li><a href="#demo">Demo</a></li>
+        <li><a href="#proces">Jak to działa</a></li>
+        <li><a href="#porownanie">Porównanie</a></li>
+      </ul>
+      <a href="#cennik" class="wf-button wf-button--primary wf-nav__cta">Lista oczekujących</a>
+    </div>
+  </nav>
+
+  <!-- ========== S1: HERO ========== -->
+  <section id="hero" class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 1: Hero | Narracja: hook | Pytanie: „Nie mam czasu ani umiejętności na porządny UX" | Cel: reframing — to nie mój brak, to brak narzędzia</div>
+
+      <div class="wf-badge"><span class="material-icons">auto_awesome</span> Private beta</div>
+
+      <h1>UX lead pod ręką. Do każdego projektu.</h1>
+
+      <p style="font-size: 1.125rem; color: var(--wf-secondary); max-width: 640px;">
+        Agent AI z bazą wiedzy UX. Nie zastąpi Twojego myślenia, ale ustrukturyzuje proces od briefu do wireframe'u.
+      </p>
+
+      <div class="wf-grid wf-grid-2" style="margin: 28px 0;">
+        <ul class="wf-checklist">
+          <li><span>✓</span> <span><strong>Profesjonalny proces UX</strong> — Bez tygodni i tysięcy złotych wydanych na agencje.</span></li>
+          <li><span>✓</span> <span><strong>Realny copy w dowolnym języku</strong> — Koniec z lorem ipsum. Wireframe od razu z realnym copy.</span></li>
+          <li><span>✓</span> <span><strong>16 typów stron i accessibility</strong> — 92 pliki wiedzy: typy stron, wzorce sekcji, accessibility.</span></li>
+        </ul>
+        <ul class="wf-checklist">
+          <li><span>✓</span> <span><strong>Kontekst żyje w plikach</strong> — Kontynuuj tam, gdzie skończyłeś. Decyzje żyją w plikach, nie w czacie.</span></li>
+          <li><span>✓</span> <span><strong>Decyzje z alternatywami</strong> — Każda opcja z opisem co zyskujesz i czym płacisz.</span></li>
+          <li><span>✓</span> <span><strong>Kupujesz raz, używasz wszędzie</strong> — Działa na Twoim koncie Claude, ChatGPT lub Gemini.</span></li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <a href="#cennik" class="wf-button wf-button--primary" style="padding: 14px 28px; font-size: 0.9375rem;">
+          <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 6px;">lock_open</span>
+          Odblokuj dostęp do private beta
+        </a>
+      </div>
+      <p class="wf-micro">Limit 30 miejsc w beta. Przedsprzedaż startuje po zakończeniu bety (1-2 miesiące).</p>
+
+      <!-- Terminal mockup -->
+      <div class="wf-terminal">
+        <span class="t-green">UX Designer Agent</span> <span class="t-dim">v2.6</span><br><br>
+        <span class="t-yellow">▸ Discovery</span> — Identyfikuje typ strony: <span class="t-white">B2B SaaS</span><br>
+        <span class="t-dim">&nbsp;&nbsp;Ładuje: domains/b2b/ + domains/b2b-saas/</span><br><br>
+        <span class="t-yellow">&nbsp;&nbsp;Założenia:</span><br>
+        <span class="t-green">&nbsp;&nbsp;🟢 Typ strony:</span> B2B SaaS (z kontekstu)<br>
+        <span class="t-yellow">&nbsp;&nbsp;🟡 Główny cel:</span> lead generation (zweryfikuj)<br>
+        <span class="t-red">&nbsp;&nbsp;🔴 Poziom świadomości:</span> brak danych (wyjaśnij)<br><br>
+        <span class="t-dim">&nbsp;&nbsp;Checkpoint: Potwierdź lub skoryguj założenia ▮</span>
+      </div>
+      <div class="wf-note">Terminal: symulacja agenta w Discovery. Confidence tiers (zielony/żółty/czerwony) + checkpoint.</div>
+    </div>
+  </section>
+
+  <!-- ========== S2: USE CASES ========== -->
+  <section id="zastosowanie" class="wf-section wf-section--warm">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 2: Zastosowanie | Narracja: hook → evidence | Pytanie: „Czy to jest dla mnie?" | Cel: rozpoznanie własnej sytuacji</div>
+
+      <p class="wf-label">Zastosowanie</p>
+      <h2>Co możesz z tym zrobić? Ta strona to jeden z przykładów.</h2>
+
+      <div class="wf-accordion">
+
+        <!-- Use Case 1: Designer -->
+        <details open>
+          <summary>Designer: Od briefu do wireframe'u w 2-3 godziny.</summary>
+          <div class="wf-accordion__body">
+            <p>Dostajesz brief na stronę. W 2-3h masz discovery, strategię i wireframe z realnym copy. Otwierasz Figmę z gotowym planem.</p>
+            <ul>
+              <li>Strategia z sitemapą i voice briefem. Wiesz co projektować zanim otworzysz Figmę.</li>
+              <li>Wireframe z realnym copy. Layout budowany pod faktyczne treści.</li>
+              <li>Decision log. Uzasadnienie dla klienta, dlaczego tak a nie inaczej.</li>
+            </ul>
+            <p class="wf-accordion__links">
+              <a href="#">Wireframe w Google Doc</a> · <a href="#">Wireframe w Figma AI</a>
+            </p>
+            <p class="wf-micro">Wrzuciłem plik od agenta do Figma AI i w 5 minut miałem gotowy wireframe. Bez rysowania od zera.</p>
+          </div>
+        </details>
+
+        <!-- Use Case 2: Twórca -->
+        <details>
+          <summary>Twórca: Vibe coding z uzasadnioną strukturą.</summary>
+          <div class="wf-accordion__body">
+            <p>Budujesz stronę w Cursor czy Bolt. Wygląd jest, ale skąd te sekcje? Agent daje wireframe z uzasadnionymi decyzjami jako input do codingu.</p>
+            <ul>
+              <li>Wireframe z sekwencją sekcji i uzasadnieniem. Cursor/Bolt dostaje plan i buduje z niego.</li>
+              <li>Project context z personą i awareness level. Cursor/Bolt generuje kod pod konkretny przekaz.</li>
+              <li>Strategia z messaging hierarchy. Wiesz co strona ma komunikować.</li>
+            </ul>
+            <p class="wf-accordion__links">
+              <a href="#">Wireframe</a> · <a href="#">Projekt w Google Stitch</a> · <a href="#">Projekt w Gemini</a>
+            </p>
+            <p class="wf-micro">Wrzuciłem wireframe do Google Stitch i Gemini. Wstępne wersje designu w kilka minut, z gotowym copy i strukturą.</p>
+          </div>
+        </details>
+
+        <!-- Use Case 3: Marketer -->
+        <details>
+          <summary>Marketer: Profesjonalny brief dla agencji maksymalnie w 2-3 godziny.</summary>
+          <div class="wf-accordion__body">
+            <p>Zlecasz stronę agencji. Dostarczasz project context z personami, celami i strategię z sitemapą. Agencja zaczyna pracę, nie zadaje pytań.</p>
+            <ul>
+              <li>Project context z personami, celami i top taskami. Brief, z którego agencja zaczyna pracę.</li>
+              <li>Strategia z sitemapą. Struktura strony z notatkami per podstrona.</li>
+              <li>Voice brief. Ton komunikacji ustalony przed designem.</li>
+            </ul>
+            <p class="wf-accordion__links">
+              <a href="#">Project context</a> · <a href="#">Strategia UX</a>
+            </p>
+            <p class="wf-micro">Agencja dostaje project context i strategię zamiast luźnego briefu. Zaczyna pracować od razu, bez rundy pytań.</p>
+          </div>
+        </details>
+
+        <!-- Use Case 4: Project Manager -->
+        <details>
+          <summary>Project Manager: Koncept do akceptacji klienta w kilka godzin.</summary>
+          <div class="wf-accordion__body">
+            <p>Klient czeka na strukturę strony. Dostajesz architekturę z uzasadnieniem, włącznie z odrzuconymi sekcjami i powodem. Mniej rund poprawek.</p>
+            <ul>
+              <li>Strategia z uzasadnieniem i odrzuconymi opcjami. Klient widzi uzasadnienie za każdą decyzją.</li>
+              <li>Decision log. Dokumentacja dla zespołu i przyszłych sesji.</li>
+              <li>Wireframe z annotacjami. Specyfikacja do wyceny i realizacji.</li>
+            </ul>
+            <p class="wf-accordion__links">
+              <a href="#">Strategia z uzasadnieniem</a> · <a href="#">Decision log</a>
+            </p>
+            <p class="wf-micro">Zamiast trzech rund poprawek, jedna. Klient widzi uzasadnienie za każdą decyzją.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S3: PROCES ========== -->
+  <section id="proces" class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 3: Proces | Narracja: evidence | Pytanie: „Jak to właściwie działa?" | Cel: zrozumienie — to jest prawdziwy proces UX, nie automat</div>
+
+      <p class="wf-label">Proces</p>
+      <h2>Ta strona to przykład procesu i dokumentacji. Powstała w weekend.</h2>
+
+      <div class="wf-grid wf-grid-2" style="margin-top: 24px;">
+
+        <!-- Workflow 1: Discovery -->
+        <div class="wf-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted);">&#9634;</div>
+            <span style="font-size: 0.8125rem; color: var(--wf-muted); font-weight: 600;">01</span>
+          </div>
+          <h3>Discovery</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary);">Opisujesz swój projekt, nawet jednym zdaniem. Agent identyfikuje typ strony, formuje założenia o branży, odbiorcy i konkurencji z oznaczeniem pewności (🟢 🟡 🔴). Korygujesz co trzeba.</p>
+          <p style="font-size: 0.8125rem;"><strong>Output:</strong> <a href="#" style="color: var(--wf-accent);">project_context.md</a></p>
+          <p class="wf-micro">Agent zrozumiał projekt z krótkiego briefu i podsumował kontekst, persony i top taski. Bez godzin wywiadu.</p>
+        </div>
+
+        <!-- Workflow 2: Strategia i IA -->
+        <div class="wf-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted);">&#9670;</div>
+            <span style="font-size: 0.8125rem; color: var(--wf-muted); font-weight: 600;">02</span>
+          </div>
+          <h3>Strategia i IA</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary);">Agent proponuje format strony i 2–3 archetypy strategiczne, każdy z opisem co optymalizuje i czym poświęca. Wybierasz. Agent generuje sitemapę z notatkami per strona.</p>
+          <p style="font-size: 0.8125rem;"><strong>Output:</strong> <a href="#" style="color: var(--wf-accent);">ux_strategy.md</a></p>
+          <p class="wf-micro">Strategia, sitemap i voice brief trafione za pierwszym podejściem. Nie musiałem nic zmieniać.</p>
+        </div>
+
+        <!-- Workflow 3: Template Inventory -->
+        <div class="wf-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted);">&#9679;</div>
+            <span style="font-size: 0.8125rem; color: var(--wf-muted); font-weight: 600;">03</span>
+          </div>
+          <h3>Template Inventory</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary);">Dla projektów wielostronicowych: agent analizuje sitemapę, grupuje strony po celu i typie treści, identyfikuje reusable szablony i sekcje z wariantami.</p>
+          <p style="font-size: 0.8125rem;"><strong>Output:</strong> <a href="#" style="color: var(--wf-accent);">template_inventory.xlsx + .md</a></p>
+          <p class="wf-micro">Przydatne w większych projektach. Mapuje sekcje, identyfikuje powtarzalne szablony i przygotowuje grunt do wyceny.</p>
+        </div>
+
+        <!-- Workflow 4: Wireframing -->
+        <div class="wf-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted);">&#9638;</div>
+            <span style="font-size: 0.8125rem; color: var(--wf-muted); font-weight: 600;">04</span>
+          </div>
+          <h3>Wireframing</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary);">Agent proponuje sekwencję sekcji z uzasadnieniem. Po zatwierdzeniu pisze pełny wireframe z realnym copy, CTA, micro-copy, tone tagami i 5 stanami interaktywnych sekcji.</p>
+          <p style="font-size: 0.8125rem;"><strong>Output:</strong> <a href="#" style="color: var(--wf-accent);">wireframe.md</a></p>
+          <p class="wf-micro">Zajął 2-3 godziny. Struktura była od razu, większość czasu poszła na dopracowanie tekstów.</p>
+        </div>
+
+        <!-- Workflow 5: Review -->
+        <div class="wf-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted);">&#9868;</div>
+            <span style="font-size: 0.8125rem; color: var(--wf-muted); font-weight: 600;">05</span>
+          </div>
+          <h3>Review</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary);">Agent audytuje dowolny deliverable w 6 wymiarach: kompletność, spójność, jakość, język, obciążenie kognitywne, jakość na poziomie strony. Dostarcza diagnozę i rekomendacje.</p>
+          <p style="font-size: 0.8125rem;"><strong>Output:</strong> <a href="#" style="color: var(--wf-accent);">Raport audytu</a></p>
+          <p class="wf-micro">Audyt złapał 3 niespójności w copy i brakujący CTA. Bez niego bym tego nie zobaczył.</p>
+        </div>
+
+        <!-- Workflow 6: Decision Log -->
+        <div class="wf-card">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted);">&#9641;</div>
+            <span style="font-size: 0.8125rem; color: var(--wf-muted); font-weight: 600;">06</span>
+          </div>
+          <h3>Decision Log</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary);">Każda ważna decyzja projektowa jest zapisywana: co zdecydowano, jakie były alternatywy, jaki był powód. Po miesiącu wiesz dlaczego tak, nie zgadujesz.</p>
+          <p style="font-size: 0.8125rem;"><strong>Output:</strong> <a href="#" style="color: var(--wf-accent);">decision_log.md</a></p>
+          <p class="wf-micro">Historia zmian i decyzji z uzasadnieniem. Wiesz dlaczego tak, a nie inaczej.</p>
+        </div>
+
+      </div>
+
+      <!-- Callout: Checkpointy -->
+      <div class="wf-card" style="margin-top: 24px; text-align: center; padding: 32px;">
+        <span class="material-icons" style="font-size: 32px; color: var(--wf-muted); margin-bottom: 12px;">pause_circle_outline</span>
+        <p style="font-size: 1.125rem; font-weight: 600; margin-bottom: 8px;">Na każdym etapie agent zatrzymuje się, pokazuje 2–3 opcje z trade-offami i czeka na Twoją decyzję.</p>
+        <p style="color: var(--wf-secondary); margin-bottom: 0;">To Ty prowadzisz. Agent wykonuje.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== S4: CENNIK ========== -->
+  <section id="cennik" class="wf-section wf-section--warm">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 4: Cennik | Narracja: resolution | Pytanie: „Ile to kosztuje?" | Cel: „to jest w moim zasięgu"</div>
+
+      <div class="wf-badge"><span class="material-icons">auto_awesome</span> Cennik private beta. Limit 30 miejsc.</div>
+
+      <p class="wf-label">Cennik</p>
+      <h2>Jednorazowy zakup. 14 dni na zwrot. Bez subskrypcji. Bez ukrytych kosztów.</h2>
+
+      <p style="color: var(--wf-secondary); max-width: 700px; margin-bottom: 32px;">
+        Konsultant UX za sam discovery i strategię weźmie 3 000–8 000 zł.
+        Samodzielne wypracowanie procesu to tygodnie prób i błędów.
+        <strong>Ten agent daje Ci sprawdzony proces za ułamek tej kwoty.</strong>
+      </p>
+
+      <div class="wf-grid wf-grid-3" style="align-items: start;">
+
+        <!-- Solo -->
+        <div class="wf-card" style="text-align: center; padding: 32px 24px;">
+          <h3 style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;">Solo</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 20px;">1 użytkownik</p>
+          <p class="wf-label">Private beta</p>
+          <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 4px;"><s>1 299 zł</s></p>
+          <p style="font-size: 2rem; font-weight: 700; margin-bottom: 4px;">599 zł</p>
+          <p style="font-size: 0.8125rem; color: var(--wf-muted); margin-bottom: 24px;">netto + VAT 23%</p>
+          <hr style="border: none; border-top: 1px solid var(--wf-line); margin-bottom: 20px;">
+          <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.875rem; margin-bottom: 24px;">
+            <li style="padding: 6px 0;">✓ 92 pliki wiedzy</li>
+            <li style="padding: 6px 0;">✓ 16 typów stron</li>
+            <li style="padding: 6px 0;">✓ Pliki agenta w aktualnej wersji (v2.6)</li>
+            <li style="padding: 6px 0;">✓ 6 mies. aktualizacji</li>
+            <li style="padding: 6px 0;">✓ Community Discord</li>
+          </ul>
+          <a href="https://cart.creativesparks.pl/checkout/ux-design-lead" target="_blank" class="wf-button wf-button--primary" style="width: 100%; text-align: center;">
+            <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">lock_open</span> Odblokuj beta
+          </a>
+        </div>
+
+        <!-- Studio (highlighted) -->
+        <div class="wf-card wf-card--highlight" style="text-align: center; padding: 32px 24px; background: #fefef3;">
+          <h3 style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;">Studio</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 20px;">Do 5 użytkowników</p>
+          <p class="wf-label">Private beta</p>
+          <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 4px;"><s>2 499 zł</s></p>
+          <p style="font-size: 2rem; font-weight: 700; margin-bottom: 4px;">799 zł</p>
+          <p style="font-size: 0.8125rem; color: var(--wf-muted); margin-bottom: 24px;">netto + VAT 23%</p>
+          <hr style="border: none; border-top: 1px solid var(--wf-line); margin-bottom: 20px;">
+          <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.875rem; margin-bottom: 24px;">
+            <li style="padding: 6px 0;">✓ 92 pliki wiedzy</li>
+            <li style="padding: 6px 0;">✓ 16 typów stron</li>
+            <li style="padding: 6px 0;">✓ Pliki agenta w aktualnej wersji (v2.6)</li>
+            <li style="padding: 6px 0;">✓ 6 mies. aktualizacji</li>
+            <li style="padding: 6px 0;">✓ Community Discord</li>
+          </ul>
+          <a href="https://cart.creativesparks.pl/checkout/ux-design-lead" target="_blank" class="wf-button wf-button--primary" style="width: 100%; text-align: center;">
+            <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">lock_open</span> Odblokuj beta
+          </a>
+        </div>
+
+        <!-- Agencja -->
+        <div class="wf-card" style="text-align: center; padding: 32px 24px;">
+          <h3 style="text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px;">Agencja</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 20px;">Bez limitu użytkowników</p>
+          <p class="wf-label">Private beta</p>
+          <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 4px;"><s>4 999 zł</s></p>
+          <p style="font-size: 2rem; font-weight: 700; margin-bottom: 4px;">1 499 zł</p>
+          <p style="font-size: 0.8125rem; color: var(--wf-muted); margin-bottom: 24px;">netto + VAT 23%</p>
+          <hr style="border: none; border-top: 1px solid var(--wf-line); margin-bottom: 20px;">
+          <ul style="list-style: none; padding: 0; text-align: left; font-size: 0.875rem; margin-bottom: 24px;">
+            <li style="padding: 6px 0;">✓ 92 pliki wiedzy</li>
+            <li style="padding: 6px 0;">✓ 16 typów stron</li>
+            <li style="padding: 6px 0;">✓ Pliki agenta w aktualnej wersji (v2.6)</li>
+            <li style="padding: 6px 0;">✓ 6 mies. aktualizacji</li>
+            <li style="padding: 6px 0;">✓ Community Discord</li>
+            <li style="padding: 6px 0;">✓ <strong>1x konsultacja z autorem</strong></li>
+          </ul>
+          <a href="https://cart.creativesparks.pl/checkout/ux-design-lead" target="_blank" class="wf-button wf-button--primary" style="width: 100%; text-align: center;">
+            <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-right: 4px;">lock_open</span> Odblokuj beta
+          </a>
+        </div>
+
+      </div>
+
+      <p class="wf-micro" style="text-align: center; margin-top: 24px;">Jednorazowy zakup. Działa na Twoim koncie Claude, ChatGPT lub Gemini. Ceny private beta — po zakończeniu bety wrócą do standardowych.</p>
+
+    </div>
+  </section>
+
+  <!-- ========== S5: DEMO ========== -->
+  <section id="demo" class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 5: Demo | Narracja: evidence | Pytanie: „Chcę sprawdzić zanim zapłacę" | Cel: „agent działa, widzę wartość"</div>
+
+      <p class="wf-label">Wypróbuj za darmo</p>
+
+      <div class="wf-grid wf-grid-2" style="align-items: start; gap: 48px;">
+
+        <!-- Left column: text + CTA -->
+        <div>
+          <h2>Przetestuj agenta na żywym projekcie dla NGO.</h2>
+          <p style="color: var(--wf-secondary);">Wersja demo zawiera wiedzę tylko o stronach NGO i prowadzi Cię przez 3 etapy. Opisz swoją organizację lub użyj gotowego scenariusza.</p>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 24px;">
+            <a href="#" class="wf-button wf-button--primary" style="text-align: center;">
+              Uruchom w ChatGPT <span class="material-icons" style="font-size: 16px; vertical-align: middle; margin-left: 4px;">open_in_new</span>
+            </a>
+            <a href="#" class="wf-button" style="text-align: center;">Pobierz demo</a>
+            <a href="#" class="wf-button" style="text-align: center;">Jak pracować z agentem</a>
+          </div>
+        </div>
+
+        <!-- Right column: 3 workflow cards -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div class="wf-card" style="display: flex; align-items: center; gap: 16px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted); flex-shrink: 0;">&#9634;</div>
+            <div>
+              <h3 style="margin-bottom: 4px;">Etap 1: Discovery</h3>
+              <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Zrozum projekt, odbiorców i cele organizacji.</p>
+            </div>
+          </div>
+          <div class="wf-card" style="display: flex; align-items: center; gap: 16px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted); flex-shrink: 0;">&#9670;</div>
+            <div>
+              <h3 style="margin-bottom: 4px;">Etap 2: Strategia</h3>
+              <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Zaplanuj strukturę i przekaz strony nonprofitowej.</p>
+            </div>
+          </div>
+          <div class="wf-card" style="display: flex; align-items: center; gap: 16px;">
+            <div style="width: 40px; height: 40px; background: var(--wf-fill); border-radius: var(--wf-radius); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: var(--wf-muted); flex-shrink: 0;">&#9638;</div>
+            <div>
+              <h3 style="margin-bottom: 4px;">Etap 3: Wireframing</h3>
+              <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Wireframe z realnym copy, gotowy do designu. Domena ograniczona do stron nonprofitowych.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========== S6: PLATFORMY ========== -->
+  <section id="platformy" class="wf-section wf-section--warm">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 6: Platformy | Narracja: evidence | Pytanie: „Czy to zadziała w moim środowisku?" | Cel: pewność techniczna</div>
+
+      <p class="wf-label">Platformy</p>
+      <h2>Jeden folder. Działa na platformach, których już używasz.</h2>
+
+      <div class="wf-grid wf-grid-2" style="align-items: start; gap: 48px; margin-top: 24px;">
+
+        <!-- Left: platform grid 2x2 -->
+        <div class="wf-grid wf-grid-2">
+          <div class="wf-card" style="text-align: center; padding: 24px;">
+            <span class="material-icons" style="font-size: 28px; color: var(--wf-muted); margin-bottom: 8px;">public</span>
+            <h3 style="margin-bottom: 4px;">Claude / ChatGPT w przeglądarce</h3>
+            <p style="font-size: 0.8125rem; color: var(--wf-secondary); margin-bottom: 0;">Jako instrukcja projektu</p>
+          </div>
+          <div class="wf-card" style="text-align: center; padding: 24px;">
+            <span class="material-icons" style="font-size: 28px; color: var(--wf-muted); margin-bottom: 8px;">auto_awesome</span>
+            <h3 style="margin-bottom: 4px;">Custom GPTs / Gemini Gems</h3>
+            <p style="font-size: 0.8125rem; color: var(--wf-secondary); margin-bottom: 0;">Kompatybilny jako knowledge + instruction set</p>
+          </div>
+          <div class="wf-card" style="text-align: center; padding: 24px;">
+            <span class="material-icons" style="font-size: 28px; color: var(--wf-muted); margin-bottom: 8px;">terminal</span>
+            <h3 style="margin-bottom: 4px;">Claude Code (CLI)</h3>
+            <p style="font-size: 0.8125rem; color: var(--wf-secondary); margin-bottom: 0;">Pełny dostęp do plików, bezpośredni zapis deliverables</p>
+          </div>
+          <div class="wf-card" style="text-align: center; padding: 24px;">
+            <span class="material-icons" style="font-size: 28px; color: var(--wf-muted); margin-bottom: 8px;">code</span>
+            <h3 style="margin-bottom: 4px;">VS Code / IDE</h3>
+            <p style="font-size: 0.8125rem; color: var(--wf-secondary); margin-bottom: 0;">Zintegrowane z Twoim środowiskiem pracy</p>
+          </div>
+        </div>
+
+        <!-- Right: package contents + callout -->
+        <div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 16px;">W paczce kupujesz kompletne narzędzie.</h3>
+          <ul style="list-style: none; padding: 0;">
+            <li style="padding: 8px 0; font-size: 0.9375rem;"><strong>❯❯ agent.md</strong> — Pełna definicja agenta z 6 workflow-ami</li>
+            <li style="padding: 8px 0; font-size: 0.9375rem;"><strong>❯❯ references/</strong> — 92 pliki wiedzy domenowej (16 typów stron, 14 obszarów)</li>
+            <li style="padding: 8px 0; font-size: 0.9375rem;"><strong>❯❯ scripts/</strong> — Skrypt Python do generowania Excel</li>
+            <li style="padding: 8px 0; font-size: 0.9375rem;"><strong>❯❯ Dokumentacja</strong> — Instalacja i konfiguracja</li>
+          </ul>
+          <div class="wf-card" style="margin-top: 20px; background: var(--wf-bg);">
+            <p class="wf-micro" style="margin-bottom: 0;">Brak dodatkowych zależności. Wgrywasz folder, otwierasz platformę i zaczynasz pierwszy projekt.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S7: PROBLEMY STATUS QUO ========== -->
+  <section class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 7: Problemy status quo | Narracja: tension | Pytanie: „Mam problem z procesem UX, ale nie wiem czy to normalne" | Cel: walidacja — to nie mój brak umiejętności</div>
+
+      <p class="wf-label">Problem</p>
+      <h2>UX bywa tym etapem, na który „nie ma czasu".</h2>
+
+      <div class="wf-grid wf-grid-2" style="margin-top: 24px;">
+
+        <div class="wf-card">
+          <span class="material-icons" style="font-size: 24px; color: var(--wf-muted); margin-bottom: 8px;">payments</span>
+          <h3>Zbyt wysokie koszty</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Porządny proces to tysiące złotych albo tygodnie pracy, na które nie każdy startup może pozwolić.</p>
+        </div>
+
+        <div class="wf-card">
+          <span class="material-icons" style="font-size: 24px; color: var(--wf-muted); margin-bottom: 8px;">description</span>
+          <h3>Brak fundamentów</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Nie ma discovery, nie ma strategii. Jest pusta Figma i deadline za tydzień.</p>
+        </div>
+
+        <div class="wf-card">
+          <span class="material-icons" style="font-size: 24px; color: var(--wf-muted); margin-bottom: 8px;">format_quote</span>
+          <h3>Problem z treścią</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Projektujesz wygląd, a treść jest „na później". W efekcie design nie pasuje do realnego przekazu.</p>
+        </div>
+
+        <div class="wf-card">
+          <span class="material-icons" style="font-size: 24px; color: var(--wf-muted); margin-bottom: 8px;">forum</span>
+          <h3>Chatbot to nie proces</h3>
+          <p style="font-size: 0.875rem; color: var(--wf-secondary); margin-bottom: 0;">Zwykłe prompty dają losowe fragmenty wiedzy. Żaden nie pamięta co było w poprzednim.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S8: WPROWADZENIE KATEGORII ========== -->
+  <section class="wf-section wf-section--warm">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 8: Wprowadzenie kategorii | Narracja: tension → evidence | Pytanie: „Narzędzia AI do UX to chatboty i szablony" | Cel: reframing — istnieje nowa kategoria</div>
+
+      <p class="wf-label">Dlaczego powstał</p>
+      <h2>Zbudowałem agenta, którego sam chciałem mieć.</h2>
+
+      <div class="wf-grid wf-grid-2" style="align-items: start; gap: 48px; margin-top: 24px;">
+
+        <!-- Left: comparison box -->
+        <div class="wf-card" style="padding: 28px; font-family: var(--wf-font-mono); font-size: 0.875rem; line-height: 2.2;">
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; color: var(--wf-secondary);">
+            <span>Chatbot</span>
+            <span>→ odpowiada na pytania</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; color: var(--wf-secondary);">
+            <span>Kolekcja promptów</span>
+            <span>→ daje fragmenty</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; color: var(--wf-secondary);">
+            <span>Szablony UI</span>
+            <span>→ daje wygląd bez treści</span>
+          </div>
+          <hr style="border: none; border-top: 1px solid var(--wf-line); margin: 12px 0;">
+          <div style="display: flex; justify-content: space-between; padding: 4px 0; font-weight: 700; color: var(--wf-text);">
+            <span>Agent UX</span>
+            <span>→ prowadzi cały proces</span>
+          </div>
+          <p style="font-family: var(--wf-font); font-size: 0.8125rem; color: var(--wf-muted); margin-top: 8px; margin-bottom: 0; line-height: 1.5;">od briefu do wireframe'u z checkpointami i plikami</p>
+        </div>
+
+        <!-- Right: explanation -->
+        <div>
+          <p style="color: var(--wf-secondary); font-size: 1.0625rem; line-height: 1.7;">
+            Kontekst z Discovery wpływa na wireframe. Decyzje ze Strategii kształtują architekturę sekcji. Nic nie ginie. Wszystko jest w plikach, nie w czacie.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S9: ARCHITEKTURA ========== -->
+  <section class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 9: Architektura | Narracja: evidence | Pytanie: „Czy to jeden prompt czy coś więcej?" | Cel: „za tym stoi poważna robota architektoniczna"</div>
+
+      <p class="wf-label">Pod maską</p>
+      <h2>To nie jest jeden prompt. To przemyślana architektura.</h2>
+
+      <p style="color: var(--wf-secondary); max-width: 800px; margin-bottom: 32px;">
+        Agent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.
+      </p>
+
+      <div class="wf-grid wf-grid-2" style="align-items: start; gap: 48px;">
+
+        <!-- Left: file structure -->
+        <div style="background: var(--wf-accent); color: #a1a1aa; font-family: var(--wf-font-mono); font-size: 0.8125rem; padding: 28px; border-radius: var(--wf-radius); line-height: 1.9;">
+          <span style="color: #ffffff; font-weight: 600;">agents/ux-designer/</span><br>
+          ├── <span style="color: #E5FA00;">agent.md</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Zawsze załadowany<br>
+          ├── references/<br>
+          │&nbsp;&nbsp; ├── constitution.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Tożsamość i filozofia<br>
+          │&nbsp;&nbsp; ├── workflows.md &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 6 procesów<br>
+          │&nbsp;&nbsp; ├── shared/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 14 plików cross-domain<br>
+          │&nbsp;&nbsp; └── domains/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 14 typów stron<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── b2b/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Baza B2B (shared)<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── b2b-saas/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← SaaS-specific<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── b2b-services/ &nbsp;&nbsp;&nbsp;&nbsp;← Usługi B2B<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── b2b-industrial/ &nbsp;&nbsp;← Producenci<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── ecommerce/<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── portfolio/<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── local-business/<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── marketplace/<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ├── ... &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 14 domen łącznie<br>
+          │&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; └── nonprofit/<br>
+          └── assets/<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;├── templates/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Szablony deliverables<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;└── scripts/ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← Excel generator
+        </div>
+
+        <!-- Right: 8 decision cards in grid -->
+        <div class="wf-grid wf-grid-2" style="gap: 12px;">
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">01</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Wiedza oddzielona od instrukcji.</strong> Agent.md definiuje logikę, folder references/ przechowuje wiedzę merytoryczną.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">02</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Pliki ładowane na żądanie.</strong> Agent dynamicznie wykrywa typ strony i ładuje tylko odpowiedni pakiet danych.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">03</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Jeden agent, pełen cykl.</strong> Jeden agent prowadzi od discovery do wireframe'u. Kontekst nie ginie.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">04</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Checkpointy na każdym etapie.</strong> Wymuszone punkty kontrolne gwarantują, że błąd złapany wcześnie kosztuje zero.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">05</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Najpierw założenia, potem pytania.</strong> Confidence tiers pozwalają agentowi działać proaktywnie przy zachowaniu kontroli.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">06</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Copy prowadzi design.</strong> Agent najpierw projektuje strukturę treści i realny copy, zamiast polegać na placeholderach.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">07</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Pliki jako pamięć projektu.</strong> Stan projektu zapisywany jest w plikach markdown, niezależnie od ulotnej sesji czatu.</p>
+          </div>
+          <div class="wf-card" style="padding: 14px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 4px; font-weight: 600;">08</p>
+            <p style="font-size: 0.8125rem; margin-bottom: 0;"><strong>Audyt dostarcza diagnozę.</strong> Agent generuje rekomendacje oparte na audycie. Zmiany wprowadzasz Ty.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S10: PORÓWNANIE Z ALTERNATYWAMI ========== -->
+  <section id="porownanie" class="wf-section wf-section--warm">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 10: Porównanie | Narracja: evidence | Pytanie: „Czym to się różni od tego, co już próbowałem?" | Cel: jasność — żadna alternatywa nie daje pełnego procesu z plikami</div>
+
+      <p class="wf-label">Porównanie</p>
+      <h2>Czym to się różni od ChatGPT, promptów, szablonów i konsultanta UX?</h2>
+
+      <div style="overflow-x: auto; margin-top: 24px;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 700px;">
+          <thead>
+            <tr>
+              <th style="text-align: left; padding: 14px 12px; border-bottom: 2px solid var(--wf-line); color: var(--wf-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; width: 16%;"></th>
+              <th style="text-align: center; padding: 14px 12px; border-bottom: 2px solid var(--wf-accent); background: var(--wf-accent); color: #fff; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; border-radius: 6px 6px 0 0; width: 16%;">UX Designer Agent</th>
+              <th style="text-align: center; padding: 14px 12px; border-bottom: 2px solid var(--wf-line); color: var(--wf-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; width: 16%;">ChatGPT / chatboty</th>
+              <th style="text-align: center; padding: 14px 12px; border-bottom: 2px solid var(--wf-line); color: var(--wf-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; width: 16%;">Kolekcje promptów</th>
+              <th style="text-align: center; padding: 14px 12px; border-bottom: 2px solid var(--wf-line); color: var(--wf-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; width: 16%;">Szablony UI</th>
+              <th style="text-align: center; padding: 14px 12px; border-bottom: 2px solid var(--wf-line); color: var(--wf-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; width: 16%;">Konsultant UX</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); font-weight: 600;">Pełen proces UX</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center; background: #fafaf5;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">6 workflow-ów end-to-end</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">odpowiedzi bez procesu</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">fragmenty bez kontekstu</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">wygląd bez procesu</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">pełen cykl</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); font-weight: 600;">Realne pliki</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center; background: #fafaf5;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">.md, .xlsx</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">wiadomości czatowe</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">prompty</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">pliki graficzne</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">dokumenty</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); font-weight: 600;">Kontekst między sesjami</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center; background: #fafaf5;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">pliki trwałe</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">każda sesja od zera</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">każdy prompt od zera</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">—</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">w głowie konsultanta</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); font-weight: 600;">Checkpointy i decyzje</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center; background: #fafaf5;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">opcje z trade-off</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">spotkania i konsultacje</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); font-weight: 600;">Realny copy</td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center; background: #fafaf5;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">w języku projektu</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">~<br><span style="font-size: 0.75rem; color: var(--wf-muted);">generyczny</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">szablonowy</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;">✗<br><span style="font-size: 0.75rem; color: var(--wf-muted);">lorem ipsum</span></td>
+              <td style="padding: 12px; border-bottom: 1px solid var(--wf-line); text-align: center;"><strong>✓</strong><br><span style="font-size: 0.75rem; color: var(--wf-muted);">profesjonalny</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; font-weight: 600;">Koszt</td>
+              <td style="padding: 12px; text-align: center; background: #fafaf5;"><strong>jednorazowo</strong></td>
+              <td style="padding: 12px; text-align: center;"><span style="font-size: 0.75rem; color: var(--wf-muted);">~100 zł/mies.</span></td>
+              <td style="padding: 12px; text-align: center;"><span style="font-size: 0.75rem; color: var(--wf-muted);">50–300 zł jednoraz.</span></td>
+              <td style="padding: 12px; text-align: center;"><span style="font-size: 0.75rem; color: var(--wf-muted);">100–500 zł jednoraz.</span></td>
+              <td style="padding: 12px; text-align: center;"><span style="font-size: 0.75rem; color: var(--wf-muted);">5 000–20 000 zł za projekt</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S11: BAZA WIEDZY ========== -->
+  <section class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 11: Baza wiedzy | Narracja: evidence | Pytanie: „Co jest w środku?" | Cel: imponująca skala i głębia</div>
+
+      <p class="wf-label">Baza wiedzy</p>
+      <h2>Pod spodem siedzi baza wiedzy, którą jako UX Design Lead zbierałem latami.</h2>
+
+      <p style="margin-bottom: 24px;"><a href="#" style="color: var(--wf-accent); font-weight: 500;">Mapa wiedzy agenta →</a></p>
+
+      <div class="wf-grid wf-grid-3" style="align-items: start;">
+
+        <!-- Column 1: Typy stron -->
+        <div class="wf-card">
+          <h3 style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--wf-muted); margin-bottom: 16px;">Typy stron (16)</h3>
+          <ul style="list-style: none; padding: 0; font-size: 0.8125rem;">
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>B2B SaaS</strong> <span style="color: var(--wf-muted);">Produkty subskrypcyjne</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>B2B Services</strong> <span style="color: var(--wf-muted);">Agencje, konsulting</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>B2B Industrial</strong> <span style="color: var(--wf-muted);">Producenci, dystrybutorzy</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>E-commerce</strong> <span style="color: var(--wf-muted);">Sklepy online, DTC</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Portfolio</strong> <span style="color: var(--wf-muted);">Studia, freelancerzy</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Local Business</strong> <span style="color: var(--wf-muted);">Usługi lokalne</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Marketplace</strong> <span style="color: var(--wf-muted);">Platformy dwustronne</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Community</strong> <span style="color: var(--wf-muted);">Grupy, fora</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Course</strong> <span style="color: var(--wf-muted);">Kursy, szkolenia</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Media</strong> <span style="color: var(--wf-muted);">Wydawcy, blogi</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Event</strong> <span style="color: var(--wf-muted);">Konferencje</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Nonprofit</strong> <span style="color: var(--wf-muted);">Fundacje, NGO</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Enterprise</strong> <span style="color: var(--wf-muted);">Narzędzia korporacyjne</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Government</strong> <span style="color: var(--wf-muted);">Instytucje publiczne</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Documentation</strong> <span style="color: var(--wf-muted);">Bazy wiedzy</span></li>
+            <li style="padding: 5px 0;"><strong>Service Utility</strong> <span style="color: var(--wf-muted);">Narzędzia online</span></li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Frameworki UX -->
+        <div class="wf-card">
+          <h3 style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--wf-muted); margin-bottom: 16px;">Frameworki UX (13)</h3>
+          <ul style="list-style: none; padding: 0; font-size: 0.8125rem;">
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Design Psychology</strong> <span style="color: var(--wf-muted);">Don Norman</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Hierarchy of User Needs</strong> <span style="color: var(--wf-muted);">Aarron Walter</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Usability Heuristics</strong> <span style="color: var(--wf-muted);">Jakob Nielsen</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Conversion Optimization</strong> <span style="color: var(--wf-muted);">Chris Goward</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Customer Centric Design</strong> <span style="color: var(--wf-muted);">Oli Gardner</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Emotional Targeting</strong> <span style="color: var(--wf-muted);">Talia Wolf</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Buyer Legends Narrative</strong> <span style="color: var(--wf-muted);">Bryan Eisenberg</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>FAST Persuasion</strong> <span style="color: var(--wf-muted);">Patrick Campbell</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Narrative Arc</strong> <span style="color: var(--wf-muted);">Hook, tension, evidence, resolution</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>ResearchXL</strong> <span style="color: var(--wf-muted);">Peep Laja</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Messaging Hierarchy</strong> <span style="color: var(--wf-muted);">B2B 5-layer</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Awareness Model</strong> <span style="color: var(--wf-muted);">5 poziomów</span></li>
+            <li style="padding: 5px 0;"><strong>Funnel Psychology</strong> <span style="color: var(--wf-muted);">Awareness, consideration, decision</span></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Wzorce sekcji -->
+        <div class="wf-card">
+          <h3 style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.08em; color: var(--wf-muted); margin-bottom: 16px;">Wzorce sekcji (50+) z wariantami</h3>
+          <ul style="list-style: none; padding: 0; font-size: 0.8125rem;">
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Hero</strong> <span style="color: var(--wf-muted);">Warianty otwarcia strony</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Nawigacja</strong> <span style="color: var(--wf-muted);">Sticky, mega menu, mobile</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Social proof</strong> <span style="color: var(--wf-muted);">Testimoniale, loga, case study</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>FAQ / obiekcje</strong> <span style="color: var(--wf-muted);">Accordion, 4 bariery</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Formularze</strong> <span style="color: var(--wf-muted);">Lead capture, kontakt, RFQ</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Cennik</strong> <span style="color: var(--wf-muted);">Tiery, anchor pricing, decoy</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Porównanie</strong> <span style="color: var(--wf-muted);">Tabele vs. konkurencja</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Case study</strong> <span style="color: var(--wf-muted);">Wynik + cytat + metryki</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Pricing page</strong> <span style="color: var(--wf-muted);">Psychologia cen, tiery</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Comparison</strong> <span style="color: var(--wf-muted);">vs. pages, switcher proof</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Trust bar</strong> <span style="color: var(--wf-muted);">Loga, badges, certyfikaty</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Stats block</strong> <span style="color: var(--wf-muted);">Metryki, skala, impact</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Sticky CTA</strong> <span style="color: var(--wf-muted);">Floating, bottom bar</span></li>
+            <li style="padding: 5px 0; border-bottom: 1px solid var(--wf-fill);"><strong>Mid-page CTA</strong> <span style="color: var(--wf-muted);">Kontekstowe wezwanie</span></li>
+            <li style="padding: 5px 0;"><strong>+ 35 kolejnych</strong></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S12: FAQ ========== -->
+  <section class="wf-section wf-section--warm">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 12: FAQ | Narracja: resolution | Pytanie: „Mam jeszcze wątpliwości" | Cel: rozwiązanie wątpliwości przed zakupem</div>
+
+      <p class="wf-label">FAQ</p>
+      <h2>Co warto wiedzieć przed zakupem.</h2>
+
+      <div class="wf-accordion" style="max-width: 800px; margin-top: 24px;">
+
+        <details open>
+          <summary>01. „Czy mogę to zrobić sam?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Możesz. Jeśli masz doświadczenie UX, możesz zbudować własną bazę wiedzy i instrukcje. Pytanie ile godzin chcesz na to poświęcić. Za agentem stoi kilka miesięcy pracy nad architekturą, bazą wiedzy z deep research i procesem, który łączy to w spójny workflow. Kupujesz gotowy system: architekturę, bazę wiedzy i proces w jednym pakiecie.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>02. „Czy output nie brzmi jak AI?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Domyślnie może. Agent buduje przekaz (co powiedzieć i dlaczego), ale styl zależy od wytycznych. Wrzuć próbkę swojego copy, a agent złapie ton i będzie pisać w Twoim stylu. Pracuję nad filtrem anti-slop, który wyeliminuje typowe konstrukcje AI.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>03. „Czy to jeden prompt czy coś więcej?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">To system. Instrukcja agenta, 92 pliki wiedzy domenowej ładowane na żądanie, skrypt do generowania Excel. Wiedza jest oddzielona od instrukcji działania. Pliki ładują się gdy są potrzebne, żeby nie zapychać kontekstu. Dojście do tej architektury zajęło kilka miesięcy, po drodze wyrzuciłem dwa inne podejścia.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>04. „Czy agent działa tak samo dobrze dla każdego typu strony?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Każdy z 16 typów stron ma własny pakiet wiedzy: archetypy, wzorce sekcji, pytania discovery, checklisty. Planuję dodawanie nowych typów. Jeśli trafisz na słabszy obszar, daj znać.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>05. „Ile czasu zaoszczędzę?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Dla typowego projektu strony: 2-4 godziny od briefu do wireframe'u z realnym copy. Samodzielnie ten sam zakres (discovery, strategia, sitemap, wireframe) zajmuje dni. Ile dokładnie zaoszczędzisz zależy od dopracowania copy.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>06. „Co jeśli output wymaga poprawek?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Będzie wymagał. Agent daje strukturę, przekaz i realny copy, ale Ty znasz swojego klienta lepiej. Checkpointy na każdym etapie pozwalają korygować na bieżąco, zamiast poprawiać na końcu. Im więcej kontekstu dasz na starcie, tym mniej poprawek potem.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>07. „Czy będą aktualizacje?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Tak. 6 miesięcy aktualizacji w pakiecie. Mam backlog: rozbudowa inventory (czytanie istniejącej strony klienta), anti-slop filter, nowe typy stron, lepsze pokrycie niektórych obszarów. Liczę też na feedback z bety.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>08. „Na jakich platformach to działa?"</summary>
+          <div class="wf-accordion__body">
+            <p style="font-size: 0.875rem; color: var(--wf-secondary);">Claude, ChatGPT, Gemini, VS Code. Potrzebujesz konta na jednej z tych platform. Agent nie wymaga dodatkowych zależności poza skryptem Python do generowania Excel.</p>
+          </div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S13: TWÓRCA ========== -->
+  <section class="wf-section wf-section--white">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 13: Twórca | Narracja: evidence | Pytanie: „Kto za tym stoi?" | Cel: zaufanie osobiste</div>
+
+      <p class="wf-label">Twórca</p>
+      <h2>Kto za tym stoi</h2>
+
+      <div class="wf-grid wf-grid-2" style="align-items: start; gap: 48px; margin-top: 24px;">
+
+        <!-- Left: photo placeholder -->
+        <div style="position: relative;">
+          <div class="wf-media" style="min-height: 400px; aspect-ratio: 4/5;">Zdjęcie autora — Tomasz Maciąg</div>
+          <div style="position: absolute; bottom: 16px; left: 16px; background: var(--wf-bg); border: 1.5px solid var(--wf-line); border-radius: 6px; padding: 8px 16px;">
+            <p style="font-size: 0.75rem; color: var(--wf-muted); margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.06em;">Doświadczenie</p>
+            <p style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0;">15+ lat</p>
+          </div>
+        </div>
+
+        <!-- Right: bio + contact -->
+        <div>
+          <h3 style="font-size: 1.5rem; margin-bottom: 4px;">Tomasz Maciąg,</h3>
+          <p style="color: var(--wf-muted); margin-bottom: 20px;">Founder Fuse Collective.</p>
+          <p style="color: var(--wf-secondary); font-size: 1.0625rem; line-height: 1.7;">
+            Projektuję strony i systemy identyfikacji dla firm od ponad 15 lat. Agenta UX zbudowałem, bo sam potrzebowałem procesu, który mogę powtarzać w każdym projekcie klienckim. Używam go na co dzień.
+          </p>
+
+          <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--wf-line);">
+            <p style="font-size: 0.875rem; color: var(--wf-muted); margin-bottom: 4px;">Kontakt bezpośredni</p>
+            <p style="font-size: 1.125rem; font-weight: 600;"><a href="mailto:tomasz@creativesparks.pl" style="color: var(--wf-text); text-decoration: none;">tomasz@creativesparks.pl →</a></p>
+            <p class="wf-micro">Masz pytania? Napisz na powyższy adres.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== S14: FOOTER ========== -->
+  <footer class="wf-footer">
+    <div class="wf-inner">
+      <div class="wf-note">Sekcja 14: Footer | Narracja: resolution | Cel: nawigacja uzupełniająca + dane formalne</div>
+      <div class="wf-footer__grid">
+        <div class="wf-footer__col">
+          <h3>Produkt</h3>
+          <ul>
+            <li><a href="#zastosowanie">Zastosowanie</a></li>
+            <li><a href="#proces">Proces</a></li>
+            <li><a href="#porownanie">Porównanie</a></li>
+            <li><a href="#cennik">Cennik</a></li>
+          </ul>
+        </div>
+        <div class="wf-footer__col">
+          <h3>Wsparcie</h3>
+          <ul>
+            <li><a href="mailto:tomasz@creativesparks.pl">Kontakt</a></li>
+          </ul>
+        </div>
+        <div class="wf-footer__col">
+          <h3>Informacje</h3>
+          <ul>
+            <li><a href="#">Regulamin</a></li>
+            <li><a href="#">Polityka prywatności</a></li>
+            <li><a href="#">RODO</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="wf-footer__bottom">
+        <span>© 2026 Fuse Collective</span>
+        <span>NIP: [numer] | kontakt@creativesparks.pl</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
