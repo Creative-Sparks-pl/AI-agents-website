@@ -1,0 +1,41 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getCollection } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-4.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import ProblemCard from './ProblemCard.astro';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = getCurrentLocale();
+const problems = (await getCollection('problems', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-white', className]}
+  aria-labelledby="problems-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Problem</span>
+        <h2 id="problems-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">
+          UX bywa tym etapem, na&nbsp;który "nie&nbsp;ma&nbsp;czasu".
+        </h2>
+      </Fragment>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {problems.map((item) => (
+          <ProblemCard icon={item.data.icon} title={item.data.title} description={item.body?.trim() ?? ''} />
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
