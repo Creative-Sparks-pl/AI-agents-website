@@ -1,0 +1,22 @@
+---
+import { getEntry } from 'astro:content';
+import Logo from '../../../assets/logo.svg?raw';
+import { getCurrentLocale } from '../../../lib/i18n';
+
+const locale = getCurrentLocale();
+const entry = await getEntry('footer', locale);
+const { links } = entry!.data;
+---
+
+<footer class="py-12 bg-white border-t border-border/20">
+  <div class="max-w-screen-2xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8">
+    <a href="/ux-designer" class="text-primary block h-6 [&>svg]:h-full [&>svg]:w-auto" aria-label="Creative Sparks">
+      <Fragment set:html={Logo} />
+    </a>
+    <div class="flex flex-wrap gap-x-10 gap-y-3 text-sm font-label">
+      {links.map((link) => (
+        <a href={link.href} class="text-muted hover:text-primary transition-colors">{link.label}</a>
+      ))}
+    </div>
+  </div>
+</footer>

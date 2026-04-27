@@ -1,11 +1,9 @@
-columns:
-  - heading: ""
-    links:
-      - label: Polityka prywatności
-        href: /ux-designer/polityka-prywatnosci
-      - label: Regulamin sprzedaży
-        href: /ux-designer/regulamin
-      - label: Changelog
-        href: /ux-designer/changelog
-      - label: Kontakt
-        href: "mailto:tomasz@creativesparks.pl?subject=Pytanie%20w%20sprawie%20asystenta"
+links:
+  - label: Polityka prywatności
+    href: /ux-designer/polityka-prywatnosci
+  - label: Regulamin sprzedaży
+    href: /ux-designer/regulamin
+  - label: Changelog
+    href: /ux-designer/changelog
+  - label: Kontakt
+    href: "mailto:tomasz@creativesparks.pl?subject=Pytanie%20w%20sprawie%20asystenta"

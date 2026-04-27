@@ -221,10 +221,7 @@ const nav = defineCollection({
 const footer = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/footer' }),
   schema: z.object({
-    columns: z.array(z.object({
-      heading: z.string(),
-      links: z.array(linkSchema),
-    })),
+    links: z.array(linkSchema),
     legal: z.string().optional(),
   }),
 });
