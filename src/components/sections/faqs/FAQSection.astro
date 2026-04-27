@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getCollection } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-11.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import FAQItem from './FAQItem.astro';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = getCurrentLocale();
+const faqs = (await getCollection('faqs', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section
+  class:list={['py-20 md:py-28 px-6 bg-surface-primary', className]}
+  id="faq"
+  aria-labelledby="faq-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">FAQ</span>
+        <h2 id="faq-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Co warto wiedzieć przed zakupem.
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col">
+        {faqs.map((faq, i) => (
+          <FAQItem index={i} q={faq.data.q} link={faq.data.link}>
+            {faq.body?.trim()}
+          </FAQItem>
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
