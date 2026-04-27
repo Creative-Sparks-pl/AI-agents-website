@@ -101,24 +101,28 @@ The component uses two named slots: `header` (for the section heading/badge area
 
 All 16 sections live under `src/components/sections/`. Each section loads its content via `await getEntry('<collection>', getCurrentLocale())` and accepts an optional `content` prop override for use in the design system showcase.
 
-| Section file | Collection | Purpose |
-|---|---|---|
-| `HeroSection.astro` | `hero` | Page hero: badge, headline, subheadline, checklist, CTA button. |
-| `UseCasesSection.astro` | `use-cases` + `use-cases-examples` | Numbered use case cards with bullet lists, quotes, and demo links; 8 wireframe example links. |
-| `ProblemsSection.astro` | `problems` | Icon-annotated list of pain points the product addresses. |
-| `OriginSection.astro` | `origin` | Founder story / product origin with badge, heading, callout quote, and comparison items. |
-| `ComparisonSection.astro` | `comparison` | Feature comparison table across columns (e.g., product vs. alternatives). |
-| `ProcessSection.astro` | `process` | Numbered process steps each with an output link and decorative shape. |
-| `PricingSection.astro` | `pricing` | Pricing tier cards with feature lists and optional highlight treatment. |
-| `DemoSection.astro` | `demo` | Multi-stage demo walkthrough with badge, intro, stage labels, and optional CTA. |
-| `PlatformSection.astro` | `platform` | Platform compatibility grid: integrations, content types, and requirements. |
-| `KnowledgeBaseSection.astro` | `knowledge-base` | Taxonomy browser: page types, frameworks, and patterns the product understands. |
-| `ArchitectureSection.astro` | `architecture` | Numbered architecture layers with icon, label, title, and description. |
-| `FAQSection.astro` | `faqs` | Accordion FAQ list with optional per-item links. |
-| `AuthorSection.astro` | `author` | Author bio card with badge, heading, name, role, email, and optional avatar. |
-| `ChangelogSection.astro` | `changelog` | Versioned changelog entries with date, title, description, and change list. |
-| `TopAppBar.astro` | `nav` | Top navigation bar with links and a CTA button. |
-| `Footer.astro` | `footer` | Footer with link columns and optional legal line. |
+Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<SectionName>.astro`. Item subcomponents (CaseCard, FAQItem, etc.) are colocated in the same folder.
+
+| Section path | Collection | Colocated subcomponents | Purpose |
+|---|---|---|---|
+| `hero/HeroSection.astro` | `hero` | — | Page hero: badge, headline + optional emphasis, subheadline, checklist (renders via `ChecklistItem` ui/), CTA. Terminal mockup hardcoded. |
+| `use-cases/UseCasesSection.astro` | `use-cases` + `use-cases-examples` | `ExampleCard`, `CaseCard` | Static examples panel (8 example links) + 4 accordion case studies. |
+| `problems/ProblemsSection.astro` | `problems` | `ProblemCard` | 4 icon-annotated pain points. |
+| `origin/OriginSection.astro` | `origin` | — | Founder story: badge, heading with `<br/>`, comparisons grid (3 alt + asystent callout), narrative paragraph, callout box. |
+| `comparison/ComparisonSection.astro` | `comparison` | `ComparisonRow` | Feature table (5 columns × 6 rows). |
+| `process/ProcessSection.astro` | `process` | `ProcessStage` | 6 process stage cards with shape glyphs + output links. |
+| `pricing/PricingSection.astro` | `pricing` | `PricingTier` | 3 pricing tier cards. |
+| `demo/DemoSection.astro` | `demo` | `DemoStage` | Demo CTA + 3 stage cards (Discovery / Strategia / Wireframing). |
+| `platform/PlatformSection.astro` | `platform` | `PlatformCard` | 4 platform cards + contents list + requirements. |
+| `knowledge-base/KnowledgeBaseSection.astro` | `knowledge-base` | `KnowledgeColumn` | 3 columns of knowledge taxonomy. |
+| `architecture/ArchitectureSection.astro` | `architecture` | `DecisionCard` | File tree visual + 8 architecture decision cards. |
+| `faqs/FAQSection.astro` | `faqs` | `FAQItem` | 8 accordion FAQ items. |
+| `author/AuthorSection.astro` | `author` | — | Author bio card with photo, experience badge, contact block. |
+| `changelog/ChangelogSection.astro` | `changelog` | `ChangelogEntry` | 12 versioned changelog accordion entries. |
+| `top-app-bar/TopAppBar.astro` | `nav` | — | Sticky header with logo, nav links, CTA. Accepts overrides via props for sub-pages. |
+| `footer/Footer.astro` | `footer` | — | Logo + flat link list. |
+
+**Colocated subcomponents (12 total)** all sit at exactly 1 importer — none have been promoted to `ui/` per D-004 (strict T2). The decomposition is honest: zero preemptive abstraction.
 
 ---
 
@@ -177,7 +181,20 @@ All collections are defined and Zod-validated in `src/content.config.ts`. The lo
 | `knowledge-base` | YAML singleton per locale | Badge, heading, optional intro, pageTypes / frameworks / patterns arrays (name + sub) |
 | `architecture` | MDX per item per locale | Order, icon name, label, title, desc |
 | `faqs` | MDX per item per locale | Order, question string, optional link; answer prose in MDX slot |
-| `author` | MDX singleton per locale | Badge, heading, name, role, email, optional avatar path; bio in MDX slot |
-| `changelog` | MDX per version per locale | Version string, date, title, description, changes array |
+| `author` | MDX singleton per locale | Badge, heading, nameFirst, nameLast, role, bio (frontmatter), email, contactNote, experienceLabel, experienceValue |
+| `changelog` | MDX per version per locale | Version string, date string (range allowed), title, description, changes array |
 | `nav` | YAML singleton per locale | Links array, CTA link |
-| `footer` | YAML singleton per locale | Columns array (heading + links array), optional legal string |
+| `footer` | YAML singleton per locale | Flat links array, optional legal string |
+
+---
+
+## 8. Design system showcase
+
+A standalone showcase lives at `/design-system/` and is driven by `src/layouts/PreviewLayout.astro`. It has four routes:
+
+- `/design-system/` — overview with 3-card grid linking to sub-pages
+- `/design-system/tokens/` — every color, type scale step, spacing token, and radius rendered live
+- `/design-system/components/` — ui/ primitives with prop tables and live previews
+- `/design-system/sections/` — every section rendered live with its real content collection data
+
+The showcase is `noindex, nofollow` (set in `PreviewLayout.astro` head). It is not part of the main user-facing site but serves as the canary: if a section can't render cleanly in the showcase with its default content, decomposition isn't clean enough — fix it.
