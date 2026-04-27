@@ -186,10 +186,14 @@ const author = defineCollection({
   schema: z.object({
     badge: z.string(),
     heading: z.string(),
-    name: z.string(),
+    nameFirst: z.string(),
+    nameLast: z.string(),
     role: z.string(),
+    bio: z.string(),
     email: z.string(),
-    avatar: z.string().optional(),
+    contactNote: z.string(),
+    experienceLabel: z.string(),
+    experienceValue: z.string(),
   }),
 });
 
