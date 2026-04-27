@@ -1,0 +1,58 @@
+---
+import PreviewLayout from '../../layouts/PreviewLayout.astro';
+
+const cards = [
+  {
+    href: '/design-system/tokens/',
+    title: 'Tokens',
+    desc: 'Colors, typography, spacing, radii — every CSS custom property defined in @theme.',
+    icon: 'palette',
+  },
+  {
+    href: '/design-system/components/',
+    title: 'Components',
+    desc: 'UI primitives (ChecklistItem, SectionWithIcon) with prop tables and live previews.',
+    icon: 'widgets',
+  },
+  {
+    href: '/design-system/sections/',
+    title: 'Sections',
+    desc: 'Every page section rendered live with default content from the content collections.',
+    icon: 'view_quilt',
+  },
+];
+---
+
+<PreviewLayout title="Overview" current="overview">
+  <div class="max-w-screen-2xl mx-auto px-6 py-16">
+    <div class="max-w-3xl mb-16">
+      <h1 class="font-headline text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] mb-6">
+        Design system reference.
+      </h1>
+      <p class="text-lg text-muted leading-relaxed">
+        Source of truth for tokens, components, and section layouts used across the site.
+        Sections render with content from the live <code class="font-label bg-surface-primary px-1 py-0.5">src/content/</code> collections — what you see here is what the site uses.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-border">
+      {cards.map((card) => (
+        <a href={card.href} class="bg-background p-10 group hover:bg-surface-primary transition-colors">
+          <span class="material-symbols-outlined text-primary text-3xl mb-6 block">{card.icon}</span>
+          <h2 class="font-headline font-bold text-2xl mb-3 group-hover:translate-x-1 transition-transform">
+            {card.title}
+          </h2>
+          <p class="text-sm text-muted leading-relaxed">{card.desc}</p>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-16 p-8 bg-surface-primary border-l-4 border-primary">
+      <p class="font-label text-xs text-primary uppercase tracking-widest mb-2">Convention</p>
+      <p class="text-sm text-foreground leading-relaxed">
+        Sections are content-named (HeroSection, PricingSection — not TwoColumnLayout). Each section is a layout shell + colocated item subcomponent + content collection entry. Content lives in <code class="font-label bg-background px-1">src/content/</code>; tokens in <code class="font-label bg-background px-1">src/styles/global.css</code> <code class="font-label bg-background px-1">@theme</code>.
+        See <a href="/design.md" class="text-primary underline">design.md</a> for the full spec.
+      </p>
+    </div>
+  </div>
+</PreviewLayout>

@@ -1,0 +1,68 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  current?: 'overview' | 'tokens' | 'components' | 'sections';
+}
+
+const { title, current = 'overview' } = Astro.props;
+
+const navItems = [
+  { key: 'overview' as const, label: 'Overview', href: '/design-system/' },
+  { key: 'tokens' as const, label: 'Tokens', href: '/design-system/tokens/' },
+  { key: 'components' as const, label: 'Components', href: '/design-system/components/' },
+  { key: 'sections' as const, label: 'Sections', href: '/design-system/sections/' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700&family=Noto+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <title>{title} — Design System</title>
+  </head>
+  <body class="bg-background text-foreground min-h-screen flex flex-col">
+    <header class="bg-foreground text-background">
+      <div class="max-w-screen-2xl mx-auto px-6 py-6 flex items-center justify-between gap-8">
+        <div class="flex items-center gap-8">
+          <a href="/design-system/" class="font-headline font-bold text-lg tracking-tight">
+            Design System
+          </a>
+          <span class="text-background/40">/</span>
+          <span class="font-label text-sm">{title}</span>
+        </div>
+        <nav class="flex items-center gap-1" aria-label="Design system navigation">
+          {navItems.map((item) => (
+            <a
+              href={item.href}
+              class:list={[
+                'px-4 py-2 font-label text-xs tracking-tight transition-colors',
+                current === item.key
+                  ? 'bg-accent text-foreground'
+                  : 'text-background/60 hover:text-background',
+              ]}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main class="flex-1">
+      <slot />
+    </main>
+    <footer class="border-t border-border/30 py-6">
+      <div class="max-w-screen-2xl mx-auto px-6 flex items-center justify-between text-xs text-muted font-label">
+        <span>Design system reference — internal</span>
+        <a href="/ux-designer/" class="hover:text-primary transition-colors">→ Back to site</a>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,168 @@
+---
+import PreviewLayout from '../../layouts/PreviewLayout.astro';
+
+const colors = [
+  { token: '--color-primary', hex: '#010DFF', utility: 'bg-primary', role: 'Primary brand — CTAs, headers, links' },
+  { token: '--color-primary-dark', hex: '#020DF6', utility: 'bg-primary-dark', role: 'Hover state for primary' },
+  { token: '--color-on-primary', hex: '#FFFFFF', utility: 'text-on-primary', role: 'Text on primary surfaces' },
+  { token: '--color-accent', hex: '#E5FA00', utility: 'bg-accent', role: 'Accent — Studio plan, design system nav active' },
+  { token: '--color-accent-dark', hex: '#DAEE04', utility: 'bg-accent-dark', role: 'Hover for accent' },
+  { token: '--color-background', hex: '#FFFFFF', utility: 'bg-background', role: 'Default page background' },
+  { token: '--color-foreground', hex: '#171717', utility: 'text-foreground', role: 'Primary body text' },
+  { token: '--color-muted', hex: '#4C4C4C', utility: 'text-muted', role: 'Secondary text, descriptions' },
+  { token: '--color-border', hex: '#CDCDCD', utility: 'border-border', role: 'Dividers, card borders' },
+  { token: '--color-surface', hex: '#FAFAFA', utility: 'bg-surface', role: 'Light surface — process, author' },
+  { token: '--color-surface-primary', hex: '#F1F2FE', utility: 'bg-surface-primary', role: 'Primary-tinted surface — pricing, faqs' },
+  { token: '--color-surface-accent', hex: '#FAFECC', utility: 'bg-surface-accent', role: 'Accent-tinted surface — knowledge base' },
+  { token: '--color-pattern', hex: '#EBEBEB', utility: 'bg-pattern', role: 'Decorative pattern fill' },
+];
+
+const fonts = [
+  { token: '--font-headline', stack: 'Gilroy, sans-serif', weights: '400, 700', role: 'Headlines (h1-h3) — Gilroy bold' },
+  { token: '--font-body', stack: 'Noto Sans, sans-serif', weights: '400, 500, 700', role: 'Body copy, descriptions' },
+  { token: '--font-label', stack: 'Noto Sans Mono, monospace', weights: '400, 500, 700', role: 'Labels, badges, micro-copy' },
+  { token: '--font-display', stack: 'Gilroy, sans-serif', weights: '400, 700', role: 'Alias for headline' },
+  { token: '--font-sans', stack: 'Noto Sans, sans-serif', weights: '400, 500, 700', role: 'Alias for body' },
+  { token: '--font-mono', stack: 'Noto Sans Mono, monospace', weights: '400, 500, 700', role: 'Alias for label' },
+];
+
+const spacing = [
+  { token: '--spacing-section', value: '80px', role: 'Standard section vertical padding (py-20)' },
+  { token: '--spacing-section-lg', value: '144px', role: 'Large section padding (py-28 md+)' },
+  { token: '--spacing-grid', value: '64px', role: 'Inter-section grid gap' },
+];
+
+const radii = [
+  { token: '--radius-default', value: '0px', role: 'All elements default to flat (architectural precision)' },
+  { token: '--radius-lg', value: '0px', role: 'Same — large variant kept flat' },
+  { token: '--radius-xl', value: '0px', role: 'Same — extra-large variant kept flat' },
+  { token: '--radius-full', value: '9999px', role: 'Full circle — only avatars, status dots' },
+];
+
+const typeScale = [
+  { name: 'Display XL', cls: 'text-5xl md:text-7xl font-extrabold', sample: 'UX lead pod ręką.' },
+  { name: 'Display L', cls: 'text-4xl md:text-5xl font-bold', sample: 'Historia zmian' },
+  { name: 'Heading L', cls: 'text-2xl md:text-3xl font-bold', sample: 'Discovery' },
+  { name: 'Heading M', cls: 'text-lg md:text-xl font-bold', sample: 'Czy mogę to zrobić sam?' },
+  { name: 'Body L', cls: 'text-lg leading-relaxed', sample: 'Asystent UX prowadzi cały proces od briefu do wireframe\'u.' },
+  { name: 'Body', cls: 'text-base leading-relaxed', sample: 'Strategia, persony, wireframe z realnym copy.' },
+  { name: 'Body S', cls: 'text-sm', sample: 'Sitemap z notatkami i voice brief' },
+  { name: 'Label', cls: 'text-xs font-label', sample: 'Cennik early access. Limit 30 miejsc.' },
+];
+---
+
+<PreviewLayout title="Tokens" current="tokens">
+  <div class="max-w-screen-2xl mx-auto px-6 py-16 space-y-20">
+
+    <section>
+      <h2 class="font-headline text-3xl font-bold mb-2">Colors</h2>
+      <p class="text-sm text-muted mb-8">Defined in <code class="font-label bg-surface-primary px-1">@theme</code> as <code class="font-label bg-surface-primary px-1">--color-*</code> CSS custom properties. Tailwind generates utility classes automatically.</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {colors.map((c) => (
+          <div class="border border-border">
+            <div class="h-24 flex items-center justify-center font-label text-xs" style={`background:${c.hex}`}>
+              <span class="px-2 py-1 bg-background/80 text-foreground">{c.hex}</span>
+            </div>
+            <div class="p-3 bg-background">
+              <p class="font-label text-xs font-bold">{c.token}</p>
+              <p class="font-label text-[10px] text-muted">{c.utility}</p>
+              <p class="text-xs text-muted mt-2 leading-tight">{c.role}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-headline text-3xl font-bold mb-2">Typography</h2>
+      <p class="text-sm text-muted mb-8">Three families: Gilroy (headlines), Noto Sans (body), Noto Sans Mono (labels). The display/sans/mono tokens are aliases.</p>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div>
+          <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-4">Token reference</h3>
+          <div class="border border-border divide-y divide-border">
+            {fonts.map((f) => (
+              <div class="p-4 grid grid-cols-12 gap-4 items-baseline">
+                <div class="col-span-4">
+                  <p class="font-label text-xs font-bold">{f.token}</p>
+                  <p class="font-label text-[10px] text-muted">{f.weights}</p>
+                </div>
+                <div class="col-span-8">
+                  <p class="font-label text-xs text-muted">{f.stack}</p>
+                  <p class="text-xs text-muted mt-1">{f.role}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-4">Scale</h3>
+          <div class="space-y-6">
+            {typeScale.map((t) => (
+              <div class="border-l-2 border-primary pl-4">
+                <p class="font-label text-[10px] text-muted uppercase tracking-widest mb-1">{t.name} — <span class="normal-case">{t.cls}</span></p>
+                <p class:list={['font-headline', t.cls]}>{t.sample}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 p-8 bg-surface-primary">
+        <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-4">Polish diacritics + pangram</h3>
+        <p class="font-headline text-2xl mb-3">aąbcćdeęfghijklłmnńoópqrsśtuvwxyzźż</p>
+        <p class="font-headline text-2xl mb-3">AĄBCĆDEĘFGHIJKLŁMNŃOÓPQRSŚTUVWXYZŹŻ</p>
+        <p class="font-body text-base text-muted">Zażółć gęślą jaźń — pchnąć w tę łódź jeża lub ośm skrzyń fig.</p>
+        <div class="mt-4 grid grid-cols-3 gap-4 text-foreground">
+          <div><p class="font-headline text-xl font-normal">Regular 400</p></div>
+          <div><p class="font-headline text-xl font-bold">Bold 700</p></div>
+          <div><p class="font-headline text-xl font-extrabold">Extrabold 800</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-headline text-3xl font-bold mb-2">Spacing</h2>
+      <p class="text-sm text-muted mb-8">Section-level rhythm tokens. Inline padding/gap stays as Tailwind utilities (<code class="font-label bg-surface-primary px-1">px-6</code>, <code class="font-label bg-surface-primary px-1">gap-4</code>).</p>
+      <div class="border border-border divide-y divide-border">
+        {spacing.map((s) => (
+          <div class="p-4 grid grid-cols-12 gap-4 items-center">
+            <div class="col-span-3">
+              <p class="font-label text-xs font-bold">{s.token}</p>
+              <p class="font-label text-[10px] text-muted">{s.value}</p>
+            </div>
+            <div class="col-span-6">
+              <div class="bg-primary h-3" style={`width:${s.value}`}></div>
+            </div>
+            <div class="col-span-3">
+              <p class="text-xs text-muted">{s.role}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-headline text-3xl font-bold mb-2">Radii</h2>
+      <p class="text-sm text-muted mb-8">All radii are 0 by design — architectural precision. Only <code class="font-label bg-surface-primary px-1">--radius-full</code> is non-zero, used for circular avatars and dots.</p>
+      <div class="border border-border divide-y divide-border">
+        {radii.map((r) => (
+          <div class="p-4 grid grid-cols-12 gap-4 items-center">
+            <div class="col-span-3">
+              <p class="font-label text-xs font-bold">{r.token}</p>
+              <p class="font-label text-[10px] text-muted">{r.value}</p>
+            </div>
+            <div class="col-span-2">
+              <div class="bg-primary w-12 h-12" style={`border-radius:${r.value}`}></div>
+            </div>
+            <div class="col-span-7">
+              <p class="text-xs text-muted">{r.role}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+  </div>
+</PreviewLayout>

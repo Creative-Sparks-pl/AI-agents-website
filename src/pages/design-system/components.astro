@@ -1,0 +1,155 @@
+---
+import PreviewLayout from '../../layouts/PreviewLayout.astro';
+import ChecklistItem from '../../components/ui/ChecklistItem.astro';
+import SectionWithIcon from '../../components/ui/SectionWithIcon.astro';
+import sampleIcon from '../../assets/icons/shape-3.svg';
+
+const components = [
+  {
+    name: 'ChecklistItem',
+    anchor: 'checklist-item',
+    purpose: 'Bulleted item with an accent circle + check mark, a title, and a slotted body. Used in HeroSection (6 instances on the home page) and anywhere a "feature with description" pattern appears.',
+    props: [
+      { prop: 'title', type: 'string', def: '—', desc: 'Bold title rendered above the slot content.' },
+      { prop: 'class', type: 'string', def: '—', desc: 'Append wrapper classes.' },
+      { prop: '...rest', type: 'HTMLAttributes<\'div\'>', def: '—', desc: 'Spread to root div (id, data-*, aria-*).' },
+    ],
+    usage: '13 instances site-wide. Reused across multiple sections (T2 met).',
+  },
+  {
+    name: 'SectionWithIcon',
+    anchor: 'section-with-icon',
+    purpose: 'Layout primitive that renders an icon + a header slot + body slot. Two layouts: stacked (icon + header on top, body below indented) and side-by-side (icon + header on the left column, body on the right). The workhorse of every section on the site.',
+    props: [
+      { prop: 'icon', type: 'ImageMetadata', def: 'undefined', desc: 'Imported asset for the icon. Hidden below lg breakpoint.' },
+      { prop: 'layout', type: '\'stacked\' | \'side-by-side\'', def: '\'stacked\'', desc: 'Layout flow.' },
+      { prop: 'class', type: 'string', def: '—', desc: 'Append wrapper classes.' },
+      { prop: '...rest', type: 'HTMLAttributes<\'div\'>', def: '—', desc: 'Spread to root div.' },
+    ],
+    slots: [
+      { name: 'header', desc: 'Section badge, h2 heading, optional intro paragraph.' },
+      { name: '(default)', desc: 'Section body content — grids, cards, anything.' },
+    ],
+    usage: '51 instances site-wide. Used in nearly every section.',
+  },
+];
+---
+
+<PreviewLayout title="Components" current="components">
+  <div class="max-w-screen-2xl mx-auto px-6 py-16 space-y-24">
+
+    <div class="max-w-3xl">
+      <h1 class="font-headline text-4xl font-bold mb-3">UI primitives</h1>
+      <p class="text-muted">
+        Every component in <code class="font-label bg-surface-primary px-1">src/components/ui/</code>. Each must satisfy T2 (used by ≥2 sections) per <a href="/design.md" class="text-primary underline">design.md</a>.
+      </p>
+    </div>
+
+    {components.map((c) => (
+      <section id={c.anchor} class="border-t border-border pt-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+          <div class="lg:col-span-5">
+            <h2 class="font-headline text-3xl font-bold mb-3">{c.name}</h2>
+            <p class="text-sm text-muted leading-relaxed mb-4">{c.purpose}</p>
+            <p class="font-label text-xs text-primary">{c.usage}</p>
+          </div>
+          <div class="lg:col-span-7">
+            <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-3">Props</h3>
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="border-b border-border">
+                  <th class="py-2 pr-4 font-label text-xs">Prop</th>
+                  <th class="py-2 pr-4 font-label text-xs">Type</th>
+                  <th class="py-2 pr-4 font-label text-xs">Default</th>
+                  <th class="py-2 font-label text-xs">Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {c.props.map((p) => (
+                  <tr class="border-b border-border/30">
+                    <td class="py-3 pr-4 font-label text-xs font-bold">{p.prop}</td>
+                    <td class="py-3 pr-4 font-label text-xs text-primary">{p.type}</td>
+                    <td class="py-3 pr-4 font-label text-xs text-muted">{p.def}</td>
+                    <td class="py-3 text-xs text-muted">{p.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {c.slots && (
+              <>
+                <h3 class="font-label text-xs uppercase tracking-widest text-muted mt-8 mb-3">Slots</h3>
+                <table class="w-full text-left border-collapse text-sm">
+                  <thead>
+                    <tr class="border-b border-border">
+                      <th class="py-2 pr-4 font-label text-xs">Name</th>
+                      <th class="py-2 font-label text-xs">Purpose</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {c.slots.map((s) => (
+                      <tr class="border-b border-border/30">
+                        <td class="py-3 pr-4 font-label text-xs font-bold">{s.name}</td>
+                        <td class="py-3 text-xs text-muted">{s.desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-3">Live preview</h3>
+          <div class="border border-border p-12 bg-surface">
+            {c.name === 'ChecklistItem' && (
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12 max-w-3xl">
+                <ChecklistItem title="Profesjonalny proces UX">
+                  Bez tygodni i tysięcy złotych wydanych na agencje.
+                </ChecklistItem>
+                <ChecklistItem title="Realny copy">
+                  Koniec z lorem ipsum. Wireframe od razu z realnym copy.
+                </ChecklistItem>
+                <ChecklistItem title="Kontekst żyje w plikach">
+                  Kontynuuj tam, gdzie skończyłeś. Decyzje żyją w plikach.
+                </ChecklistItem>
+              </div>
+            )}
+            {c.name === 'SectionWithIcon' && (
+              <div class="space-y-12">
+                <div>
+                  <p class="font-label text-[10px] uppercase tracking-widest text-muted mb-4">layout="stacked" (default)</p>
+                  <SectionWithIcon icon={sampleIcon}>
+                    <Fragment slot="header">
+                      <span class="text-sm font-label text-primary mb-4">Badge</span>
+                      <h3 class="font-headline text-2xl md:text-3xl font-bold">Heading goes here.</h3>
+                    </Fragment>
+                    <p class="text-sm text-muted">Body content sits below the header, indented in line with the icon's right edge on lg+. On smaller screens the icon hides and the body is full-width.</p>
+                  </SectionWithIcon>
+                </div>
+                <div>
+                  <p class="font-label text-[10px] uppercase tracking-widest text-muted mb-4">layout="side-by-side"</p>
+                  <SectionWithIcon icon={sampleIcon} layout="side-by-side">
+                    <Fragment slot="header">
+                      <span class="text-sm font-label text-primary mb-4">Badge</span>
+                      <h3 class="font-headline text-2xl md:text-3xl font-bold">Heading on the left,<br />body on the right.</h3>
+                    </Fragment>
+                    <p class="text-sm text-muted">Body sits in a separate column on lg+. Useful when the body is dense (a grid of cards, a wide table) and you want the heading to stay visible while scrolling within the section.</p>
+                  </SectionWithIcon>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <div class="border-t border-border pt-12">
+      <h2 class="font-headline text-2xl font-bold mb-4">Colocated subcomponents</h2>
+      <p class="text-sm text-muted mb-6 max-w-3xl">
+        Each section under <code class="font-label bg-surface-primary px-1">src/components/sections/&lt;name&gt;/</code> ships with its own item subcomponents (CaseCard, PricingTier, FAQItem, etc.). They stay colocated until used by ≥2 sections (T2). To preview them, see the <a href="/design-system/sections/" class="text-primary underline">Sections</a> page.
+      </p>
+    </div>
+
+  </div>
+</PreviewLayout>

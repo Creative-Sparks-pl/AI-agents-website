@@ -1,0 +1,191 @@
+---
+import PreviewLayout from '../../layouts/PreviewLayout.astro';
+import HeroSection from '../../components/sections/hero/HeroSection.astro';
+import UseCasesSection from '../../components/sections/use-cases/UseCasesSection.astro';
+import ProblemsSection from '../../components/sections/problems/ProblemsSection.astro';
+import OriginSection from '../../components/sections/origin/OriginSection.astro';
+import ComparisonSection from '../../components/sections/comparison/ComparisonSection.astro';
+import ProcessSection from '../../components/sections/process/ProcessSection.astro';
+import PricingSection from '../../components/sections/pricing/PricingSection.astro';
+import DemoSection from '../../components/sections/demo/DemoSection.astro';
+import PlatformSection from '../../components/sections/platform/PlatformSection.astro';
+import KnowledgeBaseSection from '../../components/sections/knowledge-base/KnowledgeBaseSection.astro';
+import ArchitectureSection from '../../components/sections/architecture/ArchitectureSection.astro';
+import FAQSection from '../../components/sections/faqs/FAQSection.astro';
+import AuthorSection from '../../components/sections/author/AuthorSection.astro';
+import ChangelogSection from '../../components/sections/changelog/ChangelogSection.astro';
+import TopAppBar from '../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../components/sections/footer/Footer.astro';
+
+const sections = [
+  { id: 'hero', name: 'HeroSection', collection: 'hero', anchor: 'HeroSection' },
+  { id: 'use-cases', name: 'UseCasesSection', collection: 'use-cases (+ use-cases-examples)', anchor: 'UseCasesSection' },
+  { id: 'problems', name: 'ProblemsSection', collection: 'problems', anchor: 'ProblemsSection' },
+  { id: 'origin', name: 'OriginSection', collection: 'origin', anchor: 'OriginSection' },
+  { id: 'comparison', name: 'ComparisonSection', collection: 'comparison', anchor: 'ComparisonSection' },
+  { id: 'process', name: 'ProcessSection', collection: 'process', anchor: 'ProcessSection' },
+  { id: 'pricing', name: 'PricingSection', collection: 'pricing', anchor: 'PricingSection' },
+  { id: 'demo', name: 'DemoSection', collection: 'demo', anchor: 'DemoSection' },
+  { id: 'platform', name: 'PlatformSection', collection: 'platform', anchor: 'PlatformSection' },
+  { id: 'knowledge-base', name: 'KnowledgeBaseSection', collection: 'knowledge-base', anchor: 'KnowledgeBaseSection' },
+  { id: 'architecture', name: 'ArchitectureSection', collection: 'architecture', anchor: 'ArchitectureSection' },
+  { id: 'faqs', name: 'FAQSection', collection: 'faqs', anchor: 'FAQSection' },
+  { id: 'author', name: 'AuthorSection', collection: 'author', anchor: 'AuthorSection' },
+  { id: 'changelog', name: 'ChangelogSection', collection: 'changelog', anchor: 'ChangelogSection' },
+  { id: 'top-app-bar', name: 'TopAppBar', collection: 'nav', anchor: 'TopAppBar' },
+  { id: 'footer', name: 'Footer', collection: 'footer', anchor: 'Footer' },
+];
+---
+
+<PreviewLayout title="Sections" current="sections">
+  <div class="bg-foreground text-background py-6 sticky top-[88px] z-40">
+    <div class="max-w-screen-2xl mx-auto px-6">
+      <p class="font-label text-xs uppercase tracking-widest text-background/60 mb-3">Jump to section</p>
+      <div class="flex flex-wrap gap-2">
+        {sections.map((s) => (
+          <a href={`#${s.anchor}`} class="px-3 py-1.5 bg-background/10 hover:bg-accent hover:text-foreground transition-colors font-label text-xs">
+            {s.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-3xl mx-auto px-6 py-12">
+    <p class="text-sm text-muted leading-relaxed">
+      Every section rendered live with its default content from <code class="font-label bg-surface-primary px-1">src/content/&lt;collection&gt;/pl/</code>. Layouts here match what ships on the site exactly. Headings of each preview block name the section + collection.
+    </p>
+  </div>
+
+  <div class="space-y-px bg-border">
+
+    <article id="HeroSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">HeroSection</h2>
+        <span class="font-label text-xs text-background/60">collection: hero</span>
+      </header>
+      <HeroSection />
+    </article>
+
+    <article id="TopAppBar" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">TopAppBar</h2>
+        <span class="font-label text-xs text-background/60">collection: nav</span>
+      </header>
+      <div class="border-y border-border"><TopAppBar /></div>
+    </article>
+
+    <article id="UseCasesSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">UseCasesSection</h2>
+        <span class="font-label text-xs text-background/60">collections: use-cases + use-cases-examples</span>
+      </header>
+      <UseCasesSection />
+    </article>
+
+    <article id="ProcessSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ProcessSection</h2>
+        <span class="font-label text-xs text-background/60">collection: process</span>
+      </header>
+      <ProcessSection />
+    </article>
+
+    <article id="PricingSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">PricingSection</h2>
+        <span class="font-label text-xs text-background/60">collection: pricing</span>
+      </header>
+      <PricingSection />
+    </article>
+
+    <article id="DemoSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">DemoSection</h2>
+        <span class="font-label text-xs text-background/60">collection: demo</span>
+      </header>
+      <DemoSection />
+    </article>
+
+    <article id="PlatformSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">PlatformSection</h2>
+        <span class="font-label text-xs text-background/60">collection: platform</span>
+      </header>
+      <PlatformSection />
+    </article>
+
+    <article id="ProblemsSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ProblemsSection</h2>
+        <span class="font-label text-xs text-background/60">collection: problems</span>
+      </header>
+      <ProblemsSection />
+    </article>
+
+    <article id="OriginSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">OriginSection</h2>
+        <span class="font-label text-xs text-background/60">collection: origin</span>
+      </header>
+      <OriginSection />
+    </article>
+
+    <article id="ArchitectureSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ArchitectureSection</h2>
+        <span class="font-label text-xs text-background/60">collection: architecture</span>
+      </header>
+      <ArchitectureSection />
+    </article>
+
+    <article id="ComparisonSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ComparisonSection</h2>
+        <span class="font-label text-xs text-background/60">collection: comparison</span>
+      </header>
+      <ComparisonSection />
+    </article>
+
+    <article id="KnowledgeBaseSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">KnowledgeBaseSection</h2>
+        <span class="font-label text-xs text-background/60">collection: knowledge-base</span>
+      </header>
+      <KnowledgeBaseSection />
+    </article>
+
+    <article id="FAQSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">FAQSection</h2>
+        <span class="font-label text-xs text-background/60">collection: faqs</span>
+      </header>
+      <FAQSection />
+    </article>
+
+    <article id="AuthorSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">AuthorSection</h2>
+        <span class="font-label text-xs text-background/60">collection: author</span>
+      </header>
+      <AuthorSection />
+    </article>
+
+    <article id="ChangelogSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ChangelogSection</h2>
+        <span class="font-label text-xs text-background/60">collection: changelog</span>
+      </header>
+      <ChangelogSection />
+    </article>
+
+    <article id="Footer" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">Footer</h2>
+        <span class="font-label text-xs text-background/60">collection: footer</span>
+      </header>
+      <Footer />
+    </article>
+
+  </div>
+</PreviewLayout>
