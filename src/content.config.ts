@@ -82,6 +82,7 @@ const demo = defineCollection({
       label: z.string(),
       title: z.string(),
       description: z.string(),
+      shape: z.string(),
     })),
     cta: linkSchema.optional(),
   }),

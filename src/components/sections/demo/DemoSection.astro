@@ -1,0 +1,60 @@
+---
+import { getEntry } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-10.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import DemoStage from './DemoStage.astro';
+
+const { id } = Astro.props;
+
+const locale = getCurrentLocale();
+const entry = await getEntry('demo', locale);
+const { badge, heading, intro, stages, cta } = entry!.data;
+---
+
+<section id={id} class="py-20 md:py-28 px-6 bg-surface-primary">
+  <div class="max-w-screen-2xl mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      <div class="lg:col-span-7">
+        <SectionWithIcon icon={sectionIcon}>
+          <Fragment slot="header">
+            <span class="font-label text-primary text-sm mb-4">{badge}</span>
+            <h2 class="font-headline font-bold text-3xl md:text-5xl tracking-tight leading-[1.1] text-foreground" set:html={heading}></h2>
+            <p class="text-muted text-lg leading-relaxed max-w-2xl mt-4">
+              {intro}
+            </p>
+          </Fragment>
+
+          <div class="space-y-8">
+            <div class="flex flex-col items-start gap-4">
+              {cta && (
+                <div class="flex flex-wrap items-center gap-4">
+                  <a href={cta.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-3 bg-primary text-on-primary font-label font-bold text-base px-10 py-4 hover:bg-primary-dark transition-colors">
+                    {cta.label}
+                    <span class="material-symbols-outlined text-xl" aria-hidden="true">open_in_new</span>
+                  </a>
+                </div>
+              )}
+              <div class="flex flex-wrap items-center gap-6">
+                <a href="https://cart.creativesparks.pl/checkout/ux-design-lead-ngo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                  <span class="material-symbols-outlined text-lg" aria-hidden="true">download</span>
+                  Pobierz demo →
+                </a>
+                <a href="/ux-designer/instrukcja" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform" data-umami-event="Demo Instrukcja Link">
+                  <span class="material-symbols-outlined text-lg" aria-hidden="true">description</span>
+                  Jak pracować z asystentem →
+                </a>
+              </div>
+            </div>
+          </div>
+        </SectionWithIcon>
+      </div>
+
+      <div class="lg:col-span-5 space-y-4">
+        {stages.map((stage) => (
+          <DemoStage label={stage.label} title={stage.title} description={stage.description} shape={stage.shape} />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

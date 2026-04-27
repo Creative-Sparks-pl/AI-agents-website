@@ -1,16 +1,19 @@
 badge: Wypróbuj za darmo
-heading: Przetestuj asystenta na żywym projekcie dla NGO.
+heading: Przetestuj asystenta<br>na żywym projekcie dla NGO.
 intro: Wersja demo zawiera wiedzę tylko o stronach NGO i prowadzi Cię przez 3 etapy. Opisz swoją organizację lub użyj gotowego scenariusza.
 stages:
   - label: Etap 1
     title: Discovery
     description: Zrozum projekt, odbiorców i cele organizacji.
+    shape: cube
   - label: Etap 2
     title: Strategia
     description: Zaplanuj strukturę i przekaz strony nonprofitowej.
+    shape: diamond
   - label: Etap 3
     title: Wireframing
     description: Wireframe z realnym copy, gotowy do designu. Domena ograniczona do stron nonprofitowych.
+    shape: grid
 cta:
   label: Uruchom w ChatGPT
   href: https://chatgpt.com/g/g-69c113abc168819180640bbac04e29ca-ux-designer
