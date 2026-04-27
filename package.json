@@ -19,6 +19,7 @@
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
+    "@astrojs/mdx": "^5.0.4",
     "@playwright/test": "^1.58.2"
   }
 }

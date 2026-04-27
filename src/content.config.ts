@@ -196,7 +196,7 @@ const changelog = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/changelog' }),
   schema: z.object({
     version: z.string(),
-    date: z.coerce.date(),
+    date: z.string(),
     title: z.string(),
     description: z.string(),
     changes: z.array(z.string()),

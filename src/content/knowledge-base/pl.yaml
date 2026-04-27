@@ -1,0 +1,92 @@
+badge: Baza wiedzy
+heading: Pod spodem siedzi baza wiedzy, którą jako UX Design Lead zbierałem latami.
+intro: "92 pliki wiedzy z metodologią, gotowymi wzorcami i przykładami. 14+ obszarów: od brand strategy po accessibility."
+pageTypes:
+  - name: B2B SaaS
+    sub: Produkty subskrypcyjne
+  - name: B2B Services
+    sub: Agencje, konsulting
+  - name: B2B Industrial
+    sub: Producenci, dystrybutorzy
+  - name: E-commerce
+    sub: Sklepy online, DTC
+  - name: Portfolio
+    sub: Studia, freelancerzy
+  - name: Local Business
+    sub: Usługi lokalne
+  - name: Marketplace
+    sub: Platformy dwustronne
+  - name: Community
+    sub: Grupy, fora
+  - name: Course
+    sub: Kursy, szkolenia
+  - name: Media
+    sub: Wydawcy, blogi
+  - name: Event
+    sub: Konferencje
+  - name: Nonprofit
+    sub: Fundacje, NGO
+  - name: Enterprise
+    sub: Narzędzia korporacyjne
+  - name: Government
+    sub: Instytucje publiczne
+  - name: Documentation
+    sub: Bazy wiedzy
+  - name: Service Utility
+    sub: Narzędzia online
+frameworks:
+  - name: Design Psychology
+    sub: Don Norman
+  - name: Hierarchy of User Needs
+    sub: Aarron Walter
+  - name: Usability Heuristics
+    sub: Jakob Nielsen
+  - name: LIFT Model
+    sub: Conversion Optimization
+  - name: CCD
+    sub: Customer Centric Design
+  - name: Emotional Targeting
+    sub: 223 triggers
+  - name: Buyer Legends
+    sub: Narrative framing
+  - name: FAST Architecture
+    sub: Persuasion sequencing
+  - name: Narrative Arc
+    sub: Hook, tension, evidence, resolution
+  - name: ResearchXL
+    sub: Structured UX research
+  - name: Messaging Hierarchy
+    sub: B2B 5-layer model
+  - name: Awareness Model
+    sub: 5 poziomów świadomości
+  - name: Funnel Psychology
+    sub: Awareness, consideration, decision
+patterns:
+  - name: Hero
+    sub: Warianty otwarcia strony
+  - name: Nawigacja
+    sub: Sticky, mega menu, mobile
+  - name: Social proof
+    sub: Testimoniale, loga, case study
+  - name: FAQ / obiekcje
+    sub: Accordion, 4 bariery zakupowe
+  - name: Formularze
+    sub: Lead capture, kontakt, RFQ
+  - name: Cennik
+    sub: Tiery, anchor pricing, decoy
+  - name: Porównanie
+    sub: Tabele vs. konkurencja
+  - name: Case study
+    sub: Wynik + cytat + metryki
+  - name: Pricing page
+    sub: Psychologia cen, tiery
+  - name: Comparison
+    sub: vs. pages, switcher proof
+  - name: Trust bar
+    sub: Loga, badges, certyfikaty
+  - name: Stats block
+    sub: Metryki, skala, impact
+  - name: Sticky CTA
+    sub: Floating, bottom bar
+  - name: Mid-page CTA
+    sub: Kontekstowe wezwanie

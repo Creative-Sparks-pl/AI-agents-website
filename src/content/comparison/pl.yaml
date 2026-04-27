@@ -1,0 +1,121 @@
+badge: Porównanie
+heading: Czym to się różni od ChatGPT, promptów, szablonów i konsultanta UX?
+columns:
+  - key: agent
+    label: Asystent UX
+    highlight: true
+  - key: chatbot
+    label: ChatGPT / Chatboty
+    highlight: false
+  - key: prompts
+    label: Kolekcje promptów
+    highlight: false
+  - key: templates
+    label: Szablony UI
+    highlight: false
+  - key: consultant
+    label: Konsultant UX
+    highlight: false
+rows:
+  - feature: Pełen proces UX
+    cells:
+      agent:
+        status: "yes"
+        text: 6 workflowów end-to-end
+      chatbot:
+        status: "no"
+        text: odpowiedzi bez procesu
+      prompts:
+        status: "no"
+        text: fragmenty bez kontekstu
+      templates:
+        status: "no"
+        text: wygląd bez procesu
+      consultant:
+        status: "yes"
+        text: pełen cykl
+  - feature: Realne pliki
+    cells:
+      agent:
+        status: "yes"
+        text: .md, .xlsx
+      chatbot:
+        status: "no"
+        text: wiadomości czatowe
+      prompts:
+        status: "no"
+        text: prompty
+      templates:
+        status: "no"
+        text: pliki graficzne
+      consultant:
+        status: "yes"
+        text: dokumenty
+  - feature: Kontekst sesji
+    cells:
+      agent:
+        status: "yes"
+        text: pliki trwałe
+      chatbot:
+        status: "no"
+        text: każda sesja od zera
+      prompts:
+        status: "no"
+        text: każdy prompt od zera
+      templates:
+        status: "na"
+        text: n/d
+      consultant:
+        status: "yes"
+        text: w głowie konsultanta
+  - feature: Decyzje
+    cells:
+      agent:
+        status: "yes"
+        text: opcje z trade-off
+      chatbot:
+        status: "no"
+        text: brak
+      prompts:
+        status: "no"
+        text: brak
+      templates:
+        status: "no"
+        text: brak
+      consultant:
+        status: "yes"
+        text: spotkania / konsultacje
+  - feature: Realny copy
+    cells:
+      agent:
+        status: "yes"
+        text: w języku projektu
+      chatbot:
+        status: "partial"
+        text: generyczny
+      prompts:
+        status: "no"
+        text: szablonowy
+      templates:
+        status: "no"
+        text: lorem ipsum
+      consultant:
+        status: "yes"
+        text: profesjonalny
+  - feature: Koszt
+    cells:
+      agent:
+        status: "price"
+        text: jednorazowy
+      chatbot:
+        status: "price"
+        text: ~100 zł/mies.
+      prompts:
+        status: "price"
+        text: 50–300 zł
+      templates:
+        status: "price"
+        text: 100–500 zł
+      consultant:
+        status: "price"
+        text: 5 000–20 000 zł

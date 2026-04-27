@@ -38,3 +38,6 @@ Thumbs.db
 .idea/
 
 desktop.ini
+
+# Workflow tooling
+.wm-doc-graph.yaml

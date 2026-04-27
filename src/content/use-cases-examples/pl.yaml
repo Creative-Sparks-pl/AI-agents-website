@@ -1,0 +1,33 @@
+examples:
+  - label: Plan strony
+    href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.0#heading=h.subsvx34ajvb'
+    icon: hub
+    sub: Sitemap z notatkami i voice brief
+  - label: Wireframe HTML
+    href: /examples/uxd-product-website-wireframe.html
+    icon: web
+    sub: Interaktywna makieta lo-fi w przeglądarce
+  - label: Wireframe w Google Doc
+    href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.ekvmpfo1wwbv#heading=h.ogx4l5ybijpi'
+    icon: description
+    sub: Wireframe z realnym copy i uzasadnieniem sekcji
+  - label: Wireframe w Figma AI
+    href: 'https://www.figma.com/make/OSB3mL1TOg5r9CF1gwXfGy/Product-website-wireframe?t=lwcLAZIDfSyJYvrE-20&fullscreen=1'
+    icon: brush
+    sub: 'Wygenerowany z wireframe''u przez Figma AI'
+  - label: Project context
+    href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.1563r8rcgwei#heading=h.k41uisqxr9s9'
+    icon: description
+    sub: 'Persony, cele, top taski — gotowy brief'
+  - label: Decision log
+    href: 'https://docs.google.com/document/d/1eVjPWsIYMjJiiKysCNgyAH7wA-Raddr57Qc3La_zypw/edit?tab=t.oe7dbonebttw#heading=h.y98b37evqd4c'
+    icon: history_edu
+    sub: Dokumentacja decyzji z uzasadnieniem
+  - label: Projekt w Google Stitch
+    href: /examples/Google-Stitich-v1.html
+    icon: web
+    sub: 'Design wygenerowany z wireframe''u'
+  - label: Projekt w Gemini
+    href: /examples/Google-Gemini-v1.html
+    icon: web
+    sub: 'Design wygenerowany z wireframe''u'

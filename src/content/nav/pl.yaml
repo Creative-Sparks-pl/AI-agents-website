@@ -1,0 +1,15 @@
+links:
+  - label: Dla kogo
+    href: '#zastosowanie'
+  - label: Cennik
+    href: '#cennik'
+  - label: Demo
+    href: '#demo'
+  - label: Jak to działa
+    href: '#proces'
+  - label: Porównanie
+    href: '#porownanie'
+
+cta:
+  label: Early access
+  href: '#cennik'

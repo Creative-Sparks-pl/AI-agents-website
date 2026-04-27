@@ -1,0 +1,12 @@
+---
+version: v3.5
+date: "2026-03-30"
+title: Reverse Wireframing — mapowanie istniejącej strony
+description: |
+  Nowy workflow: Reverse Wireframing — mapowanie istniejącej strony do lo-fi wireframes. Dostępne tylko w wersji IDE (Claude Code, Codex, Antigravity).
+changes:
+  - "Reverse Wireframing jako samodzielny punkt wejścia — nie wymaga wcześniejszego Discovery ani Strategy. Przyjmuje URL strony lub plik (HTML, sitemap, screenshoty)"
+  - "Automatyczny setup Firecrawl: asystentsprawdza dostępność, klonuje repozytorium, konfiguruje .env i uruchamia kontener Docker jeśli potrzeba"
+  - "Identyfikacja szablonów z poziomem pewności: Pewny / Wątpliwy / Pominięty — asystentloguje co rozważał i dlaczego wykluczył, użytkownik zatwierdza listę przed ekstrakcją"
+  - Wireframe odzwierciedla stan obecny bez oceny UX — ta sama jakość i format co workflow Wireframing, treść oryginalna ze strony
+---
