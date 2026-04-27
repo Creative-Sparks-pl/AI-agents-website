@@ -1,0 +1,19 @@
+---
+interface Props {
+  icon: string;
+  label: string;
+  title: string;
+  desc: string;
+}
+
+const { icon, label, title, desc } = Astro.props;
+---
+
+<div class="bg-white p-6 flex flex-col gap-3">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary text-lg" aria-hidden="true">{icon}</span>
+    <span class="font-label text-[10px] uppercase font-bold tracking-widest text-muted">{label}</span>
+  </div>
+  <h4 class="font-headline font-bold text-base">{title}</h4>
+  <p class="text-xs text-muted leading-relaxed">{desc}</p>
+</div>
