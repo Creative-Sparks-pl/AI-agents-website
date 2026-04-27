@@ -1,0 +1,68 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getCollection } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-12.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import PricingTier from './PricingTier.astro';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = getCurrentLocale();
+const plans = (await getCollection('pricing', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-white', className]}
+  id="cennik"
+  aria-labelledby="pricing-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <div class="inline-flex items-center gap-2 bg-primary/5 px-4 py-1.5 border border-primary/20 mb-6">
+          <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
+          <span class="text-sm font-bold text-primary font-label">Cennik early access. Limit 30 miejsc.</span>
+        </div>
+        <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          Jednorazowy zakup. 14 dni na zwrot.<br />Bez subskrypcji. Bez ukrytych kosztów.
+        </h2>
+      </Fragment>
+
+      <div class="text-lg font-body mb-6 max-w-3xl leading-relaxed">
+        <p class="text-muted">Konsultant UX za sam discovery i strategię weźmie 3 000–8 000 zł.</p>
+        <p class="text-muted">Samodzielne wypracowanie procesu to tygodnie prób i błędów.</p>
+        <p class="text-primary font-medium">Ten asystentdaje Ci sprawdzony proces za ułamek tej kwoty.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {plans.map((plan) => (
+          <PricingTier
+            name={plan.data.name}
+            sub={plan.data.sub}
+            oldPrice={plan.data.oldPrice}
+            price={plan.data.price}
+            highlight={plan.data.highlight}
+            features={plan.data.features}
+          />
+        ))}
+      </div>
+
+      <div class="mt-8 text-center max-w-2xl mx-auto">
+        <p class="text-sm text-muted font-label">
+          Jednorazowy zakup. Działa na Twoim koncie Claude, ChatGPT lub Gemini. Ceny early access — po zakończeniu early access wrócą do standardowych.
+        </p>
+        <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mt-3">
+          6 miesięcy aktualizacji — zobacz changelog
+          <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
+        </a>
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
