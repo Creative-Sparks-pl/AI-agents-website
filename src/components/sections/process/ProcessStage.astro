@@ -1,0 +1,153 @@
+---
+interface Props {
+  index: number;
+  title: string;
+  description: string;
+  output: string;
+  outputLink?: string;
+  outputIcon: string;
+  quote: string;
+  shape: string;
+}
+
+const { index, title, description, output, outputLink, outputIcon, quote, shape } = Astro.props;
+---
+
+<div class="bg-white p-10 flex flex-col gap-6">
+  <div class="flex items-start justify-between">
+    <div class={`process-shape process-shape--${shape}`} aria-hidden="true"></div>
+    <span class="font-label text-xs text-muted">{String(index + 1).padStart(2, '0')}</span>
+  </div>
+  <div class="space-y-4">
+    <h3 class="text-2xl md:text-3xl font-headline font-bold tracking-tight text-foreground">{title}</h3>
+    <p class="text-base font-body text-muted leading-relaxed">{description}</p>
+  </div>
+  <div class="pt-6 border-t border-border/20 space-y-3">
+    {outputLink ? (
+      <a href={outputLink} target="_blank" rel="noopener noreferrer" class="text-sm font-label font-bold text-primary inline-flex items-center gap-2 hover:translate-x-1 transition-transform">
+        <span class="material-symbols-outlined text-sm" data-icon={outputIcon} aria-hidden="true">{outputIcon}</span>
+        {output}
+        <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+      </a>
+    ) : (
+      <p class="text-sm font-label text-primary inline-flex items-center gap-2">
+        <span class="material-symbols-outlined text-sm" data-icon={outputIcon} aria-hidden="true">{outputIcon}</span>
+        {output}
+      </p>
+    )}
+    <p class="text-sm font-label text-muted">{quote}</p>
+  </div>
+</div>
+
+<style is:global>
+  .process-shape {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .process-shape--cube {
+    position: relative;
+  }
+  .process-shape--cube::after {
+    content: '';
+    position: absolute;
+    inset: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  .process-shape--diamond {
+    transform: rotate(45deg);
+    width: 40px;
+    height: 40px;
+    margin: 4px;
+  }
+  .process-shape--diamond::after {
+    content: '';
+    position: absolute;
+    inset: 8px;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+
+  .process-shape--circle {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .process-shape--circle::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--color-primary);
+  }
+
+  .process-shape--grid {
+    position: relative;
+    overflow: hidden;
+  }
+  .process-shape--grid::before,
+  .process-shape--grid::after {
+    content: '';
+    position: absolute;
+    background: color-mix(in srgb, var(--color-primary) 20%, transparent);
+  }
+  .process-shape--grid::before {
+    width: 1px;
+    height: 100%;
+    left: 50%;
+    top: 0;
+  }
+  .process-shape--grid::after {
+    width: 100%;
+    height: 1px;
+    top: 50%;
+    left: 0;
+  }
+
+  .process-shape--bars {
+    position: relative;
+    padding: 10px;
+  }
+  .process-shape--bars::before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    width: 60%;
+    height: 3px;
+    top: 13px;
+    background: color-mix(in srgb, var(--color-primary) 30%, transparent);
+    box-shadow: 0 10px 0 color-mix(in srgb, var(--color-primary) 55%, transparent);
+  }
+  .process-shape--bars::after {
+    content: '';
+    position: absolute;
+    left: 10px;
+    width: 50%;
+    height: 3px;
+    bottom: 11px;
+    background: var(--color-primary);
+  }
+
+  .process-shape--nested {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+  }
+  .process-shape--nested::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    border: 1px solid color-mix(in srgb, var(--color-primary) 40%, transparent);
+  }
+  .process-shape--nested::before {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--color-primary);
+  }
+</style>
