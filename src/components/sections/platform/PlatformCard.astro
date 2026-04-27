@@ -1,0 +1,17 @@
+---
+interface Props {
+  icon: string;
+  name: string;
+  desc: string;
+}
+
+const { icon, name, desc } = Astro.props;
+---
+
+<div class="bg-white p-8 flex flex-col gap-6 group hover:bg-primary transition-colors duration-300">
+  <span class="material-symbols-outlined text-primary text-2xl group-hover:text-white" data-icon={icon} aria-hidden="true">{icon}</span>
+  <div>
+    <h4 class="font-headline font-bold text-base mb-1 group-hover:text-white transition-colors">{name}</h4>
+    <p class="text-sm text-muted leading-snug group-hover:text-white/70 transition-colors">{desc}</p>
+  </div>
+</div>

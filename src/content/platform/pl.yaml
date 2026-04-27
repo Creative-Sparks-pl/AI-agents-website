@@ -1,5 +1,7 @@
 badge: Platformy
-heading: Jeden folder. Działa na platformach, których już używasz.
+heading: Jeden folder.<br />Działa na platformach, których już używasz.
+contentsHeading: W paczce kupujesz kompletne narzędzie.
+contentsNote: Brak dodatkowych zależności. Wgrywasz folder, otwierasz platformę i zaczynasz pierwszy projekt.
 platforms:
   - icon: public
     name: Claude / ChatGPT w przeglądarce

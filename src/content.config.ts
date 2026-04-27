@@ -94,6 +94,8 @@ const platform = defineCollection({
     badge: z.string(),
     heading: z.string(),
     intro: z.string().optional(),
+    contentsHeading: z.string(),
+    contentsNote: z.string(),
     platforms: z.array(z.object({
       icon: z.string(),
       name: z.string(),
