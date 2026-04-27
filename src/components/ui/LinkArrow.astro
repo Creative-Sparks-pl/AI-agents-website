@@ -1,0 +1,36 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'a'> {
+  href: string;
+  icon?: string;
+  trailingIcon?: string;
+  external?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  icon,
+  trailingIcon = 'arrow_forward',
+  external = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<a
+  href={href}
+  class:list={[
+    'inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform',
+    className,
+  ]}
+  {...externalAttrs}
+  {...rest}
+>
+  {icon && <span class="material-symbols-outlined text-lg" aria-hidden="true">{icon}</span>}
+  <slot />
+  {trailingIcon && <span class="material-symbols-outlined text-sm" aria-hidden="true">{trailingIcon}</span>}
+</a>

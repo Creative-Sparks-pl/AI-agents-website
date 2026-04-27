@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 import Logo from '../../../assets/logo.svg?raw';
+import Button from '../../ui/Button.astro';
 import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 
 interface NavLink {
@@ -48,12 +49,8 @@ const {
       ))}
     </div>
 
-    <a
-      href={ctaHref}
-      class="hidden sm:inline-flex bg-primary text-white font-bold px-8 py-3 hover:bg-black transition-all duration-300 text-[13px]"
-      data-umami-event="Nav CTA"
-    >
+    <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" data-umami-event="Nav CTA">
       {ctaLabel}
-    </a>
+    </Button>
   </nav>
 </header>

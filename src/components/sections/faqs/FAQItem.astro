@@ -1,4 +1,6 @@
 ---
+import LinkArrow from '../../ui/LinkArrow.astro';
+
 interface Link {
   label: string;
   href: string;
@@ -30,10 +32,9 @@ const { index, q, link } = Astro.props;
   <div class="px-6 pb-10 md:pb-12 md:pl-[152px] md:pr-10">
     <p class="text-muted text-lg leading-relaxed max-w-3xl"><slot /></p>
     {link && (
-      <a href={link.href} class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mt-4">
+      <LinkArrow href={link.href} class="mt-4">
         {link.label}
-        <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
-      </a>
+      </LinkArrow>
     )}
   </div>
 </details>

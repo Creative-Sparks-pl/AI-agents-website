@@ -70,6 +70,17 @@ The design deliberately uses zero border-radius everywhere except circular eleme
 
 ## 3. Components (ui/ primitives)
 
+The `ui/` directory holds four primitives. Each is used in ≥2 sections, satisfying T2 promotion.
+
+| Component | Usage | Purpose |
+|---|---|---|
+| `Button` | HeroSection, PricingTier, DemoSection, TopAppBar | Filled primary CTA. Renders as `<a>` (with `href`) or `<button>`. Sizes `sm`/`md`/`lg`, optional `block`, optional `trailingIcon`, optional `external`. |
+| `LinkArrow` | ArchitectureSection, FAQItem, PricingSection, CaseCard, DemoSection | Text-only directional link with arrow icon. Hover translates 1px right. Optional leading `icon`, customizable `trailingIcon` (defaults to `arrow_forward`). |
+| `ChecklistItem` | HeroSection (6 uses) and any feature-with-description pattern | Accent-bullet item with title + slotted body. |
+| `SectionWithIcon` | Every content section (51 usages) | Layout primitive with icon + header slot + body slot. Two layouts: `stacked` (default) and `side-by-side`. |
+
+
+
 ### 3.1 ChecklistItem
 
 **Purpose.** `ChecklistItem` renders a single checklist entry consisting of a circular accent-colored bullet with an embedded checkmark icon, a bold title line, and a body paragraph delivered via slot. It is used in the hero section's social-proof checklist and anywhere a checkmark-annotated feature point is needed.

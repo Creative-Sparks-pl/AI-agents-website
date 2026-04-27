@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import LinkArrow from '../../ui/LinkArrow.astro';
 import sectionIcon from '../../../assets/icons/shape-9.svg';
 import { getCurrentLocale } from '../../../lib/i18n';
 import DecisionCard from './DecisionCard.astro';
@@ -35,10 +36,9 @@ const decisions = (await getCollection('architecture', (e) => e.id.startsWith(`$
       <p class="text-lg text-muted leading-relaxed mb-4 max-w-3xl">
         Asystent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.
       </p>
-      <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mb-10">
+      <LinkArrow href="/ux-designer/changelog" class="mb-10">
         Historia zmian i aktualizacji
-        <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
-      </a>
+      </LinkArrow>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div class="lg:col-span-5 bg-primary text-white p-8">

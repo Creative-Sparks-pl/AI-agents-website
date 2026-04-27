@@ -2,6 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import LinkArrow from '../../ui/LinkArrow.astro';
 import sectionIcon from '../../../assets/icons/shape-12.svg';
 import { getCurrentLocale } from '../../../lib/i18n';
 import PricingTier from './PricingTier.astro';
@@ -58,10 +59,9 @@ const plans = (await getCollection('pricing', (e) => e.id.startsWith(`${locale}/
         <p class="text-sm text-muted font-label">
           Jednorazowy zakup. Działa na Twoim koncie Claude, ChatGPT lub Gemini. Ceny early access — po zakończeniu early access wrócą do standardowych.
         </p>
-        <a href="/ux-designer/changelog" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform mt-3">
+        <LinkArrow href="/ux-designer/changelog" class="mt-3">
           6 miesięcy aktualizacji — zobacz changelog
-          <span class="material-symbols-outlined text-sm" aria-hidden="true">arrow_forward</span>
-        </a>
+        </LinkArrow>
       </div>
     </SectionWithIcon>
   </div>

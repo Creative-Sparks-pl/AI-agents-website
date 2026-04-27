@@ -2,9 +2,38 @@
 import PreviewLayout from '../../layouts/PreviewLayout.astro';
 import ChecklistItem from '../../components/ui/ChecklistItem.astro';
 import SectionWithIcon from '../../components/ui/SectionWithIcon.astro';
+import Button from '../../components/ui/Button.astro';
+import LinkArrow from '../../components/ui/LinkArrow.astro';
 import sampleIcon from '../../assets/icons/shape-3.svg';
 
 const components = [
+  {
+    name: 'Button',
+    anchor: 'button',
+    purpose: 'Filled primary CTA. Renders as <a> when href is provided, otherwise <button>. Three sizes (sm / md / lg) and a block variant for full-width use inside cards. Used for hero CTAs, pricing tier CTAs, demo CTAs, and the nav bar.',
+    props: [
+      { prop: 'href', type: 'string', def: 'undefined', desc: 'If set, renders as <a>; if absent, renders as <button>.' },
+      { prop: 'size', type: '\'sm\' | \'md\' | \'lg\'', def: '\'md\'', desc: 'sm = nav bar, md = pricing/demo CTAs, lg = hero CTA.' },
+      { prop: 'block', type: 'boolean', def: 'false', desc: 'Full-width with centered content (used inside pricing tier cards).' },
+      { prop: 'trailingIcon', type: 'string', def: 'undefined', desc: 'Material symbol name placed after the slot.' },
+      { prop: 'external', type: 'boolean', def: 'false', desc: 'Adds target="_blank" + rel="noopener noreferrer" when href is set.' },
+      { prop: 'class', type: 'string', def: '—', desc: 'Append wrapper classes.' },
+    ],
+    usage: '5 instances site-wide. Used by HeroSection, PricingTier, DemoSection, TopAppBar (T2 met).',
+  },
+  {
+    name: 'LinkArrow',
+    anchor: 'link-arrow',
+    purpose: 'Text-only directional link with an arrow icon. Hover translates 1px right. Used for tertiary actions, secondary CTAs in dense areas (FAQ, demo, case studies).',
+    props: [
+      { prop: 'href', type: 'string', def: '—', desc: 'Required link target.' },
+      { prop: 'icon', type: 'string', def: 'undefined', desc: 'Optional material symbol name placed before the slot.' },
+      { prop: 'trailingIcon', type: 'string', def: '\'arrow_forward\'', desc: 'Material symbol name placed after the slot. Set explicitly to \'trending_flat\' on case study links.' },
+      { prop: 'external', type: 'boolean', def: 'false', desc: 'Adds target="_blank" + rel="noopener noreferrer".' },
+      { prop: 'class', type: 'string', def: '—', desc: 'Append wrapper classes.' },
+    ],
+    usage: '8+ instances across ArchitectureSection, FAQItem, PricingSection, CaseCard, DemoSection (T2 met).',
+  },
   {
     name: 'ChecklistItem',
     anchor: 'checklist-item',
@@ -102,6 +131,36 @@ const components = [
         <div>
           <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-3">Live preview</h3>
           <div class="border border-border p-12 bg-surface">
+            {c.name === 'Button' && (
+              <div class="space-y-10">
+                <div>
+                  <p class="font-label text-[10px] uppercase tracking-widest text-muted mb-4">Sizes</p>
+                  <div class="flex flex-wrap items-center gap-4">
+                    <Button href="#" size="sm">Early access</Button>
+                    <Button href="#" size="md" trailingIcon="lock_open">Odblokuj early access</Button>
+                    <Button href="#" size="lg" trailingIcon="lock_open">Odblokuj dostęp</Button>
+                  </div>
+                </div>
+                <div>
+                  <p class="font-label text-[10px] uppercase tracking-widest text-muted mb-4">block (inside a 280px container)</p>
+                  <div style="max-width:280px">
+                    <Button href="#" size="md" block trailingIcon="lock_open">Odblokuj early access</Button>
+                  </div>
+                </div>
+                <div>
+                  <p class="font-label text-[10px] uppercase tracking-widest text-muted mb-4">External link</p>
+                  <Button href="https://example.com" size="md" external trailingIcon="open_in_new">Open in new tab</Button>
+                </div>
+              </div>
+            )}
+            {c.name === 'LinkArrow' && (
+              <div class="space-y-6">
+                <LinkArrow href="#">Default — trailing arrow_forward</LinkArrow>
+                <LinkArrow href="#" icon="download">With leading icon (download)</LinkArrow>
+                <LinkArrow href="#" trailingIcon="trending_flat">Custom trailing icon (trending_flat — used on case study links)</LinkArrow>
+                <LinkArrow href="https://example.com" external icon="open_in_new" trailingIcon="trending_flat">External + leading + custom trailing</LinkArrow>
+              </div>
+            )}
             {c.name === 'ChecklistItem' && (
               <div class="grid grid-cols-1 md:grid-cols-2 gap-y-8 gap-x-12 max-w-3xl">
                 <ChecklistItem title="Profesjonalny proces UX">

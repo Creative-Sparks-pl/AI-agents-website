@@ -1,0 +1,56 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'size'> {
+  href?: string;
+  size?: Size;
+  trailingIcon?: string;
+  block?: boolean;
+  external?: boolean;
+  class?: string;
+}
+
+const {
+  href,
+  size = 'md',
+  trailingIcon,
+  block = false,
+  external = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const sizeClasses: Record<Size, string> = {
+  sm: 'px-8 py-3 text-[13px] font-bold',
+  md: 'px-10 py-4 text-base font-extrabold',
+  lg: 'px-12 py-6 text-xl font-extrabold',
+};
+
+const iconSize: Record<Size, string> = {
+  sm: 'text-base',
+  md: 'text-lg',
+  lg: 'text-xl',
+};
+
+const Tag = href ? 'a' : 'button';
+const externalAttrs = external && href ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<Tag
+  href={href}
+  class:list={[
+    block ? 'inline-flex w-full justify-center' : 'inline-flex',
+    'items-center gap-2 bg-primary text-white tracking-tight hover:bg-black transition-all duration-300',
+    sizeClasses[size],
+    className,
+  ]}
+  {...externalAttrs}
+  {...rest}
+>
+  <slot />
+  {trailingIcon && (
+    <span class:list={['material-symbols-outlined', iconSize[size]]} aria-hidden="true">{trailingIcon}</span>
+  )}
+</Tag>

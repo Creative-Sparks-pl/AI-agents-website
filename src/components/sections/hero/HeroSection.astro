@@ -1,6 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 import ChecklistItem from '../../ui/ChecklistItem.astro';
+import Button from '../../ui/Button.astro';
 import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -47,13 +48,9 @@ const { badge, headline, headlineEm, subheadline, checklist, cta, note } = entry
 
       <div class="flex flex-col items-start gap-4">
         <div>
-          <a
-            href={cta.href}
-            class="inline-block bg-primary text-white font-extrabold px-12 py-6 text-xl tracking-tight hover:bg-black transition-all duration-300"
-            data-umami-event="Hero CTA"
-          >
-            {cta.label}{cta.icon && <span class="material-symbols-outlined text-xl ml-2 align-middle" aria-hidden="true">{cta.icon}</span>}
-          </a>
+          <Button href={cta.href} size="lg" trailingIcon={cta.icon} data-umami-event="Hero CTA">
+            {cta.label}
+          </Button>
           {note && (
             <p class="mt-4 text-xs text-muted font-label max-w-sm">
               {note}
