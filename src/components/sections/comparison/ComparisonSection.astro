@@ -1,0 +1,58 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getEntry } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-5.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import ComparisonRow from './ComparisonRow.astro';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = getCurrentLocale();
+const entry = await getEntry('comparison', locale);
+const { badge, heading, columns, rows } = entry!.data;
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-white', className]}
+  aria-labelledby="comparison-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">{badge}</span>
+        <h2 id="comparison-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight" set:html={heading}></h2>
+      </Fragment>
+
+      <div class="overflow-x-auto">
+        <div class="min-w-[900px]">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr>
+                <th class="p-6 text-xs font-label text-muted"></th>
+                {columns.map((col) => (
+                  <th class:list={[
+                    'p-5 font-headline font-bold text-base',
+                    col.highlight ? 'bg-primary text-white' : 'text-muted'
+                  ]}>
+                    {col.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <ComparisonRow feature={row.feature} columns={columns} cells={row.cells} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>

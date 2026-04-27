@@ -1,0 +1,50 @@
+---
+interface Column {
+  key: string;
+  label: string;
+  highlight: boolean;
+}
+
+interface Cell {
+  status: string;
+  text: string;
+}
+
+interface Props {
+  feature: string;
+  columns: Column[];
+  cells: Record<string, Cell>;
+}
+
+const { feature, columns, cells } = Astro.props;
+
+const statusIcon = (status: string) => {
+  if (status === 'yes') return { icon: 'check_circle', class: 'text-primary' };
+  if (status === 'no') return { icon: 'close', class: 'text-muted/40' };
+  if (status === 'partial') return { icon: 'horizontal_rule', class: 'text-muted/40' };
+  if (status === 'na') return { icon: 'remove', class: 'text-muted/40' };
+  return null;
+};
+---
+
+<tr class="border-t border-border/20 hover:bg-white/50 transition-colors">
+  <td class="p-6 font-headline font-bold text-foreground">{feature}</td>
+  {columns.map((col) => {
+    const cell = cells[col.key];
+    const si = statusIcon(cell.status);
+    return (
+      <td class:list={['p-5', col.highlight ? 'bg-surface-primary' : '']}>
+        {cell.status === 'price' ? (
+          <span class:list={['text-sm', col.highlight ? 'font-medium text-foreground' : 'text-muted']}>
+            {cell.text}
+          </span>
+        ) : (
+          <div class:list={['flex items-start gap-2', !col.highlight && cell.status !== 'yes' ? 'opacity-50' : '']}>
+            {si && <span class:list={['material-symbols-outlined text-lg', si.class]} data-icon={si.icon} aria-hidden="true">{si.icon}</span>}
+            <span class:list={['text-sm', col.highlight ? 'font-medium text-foreground' : 'text-muted']}>{cell.text}</span>
+          </div>
+        )}
+      </td>
+    );
+  })}
+</tr>
