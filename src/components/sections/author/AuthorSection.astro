@@ -1,11 +1,10 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 import { Image } from 'astro:assets';
-import { getEntry } from 'astro:content';
 import authorPhoto from '../../../assets/author.webp';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-6.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 
 interface Props extends HTMLAttributes<'section'> {
   class?: string;
@@ -14,8 +13,8 @@ interface Props extends HTMLAttributes<'section'> {
 const { class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
-const entry = await getEntry('author', locale);
-const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, experienceLabel, experienceValue } = entry!.data;
+const entry = await requireEntry('author', locale);
+const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, experienceLabel, experienceValue } = entry.data;
 ---
 
 <section

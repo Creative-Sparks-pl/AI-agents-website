@@ -1,15 +1,14 @@
 ---
-import { getEntry } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-10.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 import DemoStage from './DemoStage.astro';
 
 const { id } = Astro.props;
 
 const locale = getCurrentLocale();
-const entry = await getEntry('demo', locale);
-const { badge, heading, intro, stages, cta } = entry!.data;
+const entry = await requireEntry('demo', locale);
+const { badge, heading, intro, stages, cta } = entry.data;
 ---
 
 <section id={id} class="py-20 md:py-28 px-6 bg-surface-primary">

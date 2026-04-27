@@ -1,8 +1,7 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { getEntry } from 'astro:content';
 import Logo from '../../../assets/logo.svg?raw';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 
 interface NavLink {
   label: string;
@@ -17,8 +16,8 @@ interface Props extends HTMLAttributes<'header'> {
 }
 
 const locale = getCurrentLocale();
-const entry = await getEntry('nav', locale);
-const defaults = entry!.data;
+const entry = await requireEntry('nav', locale);
+const defaults = entry.data;
 
 const {
   navLinks = defaults.links,

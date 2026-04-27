@@ -1,9 +1,8 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { getEntry } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-4.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 import KnowledgeColumn from './KnowledgeColumn.astro';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -13,8 +12,8 @@ interface Props extends HTMLAttributes<'section'> {
 const { class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
-const entry = await getEntry('knowledge-base', locale);
-const { badge, heading, intro, pageTypes, frameworks, patterns } = entry!.data;
+const entry = await requireEntry('knowledge-base', locale);
+const { badge, heading, intro, pageTypes, frameworks, patterns } = entry.data;
 ---
 
 <section

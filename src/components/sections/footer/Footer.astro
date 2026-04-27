@@ -1,11 +1,10 @@
 ---
-import { getEntry } from 'astro:content';
 import Logo from '../../../assets/logo.svg?raw';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 
 const locale = getCurrentLocale();
-const entry = await getEntry('footer', locale);
-const { links } = entry!.data;
+const entry = await requireEntry('footer', locale);
+const { links } = entry.data;
 ---
 
 <footer class="py-12 bg-white border-t border-border/20">

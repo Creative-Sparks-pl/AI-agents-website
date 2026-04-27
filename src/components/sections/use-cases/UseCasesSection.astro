@@ -1,9 +1,9 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-1.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 import ExampleCard from './ExampleCard.astro';
 import CaseCard from './CaseCard.astro';
 
@@ -14,8 +14,8 @@ interface Props extends HTMLAttributes<'section'> {
 const { class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
-const examplesEntry = await getEntry('use-cases-examples', locale);
-const examples = examplesEntry?.data.examples ?? [];
+const examplesEntry = await requireEntry('use-cases-examples', locale);
+const examples = examplesEntry.data.examples;
 const cases = (await getCollection('use-cases', (e) => e.id.startsWith(`${locale}/`)))
   .sort((a, b) => a.data.order - b.data.order);
 ---
