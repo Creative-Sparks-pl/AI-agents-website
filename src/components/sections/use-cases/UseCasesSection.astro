@@ -1,0 +1,70 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { getCollection, getEntry } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-1.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import ExampleCard from './ExampleCard.astro';
+import CaseCard from './CaseCard.astro';
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = getCurrentLocale();
+const examplesEntry = await getEntry('use-cases-examples', locale);
+const examples = examplesEntry?.data.examples ?? [];
+const cases = (await getCollection('use-cases', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<section
+  class:list={['py-20 md:py-28 px-6 bg-surface-primary', className]}
+  aria-labelledby="use-cases-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">Zastosowanie</span>
+        <h2 id="use-cases-heading" class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+          Co możesz z tym zrobić?<br class="hidden md:block" /> Ta strona to jeden z przykładów.
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col">
+        <div class="border-b border-border/30 overflow-hidden bg-white p-6 md:p-10">
+          <div class="flex flex-col md:flex-row gap-4 md:gap-12 md:items-start">
+            <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4] shrink-0">
+              Przykłady
+            </span>
+            <div class="flex flex-col gap-10 flex-1">
+              <h3 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                Przykłady efektów współpracy z&nbsp;asystentem&nbsp;UX
+              </h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px">
+                {examples.map((ex) => (
+                  <ExampleCard label={ex.label} href={ex.href} icon={ex.icon} sub={ex.sub} />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {cases.map((entry) => (
+          <CaseCard
+            number={entry.data.number}
+            audience={entry.data.audience}
+            title={entry.data.title}
+            description={entry.body?.trim() ?? ''}
+            bullets={entry.data.bullets}
+            quote={entry.data.quote}
+            links={entry.data.links}
+          />
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>

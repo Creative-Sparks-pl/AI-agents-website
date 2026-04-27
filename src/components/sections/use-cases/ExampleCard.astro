@@ -1,0 +1,19 @@
+---
+interface Props {
+  label: string;
+  href: string;
+  icon?: string;
+  sub?: string;
+}
+
+const { label, href, icon, sub } = Astro.props;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" class="group/card flex flex-col gap-2 bg-surface-primary p-5 hover:bg-surface transition-colors">
+  <div class="flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight">
+    {icon && <span class="material-symbols-outlined text-sm" data-icon={icon} aria-hidden="true">{icon}</span>}
+    {label}
+    <span class="material-symbols-outlined text-sm opacity-0 group-hover/card:opacity-100 transition-opacity" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+  </div>
+  {sub && <p class="text-xs text-muted font-label">{sub}</p>}
+</a>
