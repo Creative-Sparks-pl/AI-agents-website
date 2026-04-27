@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-3.svg';
+import { getCurrentLocale } from '../../../lib/i18n';
+import ChangelogEntry from './ChangelogEntry.astro';
+
+const locale = getCurrentLocale();
+const entries = (await getCollection('changelog', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => b.data.date.localeCompare(a.data.date));
+---
+
+<section class="py-20 md:py-28 px-6 bg-surface-primary" id="changelog">
+  <div class="max-w-screen-2xl mx-auto">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="font-label text-primary text-sm mb-4">Changelog</span>
+        <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+          Historia zmian
+        </h2>
+      </Fragment>
+
+      <div class="flex flex-col">
+        {entries.map((entry) => (
+          <ChangelogEntry
+            version={entry.data.version}
+            date={entry.data.date}
+            title={entry.data.title}
+            description={entry.data.description}
+            changes={entry.data.changes}
+          />
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
