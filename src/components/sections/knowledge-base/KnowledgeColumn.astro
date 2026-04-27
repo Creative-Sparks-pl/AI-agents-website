@@ -1,0 +1,33 @@
+---
+interface Item {
+  name: string;
+  sub: string;
+}
+
+interface Props {
+  heading: string;
+  items: Item[];
+  extra?: string;
+}
+
+const { heading, items, extra } = Astro.props;
+---
+
+<div>
+  <h3 class="font-label font-bold text-lg text-primary tracking-tight mb-6">
+    {heading}
+  </h3>
+  <ul class="space-y-1">
+    {items.map((item) => (
+      <li class="py-4 border-b border-border/20">
+        <span class="text-foreground font-bold text-sm block">{item.name}</span>
+        <span class="text-xs font-label text-muted">{item.sub}</span>
+      </li>
+    ))}
+    {extra && (
+      <li class="py-4 border-b border-border/20">
+        <span class="font-label text-sm text-primary font-bold">{extra}</span>
+      </li>
+    )}
+  </ul>
+</div>
