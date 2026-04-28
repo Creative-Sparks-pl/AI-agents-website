@@ -14,7 +14,7 @@ stages:
     title: Benchmark vs standardy branżowe
     description: Każdy wniosek prezentuje stan obecny, standard branżowy dla tego typu strony z oznaczonym poziomem pewności.
     shape: grid
-note: Bez konta. Bez maila. Audyt dla stron studia, freelancera, produktów cyfrowych. Decyzja o zakupie po realnej próbie na własnym projekcie.
+note: Audyt dla stron studia, freelancera, produktów cyfrowych. Decyzja o zakupie po realnej próbie na własnym projekcie.
 cta:
   label: Pobierz darmowy audyt
   href: https://cart.creativesparks.pl/checkout/ux-darmowy-audyt
