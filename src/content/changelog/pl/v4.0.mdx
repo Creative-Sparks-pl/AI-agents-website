@@ -1,0 +1,16 @@
+---
+version: v4.0
+date: "2026-04-24"
+title: Audyt strony, klikalne deliverables, ścieżka audyt → redesign
+description: |
+  Duża aktualizacja — nowy workflow audytu strony, automatyczne pobieranie istniejących stron, klikalne deliverables w przeglądarce, ścieżka audyt → redesign.
+changes:
+  - "<strong>Mapowanie istniejących stron do makiet — dokładniej i automatycznie.</strong> Agent czyta układ Twojej strony bezpośrednio z przeglądarki (nie zgaduje ze screenshotów), więc wireframe odzwierciedla rzeczywistą strukturę: hero, sekcje, kolumny, karty, nawigację. Działa też na stronach z dużą ilością JavaScriptu, które wcześniej traciły większość treści."
+  - "<strong>Web (Claude / ChatGPT / Gemini) — bez kopiuj-wklej.</strong> Agent sam pobiera stronę po URL i buduje mobilną makietę (~400px szerokości). Nie przerywa Cię prośbą o wklejenie zawartości. Pełną wersję desktopową dostaniesz w wersji IDE (Claude Code, Codex, Antigravity)."
+  - "<strong>Nowy workflow: Audyt strony.</strong> Wrzucasz URL — agent porównuje stronę z wiedzą o 17 typach stron (B2B Industrial, SaaS, ecommerce, portfolio, NGO, content oparty na danych i inne) i produkuje jeden plik HTML z dwoma deliverables: analizą architektury strony + adnotacjami na konkretnych elementach (gdzie brakuje wezwania do działania, czy ścieżka konwersji jest spójna, czy hero komunikuje propozycję wartości). Bez briefu, bez analytics, bez ankiet."
+  - "<strong>Sam decydujesz, co audytować.</strong> Tylko strona główna (rekomendacja, najszybciej), cały serwis (pełne pokrycie), albo własna lista podstron. Agent proponuje listę kandydatów na podstawie sitemap i wiedzy domenowej — Ty akceptujesz, edytujesz lub rezygnujesz."
+  - "<strong>Wnioski z audytu zasilają redesign.</strong> Jeśli po audycie chcesz przebudować stronę, wnioski (zaakceptowane / odrzucone / w dyskusji) automatycznie wpływają na kolejne kroki: plan informacji, dobór archetypu strony, anatomia każdego template'u. Nie musisz przepisywać ich ręcznie."
+  - "<strong>Deliverables w przeglądarce z klikalnym UI.</strong> Otwierasz audyt lub wireframe w przeglądarce — każdy wniosek jest klikalny (pokazuje się szczegół w lewym panelu), ma trzy guziki (zaakceptuj / odrzuć / oznacz do dyskusji), a na dole znajdziesz przycisk eksportu briefu decyzji jako Markdown. Wnioski są przywiązane do konkretnych elementów (np. hero, button, konkretna sekcja)."
+  - "<strong>Free Audit Demo — lekki wariant agenta dla portfolio i produktów cyfrowych.</strong> Pobiera URL, klasyfikuje stronę, produkuje krótki audyt strony głównej. Bez zakładania projektu, bez kontekstu — idealny do prezentacji możliwości lub szybkiego feedbacku."
+  - '<strong>Lepsza jakość tekstu w fundamentach komunikacji.</strong> Nazewnictwo grupy docelowej (ICP) wybierane z 6 metodologii — po roli, branży, sytuacji życiowej, triggerze. Nagłówki główne dobierane z 8 sprawdzonych wzorców. Sekcja „Dlaczego my" w trzech podejściach: porównanie z konkurencją, uzupełnienie istniejących narzędzi, alternatywa dla unikania problemu. Filary z dowodami w 3 poziomach: ✅ Twarde (metryki, case studies) / 🟡 Miękkie (demo, capability) / ⚠️ Hipotezy (logika, wczesne sygnały).'
+---

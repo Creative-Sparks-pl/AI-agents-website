@@ -35,7 +35,7 @@ const { version, date, title, description, changes } = Astro.props;
           {changes.map((change) => (
             <li class="flex items-start gap-3 text-base text-muted">
               <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
-              {change}
+              <span class="[&_strong]:text-foreground [&_strong]:font-semibold" set:html={change} />
             </li>
           ))}
         </ul>
