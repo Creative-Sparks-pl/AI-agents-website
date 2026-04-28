@@ -48,10 +48,10 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
         </ul>
 
         <div class="flex flex-col sm:flex-row items-start gap-4">
-          <Button href={ctaPrimary.href} size="lg" trailingIcon={ctaPrimary.icon} data-umami-event="Hero primary CTA">
+          <Button href={ctaPrimary.href} size="lg" trailingIcon={ctaPrimary.icon} onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)">
             {ctaPrimary.label}
           </Button>
-          <Button href={ctaSecondary.href} size="lg" variant="secondary" trailingIcon={ctaSecondary.icon} data-umami-event="Hero secondary CTA">
+          <Button href={ctaSecondary.href} size="lg" variant="secondary" trailingIcon={ctaSecondary.icon} onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)">
             {ctaSecondary.label}
           </Button>
         </div>

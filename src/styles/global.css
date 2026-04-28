@@ -51,3 +51,8 @@
   --radius-xl: 0px;
   --radius-full: 9999px;
 }
+
+/* Account for sticky TopAppBar (h-20 = 80px) when scrolling to in-page anchors. */
+html {
+  scroll-padding-top: 96px;
+}
