@@ -15,12 +15,19 @@ interface Card {
   shape?: string;
 }
 
+interface VideoTile {
+  mediaId: string;
+  label?: string;
+  title?: string;
+}
+
 interface Props extends HTMLAttributes<'section'> {
   headingId: string;
   badge: string;
   heading: string;
   lead?: string;
   cards: Card[];
+  videoTile?: VideoTile;
   icon?: ImageMetadata;
   class?: string;
 }
@@ -31,6 +38,7 @@ const {
   heading,
   lead,
   cards,
+  videoTile,
   icon,
   class: className,
   ...rest
@@ -67,6 +75,26 @@ const {
             shape={card.shape}
           />
         ))}
+        {videoTile && (
+          <Fragment>
+            <script is:inline async src="https://fast.wistia.com/player.js"></script>
+            <script is:inline async type="module" src={`https://fast.wistia.com/embed/${videoTile.mediaId}.js`}></script>
+            <div class="bg-white p-10 flex flex-col gap-6">
+              <div class="flex items-start justify-between">
+                <div class="w-12 h-12 border-2 border-primary flex items-center justify-center">
+                  <span class="material-symbols-outlined text-primary text-2xl" aria-hidden="true">play_arrow</span>
+                </div>
+                {videoTile.label && (
+                  <span class="font-label text-xs text-muted">{videoTile.label}</span>
+                )}
+              </div>
+              {videoTile.title && (
+                <h3 class="text-2xl md:text-3xl font-headline font-bold tracking-tight text-foreground">{videoTile.title}</h3>
+              )}
+              <div set:html={`<wistia-player media-id="${videoTile.mediaId}" wistia-popover="true" aspect="1.7777777777777777"></wistia-player>`} />
+            </div>
+          </Fragment>
+        )}
       </div>
 
       <slot />

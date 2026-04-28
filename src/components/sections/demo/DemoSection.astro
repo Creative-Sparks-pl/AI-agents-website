@@ -20,6 +20,11 @@ interface Stage {
   shape: string;
 }
 
+interface VideoPopover {
+  mediaId: string;
+  label: string;
+}
+
 interface Props extends HTMLAttributes<'section'> {
   badge?: string;
   heading: string;
@@ -28,6 +33,7 @@ interface Props extends HTMLAttributes<'section'> {
   note?: string;
   cta?: Link;
   secondaryLinks?: Link[];
+  videoPopover?: VideoPopover;
   icon?: ImageMetadata;
   class?: string;
 }
@@ -40,6 +46,7 @@ const {
   note,
   cta,
   secondaryLinks,
+  videoPopover,
   icon,
   class: className,
   ...rest
@@ -70,11 +77,32 @@ const hasStages = stages && stages.length > 0;
               <p class="text-sm text-muted italic max-w-2xl leading-relaxed">{note}</p>
             )}
             <div class="flex flex-col items-start gap-4">
-              {cta && (
-                <div class="flex flex-wrap items-center gap-4">
-                  <Button href={cta.href} external={cta.href.startsWith('http')} size="md" trailingIcon={cta.icon}>
-                    {cta.label}
-                  </Button>
+              {(cta || videoPopover) && (
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+                  {cta && (
+                    <Button href={cta.href} external={cta.href.startsWith('http')} size="md" block trailingIcon={cta.icon}>
+                      {cta.label}
+                    </Button>
+                  )}
+                  {videoPopover && (
+                    <Fragment>
+                      <script is:inline async src="https://fast.wistia.com/player.js"></script>
+                      <script is:inline async type="module" src={`https://fast.wistia.com/embed/${videoPopover.mediaId}.js`}></script>
+                      <wistia-player
+                        media-id={videoPopover.mediaId}
+                        popover-content="link"
+                        wistia-popover="true"
+                        aspect="1.7777777777777777"
+                        style="display: block;"
+                        class="w-full"
+                      >
+                        <a href="#" class="flex items-center justify-center gap-2 w-full tracking-tight transition-all duration-300 bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white px-10 py-4 text-base font-extrabold">
+                          {videoPopover.label}
+                          <span class="material-symbols-outlined text-lg" aria-hidden="true">play_arrow</span>
+                        </a>
+                      </wistia-player>
+                    </Fragment>
+                  )}
                 </div>
               )}
               {secondaryLinks && secondaryLinks.length > 0 && (

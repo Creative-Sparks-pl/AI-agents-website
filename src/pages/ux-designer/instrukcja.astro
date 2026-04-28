@@ -26,6 +26,17 @@ const rawSections = [
     group: null,
   },
   {
+    number: 'Wideo',
+    label: 'Wstęp',
+    title: 'Instrukcja wideo',
+    description: '',
+    bullets: [],
+    links: [],
+    quote: '',
+    videoMediaId: '95i42fdxo8',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
     number: 'Paczka',
     label: 'Po zakupie',
     title: 'Zawartość paczki',
@@ -265,6 +276,16 @@ const sections = rawSections.map((s, i) => ({
 
 <BaseLayout title="Jak pracować z asystentem — Asystent UX | Creative Sparks">
   <TopAppBar />
+  <script is:inline async src="https://fast.wistia.com/player.js"></script>
+  <script is:inline async type="module" src="https://fast.wistia.com/embed/95i42fdxo8.js"></script>
+  <style is:global>
+    wistia-player.wistia-panel:not(:defined) {
+      background: center / contain no-repeat url('https://fast.wistia.com/embed/medias/95i42fdxo8/swatch');
+      display: block;
+      filter: blur(5px);
+      padding-top: 56.25%;
+    }
+  </style>
   <main>
     <section class="py-20 md:py-28 px-6 bg-surface-primary">
       <div class="max-w-screen-2xl mx-auto">
@@ -305,9 +326,14 @@ const sections = rawSections.map((s, i) => ({
                   </summary>
                   <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
                     <div class="max-w-3xl">
-                      <p class="text-muted text-lg leading-relaxed mb-6">
-                        {section.description}
-                      </p>
+                      {section.videoMediaId && (
+                        <div set:html={`<wistia-player class="wistia-panel" media-id="${section.videoMediaId}" aspect="1.7777777777777777"></wistia-player>`} />
+                      )}
+                      {section.description && (
+                        <p class="text-muted text-lg leading-relaxed mb-6">
+                          {section.description}
+                        </p>
+                      )}
                       {section.bullets.length > 0 && (
                         <ul class="space-y-3 mb-8">
                           {section.bullets.map((bullet) => (
