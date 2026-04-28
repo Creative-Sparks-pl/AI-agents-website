@@ -1,0 +1,19 @@
+badge: Instalacja
+heading: Instalujesz jak wtyczkę WordPressa
+intro: Folder z plikami markdown trafia do Twojego środowiska AI — Claude Code, Cursor, ChatGPT, Claude Projects albo Alice. Brak backendu, brak kont, brak czekania na onboarding.
+items:
+  - icon: download
+    label: Krok 1
+    title: Pobierz folder
+    description: Po zakupie dostajesz spakowany folder z plikami narzędzia.
+  - icon: drive_folder_upload
+    label: Krok 2
+    title: Wrzuć do swojego środowiska
+    description: Folder ląduje w katalogu projektu (np. .claude/agents/ dla Claude Code), zgodnie z instrukcją per środowisko.
+  - icon: play_arrow
+    label: Krok 3
+    title: Uruchom przy kolejnej rozmowie
+    description: Narzędzie startuje samo przy następnej sesji z modelem — zero dodatkowej konfiguracji.
+footerLink:
+  label: Zobacz pełną instrukcję instalacji
+  href: /ux-designer/instrukcja

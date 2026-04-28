@@ -24,8 +24,8 @@ const { name, sub, oldPrice, price, highlight, features } = Astro.props;
   </div>
 
   <div class="mb-8">
-    <span class="text-xs font-label text-primary font-bold mb-1 block">Early access</span>
-    <span class:list={['text-lg font-label line-through', highlight ? 'text-foreground/40' : 'text-muted/60']}>{oldPrice} zł</span>
+    <span class="text-xs font-label text-primary font-bold mb-1 block">Przedsprzedaż</span>
+    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/40' : 'text-muted/60']}>{oldPrice} EUR</span>
     <div>
       <span class="font-headline font-bold text-5xl">{price}</span>
       <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>zł</span>
@@ -50,11 +50,10 @@ const { name, sub, oldPrice, price, highlight, features } = Astro.props;
       external
       block
       size="md"
-      trailingIcon="lock_open"
       data-umami-event="Pricing CTA"
       data-umami-event-plan={name}
     >
-      Odblokuj early access
+      Kup pakiet {name}
     </Button>
   </div>
 </div>

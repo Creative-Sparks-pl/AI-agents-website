@@ -9,50 +9,64 @@ interface Link {
 }
 
 interface Props {
-  number: string;
-  audience: string;
+  number?: string;
+  audience?: string;
   title: string;
   description: string;
-  bullets: string[];
+  bullets?: string[];
   quote?: string;
   links: Link[];
+  groupName?: string;
 }
 
-const { number, audience, title, description, bullets, quote, links } = Astro.props;
+const {
+  number,
+  audience,
+  title,
+  description,
+  bullets = [],
+  quote,
+  links,
+  groupName = 'use-cases',
+} = Astro.props;
 ---
 
-<details class="group border-b border-border/30 overflow-hidden bg-white" name="use-cases">
-  <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface transition-colors">
+<details class="case-card group border-b border-border/30 overflow-hidden bg-white" name={groupName}>
+  <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-white transition-colors">
     <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
-      <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
-        {number}
-      </span>
+      {number && (
+        <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+          {number}
+        </span>
+      )}
       <div class="flex flex-col gap-3 flex-1">
-        <span class="font-label text-sm text-primary leading-none">{audience}</span>
+        {audience && <span class="font-label text-sm text-primary leading-none">{audience}</span>}
         <h3 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
           {title}
         </h3>
+        <p class="case-card-description line-clamp-1 text-muted text-lg leading-relaxed">
+          {description}
+        </p>
       </div>
     </div>
     <div class="flex items-center gap-2 shrink-0 pt-2">
       <span class="font-label text-xs text-muted expand-label-closed">Rozwiń</span>
       <span class="font-label text-xs text-muted expand-label-open">Zwiń</span>
-      <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300" data-icon="expand_more" aria-hidden="true">expand_more</span>
+      <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300" aria-hidden="true">expand_more</span>
     </div>
   </summary>
-  <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+  <div class:list={['px-6 pb-12 md:pb-16 md:pr-10', number ? 'md:pl-[152px]' : 'md:pl-10']}>
     <div class="max-w-3xl">
-      <p class="text-muted text-lg leading-relaxed mb-6">
-        {description}
-      </p>
-      <ul class="space-y-3 mb-8">
-        {bullets.map((bullet) => (
-          <li class="flex items-start gap-3 text-base text-muted">
-            <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
-            {bullet}
-          </li>
-        ))}
-      </ul>
+      {bullets.length > 0 && (
+        <ul class="space-y-3 mb-8">
+          {bullets.map((bullet) => (
+            <li class="flex items-start gap-3 text-base text-muted">
+              <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+              {bullet}
+            </li>
+          ))}
+        </ul>
+      )}
       <div class="bg-surface-primary p-6 space-y-4">
         <div class="flex flex-wrap gap-x-12 gap-y-3">
           {links.map((link) => (
@@ -70,19 +84,25 @@ const { number, audience, title, description, bullets, quote, links } = Astro.pr
 </details>
 
 <style is:global>
-  details[name="use-cases"][open] summary .expand-icon {
+  details.case-card[open] summary .expand-icon {
     transform: rotate(180deg);
   }
 
-  details[name="use-cases"] .expand-label-open { display: none; }
-  details[name="use-cases"][open] .expand-label-open { display: inline; }
-  details[name="use-cases"][open] .expand-label-closed { display: none; }
+  details.case-card .expand-label-open { display: none; }
+  details.case-card[open] .expand-label-open { display: inline; }
+  details.case-card[open] .expand-label-closed { display: none; }
 
-  details[name="use-cases"][open] summary:hover {
+  details.case-card[open] summary:hover {
     background-color: transparent;
   }
 
-  details[name="use-cases"] summary::-webkit-details-marker {
+  details.case-card summary::-webkit-details-marker {
     display: none;
+  }
+
+  details.case-card[open] .case-card-description {
+    display: block !important;
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
   }
 </style>

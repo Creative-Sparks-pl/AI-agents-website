@@ -11,6 +11,8 @@ const {
   class: className,
   ...rest
 } = Astro.props;
+
+const hasBody = Astro.slots.has('default');
 ---
 
 <div class:list={['flex items-start gap-4', className]} {...rest}>
@@ -19,9 +21,11 @@ const {
   </span>
   <div>
     <p class="text-xl font-normal text-foreground leading-snug">{title}</p>
-    <p class="text-base font-body text-foreground mt-1 leading-snug">
-      <slot />
-    </p>
+    {hasBody && (
+      <p class="text-base font-body text-foreground mt-1 leading-snug">
+        <slot />
+      </p>
+    )}
   </div>
 </div>
 

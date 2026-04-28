@@ -1,6 +1,74 @@
 ---
+import { getCollection } from 'astro:content';
 import PreviewLayout from '../../layouts/PreviewLayout.astro';
 import HeroSection from '../../components/sections/hero/HeroSection.astro';
+import processIcon from '../../assets/icons/shape-3.svg';
+import proofIcon from '../../assets/icons/shape-2.svg';
+import useCasesIcon from '../../assets/icons/shape-1.svg';
+import valuePropsIcon from '../../assets/icons/shape-4.svg';
+import demoIconDS from '../../assets/icons/shape-10.svg';
+import freeTrialIconDS from '../../assets/icons/shape-6.svg';
+import problemsIconDS from '../../assets/icons/shape-4.svg';
+import installIconDS from '../../assets/icons/shape-7.svg';
+import { getCurrentLocale, requireEntry } from '../../lib/i18n';
+
+const locale = getCurrentLocale();
+
+const stages = (await getCollection('process', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+const processCards = stages.map((s) => ({
+  title: s.data.title,
+  description: s.body?.trim() ?? '',
+  output: s.data.output,
+  outputLink: s.data.outputLink,
+  outputIcon: s.data.outputIcon,
+  quote: s.data.quote,
+  shape: s.data.shape,
+}));
+
+const proofEntry = await requireEntry('proof-gallery', locale);
+const proofCards = proofEntry.data.cards.map((c) => ({
+  title: c.title,
+  description: c.description,
+  shape: c.shape,
+  output: c.link.label,
+  outputLink: c.link.href,
+  outputIcon: 'description',
+}));
+
+const valuePropsEntry = await requireEntry('value-props', locale);
+const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
+  number: String(i + 1).padStart(2, '0'),
+  title: c.title,
+  description: c.description,
+  links: c.links,
+}));
+
+const useCases = (await getCollection('use-cases', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order);
+const useCasesCases = useCases.map((u) => ({
+  number: u.data.number,
+  audience: u.data.audience,
+  title: u.data.title,
+  description: u.body?.trim() ?? '',
+  bullets: u.data.bullets,
+  quote: u.data.quote,
+  links: u.data.links,
+}));
+
+const useCasesExamples = (await requireEntry('use-cases-examples', locale)).data.examples;
+
+const demoEntryDS = await requireEntry('demo', locale);
+const freeTrialEntryDS = await requireEntry('free-trial', locale);
+const installEntryDS = await requireEntry('install', locale);
+
+const problemsItemsDS = (await getCollection('problems', (e) => e.id.startsWith(`${locale}/`)))
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((p) => ({
+    icon: p.data.icon,
+    title: p.data.title,
+    description: p.body?.trim() ?? '',
+  }));
 import UseCasesSection from '../../components/sections/use-cases/UseCasesSection.astro';
 import ProblemsSection from '../../components/sections/problems/ProblemsSection.astro';
 import OriginSection from '../../components/sections/origin/OriginSection.astro';
@@ -19,13 +87,17 @@ import Footer from '../../components/sections/footer/Footer.astro';
 
 const sections = [
   { id: 'hero', name: 'HeroSection', collection: 'hero', anchor: 'HeroSection' },
-  { id: 'use-cases', name: 'UseCasesSection', collection: 'use-cases (+ use-cases-examples)', anchor: 'UseCasesSection' },
-  { id: 'problems', name: 'ProblemsSection', collection: 'problems', anchor: 'ProblemsSection' },
+  { id: 'value-props', name: 'UseCasesSection (value-props data)', collection: 'value-props', anchor: 'ValuePropsSection' },
+  { id: 'use-cases', name: 'UseCasesSection (use-cases data)', collection: 'use-cases (+ use-cases-examples)', anchor: 'UseCasesSection' },
+  { id: 'problems', name: 'ProblemsSection (problems data)', collection: 'problems', anchor: 'ProblemsSection' },
+  { id: 'install', name: 'ProblemsSection (install data)', collection: 'install', anchor: 'InstallSection' },
   { id: 'origin', name: 'OriginSection', collection: 'origin', anchor: 'OriginSection' },
   { id: 'comparison', name: 'ComparisonSection', collection: 'comparison', anchor: 'ComparisonSection' },
-  { id: 'process', name: 'ProcessSection', collection: 'process', anchor: 'ProcessSection' },
+  { id: 'proof-gallery', name: 'ProcessSection (proof-gallery data)', collection: 'proof-gallery', anchor: 'ProofGallerySection' },
+  { id: 'process', name: 'ProcessSection (process data)', collection: 'process', anchor: 'ProcessSection' },
   { id: 'pricing', name: 'PricingSection', collection: 'pricing', anchor: 'PricingSection' },
-  { id: 'demo', name: 'DemoSection', collection: 'demo', anchor: 'DemoSection' },
+  { id: 'demo', name: 'DemoSection (demo data)', collection: 'demo', anchor: 'DemoSection' },
+  { id: 'free-trial', name: 'DemoSection (free-trial data)', collection: 'free-trial', anchor: 'FreeTrialSection' },
   { id: 'platform', name: 'PlatformSection', collection: 'platform', anchor: 'PlatformSection' },
   { id: 'knowledge-base', name: 'KnowledgeBaseSection', collection: 'knowledge-base', anchor: 'KnowledgeBaseSection' },
   { id: 'architecture', name: 'ArchitectureSection', collection: 'architecture', anchor: 'ArchitectureSection' },
@@ -75,20 +147,68 @@ const sections = [
       <div class="border-y border-border"><TopAppBar /></div>
     </article>
 
+    <article id="ValuePropsSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">UseCasesSection (value-props data)</h2>
+        <span class="font-label text-xs text-background/60">collection: value-props</span>
+      </header>
+      <UseCasesSection
+        headingId="ds-value-props-heading"
+        badge="Wartość"
+        heading={valuePropsEntry.data.heading}
+        cases={valuePropsCases}
+        icon={valuePropsIcon}
+        groupName="ds-value-props"
+      />
+    </article>
+
     <article id="UseCasesSection" class="bg-background">
       <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
-        <h2 class="font-headline font-bold">UseCasesSection</h2>
+        <h2 class="font-headline font-bold">UseCasesSection (use-cases data)</h2>
         <span class="font-label text-xs text-background/60">collections: use-cases + use-cases-examples</span>
       </header>
-      <UseCasesSection />
+      <UseCasesSection
+        headingId="ds-use-cases-heading"
+        badge="Zastosowanie"
+        heading={'Co możesz z tym zrobić?<br class="hidden md:block" /> Ta strona to jeden z przykładów.'}
+        cases={useCasesCases}
+        examples={{
+          badge: 'Przykłady',
+          heading: 'Przykłady efektów współpracy z&nbsp;asystentem&nbsp;UX',
+          items: useCasesExamples,
+        }}
+        icon={useCasesIcon}
+        groupName="ds-use-cases"
+      />
+    </article>
+
+    <article id="ProofGallerySection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ProcessSection (proof-gallery data)</h2>
+        <span class="font-label text-xs text-background/60">collection: proof-gallery</span>
+      </header>
+      <ProcessSection
+        headingId="ds-proof-gallery-heading"
+        badge={proofEntry.data.badge}
+        heading={proofEntry.data.heading}
+        lead={proofEntry.data.lead}
+        cards={proofCards}
+        icon={proofIcon}
+      />
     </article>
 
     <article id="ProcessSection" class="bg-background">
       <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
-        <h2 class="font-headline font-bold">ProcessSection</h2>
+        <h2 class="font-headline font-bold">ProcessSection (process data)</h2>
         <span class="font-label text-xs text-background/60">collection: process</span>
       </header>
-      <ProcessSection />
+      <ProcessSection
+        headingId="ds-process-heading"
+        badge="Jak to działa"
+        heading="Cztery kroki od briefu<br/>do gotowej makiety z treściami"
+        cards={processCards}
+        icon={processIcon}
+      />
     </article>
 
     <article id="PricingSection" class="bg-background">
@@ -101,10 +221,33 @@ const sections = [
 
     <article id="DemoSection" class="bg-background">
       <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
-        <h2 class="font-headline font-bold">DemoSection</h2>
+        <h2 class="font-headline font-bold">DemoSection (demo data)</h2>
         <span class="font-label text-xs text-background/60">collection: demo</span>
       </header>
-      <DemoSection />
+      <DemoSection
+        badge={demoEntryDS.data.badge}
+        heading={demoEntryDS.data.heading}
+        intro={demoEntryDS.data.intro}
+        stages={demoEntryDS.data.stages}
+        cta={demoEntryDS.data.cta}
+        icon={demoIconDS}
+      />
+    </article>
+
+    <article id="FreeTrialSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">DemoSection (free-trial data)</h2>
+        <span class="font-label text-xs text-background/60">collection: free-trial</span>
+      </header>
+      <DemoSection
+        badge={freeTrialEntryDS.data.badge}
+        heading={freeTrialEntryDS.data.heading}
+        intro={freeTrialEntryDS.data.intro}
+        stages={freeTrialEntryDS.data.stages}
+        note={freeTrialEntryDS.data.note}
+        cta={freeTrialEntryDS.data.cta}
+        icon={freeTrialIconDS}
+      />
     </article>
 
     <article id="PlatformSection" class="bg-background">
@@ -117,10 +260,35 @@ const sections = [
 
     <article id="ProblemsSection" class="bg-background">
       <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
-        <h2 class="font-headline font-bold">ProblemsSection</h2>
+        <h2 class="font-headline font-bold">ProblemsSection (problems data)</h2>
         <span class="font-label text-xs text-background/60">collection: problems</span>
       </header>
-      <ProblemsSection />
+      <ProblemsSection
+        headingId="ds-problems-heading"
+        badge="Problem"
+        heading={'UX bywa tym etapem, na&nbsp;który "nie&nbsp;ma&nbsp;czasu".'}
+        items={problemsItemsDS}
+        columns={4}
+        icon={problemsIconDS}
+      />
+    </article>
+
+    <article id="InstallSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">ProblemsSection (install data)</h2>
+        <span class="font-label text-xs text-background/60">collection: install</span>
+      </header>
+      <ProblemsSection
+        headingId="ds-install-heading"
+        badge={installEntryDS.data.badge}
+        heading={installEntryDS.data.heading}
+        intro={installEntryDS.data.intro}
+        items={installEntryDS.data.items}
+        columns={3}
+        footerNote={installEntryDS.data.footerNote}
+        footerLink={installEntryDS.data.footerLink}
+        icon={installIconDS}
+      />
     </article>
 
     <article id="OriginSection" class="bg-background">

@@ -2,10 +2,12 @@
 import type { HTMLAttributes } from 'astro/types';
 
 type Size = 'sm' | 'md' | 'lg';
+type Variant = 'primary' | 'secondary';
 
 interface Props extends Omit<HTMLAttributes<'a'>, 'size'> {
   href?: string;
   size?: Size;
+  variant?: Variant;
   trailingIcon?: string;
   block?: boolean;
   external?: boolean;
@@ -15,6 +17,7 @@ interface Props extends Omit<HTMLAttributes<'a'>, 'size'> {
 const {
   href,
   size = 'md',
+  variant = 'primary',
   trailingIcon,
   block = false,
   external = false,
@@ -26,6 +29,11 @@ const sizeClasses: Record<Size, string> = {
   sm: 'px-8 py-3 text-[13px] font-bold',
   md: 'px-10 py-4 text-base font-extrabold',
   lg: 'px-12 py-6 text-xl font-extrabold',
+};
+
+const variantClasses: Record<Variant, string> = {
+  primary: 'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
+  secondary: 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white',
 };
 
 const iconSize: Record<Size, string> = {
@@ -42,7 +50,8 @@ const externalAttrs = external && href ? { target: '_blank', rel: 'noopener nore
   href={href}
   class:list={[
     block ? 'inline-flex w-full justify-center' : 'inline-flex',
-    'items-center gap-2 bg-primary text-white tracking-tight hover:bg-black transition-all duration-300',
+    'items-center gap-2 tracking-tight transition-all duration-300',
+    variantClasses[variant],
     sizeClasses[size],
     className,
   ]}

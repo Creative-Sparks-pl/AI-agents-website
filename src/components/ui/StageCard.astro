@@ -1,43 +1,66 @@
 ---
 interface Props {
-  index: number;
+  index?: number;
   title: string;
   description: string;
-  output: string;
+  output?: string;
   outputLink?: string;
-  outputIcon: string;
-  quote: string;
-  shape: string;
+  outputIcon?: string;
+  quote?: string;
+  shape?: string;
 }
 
-const { index, title, description, output, outputLink, outputIcon, quote, shape } = Astro.props;
+const {
+  index,
+  title,
+  description,
+  output,
+  outputLink,
+  outputIcon = 'description',
+  quote,
+  shape,
+} = Astro.props;
+
+const Tag = outputLink ? 'a' : 'div';
+const linkAttrs = outputLink
+  ? { href: outputLink, target: '_blank', rel: 'noopener noreferrer' }
+  : {};
 ---
 
-<div class="bg-white p-10 flex flex-col gap-6">
-  <div class="flex items-start justify-between">
-    <div class={`process-shape process-shape--${shape}`} aria-hidden="true"></div>
-    <span class="font-label text-xs text-muted">{String(index + 1).padStart(2, '0')}</span>
-  </div>
-  <div class="space-y-4">
+<Tag
+  {...linkAttrs}
+  class:list={[
+    'group bg-white p-10 flex flex-col gap-6',
+    outputLink && 'transition-colors hover:bg-surface-primary',
+  ]}
+>
+  {(shape || index !== undefined) && (
+    <div class="flex items-start justify-between">
+      {shape ? (
+        <div class={`process-shape process-shape--${shape}`} aria-hidden="true"></div>
+      ) : (
+        <span></span>
+      )}
+      {index !== undefined && (
+        <span class="font-label text-xs text-muted">{String(index + 1).padStart(2, '0')}</span>
+      )}
+    </div>
+  )}
+  <div class="space-y-4 flex-1">
     <h3 class="text-2xl md:text-3xl font-headline font-bold tracking-tight text-foreground">{title}</h3>
     <p class="text-base font-body text-muted leading-relaxed">{description}</p>
   </div>
-  <div class="pt-6 border-t border-border/20 space-y-3">
-    {outputLink ? (
-      <a href={outputLink} target="_blank" rel="noopener noreferrer" class="text-sm font-label font-bold text-primary inline-flex items-center gap-2 hover:translate-x-1 transition-transform">
-        <span class="material-symbols-outlined text-sm" data-icon={outputIcon} aria-hidden="true">{outputIcon}</span>
+  {output && (
+    <div class:list={[quote && 'pt-6 border-t border-border/20 space-y-3']}>
+      <span class="text-sm font-label font-bold text-primary inline-flex items-center gap-2 group-hover:translate-x-1 transition-transform">
+        <span class="material-symbols-outlined text-sm" aria-hidden="true">{outputIcon}</span>
         {output}
-        <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
-      </a>
-    ) : (
-      <p class="text-sm font-label text-primary inline-flex items-center gap-2">
-        <span class="material-symbols-outlined text-sm" data-icon={outputIcon} aria-hidden="true">{outputIcon}</span>
-        {output}
-      </p>
-    )}
-    <p class="text-sm font-label text-muted">{quote}</p>
-  </div>
-</div>
+        <span class="material-symbols-outlined text-sm" aria-hidden="true">trending_flat</span>
+      </span>
+      {quote && <p class="text-sm font-label text-muted">{quote}</p>}
+    </div>
+  )}
+</Tag>
 
 <style is:global>
   .process-shape {

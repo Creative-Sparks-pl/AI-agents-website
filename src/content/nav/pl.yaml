@@ -1,15 +1,13 @@
 links:
-  - label: Dla kogo
-    href: '#zastosowanie'
-  - label: Cennik
-    href: '#cennik'
-  - label: Demo
-    href: '#demo'
-  - label: Jak to działa
-    href: '#proces'
-  - label: Porównanie
-    href: '#porownanie'
+  - label: Pakiety
+    href: '/ux-designer/#cennik'
+  - label: Audyt
+    href: '/ux-designer/#audyt'
+  - label: Baza wiedzy
+    href: '/ux-designer/#baza-wiedzy'
+  - label: Jak pracować
+    href: '/ux-designer/instrukcja'
 
 cta:
-  label: Early access
-  href: '#cennik'
+  label: Pakiety
+  href: '/ux-designer/#cennik'

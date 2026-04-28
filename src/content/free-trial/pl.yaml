@@ -1,0 +1,20 @@
+badge: Darmowy audyt
+heading: Pobierz pakiet darmowego audytu i uruchom na własnej stronie
+intro: Dostajesz konkret, zanim podejmiesz decyzję o zakupie pełnej wersji. Wystarczy, że podasz adres URL, a narzędzie zrobi wszystko samo dalej.
+stages:
+  - label: Etap 1
+    title: Skan strony i makieta obecnego stanu
+    description: Makieta Twojej obecnej strony jako HTML do podglądu.
+    shape: cube
+  - label: Etap 2
+    title: Audyt z diagnozą i anotacjami
+    description: Wnioski w formie adnotacji sekcji i elementów bezpośrednio na makiecie.
+    shape: diamond
+  - label: Etap 3
+    title: Benchmark vs standardy branżowe
+    description: Każdy wniosek prezentuje stan obecny, standard branżowy dla tego typu strony z oznaczonym poziomem pewności.
+    shape: grid
+note: Bez konta. Bez maila. Audyt dla stron studia, freelancera, produktów cyfrowych. Decyzja o zakupie po realnej próbie na własnym projekcie.
+cta:
+  label: Pobierz darmowy audyt
+  href: "#audyt"

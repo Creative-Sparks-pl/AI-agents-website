@@ -13,15 +13,15 @@ const hero = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/hero' }),
   schema: z.object({
     badge: z.string(),
-    headline: z.string(),
-    headlineEm: z.string().optional(),
-    subheadline: z.string(),
-    checklist: z.array(z.object({
-      title: z.string(),
-      description: z.string(),
-    })),
-    cta: linkSchema,
-    note: z.string().optional(),
+    badgeIcon: z.string().default('auto_awesome'),
+    badgeNote: z.string().optional(),
+    headlineLead: z.string(),
+    headlineEm: z.string(),
+    headlineTail: z.string(),
+    tagline: z.string(),
+    bullets: z.array(z.string()),
+    ctaPrimary: linkSchema,
+    ctaSecondary: linkSchema,
   }),
 });
 
@@ -50,11 +50,11 @@ const process = defineCollection({
   schema: z.object({
     order: z.number(),
     title: z.string(),
-    output: z.string(),
-    outputLink: z.string(),
-    outputIcon: z.string(),
-    quote: z.string(),
-    shape: z.string(),
+    output: z.string().optional(),
+    outputLink: z.string().optional(),
+    outputIcon: z.string().optional(),
+    quote: z.string().optional(),
+    shape: z.string().optional(),
   }),
 });
 
@@ -72,19 +72,45 @@ const pricing = defineCollection({
   }),
 });
 
+const demoStageSchema = z.object({
+  label: z.string().optional(),
+  title: z.string().optional(),
+  description: z.string(),
+  shape: z.string(),
+});
+
 const demo = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/demo' }),
   schema: z.object({
     badge: z.string(),
     heading: z.string(),
     intro: z.string(),
-    stages: z.array(z.object({
-      label: z.string(),
-      title: z.string(),
-      description: z.string(),
-      shape: z.string(),
-    })),
+    stages: z.array(demoStageSchema),
+    note: z.string().optional(),
     cta: linkSchema.optional(),
+    secondaryLinks: z.array(linkSchema).optional(),
+  }),
+});
+
+const freeTrial = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/free-trial' }),
+  schema: z.object({
+    badge: z.string(),
+    heading: z.string(),
+    intro: z.string(),
+    stages: z.array(demoStageSchema),
+    note: z.string().optional(),
+    cta: linkSchema.optional(),
+  }),
+});
+
+const finalCta = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/final-cta' }),
+  schema: z.object({
+    heading: z.string(),
+    intro: z.string(),
+    cta: linkSchema,
+    secondaryLinks: z.array(linkSchema).optional(),
   }),
 });
 
@@ -118,6 +144,23 @@ const problems = defineCollection({
   }),
 });
 
+const install = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/install' }),
+  schema: z.object({
+    badge: z.string(),
+    heading: z.string(),
+    intro: z.string().optional(),
+    items: z.array(z.object({
+      icon: z.string(),
+      label: z.string().optional(),
+      title: z.string(),
+      description: z.string(),
+    })),
+    footerNote: z.string().optional(),
+    footerLink: linkSchema.optional(),
+  }),
+});
+
 const origin = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/origin' }),
   schema: z.object({
@@ -147,9 +190,11 @@ const comparison = defineCollection({
   schema: z.object({
     badge: z.string(),
     heading: z.string(),
+    lead: z.string().optional(),
     columns: z.array(z.object({
       key: z.string(),
       label: z.string(),
+      sub: z.string().optional(),
       highlight: z.boolean().default(false),
     })),
     rows: z.array(z.object({
@@ -180,6 +225,35 @@ const knowledgeBase = defineCollection({
     pageTypes: z.array(z.object({ name: z.string(), sub: z.string() })),
     frameworks: z.array(z.object({ name: z.string(), sub: z.string() })),
     patterns: z.array(z.object({ name: z.string(), sub: z.string() })),
+  }),
+});
+
+const valueProps = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/value-props' }),
+  schema: z.object({
+    badge: z.string().optional(),
+    heading: z.string(),
+    cards: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+      quote: z.string().optional(),
+      links: z.array(linkSchema),
+    })),
+  }),
+});
+
+const proofGallery = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/proof-gallery' }),
+  schema: z.object({
+    badge: z.string(),
+    heading: z.string(),
+    lead: z.string(),
+    cards: z.array(z.object({
+      title: z.string(),
+      description: z.string(),
+      shape: z.string().optional(),
+      link: linkSchema,
+    })),
   }),
 });
 
@@ -233,13 +307,18 @@ export const collections = {
   process,
   pricing,
   demo,
+  'free-trial': freeTrial,
+  'final-cta': finalCta,
   platform,
   problems,
+  install,
   origin,
   architecture,
   comparison,
   faqs,
   'knowledge-base': knowledgeBase,
+  'proof-gallery': proofGallery,
+  'value-props': valueProps,
   author,
   changelog,
   nav,

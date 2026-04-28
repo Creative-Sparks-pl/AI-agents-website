@@ -1,0 +1,22 @@
+heading: "Trzy konkretne zmiany w tym,<br/>jak pracujesz nad stroną"
+cards:
+  - title: Plan strony z uzasadnieniem, zanim ruszysz w Figmę lub do vibe codingu
+    description: |
+      Narzędzie prowadzi od pierwszej rozmowy o projekcie do gotowego planu sekcji z prawdziwym copy. Sześć różnych workflow dowozi różne elementy planu: kontekst, strategię, fundamenty komunikacji, draft, szkice. Każda istotna decyzja zapisana z uzasadnieniem i odrzuconymi wariantami. Klient pyta „dlaczego tak", masz odpowiedź z pliku. Z wykonawcy stajesz się partnerem strategicznym.
+    links:
+      - label: Zobacz Plan projektu
+        href: /examples/uxd-product-website-v3_project_plan.html
+
+  - title: Gotowe pliki dla Ciebie, dla klienta i innych narzędzi AI
+    description: |
+      Plan projektu, Fundamenty komunikacji, Draft komunikatów i szkice. Wszystko jako pliki HTML w przeglądarce. Jednym kliknięciem eksportujesz pliki MD (markdown) dla innych narzędzi AI. Realny copy powstaje przed layoutem, więc wireframe testujesz na odbiorcach od razu, a klient otwiera pakiet bez Photoshopa.
+    links:
+      - label: Zobacz przykłady plików
+        href: "#dowod"
+
+  - title: Wbudowana ekspertyza UX, decyzja Twoja
+    description: |
+      16 pakietów wiedzy domenowej, 13 frameworków, 50+ wzorców. Narzędzie ładuje właściwy zestaw po wykryciu typu strony, więc bierzesz projekt z domeny, której nie znasz na pamięć. Każdy strategiczny krok kończy się 2-3 opcjami z opisanym kosztem każdej. Narzędzie oznacza pewność każdej decyzji, więc wiesz, gdzie model zgaduje, a decyzje zostają u Ciebie.
+    links:
+      - label: Zobacz Bazę wiedzy
+        href: "#baza-wiedzy"

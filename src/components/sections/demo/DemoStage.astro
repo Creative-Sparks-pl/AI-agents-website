@@ -1,18 +1,24 @@
 ---
 interface Props {
-  label: string;
-  title: string;
+  label?: string;
+  title?: string;
   description: string;
   shape: string;
 }
 
 const { label, title, description, shape } = Astro.props;
+const hasHeading = label || title;
 ---
 
 <div class="bg-white p-6 border border-border/20">
-  <div class="flex items-center gap-4 mb-3">
+  <div class:list={['flex items-center gap-4', hasHeading && 'mb-3']}>
     <div class={`process-shape process-shape--${shape}`} aria-hidden="true"></div>
-    <h3 class="font-headline font-bold text-foreground">{label}: {title}</h3>
+    {hasHeading && (
+      <h3 class="font-headline font-bold text-foreground">
+        {label && <>{label}{title && ': '}</>}
+        {title}
+      </h3>
+    )}
   </div>
   <p class="text-sm text-muted">{description}</p>
 </div>

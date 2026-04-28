@@ -1,0 +1,8 @@
+heading: "Wejdź w Figmę z gotowym planem,<br/>copy i decyzjami."
+intro: Przedsprzedaż polska do 30 maja 2026. Potem rusza globalna sprzedaż i wchodzą wyższe ceny w euro.
+cta:
+  label: Zobacz pakiety
+  href: "#cennik"
+secondaryLinks:
+  - label: Albo zacznij od darmowego audytu
+    href: "#audyt"

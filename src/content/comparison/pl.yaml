@@ -1,121 +1,104 @@
 badge: Porównanie
-heading: Czym to się różni od ChatGPT, promptów,<br/>szablonów i konsultanta UX?
+heading: Czym to się różni od własnych szkiców,<br/>doraźnych narzędzi i konsultanta UX?
 columns:
-  - key: agent
-    label: Asystent UX
+  - key: tool
+    label: To narzędzie
+    sub: Asystent UX. Pliki, decyzje, jednorazowo.
     highlight: true
-  - key: chatbot
-    label: ChatGPT / Chatboty
+  - key: diy
+    label: Zrób sam
+    sub: Szkice, intuicja, samodzielny audyt
     highlight: false
-  - key: prompts
-    label: Kolekcje promptów
+  - key: adhoc
+    label: Doraźne narzędzia
+    sub: ChatGPT, prompty, szablony, generatory stron
     highlight: false
-  - key: templates
-    label: Szablony UI
-    highlight: false
-  - key: consultant
-    label: Konsultant UX
+  - key: hire
+    label: Wynajmij kogoś
+    sub: Konsultant UX, kurs, peer feedback
     highlight: false
 rows:
   - feature: Pełen proces UX
     cells:
-      agent:
+      tool:
         status: "yes"
-        text: 6 workflowów end-to-end
-      chatbot:
+        text: 6 etapów pracy end-to-end
+      diy:
         status: "no"
-        text: odpowiedzi bez procesu
-      prompts:
+        text: ad-hoc, bez systemu
+      adhoc:
         status: "no"
-        text: fragmenty bez kontekstu
-      templates:
-        status: "no"
-        text: wygląd bez procesu
-      consultant:
+        text: fragmenty bez procesu
+      hire:
         status: "yes"
         text: pełen cykl
   - feature: Realne pliki
     cells:
-      agent:
+      tool:
         status: "yes"
-        text: .md, .xlsx
-      chatbot:
+        text: .md, .xlsx, .html
+      diy:
         status: "no"
-        text: wiadomości czatowe
-      prompts:
+        text: luźne notatki
+      adhoc:
         status: "no"
-        text: prompty
-      templates:
-        status: "no"
-        text: pliki graficzne
-      consultant:
+        text: czaty, prompty, pliki graficzne
+      hire:
         status: "yes"
         text: dokumenty
-  - feature: Kontekst sesji
+  - feature: Kontekst między sesjami
     cells:
-      agent:
+      tool:
         status: "yes"
         text: pliki trwałe
-      chatbot:
+      diy:
+        status: "no"
+        text: pamięć projektanta
+      adhoc:
         status: "no"
         text: każda sesja od zera
-      prompts:
-        status: "no"
-        text: każdy prompt od zera
-      templates:
-        status: "na"
-        text: n/d
-      consultant:
+      hire:
         status: "yes"
         text: w głowie konsultanta
-  - feature: Decyzje
+  - feature: Przystanki i decyzje
     cells:
-      agent:
+      tool:
         status: "yes"
         text: opcje z trade-off
-      chatbot:
+      diy:
         status: "no"
-        text: brak
-      prompts:
+        text: decyzje intuicyjne
+      adhoc:
         status: "no"
-        text: brak
-      templates:
-        status: "no"
-        text: brak
-      consultant:
+        text: brak struktury
+      hire:
         status: "yes"
-        text: spotkania / konsultacje
+        text: spotkania
   - feature: Realny copy
     cells:
-      agent:
+      tool:
         status: "yes"
         text: w języku projektu
-      chatbot:
+      diy:
+        status: "no"
+        text: albo brak, albo lorem
+      adhoc:
         status: "partial"
-        text: generyczny
-      prompts:
-        status: "no"
-        text: szablonowy
-      templates:
-        status: "no"
-        text: lorem ipsum
-      consultant:
+        text: generyczny lub szablonowy
+      hire:
         status: "yes"
         text: profesjonalny
   - feature: Koszt
     cells:
-      agent:
+      tool:
         status: "price"
-        text: jednorazowy
-      chatbot:
+        text: jednorazowo
+      diy:
         status: "price"
-        text: ~100 zł/mies.
-      prompts:
+        text: czas własny
+      adhoc:
         status: "price"
-        text: 50–300 zł
-      templates:
+        text: ~100 zł/mies. + 50–500 zł jednorazowo
+      hire:
         status: "price"
-        text: 100–500 zł
-      consultant:
-        status: "price"
-        text: 5 000–20 000 zł
+        text: 5 000–20 000 zł/projekt

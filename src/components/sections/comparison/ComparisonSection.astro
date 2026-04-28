@@ -13,11 +13,11 @@ const { class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
 const entry = await requireEntry('comparison', locale);
-const { badge, heading, columns, rows } = entry.data;
+const { badge, heading, lead, columns, rows } = entry.data;
 ---
 
 <section
-  class:list={['py-20 md:py-28 bg-white', className]}
+  class:list={['py-20 md:py-28 bg-surface-primary', className]}
   aria-labelledby="comparison-heading"
   {...rest}
 >
@@ -26,6 +26,11 @@ const { badge, heading, columns, rows } = entry.data;
       <Fragment slot="header">
         <span class="text-sm font-label text-primary mb-4">{badge}</span>
         <h2 id="comparison-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight" set:html={heading}></h2>
+        {lead && (
+          <p class="text-base md:text-lg text-muted leading-relaxed mt-6 italic max-w-3xl">
+            {lead}
+          </p>
+        )}
       </Fragment>
 
       <div class="overflow-x-auto">
@@ -36,10 +41,16 @@ const { badge, heading, columns, rows } = entry.data;
                 <th class="p-6 text-xs font-label text-muted"></th>
                 {columns.map((col) => (
                   <th class:list={[
-                    'p-5 font-headline font-bold text-base',
+                    'p-5 font-headline font-bold text-base align-top',
                     col.highlight ? 'bg-primary text-white' : 'text-muted'
                   ]}>
-                    {col.label}
+                    <div>{col.label}</div>
+                    {col.sub && (
+                      <div class:list={[
+                        'mt-2 text-xs font-label font-normal',
+                        col.highlight ? 'text-white/80' : 'text-muted/80'
+                      ]}>{col.sub}</div>
+                    )}
                   </th>
                 ))}
               </tr>
