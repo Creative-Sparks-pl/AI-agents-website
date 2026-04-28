@@ -5,7 +5,7 @@ import Footer from '../../components/sections/footer/Footer.astro';
 import SectionWithIcon from '../../components/ui/SectionWithIcon.astro';
 import sectionIcon from '../../assets/icons/shape-3.svg';
 
-const sections = [
+const rawSections = [
   {
     number: 'Esencja',
     label: 'Główne zasady',
@@ -23,6 +23,7 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: null,
   },
   {
     number: 'Paczka',
@@ -37,6 +38,22 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Wybór',
+    label: 'Platforma',
+    title: 'Jak wybrać platformę do pracy',
+    description: 'Agent działa na wielu platformach, ale różnią się jakością współpracy. Wersje desktop (IDE) są zwykle wygodniejsze niż chat w przeglądarce — agent ma większą kontrolę nad plikami, lepiej trzyma się procesu i nie tracisz kontekstu, gdy plik jest duży.',
+    bullets: [
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Najmocniejsza rekomendacja: Claude Code.</strong> Szerokie okno kontekstu, głębsze wnioskowanie niż w pozostałych modelach, bardzo dobrze radzi sobie z pisaniem treści. Bywa trochę wolniejszy — to akceptowalny trade-off za jakość.',
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Solidna alternatywa: VS Code z pluginem do LLM</strong> (Claude Code, OpenAI Codex, Google Antigravity, Cursor). Pełna kontrola nad plikami, agent stabilnie trzyma się procesu, łatwy powrót do projektu między sesjami.',
+      '<span class="material-symbols-outlined text-muted text-xl align-middle mr-2">info</span><strong>OK: wersje webowe</strong> — Claude Projects, ChatGPT Custom GPT, ChatGPT Projects. Prosty start, ale ograniczenia w pracy z plikami. Czat gorzej obsługuje długie dokumenty, częściej trzeba wgrywać pliki na nowo.',
+      '<span class="material-symbols-outlined text-foreground text-xl align-middle mr-2">block</span><strong>Odradzam: Gemini Gems (web).</strong> Ma tendencję do chodzenia swoją ścieżką — pomija instrukcje, robi rzeczy po swojemu, częściej rozjeżdża się z procesem. Jeśli już musisz, włączaj Canvas (inaczej HTML wyświetli się jako kod).',
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
   },
   {
     number: 'Setup',
@@ -66,6 +83,7 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Pierwsze uruchomienie',
   },
   {
     number: 'Start',
@@ -79,6 +97,7 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Pierwsze uruchomienie',
   },
   {
     number: 'Decyzje',
@@ -92,6 +111,7 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Praca z agentem',
   },
   {
     number: 'Copy',
@@ -107,10 +127,11 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Praca z agentem',
   },
   {
     number: 'Dialog',
-    label: 'Praca z asystentem',
+    label: 'Rozmowa z agentem',
     title: 'Jak rozmawiać z asystentem',
     description: 'Asystent nie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
     bullets: [
@@ -125,19 +146,24 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Praca z agentem',
   },
   {
-    number: 'Sesje',
-    label: 'Między sesjami',
-    title: 'Praca na wielu sesjach',
-    description: 'Asystent czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
+    number: 'Czas',
+    label: 'Tempo pracy',
+    title: 'Ile zajmują typowe etapy współpracy',
+    description: 'Agent myśli długo, bo w każdym kroku przetwarza duży kontekst — dokumentację domeny, frameworki, wzorce, Twoje pliki. Czas zależy od tego, ile wkładu dostanie: im więcej dasz, tym szybciej. Najdłuższy kawałek to interakcyjna praca nad treściami w sekcjach — ale i tak szybsze niż wszystko ręcznie w Figmie.',
     bullets: [
-      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — asystent przeczyta pliki i wróci do kontekstu',
-      'Jeśli zmieniłeś coś ręcznie w pliku — powiedz asystentowi. Inaczej nadpisze Twoje zmiany',
-      'Decyzje zapisują się w bocznym panelu HTML obok wireframe\'u — to Twoja pamięć między sesjami',
+      'Discovery + strategia: 10-30 min',
+      'Fundamenty komunikacji: 1-3h',
+      'Mapowanie istniejącej podstrony: 5-15 min',
+      'Wireframe jednej podstrony, sekcja po sekcji: 30-60 min dyskusji',
+      'Krótkie pytania, drobne poprawki: parę sekund',
+      'Jeśli widzisz że agent „myśli" — poczekaj. Przerwanie cofa Cię na początek kroku.',
     ],
     links: [],
     quote: '',
+    group: 'Praca z agentem',
   },
   {
     number: 'Output',
@@ -156,20 +182,21 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Wyniki i kontynuacja',
   },
   {
-    number: 'Uwaga',
-    label: 'Pułapki',
-    title: 'Czego unikać',
-    description: 'Kilka rzeczy, które obniżają jakość wyników.',
+    number: 'Sesje',
+    label: 'Powrót do projektu',
+    title: 'Praca na wielu sesjach',
+    description: 'Asystent czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
     bullets: [
-      'Nie akceptuj wszystkiego na „ok". Asystent pójdzie dalej, ale wynik będzie gorszy',
-      'Nie pomijaj Discovery. Wireframe bez kontekstu to zgadywanie z lepszym formatowaniem',
-      'Nie próbuj robić wszystkiego w jednej sesji. 2-3h na projekt to realistyczne tempo',
-      'Nie kopiuj deliverables bez przeczytania. Asystent zakłada, Ty weryfikujesz',
+      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — asystent przeczyta pliki i wróci do kontekstu',
+      'Jeśli zmieniłeś coś ręcznie w pliku — powiedz asystentowi. Inaczej nadpisze Twoje zmiany',
+      'Decyzje zapisują się w bocznym panelu HTML obok wireframe\'u — to Twoja pamięć między sesjami',
     ],
     links: [],
     quote: '',
+    group: 'Wyniki i kontynuacja',
   },
   {
     number: 'Tempo',
@@ -184,6 +211,7 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Dobre praktyki',
   },
   {
     number: 'Audyt',
@@ -198,6 +226,22 @@ const sections = [
     ],
     links: [],
     quote: '',
+    group: 'Dobre praktyki',
+  },
+  {
+    number: 'Uwaga',
+    label: 'Pułapki',
+    title: 'Czego unikać',
+    description: 'Kilka rzeczy, które obniżają jakość wyników.',
+    bullets: [
+      'Nie akceptuj wszystkiego na „ok". Asystent pójdzie dalej, ale wynik będzie gorszy',
+      'Nie pomijaj Discovery. Wireframe bez kontekstu to zgadywanie z lepszym formatowaniem',
+      'Nie próbuj robić wszystkiego w jednej sesji. 2-3h na projekt to realistyczne tempo',
+      'Nie kopiuj deliverables bez przeczytania. Asystent zakłada, Ty weryfikujesz',
+    ],
+    links: [],
+    quote: '',
+    group: 'Dobre praktyki',
   },
   {
     number: 'Kontakt',
@@ -209,8 +253,14 @@ const sections = [
       { label: 'tomasz@creativesparks.pl', href: 'mailto:tomasz@creativesparks.pl', icon: 'mail', sub: 'Odpowiadam w ciągu 24h' },
     ],
     quote: '',
+    group: 'Pomoc',
   },
 ];
+
+const sections = rawSections.map((s, i) => ({
+  ...s,
+  groupStarts: !!s.group && (i === 0 || s.group !== rawSections[i - 1].group),
+}));
 ---
 
 <BaseLayout title="Jak pracować z asystentem — Asystent UX | Creative Sparks">
@@ -222,76 +272,85 @@ const sections = [
           <Fragment slot="header">
             <span class="font-label text-primary text-sm mb-4">Instrukcja</span>
             <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
-              Jak pracować z asystentem
+              Główne zasady współpracy z narzędziem
             </h1>
           </Fragment>
 
           <div class="flex flex-col">
-            {sections.map((section, i) => (
-              <details
-                class="group border-b border-border/30 overflow-hidden bg-white"
-                name="instrukcja"
-                open={false}
-              >
-                <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface-hover transition-colors">
-                  <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
-                    <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
-                      {section.number}
-                    </span>
-                    <div class="flex flex-col gap-3 flex-1">
-                      <span class="font-label text-sm text-primary leading-none">{section.label}</span>
-                      <h2 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
-                        {section.title}
-                      </h2>
+            {sections.map((section) => (
+              <>
+                {section.groupStarts && (
+                  <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground mt-20 mb-8">
+                    {section.group}
+                  </h2>
+                )}
+                <details
+                  class="group border-b border-border/30 overflow-hidden bg-white"
+                  name="instrukcja"
+                  open={false}
+                >
+                  <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface-hover transition-colors">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+                      <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                        {section.number}
+                      </span>
+                      <div class="flex flex-col gap-3 flex-1">
+                        <span class="font-label text-sm text-primary leading-none">{section.label}</span>
+                        <h2 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                          {section.title}
+                        </h2>
+                      </div>
                     </div>
-                  </div>
-                  <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" data-icon="expand_more" aria-hidden="true">expand_more</span>
-                </summary>
-                <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
-                  <div class="max-w-3xl">
-                    <p class="text-muted text-lg leading-relaxed mb-6">
-                      {section.description}
-                    </p>
-                    {section.bullets.length > 0 && (
-                      <ul class="space-y-3 mb-8">
-                        {section.bullets.map((bullet) => (
-                          <li class="flex items-start gap-3 text-base text-muted">
-                            <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
-                            <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                    {section.groups && section.groups.map((group) => (
-                      <div class="mb-8">
-                        <h3 class="font-headline font-bold text-lg text-foreground mb-3">{group.heading}</h3>
-                        <ul class="space-y-3">
-                          {group.bullets.map((bullet) => (
+                    <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" aria-hidden="true">expand_more</span>
+                  </summary>
+                  <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+                    <div class="max-w-3xl">
+                      <p class="text-muted text-lg leading-relaxed mb-6">
+                        {section.description}
+                      </p>
+                      {section.bullets.length > 0 && (
+                        <ul class="space-y-3 mb-8">
+                          {section.bullets.map((bullet) => (
                             <li class="flex items-start gap-3 text-base text-muted">
-                              <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                              {!bullet.startsWith('<span class="material-symbols-outlined') && (
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                              )}
                               <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
                             </li>
                           ))}
                         </ul>
-                      </div>
-                    ))}
-                    {section.links.length > 0 && (
-                      <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
-                        <div class="flex flex-wrap gap-x-12 gap-y-3">
-                          {section.links.map((link) => (
-                            <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
-                              <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
-                              {link.label}
-                              <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
-                            </a>
-                          ))}
+                      )}
+                      {section.groups && section.groups.map((group) => (
+                        <div class="mb-8">
+                          <h3 class="font-headline font-bold text-lg text-foreground mb-3">{group.heading}</h3>
+                          <ul class="space-y-3">
+                            {group.bullets.map((bullet) => (
+                              <li class="flex items-start gap-3 text-base text-muted">
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                                <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        {section.quote && <p class="text-sm font-label text-muted">{section.quote}</p>}
-                      </div>
-                    )}
+                      ))}
+                      {section.links.length > 0 && (
+                        <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
+                          <div class="flex flex-wrap gap-x-12 gap-y-3">
+                            {section.links.map((link) => (
+                              <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                                <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
+                                {link.label}
+                                <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                              </a>
+                            ))}
+                          </div>
+                          {section.quote && <p class="text-sm font-label text-muted">{section.quote}</p>}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </details>
+                </details>
+              </>
             ))}
           </div>
         </SectionWithIcon>
