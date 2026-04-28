@@ -7,6 +7,23 @@ import sectionIcon from '../../assets/icons/shape-3.svg';
 
 const sections = [
   {
+    number: 'Esencja',
+    label: 'Główne zasady',
+    title: 'Główne zasady współpracy',
+    description: 'Krótka lista zasad, które decydują o jakości wyniku. Każda jest rozwinięta w sekcjach poniżej.',
+    bullets: [
+      '<strong>Więcej kontekstu = mniej zgadywania.</strong> Im więcej dasz, tym lepszy wynik. Ale możesz też potraktować to jako odkrywanie i ideację — wtedy wystarczy minimum.',
+      '<strong>Decyzja po Twojej stronie.</strong> Agent pokazuje opcje z trade-offami, Ty wybierasz.',
+      '<strong>Sprawdzaj oznaczenia pewności.</strong> 🟢 zielone zostaw, 🟡 żółte zweryfikuj, 🔴 czerwone uzupełnij zanim ruszysz dalej.',
+      '<strong>Kwestionuj wyniki.</strong> Pytaj „dlaczego", proś o alternatywy, każ skracać.',
+      '<strong>Dziel projekt na sesje.</strong> 1 deliverable = 1 sesja — kontekst chatu ma limit.',
+      '<strong>Agent to też konsultant.</strong> Pytaj o metodologię, proś o weryfikację Twoich decyzji.',
+      '<strong>Pliki = pamięć projektu.</strong> Decyzje są zapisywane w bocznym panelu HTML — to most między sesjami.',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
     number: 'Paczka',
     label: 'Po zakupie',
     title: 'Zawartość paczki',
@@ -25,12 +42,26 @@ const sections = [
     label: 'Konfiguracja',
     title: 'Jak wgrać asystenta',
     description: 'Wybierz platformę i postępuj zgodnie z instrukcjami. Zajmuje to 2-3 minuty.',
-    bullets: [
-      'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
-      'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
-      'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
-      'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). Włącz Canvas w trakcie rozmowy',
-      'IDE (Claude Code, VS Code, Cursor) — skopiuj folder ux-designer-ide/ do roota projektu. AGENTS.md załaduje się automatycznie',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Platformy webowe',
+        bullets: [
+          'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
+          'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
+          'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
+          'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). Włącz Canvas w trakcie rozmowy',
+        ],
+      },
+      {
+        heading: 'IDE (desktop)',
+        bullets: [
+          'Folder <code>ux-designer-ide/</code> zawiera trzy podfoldery: <code>agents/</code>, <code>commands/</code>, <code>skills/</code>. Skopiuj zawartość tego folderu do katalogu konfiguracji swojego narzędzia AI — wszystkie trzy podfoldery muszą trafić na miejsce.',
+          'Claude Code — skopiuj zawartość <code>ux-designer-ide/</code> do <code>~/.claude/</code>. W dowolnym projekcie wywołaj komendą <code>/expert ux-designer</code>.',
+          'VS Code, Cursor, Antigravity — analogicznie, do katalogu konfiguracyjnego Twojego IDE. Sposób wywołania zależy od narzędzia.',
+          '<strong>Nie wiesz jak?</strong> Wklej ten prompt do AI w swoim narzędziu — poprowadzi Cię krok po kroku: <em>„Mam folder ux-designer-ide/ z trzema podfolderami: agents/, commands/, skills/. Pomóż mi skopiować jego zawartość do katalogu konfiguracji tego narzędzia, żeby wszystkie pliki trafiły w odpowiednie miejsca. Sprawdź dokumentację, znajdź właściwe lokalizacje i poprowadź mnie krok po kroku przez instalację oraz pierwsze wywołanie."</em>',
+        ],
+      },
     ],
     links: [],
     quote: '',
@@ -39,11 +70,11 @@ const sections = [
     number: 'Start',
     label: 'Pierwsza sesja',
     title: 'Jak zacząć projekt',
-    description: 'Wpisz „start" w czacie. Asystentsię przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej asystentzgaduje — ale wystarczy jedno zdanie.',
+    description: 'Wpisz „start" w czacie. Asystent się przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej asystent zgaduje — ale wystarczy jedno zdanie.',
     bullets: [
-      'Jeśli masz brief od klienta — wklej go. Asystentwyciągnie persony, cele i wyróżniki',
+      'Jeśli masz brief od klienta — wklej go. Asystent wyciągnie persony, cele i wyróżniki',
       'Sprawdzaj oznaczenia pewności (🟢🟡🔴). Zielone zostaw, żółte zweryfikuj, czerwone uzupełnij',
-      'Jeśli asystentźle zakwalifikował awareness level — popraw go. To zmienia całą strategię strony',
+      'Jeśli asystent źle zakwalifikował awareness level — popraw go. To zmienia całą strategię strony',
     ],
     links: [],
     quote: '',
@@ -52,11 +83,11 @@ const sections = [
     number: 'Decyzje',
     label: 'Decyzje',
     title: 'Jak podejmować decyzje',
-    description: 'Asystentpokazuje opcje z trade-offami. Nie musisz wiedzieć, która jest lepsza — przeczytaj co każda optymalizuje i czym poświęca.',
+    description: 'Asystent pokazuje opcje z trade-offami. Nie musisz wiedzieć, która jest lepsza — przeczytaj co każda optymalizuje i czym poświęca.',
     bullets: [
-      'Nie bój się miksować. „Weź nagłówek z opcji 2 i body z opcji 4" — asystentto obsłuży',
-      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Asystentzaproponuje nowe',
-      'Mów „pomóż mi podjąć decyzję" kiedy utkniesz. Asystentpodsumuje za i przeciw',
+      'Nie bój się miksować. „Weź nagłówek z opcji 2 i body z opcji 4" — asystent to obsłuży',
+      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Asystent zaproponuje nowe',
+      'Mów „pomóż mi podjąć decyzję" kiedy utkniesz. Asystent podsumuje za i przeciw',
     ],
     links: [],
     quote: '',
@@ -67,11 +98,11 @@ const sections = [
     title: 'Jak pisać lepsze copy',
     description: 'Praca z tekstami zajmuje najwięcej czasu — i tu jest największa różnica między przeciętnym a dobrym wynikiem. AI pisze generycznie, jeśli nie dostanie konkretnych wytycznych.',
     bullets: [
-      'Wrzuć próbki tekstów w swoim stylu — asystentzłapie ton, rytm i słownictwo',
+      'Wrzuć próbki tekstów w swoim stylu — asystent złapie ton, rytm i słownictwo',
       'Jeśli masz wytyczne językowe (tone of voice, brand book) — przekaż je na starcie',
       'Nie akceptuj pierwszej wersji. Proś o alternatywy: „daj 3 warianty tego nagłówka"',
       'Dyskutuj z asystentem o treści — pytaj dlaczego wybrał takie sformułowanie',
-      'Weryfikuj copy pod kątem odbiorcy — asystentzna personę, ale Ty znasz klienta',
+      'Weryfikuj copy pod kątem odbiorcy — asystent zna personę, ale Ty znasz klienta',
     ],
     links: [],
     quote: '',
@@ -80,14 +111,14 @@ const sections = [
     number: 'Dialog',
     label: 'Praca z asystentem',
     title: 'Jak rozmawiać z asystentem',
-    description: 'Asystentnie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
+    description: 'Asystent nie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
     bullets: [
-      '„Dlaczego tu nie ma sekcji X?" — asystentwyjaśni czy celowo pominął, czy nie rozważył',
+      '„Dlaczego tu nie ma sekcji X?" — asystent wyjaśni czy celowo pominął, czy nie rozważył',
       '„Czy to nadal potrzebujemy?" — kiedy sekcja wydaje się zbędna po zmianach w innych miejscach',
       '„Daj alternatywy" — wymusza opcje zamiast jednego rozwiązania',
       '„Najpierw zidentyfikuj sens tego punktu" — zanim zmienisz tekst, zrozum co ma komunikować',
       '„Skróć" — AI pisze za dużo, hamuj',
-      '„Czy to się nie powtarza z X?" — asystentsprawdzi redundancję',
+      '„Czy to się nie powtarza z X?" — asystent sprawdzi redundancję',
       '„Oceń krytycznie ten wireframe" — włącza tryb audytu, szuka słabych punktów',
       'Jeśli nie wiesz co dalej — zapytaj asystenta. Zna proces i podpowie następny krok',
     ],
@@ -98,11 +129,11 @@ const sections = [
     number: 'Sesje',
     label: 'Między sesjami',
     title: 'Praca na wielu sesjach',
-    description: 'Asystentczyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
+    description: 'Asystent czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
     bullets: [
-      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — asystentprzeczyta pliki i wróci do kontekstu',
+      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — asystent przeczyta pliki i wróci do kontekstu',
       'Jeśli zmieniłeś coś ręcznie w pliku — powiedz asystentowi. Inaczej nadpisze Twoje zmiany',
-      'Decision log to Twoja pamięć między sesjami. Kluczowe decyzje powinny tam trafić',
+      'Decyzje zapisują się w bocznym panelu HTML obok wireframe\'u — to Twoja pamięć między sesjami',
     ],
     links: [],
     quote: '',
@@ -111,16 +142,16 @@ const sections = [
     number: 'Output',
     label: 'Deliverables',
     title: 'Jak wykorzystać pliki wyjściowe asystenta',
-    description: 'Asystent tworzy dwa typy plików. Pliki .md to historia projektu — rozumieją je inne asystenty AI i możesz kontynuować pracę w kolejnych sesjach. Ale możesz też poprosić o pliki w formie zrozumiałej dla ludzi.',
+    description: 'Główny deliverable to pliki HTML — otwierasz w przeglądarce, pokazujesz klientowi bez Figmy. W każdym HTML jest przycisk pobierania Markdown, więc wersję dla narzędzi AI masz w jednym kliknięciu, bez proszenia agenta o eksport.',
     bullets: [
-      'Pliki .md — kontekst projektu, strategia, wireframe, decision log. Uniwersalny format, który czyta każde narzędzie AI',
-      'Poproś o wireframe w HTML (low-fidelity) — do prezentacji klientowi bez Figmy',
-      'Poproś o dokument Word ze strategią — do wysyłki agencji lub wydruku',
-      'Wireframe .md → Figma AI: wklej jako kontekst, visual wireframe w minuty',
-      'Wireframe .md → Google Stitch / Gemini: wstępny design z gotowym copy',
-      'Wireframe .md → Cursor / Bolt: asystentdo vibe codingu dostaje plan zamiast zgadywania',
-      'Project context → brief dla agencji: wydrukuj lub wyślij jako Google Doc',
-      'Decision log → dokumentacja dla klienta: pokaż dlaczego podjęto takie decyzje',
+      'Pliki HTML — wireframe, plan projektu, fundamenty komunikacji, draft komunikatów. Otwierasz w przeglądarce, klient nie potrzebuje Figmy',
+      'Markdown jednym klikiem — w każdym HTML jest przycisk pobierania pliku .md gotowego dla innego narzędzia AI. Szybsze niż eksport przez agenta',
+      'Eksport przez agenta — gdy chcesz konkretny fragment lub niestandardowy format, poproś agenta bezpośrednio',
+      'Wireframe → Figma AI: pobierz .md, wklej jako kontekst, visual wireframe w minuty',
+      'Wireframe → Google Stitch / Gemini: wstępny design z gotowym copy',
+      'Wireframe → Cursor / Bolt: asystent do vibe codingu dostaje plan zamiast zgadywania',
+      'Plan projektu → brief dla agencji: wydrukuj HTML lub wyślij link',
+      'Decyzje (boczny panel HTML) → dokumentacja dla klienta: pokaż dlaczego podjęto takie decyzje',
     ],
     links: [],
     quote: '',
@@ -131,10 +162,38 @@ const sections = [
     title: 'Czego unikać',
     description: 'Kilka rzeczy, które obniżają jakość wyników.',
     bullets: [
-      'Nie akceptuj wszystkiego na „ok". Asystentpójdzie dalej, ale wynik będzie gorszy',
+      'Nie akceptuj wszystkiego na „ok". Asystent pójdzie dalej, ale wynik będzie gorszy',
       'Nie pomijaj Discovery. Wireframe bez kontekstu to zgadywanie z lepszym formatowaniem',
       'Nie próbuj robić wszystkiego w jednej sesji. 2-3h na projekt to realistyczne tempo',
-      'Nie kopiuj deliverables bez przeczytania. Asystentzakłada, Ty weryfikujesz',
+      'Nie kopiuj deliverables bez przeczytania. Asystent zakłada, Ty weryfikujesz',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Tempo',
+    label: 'Sesje i kontekst',
+    title: 'Dziel projekt na sesje',
+    description: 'Jeden duży projekt to za dużo na jedną sesję. Kontekst chatu ma limit — po ok. 40% jego zapełnienia agent zaczyna gubić szczegóły, zapominać wcześniejsze decyzje i odpowiadać mniej dokładnie. Dziel projekt na kawałki: 1 deliverable na sesję.',
+    bullets: [
+      'Discovery + strategia w 1 sesji. Copy w 2. Makieta w 3. Każda sesja zamyka jeden kawałek.',
+      'Restartuj sesję gdy odpowiedzi stają się ogólnikowe lub agent zapomina wcześniejsze ustalenia. To sygnał, że kontekst się zapełnił.',
+      'Decyzje zapisują się w bocznym panelu HTML obok wireframe\'u — to Twoja pamięć między sesjami.',
+      'Po przerwie powiedz „kontynuuj od X" — agent czyta pliki i odzyskuje kontekst.',
+    ],
+    links: [],
+    quote: '',
+  },
+  {
+    number: 'Audyt',
+    label: 'Weryfikacja i konsultacja',
+    title: 'Pytaj agenta o opinię',
+    description: 'Asystent ma w plecaku 16 typów stron, 13 frameworków UX i wzorce z badań. To nie tylko wykonawca — to też konsultant. Zweryfikuje Twoje decyzje i wyjaśni metodologię.',
+    bullets: [
+      '„Zweryfikuj moją decyzję" — sceptyczne spojrzenie na Twoją wersję, propozycja co poprawić.',
+      '„Co powinna zawierać sekcja X?" — agent zna wzorce, traktuj go jak konsultanta UX.',
+      '„Jak to się powinno zrobić wg metodologii Y?" — odpowie z odniesieniem do frameworków.',
+      '„Oceń krytycznie ten wireframe" — tryb audytu, szuka słabych punktów.',
     ],
     links: [],
     quote: '',
@@ -197,11 +256,24 @@ const sections = [
                         {section.bullets.map((bullet) => (
                           <li class="flex items-start gap-3 text-base text-muted">
                             <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
-                            {bullet}
+                            <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
                           </li>
                         ))}
                       </ul>
                     )}
+                    {section.groups && section.groups.map((group) => (
+                      <div class="mb-8">
+                        <h3 class="font-headline font-bold text-lg text-foreground mb-3">{group.heading}</h3>
+                        <ul class="space-y-3">
+                          {group.bullets.map((bullet) => (
+                            <li class="flex items-start gap-3 text-base text-muted">
+                              <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                              <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ))}
                     {section.links.length > 0 && (
                       <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
                         <div class="flex flex-wrap gap-x-12 gap-y-3">
