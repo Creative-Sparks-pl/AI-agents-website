@@ -161,6 +161,21 @@ const install = defineCollection({
   }),
 });
 
+const boundaries = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/boundaries' }),
+  schema: z.object({
+    badge: z.string(),
+    heading: z.string(),
+    intro: z.string().optional(),
+    items: z.array(z.object({
+      icon: z.string(),
+      label: z.string().optional(),
+      title: z.string(),
+      description: z.string(),
+    })),
+  }),
+});
+
 const origin = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/origin' }),
   schema: z.object({
@@ -312,6 +327,7 @@ export const collections = {
   platform,
   problems,
   install,
+  boundaries,
   origin,
   architecture,
   comparison,

@@ -49,7 +49,7 @@ const {
       ))}
     </div>
 
-    <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" data-umami-event="Nav CTA">
+    <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)">
       {ctaLabel}
     </Button>
   </nav>

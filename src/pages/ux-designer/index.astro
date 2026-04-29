@@ -9,6 +9,7 @@ import ComparisonSection from '../../components/sections/comparison/ComparisonSe
 import ProcessSection from '../../components/sections/process/ProcessSection.astro';
 import PricingSection from '../../components/sections/pricing/PricingSection.astro';
 import DemoSection from '../../components/sections/demo/DemoSection.astro';
+import ArchitectureSection from '../../components/sections/architecture/ArchitectureSection.astro';
 import PlatformSection from '../../components/sections/platform/PlatformSection.astro';
 import KnowledgeBaseSection from '../../components/sections/knowledge-base/KnowledgeBaseSection.astro';
 import FAQSection from '../../components/sections/faqs/FAQSection.astro';
@@ -19,6 +20,7 @@ import proofIcon from '../../assets/icons/shape-2.svg';
 import valuePropsIcon from '../../assets/icons/shape-4.svg';
 import freeTrialIcon from '../../assets/icons/shape-6.svg';
 import installIcon from '../../assets/icons/shape-7.svg';
+import boundariesIcon from '../../assets/icons/shape-8.svg';
 import finalCtaIcon from '../../assets/icons/shape-9.svg';
 import { getCurrentLocale, requireEntry } from '../../lib/i18n';
 
@@ -40,6 +42,8 @@ const processCards = stages.map((s) => ({
 const freeTrialEntry = await requireEntry('free-trial', locale);
 
 const installEntry = await requireEntry('install', locale);
+
+const boundariesEntry = await requireEntry('boundaries', locale);
 
 const finalCtaEntry = await requireEntry('final-cta', locale);
 
@@ -119,6 +123,16 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
     />
     <KnowledgeBaseSection id="baza-wiedzy" />
     <ComparisonSection id="porownanie" />
+    <ProblemsSection
+      id="granice"
+      headingId="boundaries-heading"
+      badge={boundariesEntry.data.badge}
+      heading={boundariesEntry.data.heading}
+      items={boundariesEntry.data.items}
+      columns={3}
+      icon={boundariesIcon}
+      class="!bg-surface"
+    />
     <PricingSection />
     <DemoSection
       id="audyt"
@@ -131,6 +145,7 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
       videoPopover={{ mediaId: '95i42fdxo8', label: 'Zobacz wideo' }}
       icon={freeTrialIcon}
     />
+    <ArchitectureSection />
     <PlatformSection />
     <ProblemsSection
       headingId="install-heading"

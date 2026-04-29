@@ -1,0 +1,12 @@
+badge: Co zostaje po twojej stronie
+heading: Czego to narzędzie nie robi
+items:
+  - icon: block
+    title: Nie podejmuje decyzji strategicznych za Ciebie.
+    description: Pokazuje opcje z trade-off, wybierasz Ty.
+  - icon: info
+    title: Nie udaje, że wie wszystko.
+    description: Każda decyzja oznaczona poziomem pewności tam, gdzie AI zgaduje.
+  - icon: psychology
+    title: Nie zastępuje doświadczenia.
+    description: Skraca drogę do pierwszej wersji, którą rozwijasz po swojemu.
