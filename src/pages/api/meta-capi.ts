@@ -7,6 +7,7 @@ interface CapiBody {
   event_id?: string;
   custom_data?: Record<string, unknown>;
   source_url?: string;
+  test_event_code?: string;
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
@@ -36,7 +37,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const fbc = cookieHeader.match(/(?:^|;\s*)_fbc=([^;]+)/)?.[1];
   const userAgent = request.headers.get('user-agent') ?? '';
 
-  const payload = {
+  const payload: Record<string, unknown> = {
     data: [
       {
         event_name: body.event_name,
@@ -54,6 +55,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
       },
     ],
   };
+
+  if (body.test_event_code) {
+    payload.test_event_code = body.test_event_code;
+  }
 
   try {
     const response = await fetch(

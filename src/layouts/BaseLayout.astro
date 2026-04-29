@@ -141,6 +141,19 @@ fbq('track', 'PageView');
           return Date.now() + '-' + Math.random().toString(36).slice(2);
         }
 
+        function readTestEventCode() {
+          try {
+            var fromUrl = new URLSearchParams(window.location.search).get('test_event_code');
+            if (fromUrl) {
+              sessionStorage.setItem('meta_test_event_code', fromUrl);
+              return fromUrl;
+            }
+            return sessionStorage.getItem('meta_test_event_code') || undefined;
+          } catch (_e) {
+            return undefined;
+          }
+        }
+
         window.trackConversion = function (eventName, params) {
           params = params || {};
           if (!hasMarketingConsent()) return;
@@ -148,12 +161,15 @@ fbq('track', 'PageView');
           if (typeof window.fbq === 'function') {
             window.fbq('track', eventName, params, { eventID: eventId });
           }
-          var body = JSON.stringify({
+          var testEventCode = readTestEventCode();
+          var bodyObj = {
             event_name: eventName,
             event_id: eventId,
             custom_data: params,
             source_url: window.location.href,
-          });
+          };
+          if (testEventCode) bodyObj.test_event_code = testEventCode;
+          var body = JSON.stringify(bodyObj);
           try {
             if (navigator.sendBeacon) {
               navigator.sendBeacon('/api/meta-capi', new Blob([body], { type: 'application/json' }));
