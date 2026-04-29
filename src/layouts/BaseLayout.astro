@@ -19,11 +19,16 @@ const {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site).toString();
+
+const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
 ---
 
 <!doctype html>
 <html lang="pl">
   <head>
+    <!-- Cookiebot CMP — must load first to gate downstream scripts -->
+    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="068aceee-c3db-442f-acf0-4310125da547" data-blockingmode="auto" type="text/javascript"></script>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -105,6 +110,80 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
 
     <!-- Umami Analytics -->
     <script defer src="https://analytics.creativesparks.pl/script.js" data-website-id="37a76f9d-7246-4d45-b832-3b35e78eee08"></script>
+
+    {metaPixelId && (
+      <Fragment>
+        <!-- Meta Pixel (gated by Cookiebot marketing consent) -->
+        <script type="text/plain" data-cookieconsent="marketing" set:html={`
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '${metaPixelId}');
+fbq('track', 'PageView');
+        `} />
+        <noscript>
+          <img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`} alt="" />
+        </noscript>
+      </Fragment>
+    )}
+
+    <!-- Conversion tracking helper: fires fbq + CAPI on [data-track] click, post-consent -->
+    <script is:inline>
+      (function () {
+        function hasMarketingConsent() {
+          return typeof window.Cookiebot !== 'undefined'
+            && window.Cookiebot.consent
+            && window.Cookiebot.consent.marketing === true;
+        }
+
+        function newEventId() {
+          if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+            return window.crypto.randomUUID();
+          }
+          return Date.now() + '-' + Math.random().toString(36).slice(2);
+        }
+
+        window.trackConversion = function (eventName, params) {
+          params = params || {};
+          if (!hasMarketingConsent()) return;
+          var eventId = newEventId();
+          if (typeof window.fbq === 'function') {
+            window.fbq('track', eventName, params, { eventID: eventId });
+          }
+          var body = JSON.stringify({
+            event_name: eventName,
+            event_id: eventId,
+            custom_data: params,
+            source_url: window.location.href,
+          });
+          try {
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon('/api/meta-capi', new Blob([body], { type: 'application/json' }));
+            } else {
+              fetch('/api/meta-capi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: body,
+                keepalive: true,
+              });
+            }
+          } catch (_e) { /* no-op */ }
+        };
+
+        document.addEventListener('click', function (e) {
+          var el = e.target.closest && e.target.closest('[data-track]');
+          if (!el) return;
+          var eventName = el.getAttribute('data-track');
+          if (!eventName) return;
+          var params = {};
+          for (var i = 0; i < el.attributes.length; i++) {
+            var attr = el.attributes[i];
+            if (attr.name.indexOf('data-track-') === 0) {
+              params[attr.name.slice('data-track-'.length)] = attr.value;
+            }
+          }
+          window.trackConversion(eventName, params);
+        });
+      })();
+    </script>
   </head>
   <body class="bg-background text-foreground">
     <slot />

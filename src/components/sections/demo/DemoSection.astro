@@ -80,7 +80,14 @@ const hasStages = stages && stages.length > 0;
               {(cta || videoPopover) && (
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
                   {cta && (
-                    <Button href={cta.href} external={cta.href.startsWith('http')} size="md" block trailingIcon={cta.icon}>
+                    <Button
+                      href={cta.href}
+                      external={cta.href.startsWith('http')}
+                      size="md"
+                      block
+                      trailingIcon={cta.icon}
+                      data-track={cta.href.includes('darmowy-audyt') ? 'Lead' : undefined}
+                    >
                       {cta.label}
                     </Button>
                   )}

@@ -52,6 +52,8 @@ const { name, sub, oldPrice, price, highlight, features } = Astro.props;
       size="md"
       data-umami-event="Pricing CTA"
       data-umami-event-plan={name}
+      data-track="InitiateCheckout"
+      data-track-plan={name}
     >
       Kup pakiet {name}
     </Button>
