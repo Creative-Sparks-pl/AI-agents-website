@@ -8,6 +8,8 @@ interface Props {
   outputIcon?: string;
   quote?: string;
   shape?: string;
+  trackEvent?: string;
+  trackParams?: Record<string, string>;
 }
 
 const {
@@ -19,12 +21,24 @@ const {
   outputIcon = 'description',
   quote,
   shape,
+  trackEvent,
+  trackParams,
 } = Astro.props;
 
 const Tag = outputLink ? 'a' : 'div';
-const linkAttrs = outputLink
+const baseLinkAttrs = outputLink
   ? { href: outputLink, target: '_blank', rel: 'noopener noreferrer' }
   : {};
+const trackAttrs: Record<string, string> = {};
+if (outputLink && trackEvent) {
+  trackAttrs['data-track'] = trackEvent;
+  if (trackParams) {
+    for (const [key, value] of Object.entries(trackParams)) {
+      trackAttrs[`data-track-${key}`] = value;
+    }
+  }
+}
+const linkAttrs = { ...baseLinkAttrs, ...trackAttrs };
 ---
 
 <Tag

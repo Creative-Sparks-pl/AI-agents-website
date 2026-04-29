@@ -1,12 +1,18 @@
 ---
 import '../styles/global.css';
 
+interface ViewContentParams {
+  content_name: string;
+  content_category?: string;
+}
+
 interface Props {
   title: string;
   description?: string;
   ogTitle?: string;
   ogDescription?: string;
   ogImage?: string;
+  viewContent?: ViewContentParams;
 }
 
 const {
@@ -15,6 +21,7 @@ const {
   ogTitle = title,
   ogDescription = description,
   ogImage = '/og-image.jpg',
+  viewContent,
 } = Astro.props;
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -198,8 +205,32 @@ fbq('track', 'PageView');
           }
           window.trackConversion(eventName, params);
         });
+
+        // Queue conversions that need to fire on page load. Cookiebot may load
+        // after this script and may not yet have a consent decision — wait for
+        // CookiebotOnConsentReady (initial decision) and CookiebotOnAccept (user accepts later).
+        window.queueConversion = function (eventName, params) {
+          var fired = false;
+          function tryFire() {
+            if (fired) return;
+            if (!hasMarketingConsent()) return;
+            fired = true;
+            window.trackConversion(eventName, params);
+          }
+          tryFire();
+          document.addEventListener('CookiebotOnConsentReady', tryFire);
+          document.addEventListener('CookiebotOnAccept', tryFire);
+        };
       })();
     </script>
+
+    {viewContent && (
+      <script is:inline define:vars={{ viewContentParams: viewContent }}>
+        if (typeof window.queueConversion === 'function') {
+          window.queueConversion('ViewContent', viewContentParams);
+        }
+      </script>
+    )}
   </head>
   <body class="bg-background text-foreground">
     <slot />

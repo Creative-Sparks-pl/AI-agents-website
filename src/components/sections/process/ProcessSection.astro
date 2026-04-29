@@ -13,6 +13,8 @@ interface Card {
   outputIcon?: string;
   quote?: string;
   shape?: string;
+  trackEvent?: string;
+  trackParams?: Record<string, string>;
 }
 
 interface VideoTile {
@@ -73,6 +75,8 @@ const {
             outputIcon={card.outputIcon}
             quote={card.quote}
             shape={card.shape}
+            trackEvent={card.trackEvent}
+            trackParams={card.trackParams}
           />
         ))}
         {videoTile && (

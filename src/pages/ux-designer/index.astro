@@ -55,6 +55,8 @@ const proofCards = proofEntry.data.cards.map((c) => ({
   output: c.link.label,
   outputLink: c.link.href,
   outputIcon: 'description',
+  trackEvent: 'ViewContent',
+  trackParams: { content_name: 'proof_gallery', content_id: c.title },
 }));
 
 const valuePropsEntry = await requireEntry('value-props', locale);
