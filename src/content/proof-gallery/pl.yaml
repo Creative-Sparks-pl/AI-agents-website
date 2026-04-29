@@ -1,6 +1,6 @@
 badge: Dowód
 heading: "Tę stronę zaplanowaliśmy tym narzędziem,<br/>a cały proces jest publiczny."
-lead: Każdy z plików otwierasz w przeglądarce, każdy ma wersję markdown do pobrania. Kliknij i sprawdź.
+lead: "Każdy z plików otwierasz w przeglądarce, każdy ma wersję markdown do pobrania.<br/>Polecam podgląd przykładów na desktopie, bo telefon obetnie boczny panel z decyzjami."
 cards:
   - title: Plan projektu
     description: Kontekst projektu, strategia i inwentarz szablonów na podstronach jednego pliku — punkt startowy każdej sesji.
