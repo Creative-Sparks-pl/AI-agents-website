@@ -4,12 +4,16 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  ogTitle?: string;
+  ogDescription?: string;
   ogImage?: string;
 }
 
 const {
   title,
   description = 'Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe\'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup.',
+  ogTitle = title,
+  ogDescription = description,
   ogImage = '/og-image.jpg',
 } = Astro.props;
 
@@ -39,14 +43,14 @@ const ogImageURL = new URL(ogImage, Astro.site).toString();
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pl_PL" />
     <meta property="og:url" content={canonicalURL.toString()} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={ogImageURL} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageURL} />
 
     <!-- Google Fonts preconnect -->

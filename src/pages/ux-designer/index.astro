@@ -66,6 +66,9 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
 <BaseLayout
   title="Asystent UX — proces UX od briefu do wireframe'u | Creative Sparks"
   description="Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup."
+  ogTitle="Zaplanuj strukturę i treści strony, zanim ruszysz w Figmę"
+  ogDescription="Asystent UX, który prowadzi od briefu do gotowej makiety z prawdziwym copy. Pakiety od 599 zł."
+  ogImage="/uxd-share.jpg"
 >
   <TopAppBar />
   <main>
@@ -78,7 +81,24 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
       lead={proofEntry.data.lead}
       cards={proofCards}
       icon={proofIcon}
-    />
+    >
+      <script is:inline async src="https://fast.wistia.com/player.js"></script>
+      <script is:inline async type="module" src="https://fast.wistia.com/embed/1siqhsesz9.js"></script>
+      <div class="flex justify-start">
+        <wistia-player
+          media-id="1siqhsesz9"
+          popover-content="link"
+          wistia-popover="true"
+          aspect="1.7777777777777777"
+          style="display: inline-block;"
+        >
+          <a href="#" class="inline-flex items-center gap-2 tracking-tight transition-all duration-300 bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white px-10 py-4 text-base font-extrabold">
+            Obejrzyj demo narzędzia
+            <span class="material-symbols-outlined text-lg" aria-hidden="true">play_arrow</span>
+          </a>
+        </wistia-player>
+      </div>
+    </ProcessSection>
     <UseCasesSection
       id="value-props"
       headingId="value-props-heading"
@@ -94,7 +114,7 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
       badge="Jak to działa"
       heading="Cztery kroki od briefu<br/>do gotowej makiety z treściami"
       cards={processCards}
-      videoTile={{ mediaId: '95i42fdxo8', label: 'Wideo', title: 'Zobacz wideo z procesem audytu' }}
+      videoTile={{ mediaId: '1siqhsesz9', label: 'Wideo', title: 'Zobacz demo asystenta UX' }}
       icon={processIcon}
     />
     <KnowledgeBaseSection id="baza-wiedzy" />
