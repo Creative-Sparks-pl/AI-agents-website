@@ -1019,6 +1019,25 @@
       color: #888;
       font-size: 11px;
     }
+
+    /* === Mobile (max-width: 768px) — hide audit chrome, collapse asymmetric grids === */
+    @media (max-width: 768px) {
+      .shell-bottombar,
+      .shell-leftpanel { display: none !important; }
+      body.shell-leftpanel-open { margin-left: 0 !important; }
+      body { padding-bottom: 0 !important; }
+
+      body.shell-leftpanel-open .wf-nav,
+      body.shell-leftpanel-open .wf-section,
+      body.shell-leftpanel-open .wf-footer {
+        max-width: min(var(--wf-max-w), calc(100vw - 32px));
+      }
+
+      .wf-grid[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+      .wf-grid > * { min-width: 0; }
+    }
   </style>
 </head>
 <body class="shell-leftpanel-open">

@@ -1210,6 +1210,25 @@
       background: #fafafa;
       border: 1px solid var(--wf-line);
     }
+
+    /* === Mobile (max-width: 768px) — hide audit chrome, collapse card rows === */
+    @media (max-width: 768px) {
+      .shell-bottombar,
+      .shell-leftpanel { display: none !important; }
+      body.shell-leftpanel-open { margin-left: 0 !important; }
+      body { padding-bottom: 0 !important; }
+
+      .pp-main,
+      body.shell-leftpanel-open .pp-main {
+        max-width: min(var(--wf-max-w), calc(100vw - 32px));
+        padding: 16px;
+      }
+
+      .ui-card-grid { max-width: min(1560px, calc(100vw - 32px)); }
+      .ui-card-row--three,
+      .ui-card-row--two { grid-template-columns: 1fr; }
+      .pp-summary { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body class="shell-leftpanel-open">

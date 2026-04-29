@@ -744,6 +744,20 @@
       color: #888;
       font-size: 11px;
     }
+
+    /* === Mobile (max-width: 768px) — hide audit chrome === */
+    @media (max-width: 768px) {
+      .shell-bottombar,
+      .shell-leftpanel { display: none !important; }
+      body.shell-leftpanel-open { margin-left: 0 !important; }
+      body { padding-bottom: 0 !important; }
+
+      body.shell-leftpanel-open .wf-nav,
+      body.shell-leftpanel-open .wf-section,
+      body.shell-leftpanel-open .wf-footer {
+        max-width: min(var(--wf-max-w), calc(100vw - 32px));
+      }
+    }
     /* UNIVERSAL-END */
 
     /* ============================================================ */
@@ -943,9 +957,13 @@
     .mc-outcome-name { font-weight: 600; margin-bottom: 4px; }
     .mc-outcome-text { color: var(--wf-text); font-size: 0.8125rem; line-height: 1.5; }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .mc-row--context, .mc-row--problem, .mc-row--pillars, .mc-row--messaging {
         grid-template-columns: 1fr;
+      }
+      .mc-canvas {
+        max-width: min(1560px, calc(100vw - 32px));
+        padding: 16px;
       }
     }
 
