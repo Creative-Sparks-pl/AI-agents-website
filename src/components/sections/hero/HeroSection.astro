@@ -5,14 +5,15 @@ import ChecklistItem from '../../ui/ChecklistItem.astro';
 import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 
 interface Props extends HTMLAttributes<'section'> {
+  entryId?: string;
   class?: string;
 }
 
-const { class: className, ...rest } = Astro.props;
+const { entryId, class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
-const entry = await requireEntry('hero', locale);
-const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary } = entry.data;
+const entry = await requireEntry('hero', entryId ?? locale);
+const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = 'Demo możliwości asystenta UX' } = entry.data;
 ---
 
 <section
@@ -105,7 +106,7 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
             <div class="flex justify-center mt-12">
               <span class="inline-flex items-center gap-2 text-primary font-label font-bold text-base tracking-tight">
                 <span class="material-symbols-outlined text-xl" aria-hidden="true">play_arrow</span>
-                Demo możliwości asystenta UX
+                {videoLabel}
               </span>
             </div>
           </a>

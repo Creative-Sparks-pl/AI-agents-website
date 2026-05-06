@@ -22,6 +22,7 @@ const hero = defineCollection({
     bullets: z.array(z.string()),
     ctaPrimary: linkSchema,
     ctaSecondary: linkSchema,
+    videoLabel: z.string().optional(),
   }),
 });
 

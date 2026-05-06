@@ -1,0 +1,28 @@
+badge: Dowód
+heading: "Tę stronę zaplanowaliśmy tym skillem,<br/>a cały proces jest publiczny."
+lead: "Każdy z plików otwierasz w przeglądarce, każdy ma wersję markdown do pobrania.<br/>Polecam podgląd przykładów na desktopie, bo telefon obetnie boczny panel z decyzjami."
+cards:
+  - title: Plan projektu
+    description: Kontekst projektu, strategia i inwentarz szablonów na podstronach jednego pliku — punkt startowy każdej sesji.
+    shape: cube
+    link:
+      label: Otwórz Plan projektu
+      href: /examples/uxd-product-website-v3_project_plan.html
+  - title: Fundamenty komunikacji
+    description: ICP, kategoria, alternatywy, filary, narracja, nagłówki oraz draft kluczowych komunikatów (hero, value props, FAQ, CTA) — strategiczne ramy i gotowe teksty na jednej tablicy.
+    shape: grid
+    link:
+      label: Otwórz Fundamenty komunikacji
+      href: /examples/uxd-product-website-v3_messaging_canvas.html
+  - title: Makiety
+    description: Szkice sekcji z prawdziwym copy, makieta przed i po audycie istniejącej strony.
+    shape: bars
+    link:
+      label: Otwórz Makiety
+      href: /examples/uxd-product-website-v3_wireframes.html
+  - title: Audyt strony przed redesignem
+    description: Makieta poprzedniej wersji strony z anotacjami diagnozy na każdej sekcji i benchmarkiem vs standardy branżowe. Punkt wyjścia całego redesignu.
+    shape: nested
+    link:
+      label: Otwórz audyt
+      href: /examples/creativesparks-ux-designer_audit.html

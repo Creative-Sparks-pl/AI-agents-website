@@ -1,0 +1,22 @@
+heading: "Trzy filary,<br/>na których stoi ten skill."
+cards:
+  - title: Plan strony z uzasadnieniem, zanim ruszysz w Figmę albo do vibe codingu.
+    description: |
+      Sitemap, struktura sekcji i narracja w jednym pliku. Każda decyzja z uzasadnieniem i odrzuconymi wariantami obok. Trafia do twojego workflow zanim otworzysz Figmę.
+    links:
+      - label: Zobacz Plan projektu
+        href: /examples/uxd-product-website-v3_project_plan.html
+
+  - title: Gotowe pliki, które pracują dalej w Figma AI, Cursor i Claude.
+    description: |
+      Markdown, HTML i Excel. Każdy artefakt wchodzi do kolejnego narzędzia w workflow bez konwersji. Plan żyje w plikach projektu, nie w historii czatu.
+    links:
+      - label: Zobacz przykłady plików
+        href: "#dowod"
+
+  - title: Wbudowana ekspertyza UX, decyzja zostaje po twojej stronie.
+    description: |
+      16 typów stron, 13 frameworków, 50+ wzorców wbudowane. Skill stosuje metodologię, ale każdy checkpoint pokazuje opcje z trade-offami. Decyzja zawsze twoja.
+    links:
+      - label: Zobacz Bazę wiedzy
+        href: "#baza-wiedzy"

@@ -6,14 +6,17 @@ import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 import KnowledgeColumn from './KnowledgeColumn.astro';
 
 interface Props extends HTMLAttributes<'section'> {
+  heading?: string;
+  mapLabel?: string;
   class?: string;
 }
 
-const { class: className, ...rest } = Astro.props;
+const { heading: headingOverride, mapLabel = 'Mapa wiedzy asystenta', class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
 const entry = await requireEntry('knowledge-base', locale);
-const { badge, heading, intro, pageTypes, frameworks, patterns } = entry.data;
+const { badge, intro, pageTypes, frameworks, patterns } = entry.data;
+const heading = headingOverride ?? entry.data.heading;
 ---
 
 <section
@@ -30,7 +33,7 @@ const { badge, heading, intro, pageTypes, frameworks, patterns } = entry.data;
         </h2>
         <a href="/ux-designer/baza-wiedzy" class="inline-flex items-center gap-2 mt-6 text-primary font-bold text-sm hover:underline transition-colors">
           <span class="material-symbols-outlined text-base">menu_book</span>
-          Mapa wiedzy asystenta
+          {mapLabel}
           <span class="material-symbols-outlined text-base">arrow_forward</span>
         </a>
       </Fragment>

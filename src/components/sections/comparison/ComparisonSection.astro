@@ -6,13 +6,14 @@ import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
 import ComparisonRow from './ComparisonRow.astro';
 
 interface Props extends HTMLAttributes<'section'> {
+  entryId?: string;
   class?: string;
 }
 
-const { class: className, ...rest } = Astro.props;
+const { entryId, class: className, ...rest } = Astro.props;
 
 const locale = getCurrentLocale();
-const entry = await requireEntry('comparison', locale);
+const entry = await requireEntry('comparison', entryId ?? locale);
 const { badge, heading, lead, columns, rows } = entry.data;
 ---
 

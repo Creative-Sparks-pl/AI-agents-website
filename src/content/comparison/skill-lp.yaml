@@ -1,0 +1,71 @@
+badge: Porównanie
+heading: "Czemu nie wystarczy samo Claude Code<br/>i czemu nie napisać sobie skilla."
+columns:
+  - key: skill
+    label: UX skill (ten produkt)
+    sub: REKOMENDACJA
+    highlight: true
+  - key: claude
+    label: Samo Claude Code
+    sub: ALTERNATYWA
+    highlight: false
+  - key: diy
+    label: Własnoręczny skill
+    sub: ALTERNATYWA
+    highlight: false
+rows:
+  - feature: Metodologia UX
+    cells:
+      skill:
+        status: "yes"
+        text: 16 typów stron, 13 frameworków, 50+ wzorców wbudowane.
+      claude:
+        status: "no"
+        text: Brak. Stosujesz to, co podpowiadasz w promptach.
+      diy:
+        status: "partial"
+        text: Sam piszesz. Czas + ryzyko niespójności.
+  - feature: Czas do uruchomienia
+    cells:
+      skill:
+        status: "yes"
+        text: 5 minut (folder do .claude/skills).
+      claude:
+        status: "partial"
+        text: 0 minut, ale 0 metodologii.
+      diy:
+        status: "no"
+        text: 80 - 160 godzin pisania i testowania.
+  - feature: Cross-model (Claude, ChatGPT, Gemini)
+    cells:
+      skill:
+        status: "yes"
+        text: Tak. Działa w narzędziach z dowolnym modelem (Claude Code, Codex, Gemini CLI, Cursor).
+      claude:
+        status: "no"
+        text: Tylko Claude w Claude Code. Bez wyboru modelu.
+      diy:
+        status: "partial"
+        text: Tak, jeśli sam zaprojektujesz pod otwartą specyfikację.
+  - feature: Dowód decyzji obok każdej rekomendacji
+    cells:
+      skill:
+        status: "yes"
+        text: Tak, uzasadnienie i odrzucone warianty obok każdej decyzji.
+      claude:
+        status: "no"
+        text: Nie. Model odpowiada bez śladu.
+      diy:
+        status: "partial"
+        text: Trzeba samemu zaprojektować mechanizm zapisu decyzji.
+  - feature: Koszt
+    cells:
+      skill:
+        status: "price"
+        text: Od 599 zł, jednorazowo.
+      claude:
+        status: "price"
+        text: Subskrypcja Claude Pro / Max.
+      diy:
+        status: "price"
+        text: Twój cenny czas.
