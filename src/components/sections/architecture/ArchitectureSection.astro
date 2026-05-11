@@ -145,7 +145,7 @@ if (decisionsProp) {
             <p class="text-base text-foreground/80 leading-relaxed font-body">{cta.description}</p>
           </div>
           <div class="shrink-0">
-            <Button href={cta.button.href} size="lg" trailingIcon="trending_flat">
+            <Button href={cta.button.href} size="lg" trailingIcon="trending_flat" onclick="setTimeout(function(){window.umami&&window.umami.track('Architecture CTA')},0)">
               {cta.button.label}
             </Button>
           </div>
