@@ -266,6 +266,36 @@ const rawSections = [
     group: 'Dobre praktyki',
   },
   {
+    number: 'Feedback',
+    label: 'Pytania i zgłoszenia',
+    title: 'Powiedz agentowi — pytania, błędy, pomysły',
+    description: 'Agent ma wbudowany kanał feedbacku — wystarczy zwykła rozmowa, bez formularzy ani konta. Działa tylko w wersjach desktop (IDE): Claude Code, Cursor, VS Code z pluginem LLM, Antigravity. W wersjach webowych użyj kontaktu mailowego niżej.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Co możesz zgłosić',
+        bullets: [
+          '<strong>Pytanie</strong> — „jak zrobić X?", „co to znaczy Y?", „dlaczego agent…?". Agent uporządkuje pytanie z kontekstem i prześle.',
+          '<strong>Błąd</strong> — „zgłaszam błąd", „coś jest zepsute". Agent dopyta o szczegóły, sam doda platformę i wersję.',
+          '<strong>Pomysł / nowa funkcja</strong> — „chciałbym żeby agent X", „dodaj proszę Y". Agent zapisze sytuację, w której tego potrzebowałeś, i jakiego efektu chcesz.',
+          '<strong>Ogólny feedback</strong> — wrażenia z pracy, co działa, co nie. Wystarczy „mam feedback do Ciebie".',
+        ],
+      },
+      {
+        heading: 'Jak to działa',
+        bullets: [
+          '<strong>Powiedz w swoich słowach.</strong> Bez komend, bez formatu. Agent rozpozna intencję i dopyta o brakujące szczegóły.',
+          '<strong>Podgląd przed wysłaniem.</strong> Zobaczysz tytuł i treść zgłoszenia. Możesz poprawić, zmienić kategorię, albo anulować.',
+          '<strong>Email opcjonalny.</strong> Zostawiasz tylko jeśli chcesz odpowiedź. Używam go wyłącznie do kontaktu w sprawie tego konkretnego zgłoszenia.',
+          '<strong>Trafia do publicznych GitHub Discussions</strong> — forum, na którym widzisz swoje zgłoszenie i odpowiedzi. Inni użytkownicy mogą dołączyć do dyskusji.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pomoc',
+  },
+  {
     number: 'Kontakt',
     label: 'Wsparcie',
     title: 'Pomoc',
