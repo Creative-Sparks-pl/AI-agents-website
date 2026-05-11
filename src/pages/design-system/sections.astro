@@ -71,7 +71,7 @@ const problemsItemsDS = (await getCollection('problems', (e) => e.id.startsWith(
   }));
 import UseCasesSection from '../../components/sections/use-cases/UseCasesSection.astro';
 import ProblemsSection from '../../components/sections/problems/ProblemsSection.astro';
-import OriginSection from '../../components/sections/origin/OriginSection.astro';
+import LandscapeSection from '../../components/sections/landscape/LandscapeSection.astro';
 import ComparisonSection from '../../components/sections/comparison/ComparisonSection.astro';
 import ProcessSection from '../../components/sections/process/ProcessSection.astro';
 import PricingSection from '../../components/sections/pricing/PricingSection.astro';
@@ -91,7 +91,7 @@ const sections = [
   { id: 'use-cases', name: 'UseCasesSection (use-cases data)', collection: 'use-cases (+ use-cases-examples)', anchor: 'UseCasesSection' },
   { id: 'problems', name: 'ProblemsSection (problems data)', collection: 'problems', anchor: 'ProblemsSection' },
   { id: 'install', name: 'ProblemsSection (install data)', collection: 'install', anchor: 'InstallSection' },
-  { id: 'origin', name: 'OriginSection', collection: 'origin', anchor: 'OriginSection' },
+  { id: 'landscape', name: 'LandscapeSection', collection: 'landscape', anchor: 'LandscapeSection' },
   { id: 'comparison', name: 'ComparisonSection', collection: 'comparison', anchor: 'ComparisonSection' },
   { id: 'proof-gallery', name: 'ProcessSection (proof-gallery data)', collection: 'proof-gallery', anchor: 'ProofGallerySection' },
   { id: 'process', name: 'ProcessSection (process data)', collection: 'process', anchor: 'ProcessSection' },
@@ -291,12 +291,12 @@ const sections = [
       />
     </article>
 
-    <article id="OriginSection" class="bg-background">
+    <article id="LandscapeSection" class="bg-background">
       <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
-        <h2 class="font-headline font-bold">OriginSection</h2>
-        <span class="font-label text-xs text-background/60">collection: origin</span>
+        <h2 class="font-headline font-bold">LandscapeSection</h2>
+        <span class="font-label text-xs text-background/60">collection: landscape</span>
       </header>
-      <OriginSection />
+      <LandscapeSection />
     </article>
 
     <article id="ArchitectureSection" class="bg-background">

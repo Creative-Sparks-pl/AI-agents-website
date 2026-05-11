@@ -177,16 +177,20 @@ const boundaries = defineCollection({
   }),
 });
 
-const origin = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/origin' }),
+const landscape = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/landscape' }),
   schema: z.object({
     badge: z.string(),
     heading: z.string(),
-    callout: z.string(),
-    comparisons: z.array(z.object({
-      label: z.string(),
+    lead: z.string().optional(),
+    cards: z.array(z.object({
+      variant: z.enum(['default', 'highlight']).default('default'),
+      title: z.string(),
       description: z.string(),
+      bullets: z.array(z.string()).optional(),
+      sampleLabel: z.string().optional(),
     })),
+    closingLine: z.string().optional(),
   }),
 });
 
@@ -329,7 +333,7 @@ export const collections = {
   problems,
   install,
   boundaries,
-  origin,
+  landscape,
   architecture,
   comparison,
   faqs,

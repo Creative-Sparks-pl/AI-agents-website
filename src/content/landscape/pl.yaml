@@ -1,0 +1,18 @@
+badge: Dlaczego powstał
+heading: Zbudowałem asystenta,<br/>którego sam chciałem mieć.
+lead: Designerowi oszczędza godziny. Marketerowi i devowi daje coś, co wcześniej wymagało budżetu na konsultanta.
+cards:
+  - variant: default
+    title: Chatbot
+    description: Tylko odpowiada na pytania. Nie prowadzi projektu krok po kroku.
+  - variant: default
+    title: Kolekcje promptów
+    description: Dają fragmenty, ale brakuje spójnej metodologii i pamięci projektu.
+  - variant: default
+    title: Szablony UI
+    description: Ładnie wyglądają, ale nie mają strategii. Wygląd bez procesu.
+  - variant: highlight
+    title: Asystent UX
+    description: Prowadzi cały proces. Strategia, persony i wireframe z realnym copy.
+    sampleLabel: Ten asystent
+closingLine: Jeden asystent, pełen cykl, realne pliki.

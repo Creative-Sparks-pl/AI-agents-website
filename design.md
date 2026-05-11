@@ -119,7 +119,7 @@ Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<
 | `hero/HeroSection.astro` | `hero` | — | Page hero: badge, headline + optional emphasis, subheadline, checklist (renders via `ChecklistItem` ui/), CTA. Terminal mockup hardcoded. |
 | `use-cases/UseCasesSection.astro` | `use-cases` + `use-cases-examples` | `ExampleCard`, `CaseCard` | Static examples panel (8 example links) + 4 accordion case studies. |
 | `problems/ProblemsSection.astro` | `problems` | `ProblemCard` | 4 icon-annotated pain points. |
-| `origin/OriginSection.astro` | `origin` | — | Founder story: badge, heading with `<br/>`, comparisons grid (3 alt + asystent callout), narrative paragraph, callout box. |
+| `landscape/LandscapeSection.astro` | `landscape` | — | Category-map pattern: header (badge + heading + optional lead), 3-col grid (cols 1-2: 2×2 of default cards with optional `sampleLabel` footer; col 3: full-height highlight card), optional closing line. |
 | `comparison/ComparisonSection.astro` | `comparison` | `ComparisonRow` | Feature table (5 columns × 6 rows). |
 | `process/ProcessSection.astro` | `process` | `ProcessStage` | 6 process stage cards with shape glyphs + output links. |
 | `pricing/PricingSection.astro` | `pricing` | `PricingTier` | 3 pricing tier cards. |

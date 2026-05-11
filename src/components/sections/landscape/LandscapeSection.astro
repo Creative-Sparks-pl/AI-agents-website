@@ -1,0 +1,82 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-5.svg';
+import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+
+interface Props extends HTMLAttributes<'section'> {
+  entryId?: string;
+  headingId?: string;
+  class?: string;
+}
+
+const { entryId, headingId = 'landscape-heading', class: className, ...rest } = Astro.props;
+
+const locale = getCurrentLocale();
+const resolvedId = entryId ?? locale;
+const entry = await requireEntry('landscape', resolvedId);
+const { badge, heading, lead, cards, closingLine } = entry.data;
+
+const defaultCards = cards.filter((c) => c.variant === 'default');
+const highlightCard = cards.find((c) => c.variant === 'highlight');
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface', className]}
+  aria-labelledby={headingId}
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">{badge}</span>
+        <h2 id={headingId} class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight" set:html={heading}></h2>
+        {lead && (
+          <p class="text-lg text-muted leading-relaxed mt-6 font-body font-medium max-w-3xl" set:html={lead}></p>
+        )}
+      </Fragment>
+
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {defaultCards.map((card, i) => (
+            <div class="p-8 bg-white flex flex-col">
+              <span class="font-label text-sm font-bold text-primary mb-5 leading-none">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="font-headline text-lg font-bold text-foreground mb-3 tracking-tight leading-tight">{card.title}</h3>
+              <p class="text-base font-body leading-relaxed text-muted">{card.description}</p>
+              {card.sampleLabel && (
+                <span class="mt-auto pt-6 text-xs font-label font-bold text-muted uppercase tracking-wide">{card.sampleLabel}</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {highlightCard && (
+          <div class="p-8 bg-accent flex flex-col">
+            <span class="font-label text-sm font-bold text-primary mb-5 leading-none">{String(defaultCards.length + 1).padStart(2, '0')}</span>
+            <h3 class="font-headline text-lg font-bold text-foreground mb-3 tracking-tight leading-tight">{highlightCard.title}</h3>
+            <p class="text-base font-body leading-relaxed text-muted">{highlightCard.description}</p>
+            {highlightCard.bullets && highlightCard.bullets.length > 0 && (
+              <ul class="mt-6 space-y-2">
+                {highlightCard.bullets.map((bullet) => (
+                  <li class="flex items-start gap-3 text-base font-body leading-relaxed text-muted">
+                    <span class="material-symbols-outlined text-primary text-xl shrink-0 leading-tight" aria-hidden="true">check_circle</span>
+                    <span>{bullet}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {highlightCard.sampleLabel && (
+              <span class="mt-auto pt-6 text-xs font-label font-bold text-primary uppercase tracking-wide">{highlightCard.sampleLabel}</span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {closingLine && (
+        <p class="text-base text-muted leading-relaxed mt-10 font-body font-medium">
+          {closingLine}
+        </p>
+      )}
+    </SectionWithIcon>
+  </div>
+</section>

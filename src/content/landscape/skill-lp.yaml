@@ -1,0 +1,28 @@
+badge: Darmowe skille
+heading: A co z darmowymi skillami z GitHuba?
+lead: 'Sprawdziliśmy ekosystem. Najpopularniejsze darmowe skille UX dla Claude Code''a dzielą się na cztery typy. Każdy z nich robi swoje zadanie dobrze. Żaden nie prowadzi projektu od briefu po makiety.'
+cards:
+  - variant: default
+    title: Style i komponenty — generatory pod stack
+    description: 'Dostajesz gotową stylizację i komponenty dla twojego frameworka: React, Vue, SwiftUI lub Flutter.'
+    sampleLabel: Np. ui-ux-pro-max-skill
+  - variant: default
+    title: Referencje UX — WCAG, Nielsen, accessibility
+    description: Pytasz o normę albo wzorzec w trakcie pracy z modelem AI, dostajesz odpowiedź ze źródłem.
+    sampleLabel: Np. ux-mcp-server
+  - variant: default
+    title: Prompty UX — gotowe do skopiowania
+    description: Bierzesz prompt z biblioteki, dostosowujesz pod swój projekt, wpinasz we własny flow.
+    sampleLabel: Np. claude-code-ui-agents, LibreUIUX
+  - variant: default
+    title: Research UX — formalna metodologia
+    description: Prowadzi cię przez badania użytkowników z bezstronną metodologią.
+    sampleLabel: Np. VoltAgent ux-researcher
+  - variant: highlight
+    title: Tylko ten skill prowadzi cały projekt strony od briefu po makiety
+    description: Prowadzi przez wszystkie etapy, od pierwszego pytania o kontekst klienta po makiety gotowe do przekazania.
+    bullets:
+      - Discovery (rozpoznanie kontekstu)
+      - Audyt istniejącej strony
+      - Plan strony i architektura informacji
+      - Wireframe'y z prawdziwym copy
