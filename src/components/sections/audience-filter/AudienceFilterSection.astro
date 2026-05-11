@@ -1,0 +1,54 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-10.svg';
+
+interface Card {
+  icon: string;
+  title: string;
+  description: string;
+}
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+  badge: string;
+  heading: string;
+  lead?: string;
+  cards: Card[];
+}
+
+const { class: className, badge, heading, lead, cards, ...rest } = Astro.props;
+---
+
+<section
+  class:list={['py-20 md:py-28 bg-surface', className]}
+  aria-labelledby="audience-filter-heading"
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">{badge}</span>
+        <h2 id="audience-filter-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">{heading}</h2>
+      </Fragment>
+
+      {lead && (
+        <p class="text-lg text-muted leading-relaxed mb-10 max-w-3xl font-body">
+          {lead}
+        </p>
+      )}
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {cards.map((card) => (
+          <div class="bg-white p-8 flex flex-col gap-6 group hover:bg-primary transition-colors duration-300">
+            <span class="material-symbols-outlined text-primary text-2xl group-hover:text-white" data-icon={card.icon} aria-hidden="true">{card.icon}</span>
+            <div>
+              <h3 class="font-headline font-bold text-base mb-1 group-hover:text-white transition-colors">{card.title}</h3>
+              <p class="text-sm text-muted leading-snug group-hover:text-white/70 transition-colors">{card.description}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </SectionWithIcon>
+  </div>
+</section>
