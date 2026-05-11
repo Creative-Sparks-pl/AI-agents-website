@@ -21,7 +21,7 @@ const hero = defineCollection({
     tagline: z.string(),
     bullets: z.array(z.string()),
     ctaPrimary: linkSchema,
-    ctaSecondary: linkSchema,
+    ctaSecondary: linkSchema.optional(),
     videoLabel: z.string().optional(),
   }),
 });
@@ -111,6 +111,7 @@ const finalCta = defineCollection({
     heading: z.string(),
     intro: z.string(),
     cta: linkSchema,
+    note: z.string().optional(),
     secondaryLinks: z.array(linkSchema).optional(),
   }),
 });

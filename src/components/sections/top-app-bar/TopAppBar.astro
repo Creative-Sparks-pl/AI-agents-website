@@ -13,6 +13,8 @@ interface Props extends HTMLAttributes<'header'> {
   navLinks?: NavLink[];
   ctaLabel?: string;
   ctaHref?: string;
+  showCta?: boolean;
+  sticky?: boolean;
   class?: string;
 }
 
@@ -24,6 +26,8 @@ const {
   navLinks = defaults.links,
   ctaLabel = defaults.cta.label,
   ctaHref = defaults.cta.href,
+  showCta = true,
+  sticky = true,
   class: className,
   ...rest
 } = Astro.props;
@@ -31,7 +35,8 @@ const {
 
 <header
   class:list={[
-    'sticky top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-border/30',
+    'w-full z-50 bg-white/90 backdrop-blur-md border-b border-border/30',
+    sticky && 'sticky top-0',
     className,
   ]}
   {...rest}
@@ -49,8 +54,10 @@ const {
       ))}
     </div>
 
-    <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)">
-      {ctaLabel}
-    </Button>
+    {showCta && (
+      <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)">
+        {ctaLabel}
+      </Button>
+    )}
   </nav>
 </header>

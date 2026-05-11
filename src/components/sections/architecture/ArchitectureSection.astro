@@ -3,19 +3,58 @@ import type { HTMLAttributes } from 'astro/types';
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import LinkArrow from '../../ui/LinkArrow.astro';
+import Button from '../../ui/Button.astro';
 import sectionIcon from '../../../assets/icons/shape-9.svg';
 import { getCurrentLocale } from '../../../lib/i18n';
 import DecisionCard from './DecisionCard.astro';
 
-interface Props extends HTMLAttributes<'section'> {
-  class?: string;
+interface DecisionItem {
+  icon: string;
+  label: string;
+  title: string;
+  desc: string;
 }
 
-const { class: className, ...rest } = Astro.props;
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+  badge?: string;
+  heading?: string;
+  lead?: string;
+  link?: { href: string; label: string } | null;
+  decisions?: DecisionItem[];
+  cta?: { heading: string; description: string; button: { label: string; href: string } };
+}
 
-const locale = getCurrentLocale();
-const decisions = (await getCollection('architecture', (e) => e.id.startsWith(`${locale}/`)))
-  .sort((a, b) => a.data.order - b.data.order);
+const DEFAULT_BADGE = 'Pod maską';
+const DEFAULT_HEADING = 'To nie jest jeden prompt,<br />tylko ~25 000 linijek kodu<br />i przemyślana architektura systemu.';
+const DEFAULT_LEAD = 'Asystent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.';
+const DEFAULT_LINK = { href: '/ux-designer/changelog', label: 'Historia zmian i aktualizacji' };
+
+const {
+  class: className,
+  badge = DEFAULT_BADGE,
+  heading = DEFAULT_HEADING,
+  lead = DEFAULT_LEAD,
+  link = DEFAULT_LINK,
+  decisions: decisionsProp,
+  cta,
+  ...rest
+} = Astro.props;
+
+let decisions: DecisionItem[];
+if (decisionsProp) {
+  decisions = decisionsProp;
+} else {
+  const locale = getCurrentLocale();
+  const entries = (await getCollection('architecture', (e) => e.id.startsWith(`${locale}/`)))
+    .sort((a, b) => a.data.order - b.data.order);
+  decisions = entries.map((d) => ({
+    icon: d.data.icon,
+    label: d.data.label,
+    title: d.data.title,
+    desc: d.data.desc,
+  }));
+}
 ---
 
 <section
@@ -27,18 +66,18 @@ const decisions = (await getCollection('architecture', (e) => e.id.startsWith(`$
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <span class="text-sm font-label text-primary mb-4">Pod maską</span>
-        <h2 id="arch-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
-          To nie jest jeden prompt,<br />tylko ~25 000 linijek kodu<br />i przemyślana architektura systemu.
-        </h2>
+        <span class="text-sm font-label text-primary mb-4">{badge}</span>
+        <h2 id="arch-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight" set:html={heading}></h2>
       </Fragment>
 
-      <p class="text-lg text-muted leading-relaxed mb-4 max-w-3xl">
-        Asystent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.
+      <p class:list={['text-lg text-muted leading-relaxed max-w-3xl', link ? 'mb-4' : 'mb-10']}>
+        {lead}
       </p>
-      <LinkArrow href="/ux-designer/changelog" class="mb-10">
-        Historia zmian i aktualizacji
-      </LinkArrow>
+      {link && (
+        <LinkArrow href={link.href} class="mb-10">
+          {link.label}
+        </LinkArrow>
+      )}
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <div class="lg:col-span-5 bg-primary text-white p-8">
@@ -78,7 +117,6 @@ const decisions = (await getCollection('architecture', (e) => e.id.startsWith(`$
                   <div class="flex items-center gap-2 py-1 pl-4"><span>b2b-saas/</span></div>
                   <div class="flex items-center gap-2 py-1 pl-4"><span>b2b-services/</span></div>
                   <div class="flex items-center gap-2 py-1 pl-4"><span>ecommerce/</span></div>
-                  <div class="flex items-center gap-2 py-1 pl-4 text-white/30 italic"><span>+ 12 więcej...</span></div>
                 </div>
               </div>
               <div class="flex items-center gap-2 py-1.5 border-l border-white/20 pl-4">
@@ -95,10 +133,24 @@ const decisions = (await getCollection('architecture', (e) => e.id.startsWith(`$
 
         <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
           {decisions.map((d) => (
-            <DecisionCard icon={d.data.icon} label={d.data.label} title={d.data.title} desc={d.data.desc} />
+            <DecisionCard icon={d.icon} label={d.label} title={d.title} desc={d.desc} />
           ))}
         </div>
       </div>
+
+      {cta && (
+        <div class="mt-6 bg-accent p-8 lg:p-10 flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-10">
+          <div class="flex-1">
+            <h3 class="font-headline text-2xl md:text-3xl font-bold text-foreground tracking-tight leading-tight mb-3">{cta.heading}</h3>
+            <p class="text-base text-foreground/80 leading-relaxed font-body">{cta.description}</p>
+          </div>
+          <div class="shrink-0">
+            <Button href={cta.button.href} size="lg" trailingIcon="trending_flat">
+              {cta.button.label}
+            </Button>
+          </div>
+        </div>
+      )}
     </SectionWithIcon>
   </div>
 </section>

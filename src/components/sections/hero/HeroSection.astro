@@ -52,9 +52,11 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
           <Button href={ctaPrimary.href} size="lg" trailingIcon={ctaPrimary.icon} onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)">
             {ctaPrimary.label}
           </Button>
-          <Button href={ctaSecondary.href} size="lg" variant="secondary" trailingIcon={ctaSecondary.icon} onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)">
-            {ctaSecondary.label}
-          </Button>
+          {ctaSecondary && (
+            <Button href={ctaSecondary.href} size="lg" variant="secondary" trailingIcon={ctaSecondary.icon} onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)">
+              {ctaSecondary.label}
+            </Button>
+          )}
         </div>
       </div>
 
