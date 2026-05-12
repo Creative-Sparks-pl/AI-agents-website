@@ -1,0 +1,241 @@
+---
+type Size = 'md' | 'lg';
+
+interface Props {
+  surface: string;
+  size?: Size;
+  submitLabel?: string;
+  placeholder?: string;
+  successHeading?: string;
+  successNote?: string;
+  downloadLabel?: string;
+  block?: boolean;
+  class?: string;
+}
+
+const {
+  surface,
+  size = 'md',
+  submitLabel = 'Pobierz darmowy skill',
+  placeholder = 'adres email',
+  successHeading = 'Gotowe — paczka czeka.',
+  successNote = 'Wysłaliśmy też link na podany adres email.',
+  downloadLabel = 'Pobierz paczkę',
+  block = false,
+  class: className,
+} = Astro.props;
+
+const inputSizeClasses: Record<Size, string> = {
+  md: 'px-6 py-4 text-base',
+  lg: 'px-8 py-6 text-xl',
+};
+
+const buttonSizeClasses: Record<Size, string> = {
+  md: 'px-10 py-4 text-base font-extrabold',
+  lg: 'px-12 py-6 text-xl font-extrabold',
+};
+
+const iconSize: Record<Size, string> = {
+  md: 'text-lg',
+  lg: 'text-xl',
+};
+---
+
+<div
+  class:list={['free-skill-form', block && 'w-full', className]}
+  data-surface={surface}
+  data-state="idle"
+>
+  <form
+    class="free-skill-form__form flex flex-col sm:flex-row items-stretch gap-0 sm:gap-0"
+    novalidate
+  >
+    <label class="sr-only" for={`free-skill-email-${surface}`}>Adres email</label>
+    <input
+      id={`free-skill-email-${surface}`}
+      name="email"
+      type="email"
+      required
+      autocomplete="email"
+      inputmode="email"
+      placeholder={placeholder}
+      class:list={[
+        'free-skill-form__input',
+        'flex-1 min-w-0 bg-white text-foreground border-2 border-primary',
+        'sm:border-r-0 placeholder:text-muted/70 outline-none',
+        'focus:bg-primary/5 transition-colors duration-200',
+        inputSizeClasses[size],
+      ]}
+    />
+    <input
+      type="text"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+      class="absolute opacity-0 pointer-events-none -z-10 h-0 w-0"
+    />
+    <button
+      type="submit"
+      class:list={[
+        'free-skill-form__submit',
+        'inline-flex sm:flex-1 sm:basis-0 items-center justify-center gap-2 tracking-tight cursor-pointer',
+        'transition-all duration-300',
+        'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
+        'disabled:opacity-60 disabled:cursor-not-allowed',
+        buttonSizeClasses[size],
+      ]}
+    >
+      <span class="free-skill-form__submit-label">{submitLabel}</span>
+      <span class:list={['material-symbols-outlined', iconSize[size]]} aria-hidden="true">download</span>
+    </button>
+  </form>
+
+  <p class="free-skill-form__disclaimer mt-3 text-sm text-muted leading-relaxed">
+    Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z <a href="/ux-designer/polityka-prywatnosci" class="underline hover:text-primary">Polityką prywatności</a>).
+  </p>
+
+  <p
+    class="free-skill-form__error mt-3 text-sm text-red-600 hidden"
+    role="alert"
+    aria-live="polite"
+  ></p>
+
+  <div class="free-skill-form__success hidden mt-2" role="status" aria-live="polite">
+    <p class="text-lg font-bold text-foreground">
+      <span class="material-symbols-outlined align-middle text-primary mr-2" aria-hidden="true">check_circle</span>
+      <span class="free-skill-form__success-heading align-middle">{successHeading}</span>
+    </p>
+    <p class="text-muted mt-2 mb-4 free-skill-form__success-note">{successNote}</p>
+    <a
+      class="free-skill-form__download inline-flex items-center gap-2 tracking-tight transition-all duration-300 bg-primary text-white border-2 border-primary hover:bg-black hover:border-black px-10 py-4 text-base font-extrabold"
+      href="#"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <span class="free-skill-form__download-label">{downloadLabel}</span>
+      <span class="material-symbols-outlined text-lg" aria-hidden="true">download</span>
+    </a>
+  </div>
+</div>
+
+<script>
+  type FormState = 'idle' | 'loading' | 'success' | 'error';
+
+  function setState(root: HTMLElement, state: FormState) {
+    root.setAttribute('data-state', state);
+  }
+
+  function showError(root: HTMLElement, message: string) {
+    const el = root.querySelector<HTMLElement>('.free-skill-form__error');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.remove('hidden');
+  }
+
+  function hideError(root: HTMLElement) {
+    const el = root.querySelector<HTMLElement>('.free-skill-form__error');
+    if (!el) return;
+    el.textContent = '';
+    el.classList.add('hidden');
+  }
+
+  function showSuccess(root: HTMLElement, downloadUrl: string) {
+    const form = root.querySelector<HTMLElement>('.free-skill-form__form');
+    const disclaimer = root.querySelector<HTMLElement>('.free-skill-form__disclaimer');
+    const success = root.querySelector<HTMLElement>('.free-skill-form__success');
+    const link = root.querySelector<HTMLAnchorElement>('.free-skill-form__download');
+    if (!form || !success || !link) return;
+    link.href = downloadUrl;
+    form.classList.add('hidden');
+    disclaimer?.classList.add('hidden');
+    success.classList.remove('hidden');
+
+    const trigger = document.createElement('a');
+    trigger.href = downloadUrl;
+    trigger.rel = 'noopener noreferrer';
+    trigger.style.display = 'none';
+    document.body.appendChild(trigger);
+    trigger.click();
+    document.body.removeChild(trigger);
+  }
+
+  function trackLead(surface: string) {
+    const w = window as unknown as {
+      trackConversion?: (event: string, params: Record<string, string>) => void;
+    };
+    if (typeof w.trackConversion === 'function') {
+      w.trackConversion('Lead', { content_name: 'free_skill', content_id: surface });
+    }
+    const u = window as unknown as { umami?: { track: (name: string) => void } };
+    if (u.umami && typeof u.umami.track === 'function') {
+      u.umami.track(`Free skill submit: ${surface}`);
+    }
+  }
+
+  function attach(root: HTMLElement) {
+    const form = root.querySelector<HTMLFormElement>('.free-skill-form__form');
+    const submit = root.querySelector<HTMLButtonElement>('.free-skill-form__submit');
+    const submitLabel = root.querySelector<HTMLElement>('.free-skill-form__submit-label');
+    const surface = root.dataset.surface ?? 'unknown';
+    if (!form || !submit || !submitLabel) return;
+
+    const originalLabel = submitLabel.textContent ?? '';
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideError(root);
+
+      const data = new FormData(form);
+      const email = String(data.get('email') ?? '').trim();
+      const website = String(data.get('website') ?? '');
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError(root, 'Podaj poprawny adres email.');
+        return;
+      }
+
+      setState(root, 'loading');
+      submit.disabled = true;
+      submitLabel.textContent = 'Wysyłam...';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, website }),
+        });
+
+        const payload = (await res.json().catch(() => ({}))) as {
+          ok?: boolean;
+          downloadUrl?: string;
+          reason?: string;
+        };
+
+        if (res.ok && payload.ok && payload.downloadUrl) {
+          setState(root, 'success');
+          trackLead(surface);
+          showSuccess(root, payload.downloadUrl);
+          return;
+        }
+
+        if (payload.reason === 'invalid_email') {
+          showError(root, 'Podaj poprawny adres email.');
+        } else if (payload.reason === 'not_configured') {
+          showError(root, 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.');
+        } else {
+          showError(root, 'Wystąpił błąd. Spróbuj ponownie za chwilę.');
+        }
+        setState(root, 'error');
+      } catch (_err) {
+        showError(root, 'Brak połączenia. Sprawdź internet i spróbuj ponownie.');
+        setState(root, 'error');
+      } finally {
+        submit.disabled = false;
+        submitLabel.textContent = originalLabel;
+      }
+    });
+  }
+
+  document.querySelectorAll<HTMLElement>('.free-skill-form').forEach(attach);
+</script>

@@ -77,19 +77,28 @@ const hasStages = stages && stages.length > 0;
               <p class="text-sm text-muted italic max-w-2xl leading-relaxed">{note}</p>
             )}
             <div class="flex flex-col items-start gap-4">
-              {(cta || videoPopover) && (
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-                  {cta && (
-                    <Button
-                      href={cta.href}
-                      external={cta.href.startsWith('http')}
-                      size="md"
-                      block
-                      trailingIcon={cta.icon}
-                      data-track={cta.href.includes('cart.creativesparks.pl/checkout/') ? 'Lead' : undefined}
-                    >
-                      {cta.label}
-                    </Button>
+              {(Astro.slots.has('cta') || cta || videoPopover) && (
+                <div
+                  class:list={[
+                    'w-full gap-4',
+                    Astro.slots.has('cta') ? 'flex flex-col' : 'grid grid-cols-1 sm:grid-cols-2',
+                  ]}
+                >
+                  {Astro.slots.has('cta') ? (
+                    <slot name="cta" />
+                  ) : (
+                    cta && (
+                      <Button
+                        href={cta.href}
+                        external={cta.href.startsWith('http')}
+                        size="md"
+                        block
+                        trailingIcon={cta.icon}
+                        data-track={cta.href.includes('cart.creativesparks.pl/checkout/') ? 'Lead' : undefined}
+                      >
+                        {cta.label}
+                      </Button>
+                    )
                   )}
                   {videoPopover && (
                     <Fragment>

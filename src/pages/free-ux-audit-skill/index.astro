@@ -5,6 +5,7 @@ import HeroSection from '../../components/sections/hero/HeroSection.astro';
 import ProblemsSection from '../../components/sections/problems/ProblemsSection.astro';
 import ProcessSection from '../../components/sections/process/ProcessSection.astro';
 import DemoSection from '../../components/sections/demo/DemoSection.astro';
+import FreeSkillForm from '../../components/ui/FreeSkillForm.astro';
 import ArchitectureSection from '../../components/sections/architecture/ArchitectureSection.astro';
 import AudienceFilterSection from '../../components/sections/audience-filter/AudienceFilterSection.astro';
 import FAQSection from '../../components/sections/faqs/FAQSection.astro';
@@ -98,7 +99,15 @@ const navLinks: { label: string; href: string }[] = [];
 >
   <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
   <main>
-    <HeroSection entryId="free-audit-skill" />
+    <HeroSection entryId="free-audit-skill">
+      <FreeSkillForm
+        slot="primary-cta"
+        size="lg"
+        surface="free_audit_skill_hero"
+        submitLabel="Pobierz"
+        block
+      />
+    </HeroSection>
     <ProcessSection
       id="co-dostajesz"
       headingId="value-props-heading"
@@ -159,10 +168,11 @@ const navLinks: { label: string; href: string }[] = [];
     <DemoSection
       heading={finalCtaEntry.data.heading}
       intro={finalCtaEntry.data.intro}
-      cta={finalCtaEntry.data.cta}
       note={finalCtaEntry.data.note}
       icon={finalCtaIcon}
-    />
+    >
+      <FreeSkillForm slot="cta" surface="free_audit_skill_final" block class="sm:max-w-2xl" />
+    </DemoSection>
   </main>
   <Footer />
 </BaseLayout>

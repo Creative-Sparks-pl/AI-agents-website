@@ -48,30 +48,50 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
           ))}
         </ul>
 
-        <div class="flex flex-col sm:flex-row items-start gap-4">
-          <Button
-            href={ctaPrimary.href}
-            size="lg"
-            trailingIcon={ctaPrimary.icon}
-            data-track={ctaPrimary.href.includes('cart.creativesparks.pl/checkout/') ? 'Lead' : undefined}
-            onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)"
-          >
-            {ctaPrimary.label}
-          </Button>
-          {ctaSecondary && (
+        {Astro.slots.has('primary-cta') ? (
+          <div class="w-full flex flex-col gap-4">
+            <slot name="primary-cta" />
+            {ctaSecondary && (
+              <div class="flex justify-center">
+                <a
+                  href={ctaSecondary.href}
+                  class="inline-flex items-center gap-2 text-primary font-label font-bold text-lg tracking-tight"
+                  data-track={ctaSecondary.href.includes('/instrukcja') ? 'ViewContent' : undefined}
+                  data-track-content_name={ctaSecondary.href.includes('/instrukcja') ? 'instrukcja' : undefined}
+                  onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)"
+                >
+                  <span class="underline underline-offset-4">{ctaSecondary.label}</span>
+                  <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;" aria-hidden="true">play_arrow</span>
+                </a>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div class="flex flex-col sm:flex-row items-start gap-4">
             <Button
-              href={ctaSecondary.href}
+              href={ctaPrimary.href}
               size="lg"
-              variant="secondary"
-              trailingIcon={ctaSecondary.icon}
-              data-track={ctaSecondary.href.includes('/instrukcja') ? 'ViewContent' : undefined}
-              data-track-content_name={ctaSecondary.href.includes('/instrukcja') ? 'instrukcja' : undefined}
-              onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)"
+              trailingIcon={ctaPrimary.icon}
+              data-track={ctaPrimary.href.includes('cart.creativesparks.pl/checkout/') ? 'Lead' : undefined}
+              onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)"
             >
-              {ctaSecondary.label}
+              {ctaPrimary.label}
             </Button>
-          )}
-        </div>
+            {ctaSecondary && (
+              <Button
+                href={ctaSecondary.href}
+                size="lg"
+                variant="secondary"
+                trailingIcon={ctaSecondary.icon}
+                data-track={ctaSecondary.href.includes('/instrukcja') ? 'ViewContent' : undefined}
+                data-track-content_name={ctaSecondary.href.includes('/instrukcja') ? 'instrukcja' : undefined}
+                onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)"
+              >
+                {ctaSecondary.label}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
 
       <div class="lg:col-span-5 relative">

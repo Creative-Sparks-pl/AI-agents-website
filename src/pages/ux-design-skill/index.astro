@@ -9,6 +9,7 @@ import ComparisonSection from '../../components/sections/comparison/ComparisonSe
 import ProcessSection from '../../components/sections/process/ProcessSection.astro';
 import PricingSection from '../../components/sections/pricing/PricingSection.astro';
 import DemoSection from '../../components/sections/demo/DemoSection.astro';
+import FreeSkillForm from '../../components/ui/FreeSkillForm.astro';
 import ArchitectureSection from '../../components/sections/architecture/ArchitectureSection.astro';
 import PlatformSection from '../../components/sections/platform/PlatformSection.astro';
 import KnowledgeBaseSection from '../../components/sections/knowledge-base/KnowledgeBaseSection.astro';
@@ -159,10 +160,11 @@ const navCtaHref = '/ux-design-skill/#cennik';
       intro={freeTrialEntry.data.intro}
       stages={freeTrialEntry.data.stages}
       note={freeTrialEntry.data.note}
-      cta={freeTrialEntry.data.cta && { ...freeTrialEntry.data.cta, label: 'Pobierz darmowy skill' }}
       videoPopover={{ mediaId: '95i42fdxo8', label: 'Zobacz wideo' }}
       icon={freeTrialIcon}
-    />
+    >
+      <FreeSkillForm slot="cta" surface="ux_design_skill_audyt" submitLabel="Pobierz darmowy skill" />
+    </DemoSection>
     <ArchitectureSection />
     <PlatformSection />
     <ProblemsSection
