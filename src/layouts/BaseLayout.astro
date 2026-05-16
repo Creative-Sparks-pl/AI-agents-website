@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { localeFromPathname, locales, pathForLocale, defaultLocale } from '../lib/i18n';
 
 interface ViewContentParams {
   content_name: string;
@@ -26,14 +27,25 @@ const {
   viewContent,
 } = Astro.props;
 
+const locale = localeFromPathname(Astro.url.pathname);
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site).toString();
+
+// hreflang alternates — one per locale + x-default pointing at PL.
+const hreflangs = locales.map((loc) => {
+  const tag = loc === 'pl' ? 'pl-PL' : 'en-US';
+  const path = pathForLocale(Astro.url.pathname, loc);
+  return { tag, href: new URL(path, Astro.site).toString() };
+});
+const xDefaultHref = new URL(pathForLocale(Astro.url.pathname, defaultLocale), Astro.site).toString();
+
+const ogLocale = locale === 'en' ? 'en_US' : 'pl_PL';
 
 const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
 ---
 
 <!doctype html>
-<html lang="pl">
+<html lang={locale}>
   <head>
     <!-- Cookiebot CMP — must load first to gate downstream scripts -->
     <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="068aceee-c3db-442f-acf0-4310125da547" data-blockingmode="auto" type="text/javascript"></script>
@@ -50,13 +62,19 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
     <link rel="canonical" href={canonicalURL.toString()} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
+    <!-- hreflang alternates -->
+    {hreflangs.map(({ tag, href }) => (
+      <link rel="alternate" hreflang={tag} href={href} />
+    ))}
+    <link rel="alternate" hreflang="x-default" href={xDefaultHref} />
+
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" href="/favicon.png" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:locale" content={ogLocale} />
     <meta property="og:url" content={canonicalURL.toString()} />
     <meta property="og:title" content={ogTitle} />
     <meta property="og:description" content={ogDescription} />

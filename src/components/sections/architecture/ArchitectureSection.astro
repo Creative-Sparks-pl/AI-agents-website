@@ -5,7 +5,7 @@ import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import LinkArrow from '../../ui/LinkArrow.astro';
 import Button from '../../ui/Button.astro';
 import sectionIcon from '../../../assets/icons/shape-9.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import DecisionCard from './DecisionCard.astro';
 
 interface DecisionItem {
@@ -45,8 +45,8 @@ let decisions: DecisionItem[];
 if (decisionsProp) {
   decisions = decisionsProp;
 } else {
-  const locale = getCurrentLocale();
-  const entries = (await getCollection('architecture', (e) => e.id.startsWith(`${locale}/`)))
+  const locale = localeFromPathname(Astro.url.pathname);
+  const entries = (await getLocalizedCollection('architecture', locale))
     .sort((a, b) => a.data.order - b.data.order);
   decisions = entries.map((d) => ({
     icon: d.data.icon,

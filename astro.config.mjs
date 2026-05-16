@@ -9,8 +9,24 @@ export default defineConfig({
   site: 'https://agents.creativesparks.pl',
   adapter: vercel(),
 
+  i18n: {
+    defaultLocale: 'pl',
+    locales: ['pl', 'en'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
+
   integrations: [
-    sitemap(),
+    sitemap({
+      i18n: {
+        defaultLocale: 'pl',
+        locales: {
+          pl: 'pl-PL',
+          en: 'en-US',
+        },
+      },
+    }),
     mdx(),
   ],
 

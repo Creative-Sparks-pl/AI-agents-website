@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-11.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import FAQItem from './FAQItem.astro';
 
 interface FAQEntry {
@@ -25,8 +25,8 @@ let entries: FAQEntry[];
 if (entriesProp) {
   entries = entriesProp;
 } else {
-  const locale = getCurrentLocale();
-  const faqs = (await getCollection('faqs', (e) => e.id.startsWith(`${locale}/`)))
+  const locale = localeFromPathname(Astro.url.pathname);
+  const faqs = (await getLocalizedCollection('faqs', locale))
     .sort((a, b) => a.data.order - b.data.order);
   entries = faqs.map((f) => ({
     q: f.data.q,

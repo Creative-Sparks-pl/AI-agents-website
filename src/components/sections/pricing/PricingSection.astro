@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-12.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import PricingTier from './PricingTier.astro';
 import LinkArrow from '../../ui/LinkArrow.astro';
 
@@ -13,8 +13,8 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { class: className, ...rest } = Astro.props;
 
-const locale = getCurrentLocale();
-const plans = (await getCollection('pricing', (e) => e.id.startsWith(`${locale}/`)))
+const locale = localeFromPathname(Astro.url.pathname);
+const plans = (await getLocalizedCollection('pricing', locale))
   .sort((a, b) => a.data.order - b.data.order);
 ---
 

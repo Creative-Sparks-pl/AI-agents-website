@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import Button from '../../ui/Button.astro';
 import ChecklistItem from '../../ui/ChecklistItem.astro';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry } from '../../../lib/i18n';
 
 interface Props extends HTMLAttributes<'section'> {
   entryId?: string;
@@ -11,7 +11,7 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { entryId, class: className, ...rest } = Astro.props;
 
-const locale = getCurrentLocale();
+const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireEntry('hero', entryId ?? locale);
 const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = 'Demo możliwości asystenta UX' } = entry.data;
 ---

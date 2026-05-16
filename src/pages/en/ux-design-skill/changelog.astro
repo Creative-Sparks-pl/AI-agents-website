@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../../components/sections/footer/Footer.astro';
+import ChangelogSection from '../../../components/sections/changelog/ChangelogSection.astro';
+---
+
+<BaseLayout
+  title="Changelog — Historia zmian | Asystent UX"
+  description="Historia zmian Asystenta UX. Nowe funkcje, domeny, usprawnienia workflow. Od v1.0 do najnowszej wersji."
+>
+  <TopAppBar />
+  <main>
+    <ChangelogSection />
+  </main>
+  <Footer />
+</BaseLayout>

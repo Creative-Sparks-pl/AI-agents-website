@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import Logo from '../../../assets/logo.svg?raw';
 import Button from '../../ui/Button.astro';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, locales, pathForLocale, requireLocalizedEntry } from '../../../lib/i18n';
 
 interface NavLink {
   label: string;
@@ -15,11 +15,12 @@ interface Props extends HTMLAttributes<'header'> {
   ctaHref?: string;
   showCta?: boolean;
   sticky?: boolean;
+  showLocaleSwitcher?: boolean;
   class?: string;
 }
 
-const locale = getCurrentLocale();
-const entry = await requireEntry('nav', locale);
+const locale = localeFromPathname(Astro.url.pathname);
+const entry = await requireLocalizedEntry('nav', locale);
 const defaults = entry.data;
 
 const {
@@ -28,9 +29,17 @@ const {
   ctaHref = defaults.cta.href,
   showCta = true,
   sticky = true,
+  showLocaleSwitcher = true,
   class: className,
   ...rest
 } = Astro.props;
+
+const localeOptions = locales.map((loc) => ({
+  locale: loc,
+  label: loc.toUpperCase(),
+  href: pathForLocale(Astro.url.pathname, loc),
+  current: loc === locale,
+}));
 ---
 
 <header
@@ -54,10 +63,29 @@ const {
       ))}
     </div>
 
-    {showCta && (
-      <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)">
-        {ctaLabel}
-      </Button>
-    )}
+    <div class="flex items-center gap-4">
+      {showLocaleSwitcher && (
+        <div class="hidden sm:flex items-center gap-1 text-xs font-label tracking-wider" aria-label="Language">
+          {localeOptions.map((opt, i) => (
+            <Fragment>
+              {i > 0 && <span class="text-foreground/30" aria-hidden="true">|</span>}
+              {opt.current ? (
+                <span class="text-foreground font-bold px-1" aria-current="true">{opt.label}</span>
+              ) : (
+                <a href={opt.href} hreflang={opt.locale === 'pl' ? 'pl-PL' : 'en-US'} class="text-foreground/60 hover:text-primary transition-colors px-1">
+                  {opt.label}
+                </a>
+              )}
+            </Fragment>
+          ))}
+        </div>
+      )}
+
+      {showCta && (
+        <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)">
+          {ctaLabel}
+        </Button>
+      )}
+    </div>
   </nav>
 </header>

@@ -1,9 +1,9 @@
 ---
 import Logo from '../../../assets/logo.svg?raw';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
 
-const locale = getCurrentLocale();
-const entry = await requireEntry('footer', locale);
+const locale = localeFromPathname(Astro.url.pathname);
+const entry = await requireLocalizedEntry('footer', locale);
 const { links } = entry.data;
 ---
 

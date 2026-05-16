@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 import authorPhoto from '../../../assets/author.webp';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-6.svg';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
 
 interface Props extends HTMLAttributes<'section'> {
   class?: string;
@@ -12,8 +12,8 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { class: className, ...rest } = Astro.props;
 
-const locale = getCurrentLocale();
-const entry = await requireEntry('author', locale);
+const locale = localeFromPathname(Astro.url.pathname);
+const entry = await requireLocalizedEntry('author', locale);
 const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, experienceLabel, experienceValue } = entry.data;
 ---
 

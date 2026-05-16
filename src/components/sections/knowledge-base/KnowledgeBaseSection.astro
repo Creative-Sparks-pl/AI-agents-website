@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-4.svg';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
 import KnowledgeColumn from './KnowledgeColumn.astro';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -13,8 +13,8 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { heading: headingOverride, mapLabel = 'Mapa wiedzy asystenta', class: className, ...rest } = Astro.props;
 
-const locale = getCurrentLocale();
-const entry = await requireEntry('knowledge-base', locale);
+const locale = localeFromPathname(Astro.url.pathname);
+const entry = await requireLocalizedEntry('knowledge-base', locale);
 const { badge, intro, pageTypes, frameworks, patterns } = entry.data;
 const heading = headingOverride ?? entry.data.heading;
 ---

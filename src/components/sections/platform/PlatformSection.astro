@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-11.svg';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
 import PlatformCard from './PlatformCard.astro';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -11,8 +11,8 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { class: className, ...rest } = Astro.props;
 
-const locale = getCurrentLocale();
-const entry = await requireEntry('platform', locale);
+const locale = localeFromPathname(Astro.url.pathname);
+const entry = await requireLocalizedEntry('platform', locale);
 const { badge, heading, contentsHeading, contentsNote, platforms, contents } = entry.data;
 ---
 

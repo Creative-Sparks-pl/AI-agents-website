@@ -2,11 +2,11 @@
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-3.svg';
-import { getCurrentLocale } from '../../../lib/i18n';
+import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import ChangelogEntry from './ChangelogEntry.astro';
 
-const locale = getCurrentLocale();
-const entries = (await getCollection('changelog', (e) => e.id.startsWith(`${locale}/`)))
+const locale = localeFromPathname(Astro.url.pathname);
+const entries = (await getLocalizedCollection('changelog', locale))
   .sort((a, b) => b.data.date.localeCompare(a.data.date));
 ---
 

@@ -10,11 +10,11 @@ import demoIconDS from '../../assets/icons/shape-10.svg';
 import freeTrialIconDS from '../../assets/icons/shape-6.svg';
 import problemsIconDS from '../../assets/icons/shape-4.svg';
 import installIconDS from '../../assets/icons/shape-7.svg';
-import { getCurrentLocale, requireEntry } from '../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry, getLocalizedCollection } from '../../lib/i18n';
 
-const locale = getCurrentLocale();
+const locale = localeFromPathname(Astro.url.pathname);
 
-const stages = (await getCollection('process', (e) => e.id.startsWith(`${locale}/`)))
+const stages = (await getLocalizedCollection('process', locale))
   .sort((a, b) => a.data.order - b.data.order);
 const processCards = stages.map((s) => ({
   title: s.data.title,
@@ -26,7 +26,7 @@ const processCards = stages.map((s) => ({
   shape: s.data.shape,
 }));
 
-const proofEntry = await requireEntry('proof-gallery', locale);
+const proofEntry = await requireLocalizedEntry('proof-gallery', locale);
 const proofCards = proofEntry.data.cards.map((c) => ({
   title: c.title,
   description: c.description,
@@ -36,7 +36,7 @@ const proofCards = proofEntry.data.cards.map((c) => ({
   outputIcon: 'description',
 }));
 
-const valuePropsEntry = await requireEntry('value-props', locale);
+const valuePropsEntry = await requireLocalizedEntry('value-props', locale);
 const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
   number: String(i + 1).padStart(2, '0'),
   title: c.title,
@@ -44,7 +44,7 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
   links: c.links,
 }));
 
-const useCases = (await getCollection('use-cases', (e) => e.id.startsWith(`${locale}/`)))
+const useCases = (await getLocalizedCollection('use-cases', locale))
   .sort((a, b) => a.data.order - b.data.order);
 const useCasesCases = useCases.map((u) => ({
   number: u.data.number,
@@ -56,13 +56,13 @@ const useCasesCases = useCases.map((u) => ({
   links: u.data.links,
 }));
 
-const useCasesExamples = (await requireEntry('use-cases-examples', locale)).data.examples;
+const useCasesExamples = (await requireLocalizedEntry('use-cases-examples', locale)).data.examples;
 
-const demoEntryDS = await requireEntry('demo', locale);
-const freeTrialEntryDS = await requireEntry('free-trial', locale);
-const installEntryDS = await requireEntry('install', locale);
+const demoEntryDS = await requireLocalizedEntry('demo', locale);
+const freeTrialEntryDS = await requireLocalizedEntry('free-trial', locale);
+const installEntryDS = await requireLocalizedEntry('install', locale);
 
-const problemsItemsDS = (await getCollection('problems', (e) => e.id.startsWith(`${locale}/`)))
+const problemsItemsDS = (await getLocalizedCollection('problems', locale))
   .sort((a, b) => a.data.order - b.data.order)
   .map((p) => ({
     icon: p.data.icon,

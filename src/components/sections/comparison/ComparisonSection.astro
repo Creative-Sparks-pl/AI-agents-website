@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from 'astro/types';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-5.svg';
-import { getCurrentLocale, requireEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry } from '../../../lib/i18n';
 import ComparisonRow from './ComparisonRow.astro';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -12,7 +12,7 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { entryId, class: className, ...rest } = Astro.props;
 
-const locale = getCurrentLocale();
+const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireEntry('comparison', entryId ?? locale);
 const { badge, heading, lead, columns, rows } = entry.data;
 ---
