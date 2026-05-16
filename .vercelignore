@@ -1,0 +1,12 @@
+# Files excluded from Vercel deployment upload.
+# These remain on disk and render locally via `npm run dev`,
+# but are not deployed to production.
+#
+# When excluding a page from prod, also add a redirect rule in vercel.json
+# so the old URL 301s somewhere sensible.
+
+# Retired: /ux-designer/* moved to /ux-design-skill/*.
+# Old page source lives under src/pages/archive/ux-designer/ for local reference.
+# Vercel never sees the archive folder; locally Astro serves it at /archive/ux-designer/*.
+# Production /ux-designer/* requests are caught by vercel.json redirects.
+src/pages/archive/

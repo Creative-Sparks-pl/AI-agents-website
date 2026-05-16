@@ -1,0 +1,449 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../../components/sections/footer/Footer.astro';
+import SectionWithIcon from '../../../components/ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-3.svg';
+
+const rawSections = [
+  {
+    number: 'Esencja',
+    label: 'Główne zasady',
+    title: 'Główne zasady współpracy',
+    description: 'Krótka lista zasad, które decydują o jakości wyniku. Każda jest rozwinięta w sekcjach poniżej.',
+    bullets: [
+      '<strong>Więcej kontekstu = mniej zgadywania.</strong> Im więcej dasz, tym lepszy wynik. Ale możesz też potraktować to jako odkrywanie i ideację — wtedy wystarczy minimum.',
+      '<strong>Decyzja po Twojej stronie.</strong> Agent pokazuje opcje z trade-offami, Ty wybierasz.',
+      '<strong>Sprawdzaj oznaczenia pewności.</strong> 🟢 zielone zostaw, 🟡 żółte zweryfikuj, 🔴 czerwone uzupełnij zanim ruszysz dalej.',
+      '<strong>Kwestionuj wyniki.</strong> Pytaj „dlaczego", proś o alternatywy, każ skracać.',
+      '<strong>Dziel projekt na sesje.</strong> 1 deliverable = 1 sesja — kontekst chatu ma limit.',
+      '<strong>Agent to też konsultant.</strong> Pytaj o metodologię, proś o weryfikację Twoich decyzji.',
+      '<strong>Pliki = pamięć projektu.</strong> Decyzje są zapisywane w bocznym panelu HTML — to most między sesjami.',
+      '<strong>Nie wiesz jak? Zapytaj agenta.</strong> Zna swój proces i podpowie następny krok — nie musisz domyślać się sam.',
+    ],
+    links: [],
+    quote: '',
+    group: null,
+  },
+  {
+    number: 'Wideo',
+    label: 'Wstęp',
+    title: 'Instrukcja wideo',
+    description: '',
+    bullets: [],
+    links: [],
+    quote: '',
+    videoMediaId: '95i42fdxo8',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Paczka',
+    label: 'Po zakupie',
+    title: 'Zawartość paczki',
+    description: 'Otrzymujesz zestaw plików asystenta AI w wariantach na różne platformy.',
+    bullets: [
+      'ux-designer-claude/ — Claude Projects (system prompt + pliki wiedzy)',
+      'ux-designer-chatgpt/ — ChatGPT Custom GPT (Instructions + pliki wiedzy)',
+      'ux-designer-gemini-gem/ — Gemini Gems (system prompt + pliki wiedzy, max 10 plików)',
+      'ux-designer-ide/ — Claude Code, VS Code, Cursor, Antigravity oraz inne IDE zgodne ze specyfikacją AGENTS.md',
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Wybór',
+    label: 'Platforma',
+    title: 'Jak wybrać platformę do pracy',
+    description: 'Agent działa na wielu platformach, ale różnią się jakością współpracy. Wersje desktop (IDE) są zwykle wygodniejsze niż chat w przeglądarce — agent ma większą kontrolę nad plikami, lepiej trzyma się procesu i nie tracisz kontekstu, gdy plik jest duży.',
+    bullets: [
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Najmocniejsza rekomendacja: Claude Code.</strong> Szerokie okno kontekstu, głębsze wnioskowanie niż w pozostałych modelach, bardzo dobrze radzi sobie z pisaniem treści. Bywa trochę wolniejszy — to akceptowalny trade-off za jakość.',
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Solidna alternatywa: VS Code z pluginem do LLM</strong> (Claude Code, OpenAI Codex, Google Antigravity, Cursor). Pełna kontrola nad plikami, agent stabilnie trzyma się procesu, łatwy powrót do projektu między sesjami.',
+      '<span class="material-symbols-outlined text-muted text-xl align-middle mr-2">info</span><strong>OK: wersje webowe</strong> — Claude Projects, ChatGPT Custom GPT, ChatGPT Projects. Prosty start, ale ograniczenia w pracy z plikami. Czat gorzej obsługuje długie dokumenty, częściej trzeba wgrywać pliki na nowo.',
+      '<span class="material-symbols-outlined text-foreground text-xl align-middle mr-2">block</span><strong>Odradzam: Gemini Gems (web).</strong> Ma tendencję do chodzenia swoją ścieżką — pomija instrukcje, robi rzeczy po swojemu, częściej rozjeżdża się z procesem. Jeśli już musisz, włączaj Canvas (inaczej HTML wyświetli się jako kod).',
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Setup',
+    label: 'Konfiguracja',
+    title: 'Jak wgrać skill',
+    description: 'Wybierz platformę i postępuj zgodnie z instrukcjami. Zajmuje to 2-3 minuty.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Platformy webowe',
+        bullets: [
+          'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
+          'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
+          'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
+          'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). <strong>Włącz narzędzie Canvas w trakcie rozmowy</strong> — bez tego pliki HTML nie wyświetlą się jako podgląd, tylko jako kod do pobrania.',
+        ],
+      },
+      {
+        heading: 'IDE (desktop)',
+        bullets: [
+          'Folder <code>ux-designer-ide/</code> zawiera trzy podfoldery: <code>agents/</code>, <code>commands/</code>, <code>skills/</code>. Skopiuj zawartość tego folderu do katalogu konfiguracji swojego narzędzia AI — wszystkie trzy podfoldery muszą trafić na miejsce.',
+          'Claude Code — skopiuj zawartość <code>ux-designer-ide/</code> do <code>~/.claude/</code>. W dowolnym projekcie wywołaj komendą <code>/expert ux-designer</code> (pełna wersja) lub <code>/expert ux-audit</code> (darmowy skill).',
+          'VS Code, Cursor, Antigravity — analogicznie, do katalogu konfiguracyjnego Twojego IDE. Sposób wywołania zależy od narzędzia.',
+          '<strong>Nie wiesz jak?</strong> Wklej ten prompt do AI w swoim narzędziu — poprowadzi Cię krok po kroku: <em>„Mam folder ux-designer-ide/ z trzema podfolderami: agents/, commands/, skills/. Pomóż mi skopiować jego zawartość do katalogu konfiguracji tego narzędzia, żeby wszystkie pliki trafiły w odpowiednie miejsca. Sprawdź dokumentację, znajdź właściwe lokalizacje i poprowadź mnie krok po kroku przez instalację oraz pierwsze wywołanie."</em>',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Demo',
+    label: 'Wideo',
+    title: 'Demonstracja możliwości',
+    description: '',
+    bullets: [],
+    links: [],
+    quote: '',
+    videoMediaId: '1siqhsesz9',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Start',
+    label: 'Pierwsza sesja',
+    title: 'Jak zacząć projekt',
+    description: 'Wpisz „start" w czacie. Asystent się przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej asystent zgaduje — ale wystarczy jedno zdanie.',
+    bullets: [
+      'Jeśli masz brief od klienta — wklej go. Asystent wyciągnie persony, cele i wyróżniki',
+      'Sprawdzaj oznaczenia pewności (🟢🟡🔴). Zielone zostaw, żółte zweryfikuj, czerwone uzupełnij',
+      'Jeśli asystent źle zakwalifikował awareness level — popraw go. To zmienia całą strategię strony',
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Decyzje',
+    label: 'Decyzje',
+    title: 'Jak podejmować decyzje',
+    description: 'Asystent pokazuje opcje z trade-offami. Nie musisz wiedzieć, która jest lepsza — przeczytaj co każda optymalizuje i czym poświęca.',
+    bullets: [
+      'Nie bój się miksować. „Weź nagłówek z opcji 2 i body z opcji 4" — asystent to obsłuży',
+      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Asystent zaproponuje nowe',
+      'Mów „pomóż mi podjąć decyzję" kiedy utkniesz. Asystent podsumuje za i przeciw',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca z agentem',
+  },
+  {
+    number: 'Copy',
+    label: 'Praca z treścią',
+    title: 'Jak pisać lepsze copy',
+    description: 'Praca z tekstami zajmuje najwięcej czasu — i tu jest największa różnica między przeciętnym a dobrym wynikiem. AI pisze generycznie, jeśli nie dostanie konkretnych wytycznych.',
+    bullets: [
+      'Wrzuć próbki tekstów w swoim stylu — asystent złapie ton, rytm i słownictwo',
+      'Jeśli masz wytyczne językowe (tone of voice, brand book) — przekaż je na starcie',
+      'Nie akceptuj pierwszej wersji. Proś o alternatywy: „daj 3 warianty tego nagłówka"',
+      'Dyskutuj z asystentem o treści — pytaj dlaczego wybrał takie sformułowanie',
+      'Weryfikuj copy pod kątem odbiorcy — asystent zna personę, ale Ty znasz klienta',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca z agentem',
+  },
+  {
+    number: 'Dialog',
+    label: 'Rozmowa z agentem',
+    title: 'Jak rozmawiać z asystentem',
+    description: 'Asystent nie jest nieomylny. Twoja wiedza o kliencie i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj gdy pisze za dużo.',
+    bullets: [
+      '„Dlaczego tu nie ma sekcji X?" — asystent wyjaśni czy celowo pominął, czy nie rozważył',
+      '„Czy to nadal potrzebujemy?" — kiedy sekcja wydaje się zbędna po zmianach w innych miejscach',
+      '„Daj alternatywy" — wymusza opcje zamiast jednego rozwiązania',
+      '„Najpierw zidentyfikuj sens tego punktu" — zanim zmienisz tekst, zrozum co ma komunikować',
+      '„Skróć" — AI pisze za dużo, hamuj',
+      '„Czy to się nie powtarza z X?" — asystent sprawdzi redundancję',
+      '„Oceń krytycznie ten wireframe" — włącza tryb audytu, szuka słabych punktów',
+      'Jeśli nie wiesz co dalej — zapytaj asystenta. Zna proces i podpowie następny krok',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca z agentem',
+  },
+  {
+    number: 'Czas',
+    label: 'Tempo pracy',
+    title: 'Ile zajmują typowe etapy współpracy',
+    description: 'Agent myśli długo, bo w każdym kroku przetwarza duży kontekst — dokumentację domeny, frameworki, wzorce, Twoje pliki. Czas zależy od tego, ile wkładu dostanie: im więcej dasz, tym szybciej. Najdłuższy kawałek to interakcyjna praca nad treściami w sekcjach — ale i tak szybsze niż wszystko ręcznie w Figmie.',
+    bullets: [
+      'Discovery + strategia: 10-30 min',
+      'Fundamenty komunikacji: 1-3h',
+      'Mapowanie istniejącej podstrony: 5-15 min',
+      'Wireframe jednej podstrony, sekcja po sekcji: 30-60 min dyskusji',
+      'Krótkie pytania, drobne poprawki: parę sekund',
+      'Jeśli widzisz że agent „myśli" — poczekaj. Przerwanie cofa Cię na początek kroku.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca z agentem',
+  },
+  {
+    number: 'Output',
+    label: 'Deliverables',
+    title: 'Jak wykorzystać pliki wyjściowe asystenta',
+    description: 'Główny deliverable to pliki HTML — otwierasz w przeglądarce, pokazujesz klientowi bez Figmy. W każdym HTML jest przycisk pobierania Markdown, więc wersję dla narzędzi AI masz w jednym kliknięciu, bez proszenia agenta o eksport.',
+    bullets: [
+      'Pliki HTML — wireframe, plan projektu, fundamenty komunikacji, draft komunikatów. Otwierasz w przeglądarce, klient nie potrzebuje Figmy',
+      'Markdown jednym klikiem — w każdym HTML jest przycisk pobierania pliku .md gotowego dla innego narzędzia AI. Szybsze niż eksport przez agenta',
+      'Eksport przez agenta — gdy chcesz konkretny fragment lub niestandardowy format, poproś agenta bezpośrednio',
+      'Wireframe → Figma AI: pobierz .md, wklej jako kontekst, visual wireframe w minuty',
+      'Wireframe → Google Stitch / Gemini: wstępny design z gotowym copy',
+      'Wireframe → Cursor / Bolt: asystent do vibe codingu dostaje plan zamiast zgadywania',
+      'Plan projektu → brief dla agencji: wydrukuj HTML lub wyślij link',
+      'Decyzje (boczny panel HTML) → dokumentacja dla klienta: pokaż dlaczego podjęto takie decyzje',
+    ],
+    links: [],
+    quote: '',
+    group: 'Wyniki i kontynuacja',
+  },
+  {
+    number: 'Sesje',
+    label: 'Powrót do projektu',
+    title: 'Praca na wielu sesjach',
+    description: 'Asystent czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w plikach.',
+    bullets: [
+      'Po przerwie zacznij od „kontynuuj od wireframe\'u" — asystent przeczyta pliki i wróci do kontekstu',
+      'Jeśli zmieniłeś coś ręcznie w pliku — powiedz asystentowi. Inaczej nadpisze Twoje zmiany',
+      'Decyzje zapisują się w bocznym panelu HTML obok wireframe\'u — to Twoja pamięć między sesjami',
+    ],
+    links: [],
+    quote: '',
+    group: 'Wyniki i kontynuacja',
+  },
+  {
+    number: 'Tempo',
+    label: 'Sesje i kontekst',
+    title: 'Dziel projekt na sesje',
+    description: 'Jeden duży projekt to za dużo na jedną sesję. Kontekst chatu ma limit — po ok. 40% jego zapełnienia agent zaczyna gubić szczegóły, zapominać wcześniejsze decyzje i odpowiadać mniej dokładnie. Dziel projekt na kawałki: 1 deliverable na sesję.',
+    bullets: [
+      'Discovery + strategia w 1 sesji. Copy w 2. Makieta w 3. Każda sesja zamyka jeden kawałek.',
+      'Restartuj sesję gdy odpowiedzi stają się ogólnikowe lub agent zapomina wcześniejsze ustalenia. To sygnał, że kontekst się zapełnił.',
+      'Decyzje zapisują się w bocznym panelu HTML obok wireframe\'u — to Twoja pamięć między sesjami.',
+      'Po przerwie powiedz „kontynuuj od X" — agent czyta pliki i odzyskuje kontekst.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Dobre praktyki',
+  },
+  {
+    number: 'Audyt',
+    label: 'Weryfikacja i konsultacja',
+    title: 'Pytaj agenta o opinię',
+    description: 'Asystent ma w plecaku 16 typów stron, 13 frameworków UX i wzorce z badań. To nie tylko wykonawca — to też konsultant. Zweryfikuje Twoje decyzje i wyjaśni metodologię.',
+    bullets: [
+      '„Zweryfikuj moją decyzję" — sceptyczne spojrzenie na Twoją wersję, propozycja co poprawić.',
+      '„Co powinna zawierać sekcja X?" — agent zna wzorce, traktuj go jak konsultanta UX.',
+      '„Jak to się powinno zrobić wg metodologii Y?" — odpowie z odniesieniem do frameworków.',
+      '„Oceń krytycznie ten wireframe" — tryb audytu, szuka słabych punktów.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Dobre praktyki',
+  },
+  {
+    number: 'Uwaga',
+    label: 'Pułapki',
+    title: 'Czego unikać',
+    description: 'Kilka rzeczy, które obniżają jakość wyników.',
+    bullets: [
+      'Nie akceptuj wszystkiego na „ok". Asystent pójdzie dalej, ale wynik będzie gorszy',
+      'Nie pomijaj Discovery. Wireframe bez kontekstu to zgadywanie z lepszym formatowaniem',
+      'Nie próbuj robić wszystkiego w jednej sesji. 2-3h na projekt to realistyczne tempo',
+      'Nie kopiuj deliverables bez przeczytania. Asystent zakłada, Ty weryfikujesz',
+    ],
+    links: [],
+    quote: '',
+    group: 'Dobre praktyki',
+  },
+  {
+    number: 'Feedback',
+    label: 'Pytania i zgłoszenia',
+    title: 'Powiedz agentowi — pytania, błędy, pomysły',
+    description: 'Agent ma wbudowany kanał feedbacku — wystarczy zwykła rozmowa, bez formularzy ani konta. Działa tylko w wersjach desktop (IDE): Claude Code, Cursor, VS Code z pluginem LLM, Antigravity. W wersjach webowych użyj kontaktu mailowego niżej.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Co możesz zgłosić',
+        bullets: [
+          '<strong>Pytanie</strong> — „jak zrobić X?", „co to znaczy Y?", „dlaczego agent…?". Agent uporządkuje pytanie z kontekstem i prześle.',
+          '<strong>Błąd</strong> — „zgłaszam błąd", „coś jest zepsute". Agent dopyta o szczegóły, sam doda platformę i wersję.',
+          '<strong>Pomysł / nowa funkcja</strong> — „chciałbym żeby agent X", „dodaj proszę Y". Agent zapisze sytuację, w której tego potrzebowałeś, i jakiego efektu chcesz.',
+          '<strong>Ogólny feedback</strong> — wrażenia z pracy, co działa, co nie. Wystarczy „mam feedback do Ciebie".',
+        ],
+      },
+      {
+        heading: 'Jak to działa',
+        bullets: [
+          '<strong>Powiedz w swoich słowach.</strong> Bez komend, bez formatu. Agent rozpozna intencję i dopyta o brakujące szczegóły.',
+          '<strong>Podgląd przed wysłaniem.</strong> Zobaczysz tytuł i treść zgłoszenia. Możesz poprawić, zmienić kategorię, albo anulować.',
+          '<strong>Email opcjonalny.</strong> Zostawiasz tylko jeśli chcesz odpowiedź. Używam go wyłącznie do kontaktu w sprawie tego konkretnego zgłoszenia.',
+          '<strong>Trafia do publicznych GitHub Discussions</strong> — forum, na którym widzisz swoje zgłoszenie i odpowiedzi. Inni użytkownicy mogą dołączyć do dyskusji.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pomoc',
+  },
+  {
+    number: 'Kontakt',
+    label: 'Wsparcie',
+    title: 'Pomoc',
+    description: 'Masz pytania? Napisz na tomasz@creativesparks.pl',
+    bullets: [],
+    links: [
+      { label: 'tomasz@creativesparks.pl', href: 'mailto:tomasz@creativesparks.pl', icon: 'mail', sub: 'Odpowiadam w ciągu 24h' },
+    ],
+    quote: '',
+    group: 'Pomoc',
+  },
+];
+
+const sections = rawSections.map((s, i) => ({
+  ...s,
+  groupStarts: !!s.group && (i === 0 || s.group !== rawSections[i - 1].group),
+}));
+---
+
+<BaseLayout title="Jak pracować z asystentem — Asystent UX | Creative Sparks" viewContent={{ content_name: 'instrukcja' }}>
+  <TopAppBar />
+  <script is:inline async src="https://fast.wistia.com/player.js"></script>
+  <script is:inline async type="module" src="https://fast.wistia.com/embed/95i42fdxo8.js"></script>
+  <script is:inline async type="module" src="https://fast.wistia.com/embed/1siqhsesz9.js"></script>
+  <style is:global>
+    wistia-player.wistia-panel:not(:defined) {
+      display: block;
+      filter: blur(5px);
+      padding-top: 56.25%;
+      background: center / contain no-repeat;
+    }
+    wistia-player.wistia-panel[media-id='95i42fdxo8']:not(:defined) {
+      background-image: url('https://fast.wistia.com/embed/medias/95i42fdxo8/swatch');
+    }
+    wistia-player.wistia-panel[media-id='1siqhsesz9']:not(:defined) {
+      background-image: url('https://fast.wistia.com/embed/medias/1siqhsesz9/swatch');
+    }
+  </style>
+  <main>
+    <section class="py-20 md:py-28 px-6 bg-surface-primary">
+      <div class="max-w-screen-2xl mx-auto">
+        <SectionWithIcon icon={sectionIcon}>
+          <Fragment slot="header">
+            <span class="font-label text-primary text-sm mb-4">Instrukcja</span>
+            <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+              Główne zasady współpracy z narzędziem
+            </h1>
+          </Fragment>
+
+          <div class="flex flex-col">
+            {sections.map((section) => (
+              <>
+                {section.groupStarts && (
+                  <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground mt-20 mb-8">
+                    {section.group}
+                  </h2>
+                )}
+                <details
+                  class="group border-b border-border/30 overflow-hidden bg-white"
+                  name="instrukcja"
+                  open={false}
+                >
+                  <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface-hover transition-colors">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+                      <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                        {section.number}
+                      </span>
+                      <div class="flex flex-col gap-3 flex-1">
+                        <span class="font-label text-sm text-primary leading-none">{section.label}</span>
+                        <h2 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                          {section.title}
+                        </h2>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" aria-hidden="true">expand_more</span>
+                  </summary>
+                  <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+                    <div class="max-w-3xl">
+                      {section.videoMediaId && (
+                        <div set:html={`<wistia-player class="wistia-panel" media-id="${section.videoMediaId}" aspect="1.7777777777777777"></wistia-player>`} />
+                      )}
+                      {section.description && (
+                        <p class="text-muted text-lg leading-relaxed mb-6">
+                          {section.description}
+                        </p>
+                      )}
+                      {section.bullets.length > 0 && (
+                        <ul class="space-y-3 mb-8">
+                          {section.bullets.map((bullet) => (
+                            <li class="flex items-start gap-3 text-base text-muted">
+                              {!bullet.startsWith('<span class="material-symbols-outlined') && (
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                              )}
+                              <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {section.groups && section.groups.map((group) => (
+                        <div class="mb-8">
+                          <h3 class="font-headline font-bold text-lg text-foreground mb-3">{group.heading}</h3>
+                          <ul class="space-y-3">
+                            {group.bullets.map((bullet) => (
+                              <li class="flex items-start gap-3 text-base text-muted">
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                                <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      {section.links.length > 0 && (
+                        <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
+                          <div class="flex flex-wrap gap-x-12 gap-y-3">
+                            {section.links.map((link) => (
+                              <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                                <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
+                                {link.label}
+                                <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                              </a>
+                            ))}
+                          </div>
+                          {section.quote && <p class="text-sm font-label text-muted">{section.quote}</p>}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </details>
+              </>
+            ))}
+          </div>
+        </SectionWithIcon>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

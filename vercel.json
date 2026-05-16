@@ -1,4 +1,41 @@
 {
+  "redirects": [
+    {
+      "source": "/ux-designer",
+      "destination": "/ux-design-skill",
+      "permanent": true
+    },
+    {
+      "source": "/ux-designer/",
+      "destination": "/ux-design-skill/",
+      "permanent": true
+    },
+    {
+      "source": "/ux-designer/instrukcja",
+      "destination": "/ux-design-skill/instrukcja",
+      "permanent": true
+    },
+    {
+      "source": "/ux-designer/changelog",
+      "destination": "/ux-design-skill/changelog",
+      "permanent": true
+    },
+    {
+      "source": "/ux-designer/baza-wiedzy",
+      "destination": "/ux-design-skill/baza-wiedzy",
+      "permanent": true
+    },
+    {
+      "source": "/ux-designer/regulamin",
+      "destination": "/ux-design-skill/regulamin",
+      "permanent": true
+    },
+    {
+      "source": "/ux-designer/polityka-prywatnosci",
+      "destination": "/ux-design-skill/polityka-prywatnosci",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

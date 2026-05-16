@@ -1,13 +1,13 @@
 links:
   - label: Pakiety
-    href: '/ux-designer/#cennik'
+    href: '/ux-design-skill/#cennik'
   - label: Darmowy audyt
-    href: '/ux-designer/#audyt'
+    href: '/ux-design-skill/#audyt'
   - label: Baza wiedzy
-    href: '/ux-designer/#baza-wiedzy'
+    href: '/ux-design-skill/#baza-wiedzy'
   - label: Jak pracować
-    href: '/ux-designer/instrukcja'
+    href: '/ux-design-skill/instrukcja'
 
 cta:
   label: Pakiety
-  href: '/ux-designer/#cennik'
+  href: '/ux-design-skill/#cennik'

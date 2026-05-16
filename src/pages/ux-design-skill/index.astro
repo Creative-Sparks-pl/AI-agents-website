@@ -70,12 +70,11 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
 }));
 
 // Nav scoped to this page — in-page anchors stay on /ux-design-skill/.
-// Subpage `Jak pracować` intentionally shares /ux-designer/instrukcja (decision 2a).
 const navLinks = [
   { label: 'Pakiety', href: '/ux-design-skill/#cennik' },
   { label: 'Darmowy audyt', href: '/ux-design-skill/#audyt' },
   { label: 'Baza wiedzy', href: '/ux-design-skill/#baza-wiedzy' },
-  { label: 'Jak pracować', href: '/ux-designer/instrukcja' },
+  { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
 ];
 const navCtaHref = '/ux-design-skill/#cennik';
 ---
@@ -86,7 +85,6 @@ const navCtaHref = '/ux-design-skill/#cennik';
   ogTitle="Zaplanuj strukturę i treści strony, zanim ruszysz w Figmę"
   ogDescription="Asystent UX, który prowadzi od briefu do gotowej makiety z prawdziwym copy. Pakiety od 599 zł."
   ogImage="/uxd-share.jpg"
-  canonical="/ux-designer/"
 >
   <TopAppBar navLinks={navLinks} ctaHref={navCtaHref} />
   <main>
