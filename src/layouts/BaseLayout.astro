@@ -141,11 +141,12 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
 
     {metaPixelId && (
       <Fragment>
-        <!-- Meta Pixel (gated by Cookiebot marketing consent) -->
+        <!-- Meta Pixel (gated by Cookiebot marketing consent).
+             Init only — the deduplicated PageView fires via queueConversion below
+             so Pixel + CAPI share an event_id and Meta dedupes correctly. -->
         <script type="text/plain" data-cookieconsent="marketing" set:html={`
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '${metaPixelId}');
-fbq('track', 'PageView');
         `} />
         <noscript>
           <img height="1" width="1" style="display:none" src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`} alt="" />
@@ -244,6 +245,16 @@ fbq('track', 'PageView');
         };
       })();
     </script>
+
+    {metaPixelId && (
+      <script is:inline>
+        // Deduplicated PageView — fires once per page load after consent.
+        // Pixel + CAPI share an event_id so Meta dedupes both signals.
+        if (typeof window.queueConversion === 'function') {
+          window.queueConversion('PageView', {});
+        }
+      </script>
+    )}
 
     {viewContent && (
       <script is:inline define:vars={{ viewContentParams: viewContent }}>
