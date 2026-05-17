@@ -12,8 +12,26 @@ interface Props extends HTMLAttributes<'section'> {
 const { entryId, class: className, ...rest } = Astro.props;
 
 const locale = localeFromPathname(Astro.url.pathname);
-const entry = await requireEntry('hero', entryId ?? locale);
-const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = 'Demo możliwości asystenta UX' } = entry.data;
+
+// Resolve entry id with EN-variant preference + PL fallback.
+// - `entryId` not passed → use locale (`pl` or `en` file at content root)
+// - `entryId` passed (e.g. 'skill-lp') and locale=en → try 'skill-lp-en', fall back to 'skill-lp'
+// - `entryId` passed and locale=pl → use as-is
+let resolvedId: string;
+let fallbackId: string | undefined;
+if (!entryId) {
+  resolvedId = locale;
+  fallbackId = locale === 'en' ? 'pl' : undefined;
+} else if (locale === 'en' && !entryId.endsWith('-en')) {
+  resolvedId = `${entryId}-en`;
+  fallbackId = entryId;
+} else {
+  resolvedId = entryId;
+}
+const entry = await requireEntry('hero', resolvedId, fallbackId);
+
+const defaultVideoLabel = locale === 'en' ? 'UX Design Skill — demo' : 'Demo możliwości asystenta UX';
+const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel } = entry.data;
 ---
 
 <section
@@ -112,25 +130,51 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
                   <div class="w-3 h-3 rounded-full bg-accent/30"></div>
                   <div class="w-3 h-3 rounded-full bg-accent/30"></div>
                 </div>
-                <p class="text-accent">// ASYSTENT UX: DISCOVERY</p>
+                {locale === 'en' ? (
+                  <Fragment>
+                    <p class="text-accent">{'// UX DESIGN SKILL: DISCOVERY'}</p>
 
-                <p class="mt-4"><span class="text-primary font-bold">[INPUT]</span></p>
-                <p class="mt-2 text-zinc-400 italic">"Tworzę stronę dla kancelarii prawnej</p>
-                <p class="text-zinc-400 italic">z Wrocławia, specjalizacja prawo pracy"</p>
+                    <p class="mt-4"><span class="text-primary font-bold">[INPUT]</span></p>
+                    <p class="mt-2 text-zinc-400 italic">"Building a site for a law firm</p>
+                    <p class="text-zinc-400 italic">specializing in employment law."</p>
 
-                <p class="mt-4"><span class="text-primary font-bold">[ODPOWIEDŹ AGENTA]</span></p>
-                <p class="mt-2">• Typ strony: Local business (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
-                <p class="mt-1">• Branża: Kancelaria prawna, prawo pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
-                <p class="mt-1">• Cel: pozyskiwanie klientów B2B i B2C (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
-                <p class="mt-1">• Persona: HR manager, 50-200 pracowników (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
-                <p class="mt-1">• Świadomość: szukają po objawach</p>
-                <p class="pl-4">(<span class="text-amber-400">🟡</span> zweryfikuj — "zwolnienie pracownika" nie "kancelaria")</p>
-                <p class="mt-1">• Wyróżnik: specjalizacja w prawie pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+                    <p class="mt-4"><span class="text-primary font-bold">[SKILL RESPONSE]</span></p>
+                    <p class="mt-2">• Site type: Local business (<span class="text-emerald-400">🟢</span> from context)</p>
+                    <p class="mt-1">• Industry: Law firm, employment law (<span class="text-emerald-400">🟢</span> from context)</p>
+                    <p class="mt-1">• Goal: lead capture, B2B and B2C (<span class="text-amber-400">🟡</span> verify)</p>
+                    <p class="mt-1">• Persona: HR manager, 50–200 employees (<span class="text-amber-400">🟡</span> verify)</p>
+                    <p class="mt-1">• Awareness: problem-aware, not solution-aware</p>
+                    <p class="pl-4">(<span class="text-amber-400">🟡</span> verify: they search "firing an employee," not "law firm")</p>
+                    <p class="mt-1">• Differentiator: employment-law specialty (<span class="text-emerald-400">🟢</span> from context)</p>
 
-                <p class="mt-4 text-white font-bold">PYTANIA:</p>
-                <p class="mt-2">1. Klient docelowy — firmy, osoby prywatne, czy oba?</p>
-                <p class="mt-1">2. Główna akcja na stronie — kontakt,</p>
-                <p class="pl-4">formularz, konsultacja online?</p>
+                    <p class="mt-4 text-white font-bold">QUESTIONS:</p>
+                    <p class="mt-2">1. Target client: companies, individuals, or both?</p>
+                    <p class="mt-1">2. Primary conversion: phone call,</p>
+                    <p class="pl-4">contact form, or online intake?</p>
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <p class="text-accent">{'// ASYSTENT UX: DISCOVERY'}</p>
+
+                    <p class="mt-4"><span class="text-primary font-bold">[INPUT]</span></p>
+                    <p class="mt-2 text-zinc-400 italic">"Tworzę stronę dla kancelarii prawnej</p>
+                    <p class="text-zinc-400 italic">z Wrocławia, specjalizacja prawo pracy"</p>
+
+                    <p class="mt-4"><span class="text-primary font-bold">[ODPOWIEDŹ AGENTA]</span></p>
+                    <p class="mt-2">• Typ strony: Local business (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+                    <p class="mt-1">• Branża: Kancelaria prawna, prawo pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+                    <p class="mt-1">• Cel: pozyskiwanie klientów B2B i B2C (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
+                    <p class="mt-1">• Persona: HR manager, 50-200 pracowników (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
+                    <p class="mt-1">• Świadomość: szukają po objawach</p>
+                    <p class="pl-4">(<span class="text-amber-400">🟡</span> zweryfikuj — "zwolnienie pracownika" nie "kancelaria")</p>
+                    <p class="mt-1">• Wyróżnik: specjalizacja w prawie pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+
+                    <p class="mt-4 text-white font-bold">PYTANIA:</p>
+                    <p class="mt-2">1. Klient docelowy — firmy, osoby prywatne, czy oba?</p>
+                    <p class="mt-1">2. Główna akcja na stronie — kontakt,</p>
+                    <p class="pl-4">formularz, konsultacja online?</p>
+                  </Fragment>
+                )}
               </div>
               <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                 <svg class="w-48 h-auto" viewBox="0 0 150 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

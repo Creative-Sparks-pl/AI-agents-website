@@ -128,6 +128,7 @@ const platform = defineCollection({
       icon: z.string(),
       name: z.string(),
       desc: z.string(),
+      note: z.string().optional(),
     })),
     contents: z.array(z.object({
       label: z.string(),
@@ -289,6 +290,7 @@ const author = defineCollection({
     bio: z.string(),
     email: z.string(),
     contactNote: z.string(),
+    linkedIn: z.string().url().optional(),
     experienceLabel: z.string(),
     experienceValue: z.string(),
   }),

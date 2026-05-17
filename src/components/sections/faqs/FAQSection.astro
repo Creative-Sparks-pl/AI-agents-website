@@ -21,11 +21,12 @@ interface Props extends HTMLAttributes<'section'> {
 
 const { class: className, heading, entries: entriesProp, ...rest } = Astro.props;
 
+const locale = localeFromPathname(Astro.url.pathname);
+
 let entries: FAQEntry[];
 if (entriesProp) {
   entries = entriesProp;
 } else {
-  const locale = localeFromPathname(Astro.url.pathname);
   const faqs = (await getLocalizedCollection('faqs', locale))
     .sort((a, b) => a.data.order - b.data.order);
   entries = faqs.map((f) => ({
@@ -35,7 +36,8 @@ if (entriesProp) {
   }));
 }
 
-const resolvedHeading = heading ?? 'Pięć pytań, które zwykle padają';
+const defaultHeading = locale === 'en' ? 'Questions we usually get' : 'Pytania, które zwykle padają';
+const resolvedHeading = heading ?? defaultHeading;
 ---
 
 <section

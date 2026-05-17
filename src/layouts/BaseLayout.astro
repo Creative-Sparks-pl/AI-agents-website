@@ -17,17 +17,20 @@ interface Props {
   viewContent?: ViewContentParams;
 }
 
+const locale = localeFromPathname(Astro.url.pathname);
+
+const DEFAULT_DESCRIPTION_PL = 'Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe\'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup.';
+const DEFAULT_DESCRIPTION_EN = 'A UX skill for Claude Code that takes your site from brief to wireframe. 92 knowledge files, 16 page types, 13 UX frameworks. One-time license, no subscription.';
+
 const {
   title,
-  description = 'Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe\'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup.',
+  description = locale === 'en' ? DEFAULT_DESCRIPTION_EN : DEFAULT_DESCRIPTION_PL,
   ogTitle = title,
   ogDescription = description,
   ogImage = '/og-image.jpg',
   canonical,
   viewContent,
 } = Astro.props;
-
-const locale = localeFromPathname(Astro.url.pathname);
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site).toString();
 
@@ -40,6 +43,47 @@ const hreflangs = locales.map((loc) => {
 const xDefaultHref = new URL(pathForLocale(Astro.url.pathname, defaultLocale), Astro.site).toString();
 
 const ogLocale = locale === 'en' ? 'en_US' : 'pl_PL';
+
+// JSON-LD product structured data — locale-aware product name + tier descriptions + USD/PLN pricing.
+const productStructuredData = locale === 'en'
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'UX Design Skill',
+      description: DEFAULT_DESCRIPTION_EN,
+      applicationCategory: 'DesignApplication',
+      operatingSystem: 'Web',
+      offers: [
+        { '@type': 'Offer', name: 'Solo', price: '189', priceCurrency: 'USD', description: '1 user' },
+        { '@type': 'Offer', name: 'Studio', price: '269', priceCurrency: 'USD', description: 'Up to 5 users' },
+        { '@type': 'Offer', name: 'Agency', price: '469', priceCurrency: 'USD', description: 'Unlimited users' },
+      ],
+      author: {
+        '@type': 'Person',
+        name: 'Tomasz Maciąg',
+        jobTitle: 'Founder',
+        worksFor: { '@type': 'Organization', name: 'Fuse Collective' },
+      },
+    }
+  : {
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      name: 'Asystent UX',
+      description: DEFAULT_DESCRIPTION_PL,
+      applicationCategory: 'DesignApplication',
+      operatingSystem: 'Web',
+      offers: [
+        { '@type': 'Offer', name: 'Solo', price: '599', priceCurrency: 'PLN', description: '1 użytkownik' },
+        { '@type': 'Offer', name: 'Studio', price: '799', priceCurrency: 'PLN', description: 'Do 5 użytkowników' },
+        { '@type': 'Offer', name: 'Agencja', price: '1499', priceCurrency: 'PLN', description: 'Bez limitu użytkowników' },
+      ],
+      author: {
+        '@type': 'Person',
+        name: 'Tomasz Maciąg',
+        jobTitle: 'Founder',
+        worksFor: { '@type': 'Organization', name: 'Fuse Collective' },
+      },
+    };
 
 const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
 ---
@@ -93,48 +137,7 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
 
     <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Asystent UX",
-        "description": "Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup.",
-        "applicationCategory": "DesignApplication",
-        "operatingSystem": "Web",
-        "offers": [
-          {
-            "@type": "Offer",
-            "name": "Solo",
-            "price": "799",
-            "priceCurrency": "PLN",
-            "description": "1 użytkownik"
-          },
-          {
-            "@type": "Offer",
-            "name": "Studio",
-            "price": "1499",
-            "priceCurrency": "PLN",
-            "description": "Do 5 użytkowników"
-          },
-          {
-            "@type": "Offer",
-            "name": "Agencja",
-            "price": "2999",
-            "priceCurrency": "PLN",
-            "description": "Bez limitu użytkowników"
-          }
-        ],
-        "author": {
-          "@type": "Person",
-          "name": "Tomasz Maciąg",
-          "jobTitle": "Founder",
-          "worksFor": {
-            "@type": "Organization",
-            "name": "Fuse Collective"
-          }
-        }
-      }
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(productStructuredData)} />
 
     <!-- Umami Analytics -->
     <script defer src="https://analytics.creativesparks.pl/script.js" data-website-id="37a76f9d-7246-4d45-b832-3b35e78eee08"></script>

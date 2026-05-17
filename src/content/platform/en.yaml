@@ -1,0 +1,32 @@
+badge: Platforms
+heading: One folder.<br />Runs on the platforms you already use.
+contentsHeading: The package is the full toolkit.
+contentsNote: No extra dependencies. Drop in the folder, open your platform, start your first project.
+platforms:
+  - icon: terminal
+    name: Claude Code
+    desc: Full file access, direct deliverable writes
+  - icon: code
+    name: VS Code / IDE
+    desc: Integrates with your working environment
+  - icon: public
+    name: Claude / ChatGPT in the browser
+    desc: As a project instruction
+    note: Runs in the browser. Not all Claude Code features are available here.
+  - icon: auto_awesome
+    name: Custom GPTs / Gemini Gems
+    desc: Compatible as a knowledge plus instruction set
+    note: Runs in the browser. Not all Claude Code features are available here.
+contents:
+  - label: AGENTS.md
+    desc: Full skill definition with 6 workflows
+  - label: references/
+    desc: 92 domain knowledge files (16 page types, 14 areas)
+  - label: scripts/
+    desc: Python script for Excel generation
+  - label: Documentation
+    desc: Installation and setup
+requirements:
+  - "Account on Claude, ChatGPT, or Gemini"
+  - The skill folder downloaded
+  - 5 minutes to set up

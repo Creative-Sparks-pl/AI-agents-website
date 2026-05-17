@@ -14,7 +14,8 @@ const { class: className, ...rest } = Astro.props;
 
 const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireLocalizedEntry('author', locale);
-const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, experienceLabel, experienceValue } = entry.data;
+const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, linkedIn, experienceLabel, experienceValue } = entry.data;
+
 ---
 
 <section
@@ -36,7 +37,7 @@ const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, expe
           <div class="aspect-[4/5] bg-white shadow-[0_24px_48px_-12px_rgba(0,7,188,0.08)] relative overflow-hidden">
             <Image
               src={authorPhoto}
-              alt={`${nameFirst} ${nameLast} — ${role}`}
+              alt={`${nameFirst} ${nameLast}`}
               class="w-full h-full object-cover"
               widths={[400, 600]}
               sizes="(max-width: 1024px) 100vw, 40vw"
@@ -52,9 +53,7 @@ const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, expe
           <h3 class="font-headline font-bold text-4xl md:text-5xl text-foreground leading-[1.1] tracking-tight mb-2">
             {nameFirst} <span class="text-primary">{nameLast}</span>,
           </h3>
-          <p class="font-headline font-bold text-2xl md:text-3xl text-muted mb-8">
-            {role}
-          </p>
+          <p class="font-headline font-bold text-2xl md:text-3xl text-muted mb-8" set:html={role}></p>
 
           <div class="space-y-6 max-w-xl">
             <p class="text-lg md:text-xl text-muted leading-relaxed font-body">
@@ -62,14 +61,22 @@ const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, expe
             </p>
 
             <div class="pt-8 border-l-4 border-accent pl-6">
-              <p class="font-label text-sm text-muted mb-3">Kontakt bezpośredni</p>
+              <p class="text-base text-muted mb-5 font-body">{contactNote}</p>
               <a class="group flex items-center gap-3" href={`mailto:${email}`}>
                 <span class="font-headline font-bold text-xl md:text-2xl text-primary group-hover:text-foreground transition-colors">
                   {email}
                 </span>
                 <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward" aria-hidden="true">arrow_forward</span>
               </a>
-              <p class="text-sm text-muted mt-2 font-body">{contactNote}</p>
+
+              {linkedIn && (
+                <a class="group inline-flex items-center gap-3 mt-4" href={linkedIn} target="_blank" rel="noopener">
+                  <span class="font-headline font-bold text-xl md:text-2xl text-primary group-hover:text-foreground transition-colors">
+                    {locale === 'en' ? 'LinkedIn profile' : 'Profil LinkedIn'}
+                  </span>
+                  <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward" aria-hidden="true">arrow_forward</span>
+                </a>
+              )}
             </div>
           </div>
 
@@ -78,3 +85,31 @@ const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, expe
     </SectionWithIcon>
   </div>
 </section>
+
+<style>
+  .author-agency-link {
+    color: var(--color-primary, #0007bc);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--color-primary, #0007bc) 30%, transparent);
+    transition: text-decoration-color 0.3s, color 0.3s;
+    animation: author-link-pulse 3.2s ease-in-out infinite;
+  }
+
+  .author-agency-link:hover {
+    text-decoration-color: var(--color-primary, #0007bc);
+    animation: none;
+  }
+
+  @keyframes author-link-pulse {
+    0%, 100% { text-decoration-color: color-mix(in srgb, var(--color-primary, #0007bc) 25%, transparent); }
+    50% { text-decoration-color: var(--color-primary, #0007bc); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .author-agency-link {
+      animation: none;
+    }
+  }
+</style>

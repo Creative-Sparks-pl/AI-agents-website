@@ -3,18 +3,20 @@ heading: Jeden folder.<br />Działa na platformach, których już używasz.
 contentsHeading: W paczce kupujesz kompletne narzędzie.
 contentsNote: Brak dodatkowych zależności. Wgrywasz folder, otwierasz platformę i zaczynasz pierwszy projekt.
 platforms:
-  - icon: public
-    name: Claude / ChatGPT w przeglądarce
-    desc: Jako instrukcja projektu
-  - icon: auto_awesome
-    name: Custom GPTs / Gemini Gems
-    desc: Kompatybilny jako knowledge + instruction set
   - icon: terminal
-    name: Claude Code (CLI)
+    name: Claude Code
     desc: Pełny dostęp do plików, bezpośredni zapis deliverables
   - icon: code
     name: VS Code / IDE
     desc: Zintegrowane z Twoim środowiskiem pracy
+  - icon: public
+    name: Claude / ChatGPT w przeglądarce
+    desc: Jako instrukcja projektu
+    note: Działa w przeglądarce. Nie wszystkie funkcje Claude Code są tu dostępne.
+  - icon: auto_awesome
+    name: Custom GPTs / Gemini Gems
+    desc: Kompatybilny jako knowledge + instruction set
+    note: Działa w przeglądarce. Nie wszystkie funkcje Claude Code są tu dostępne.
 contents:
   - label: agent.md
     desc: Pełna definicja asystenta z 6 workflow-ami

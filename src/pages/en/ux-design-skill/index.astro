@@ -24,7 +24,7 @@ import freeTrialIcon from '../../../assets/icons/shape-6.svg';
 import installIcon from '../../../assets/icons/shape-7.svg';
 import boundariesIcon from '../../../assets/icons/shape-8.svg';
 import finalCtaIcon from '../../../assets/icons/shape-9.svg';
-import { localeFromPathname, requireEntry, requireLocalizedEntry, getLocalizedCollection } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry, getLocalizedCollection, localizedId } from '../../../lib/i18n';
 
 const locale = localeFromPathname(Astro.url.pathname);
 
@@ -49,7 +49,7 @@ const boundariesEntry = await requireLocalizedEntry('boundaries', locale);
 
 const finalCtaEntry = await requireLocalizedEntry('final-cta', locale);
 
-const proofEntry = await requireEntry('proof-gallery', 'skill-lp');
+const proofEntry = await requireEntry('proof-gallery', localizedId('skill-lp', locale), 'skill-lp');
 const proofCards = proofEntry.data.cards.map((c) => ({
   title: c.title,
   description: c.description,
@@ -61,7 +61,7 @@ const proofCards = proofEntry.data.cards.map((c) => ({
   trackParams: { content_name: 'proof_gallery', content_id: c.title },
 }));
 
-const valuePropsEntry = await requireEntry('value-props', 'skill-lp');
+const valuePropsEntry = await requireEntry('value-props', localizedId('skill-lp', locale), 'skill-lp');
 const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
   number: String(i + 1).padStart(2, '0'),
   title: c.title,
@@ -69,21 +69,21 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
   links: c.links,
 }));
 
-// Nav scoped to this page — in-page anchors stay on /ux-design-skill/.
+// Nav scoped to this page — in-page anchors stay on /en/ux-design-skill/.
 const navLinks = [
-  { label: 'Pakiety', href: '/ux-design-skill/#cennik' },
-  { label: 'Darmowy audyt', href: '/ux-design-skill/#audyt' },
-  { label: 'Baza wiedzy', href: '/ux-design-skill/#baza-wiedzy' },
-  { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
+  { label: 'Pricing', href: '/en/ux-design-skill/#cennik' },
+  { label: 'Free UX Audit Skill', href: '/en/ux-design-skill/#audyt' },
+  { label: 'Knowledge base', href: '/en/ux-design-skill/#baza-wiedzy' },
+  { label: 'How it works', href: '/en/ux-design-skill/how-it-works' },
 ];
-const navCtaHref = '/ux-design-skill/#cennik';
+const navCtaHref = '/en/ux-design-skill/#cennik';
 ---
 
 <BaseLayout
-  title="Asystent UX — proces UX od briefu do wireframe'u | Creative Sparks"
-  description="Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup."
-  ogTitle="Zaplanuj strukturę i treści strony, zanim ruszysz w Figmę"
-  ogDescription="Asystent UX, który prowadzi od briefu do gotowej makiety z prawdziwym copy. Pakiety od 599 zł."
+  title="UX Design Skill: UX process from brief to wireframe | Creative Sparks"
+  description="A UX skill for Claude Code that takes your site from brief to wireframe. 92 knowledge files, 16 page types, 13 UX frameworks. One-time license, no subscription."
+  ogTitle="Plan your site structure and content before you open Figma"
+  ogDescription="UX Design Skill walks you from brief to a finished wireframe with real copy. Packages from $189."
   ogImage="/uxd-share.jpg"
 >
   <TopAppBar navLinks={navLinks} ctaHref={navCtaHref} />
@@ -109,7 +109,7 @@ const navCtaHref = '/ux-design-skill/#cennik';
           style="display: inline-block;"
         >
           <a href="#" class="inline-flex items-center gap-2 tracking-tight transition-all duration-300 bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white px-10 py-4 text-base font-extrabold">
-            Obejrzyj demo skilla
+            Watch the skill in action
             <span class="material-symbols-outlined text-lg" aria-hidden="true">play_arrow</span>
           </a>
         </wistia-player>
@@ -118,7 +118,7 @@ const navCtaHref = '/ux-design-skill/#cennik';
     <UseCasesSection
       id="value-props"
       headingId="value-props-heading"
-      badge="Wartość"
+      badge="Value"
       heading={valuePropsEntry.data.heading}
       cases={valuePropsCases}
       icon={valuePropsIcon}
@@ -127,16 +127,16 @@ const navCtaHref = '/ux-design-skill/#cennik';
     <ProcessSection
       id="proces"
       headingId="process-heading"
-      badge="Jak to działa"
-      heading="Cztery kroki od briefu<br/>do gotowej makiety z treściami"
+      badge="How it works"
+      heading="Four steps from brief<br/>to a finished wireframe with real copy"
       cards={processCards}
-      videoTile={{ mediaId: '1siqhsesz9', label: 'Wideo', title: 'Zobacz skill UX Design w akcji' }}
+      videoTile={{ mediaId: '1siqhsesz9', label: 'Video', title: 'See the UX Design Skill in action' }}
       icon={processIcon}
     />
     <KnowledgeBaseSection
       id="baza-wiedzy"
-      heading="Ten skill rozumie UX design dzięki wbudowanym procesom i bazie wiedzy UX."
-      mapLabel="Mapa wiedzy skilla"
+      heading="This skill understands UX design through built-in processes and a UX knowledge base."
+      mapLabel="The skill's knowledge map"
     />
     <LandscapeSection id="darmowe-skille" entryId="skill-lp" />
     <ComparisonSection id="porownanie" entryId="skill-lp" />
@@ -144,7 +144,7 @@ const navCtaHref = '/ux-design-skill/#cennik';
       id="granice"
       headingId="boundaries-heading"
       badge={boundariesEntry.data.badge}
-      heading="Czego ten skill nie robi"
+      heading="What this skill doesn't do"
       items={boundariesEntry.data.items}
       columns={3}
       icon={boundariesIcon}
@@ -154,14 +154,14 @@ const navCtaHref = '/ux-design-skill/#cennik';
     <DemoSection
       id="audyt"
       badge={freeTrialEntry.data.badge}
-      heading="Pobierz darmowy skill audytu UX i uruchom na własnej stronie"
+      heading="Get the free UX audit skill and run it on your own site"
       intro={freeTrialEntry.data.intro}
       stages={freeTrialEntry.data.stages}
       note={freeTrialEntry.data.note}
-      videoPopover={{ mediaId: '95i42fdxo8', label: 'Zobacz wideo' }}
+      videoPopover={{ mediaId: '95i42fdxo8', label: 'Watch the video' }}
       icon={freeTrialIcon}
     >
-      <FreeSkillForm slot="cta" surface="ux_design_skill_audyt" submitLabel="Pobierz darmowy skill" />
+      <FreeSkillForm slot="cta" surface="ux_design_skill_audyt" />
     </DemoSection>
     <ArchitectureSection />
     <PlatformSection />

@@ -1,0 +1,28 @@
+badge: Proof
+heading: "We planned this site using our UX Design Skill,<br/>and the whole trail is public."
+lead: "Every artifact opens in the browser, and each one has a markdown source you can download.<br/>View the examples on desktop. Mobile clips the side panel where the decisions live."
+cards:
+  - title: Project plan
+    description: Project context, strategy, and a template inventory for every subpage. The single file each session starts from.
+    shape: cube
+    link:
+      label: Open the project plan
+      href: /examples/uxd-product-website-v3_project_plan.html
+  - title: Messaging canvas
+    description: ICP, category, alternatives, pillars, narrative, headlines, and first-draft copy for hero, value props, FAQ, and CTAs. The strategic frame and the actual sentences on one board.
+    shape: grid
+    link:
+      label: Open the messaging canvas
+      href: /examples/uxd-product-website-v3_messaging_canvas.html
+  - title: Wireframes
+    description: Section sketches with real copy, plus before-and-after wireframes for an audited site.
+    shape: bars
+    link:
+      label: Open the wireframes
+      href: /examples/uxd-product-website-v3_wireframes.html
+  - title: Pre-redesign UX audit
+    description: A wireframe of the previous site with per-section diagnosis notes and benchmarks against industry standards. The starting point for the whole redesign.
+    shape: nested
+    link:
+      label: Open the audit
+      href: /examples/creativesparks-ux-designer_audit.html

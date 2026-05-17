@@ -11,9 +11,30 @@ interface Props extends HTMLAttributes<'section'> {
   class?: string;
 }
 
-const { heading: headingOverride, mapLabel = 'Mapa wiedzy asystenta', class: className, ...rest } = Astro.props;
-
 const locale = localeFromPathname(Astro.url.pathname);
+
+const COPY_PL = {
+  mapLabel: 'Mapa wiedzy asystenta',
+  mapHref: '/ux-design-skill/baza-wiedzy',
+  pageTypesHeading: (n: number) => `Typy stron (${n})`,
+  frameworksHeading: (n: number) => `Frameworki UX (${n})`,
+  patternsHeading: 'Wzorce sekcji (50+)',
+  patternsExtra: '+ 35 kolejnych',
+};
+
+const COPY_EN = {
+  mapLabel: 'Knowledge map',
+  mapHref: '/en/ux-design-skill/knowledge-base',
+  pageTypesHeading: (n: number) => `Page types (${n})`,
+  frameworksHeading: (n: number) => `UX frameworks (${n})`,
+  patternsHeading: 'Section patterns (50+)',
+  patternsExtra: '+ 35 more',
+};
+
+const COPY = locale === 'en' ? COPY_EN : COPY_PL;
+
+const { heading: headingOverride, mapLabel = COPY.mapLabel, class: className, ...rest } = Astro.props;
+
 const entry = await requireLocalizedEntry('knowledge-base', locale);
 const { badge, intro, pageTypes, frameworks, patterns } = entry.data;
 const heading = headingOverride ?? entry.data.heading;
@@ -31,7 +52,7 @@ const heading = headingOverride ?? entry.data.heading;
         <h2 id="knowledge-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
           {heading}
         </h2>
-        <a href="/ux-design-skill/baza-wiedzy" class="inline-flex items-center gap-2 mt-6 text-primary font-bold text-sm hover:underline transition-colors">
+        <a href={COPY.mapHref} class="inline-flex items-center gap-2 mt-6 text-primary font-bold text-sm hover:underline transition-colors">
           <span class="material-symbols-outlined text-base">menu_book</span>
           {mapLabel}
           <span class="material-symbols-outlined text-base">arrow_forward</span>
@@ -39,9 +60,9 @@ const heading = headingOverride ?? entry.data.heading;
       </Fragment>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-        <KnowledgeColumn heading={`Typy stron (${pageTypes.length})`} items={pageTypes} />
-        <KnowledgeColumn heading={`Frameworki UX (${frameworks.length})`} items={frameworks} />
-        <KnowledgeColumn heading="Wzorce sekcji (50+)" items={patterns} extra="+ 35 kolejnych" />
+        <KnowledgeColumn heading={COPY.pageTypesHeading(pageTypes.length)} items={pageTypes} />
+        <KnowledgeColumn heading={COPY.frameworksHeading(frameworks.length)} items={frameworks} />
+        <KnowledgeColumn heading={COPY.patternsHeading} items={patterns} extra={COPY.patternsExtra} />
       </div>
 
       {intro && (

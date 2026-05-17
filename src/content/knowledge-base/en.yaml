@@ -1,0 +1,92 @@
+badge: Knowledge base
+heading: "Under the hood: 16 page types, 13 UX frameworks, and 50+ section patterns."
+intro: "92 knowledge files covering methodology, patterns, and worked examples. From design psychology to conversion patterns."
+pageTypes:
+  - name: B2B SaaS
+    sub: Subscription products
+  - name: B2B Services
+    sub: Agencies, consulting
+  - name: B2B Industrial
+    sub: Manufacturers, distributors
+  - name: E-commerce
+    sub: Online stores, DTC
+  - name: Portfolio
+    sub: Studios, freelancers
+  - name: Local Business
+    sub: Local services
+  - name: Marketplace
+    sub: Two-sided platforms
+  - name: Community
+    sub: Groups, forums
+  - name: Course
+    sub: Courses, training
+  - name: Media
+    sub: Publishers, blogs
+  - name: Event
+    sub: Conferences
+  - name: Nonprofit
+    sub: Foundations, NGOs
+  - name: Enterprise
+    sub: Enterprise tools
+  - name: Government
+    sub: Public institutions
+  - name: Documentation
+    sub: Knowledge bases
+  - name: Service Utility
+    sub: Online utilities
+frameworks:
+  - name: Design Psychology
+    sub: Don Norman
+  - name: Hierarchy of User Needs
+    sub: Aarron Walter
+  - name: Usability Heuristics
+    sub: Jakob Nielsen
+  - name: LIFT Model
+    sub: Conversion Optimization
+  - name: CCD
+    sub: Customer Centric Design
+  - name: Emotional Targeting
+    sub: 223 triggers
+  - name: Buyer Legends
+    sub: Narrative framing
+  - name: FAST Architecture
+    sub: Persuasion sequencing
+  - name: Narrative Arc
+    sub: Hook, tension, evidence, resolution
+  - name: ResearchXL
+    sub: Structured UX research
+  - name: Messaging Hierarchy
+    sub: B2B 5-layer model
+  - name: Awareness Model
+    sub: 5 levels of awareness
+  - name: Funnel Psychology
+    sub: Awareness, consideration, decision
+patterns:
+  - name: Hero
+    sub: Page opener variants
+  - name: Navigation
+    sub: Sticky, mega menu, mobile
+  - name: Social proof
+    sub: Testimonials, logos, case studies
+  - name: FAQ / objections
+    sub: Accordion, 4 purchase barriers
+  - name: Forms
+    sub: Lead capture, contact, RFQ
+  - name: Pricing
+    sub: Tiers, anchor pricing, decoy
+  - name: Comparison
+    sub: Tables vs. competitors
+  - name: Case study
+    sub: Result + quote + metrics
+  - name: Pricing page
+    sub: Pricing psychology, tiers
+  - name: Comparison
+    sub: vs. pages, switcher proof
+  - name: Trust bar
+    sub: Logos, badges, certifications
+  - name: Stats block
+    sub: Metrics, scale, impact
+  - name: Sticky CTA
+    sub: Floating, bottom bar
+  - name: Mid-page CTA
+    sub: Contextual call

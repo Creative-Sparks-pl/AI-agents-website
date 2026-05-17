@@ -1,0 +1,21 @@
+badge: Free audit
+heading: Get the free audit skill and run it on your own site
+intro: Get something concrete before you commit to the full version. Just give it a URL. The skill takes it from there.
+stages:
+  - label: Stage 1
+    title: Site scan and a wireframe of the current state
+    description: A wireframe of your current site as HTML you preview in the browser.
+    shape: cube
+  - label: Stage 2
+    title: Audit with diagnosis and annotations
+    description: Findings as section-level annotations directly on the wireframe.
+    shape: diamond
+  - label: Stage 3
+    title: Benchmark vs industry standards
+    description: Each finding shows the current state, the industry standard for that site type, and a confidence level.
+    shape: grid
+note: A single audit workflow from the full skill. Audits any of the 16 page types.
+cta:
+  label: Get the free audit
+  href: https://cart.creativesparks.pl/checkout/ux-darmowy-audyt
+  icon: download

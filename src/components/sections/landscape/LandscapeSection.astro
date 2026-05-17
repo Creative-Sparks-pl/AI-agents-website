@@ -13,8 +13,17 @@ interface Props extends HTMLAttributes<'section'> {
 const { entryId, headingId = 'landscape-heading', class: className, ...rest } = Astro.props;
 
 const locale = localeFromPathname(Astro.url.pathname);
-const resolvedId = entryId ?? locale;
-const entry = await requireEntry('landscape', resolvedId);
+let resolvedId: string;
+let fallbackId: string | undefined;
+if (!entryId) {
+  resolvedId = locale;
+} else if (locale === 'en' && !entryId.endsWith('-en')) {
+  resolvedId = `${entryId}-en`;
+  fallbackId = entryId;
+} else {
+  resolvedId = entryId;
+}
+const entry = await requireEntry('landscape', resolvedId, fallbackId);
 const { badge, heading, lead, cards, closingLine } = entry.data;
 
 const defaultCards = cards.filter((c) => c.variant === 'default');

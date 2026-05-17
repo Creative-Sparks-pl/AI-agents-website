@@ -1,0 +1,12 @@
+badge: What stays with you
+heading: What this skill doesn't do
+items:
+  - icon: block
+    title: It doesn't make strategic decisions for you.
+    description: It shows the options with trade-offs. You make the call.
+  - icon: info
+    title: It doesn't pretend to know everything.
+    description: Every decision flags its confidence level wherever the AI is guessing.
+  - icon: psychology
+    title: It doesn't replace experience.
+    description: It shortens the path to a first version that you develop your own way.

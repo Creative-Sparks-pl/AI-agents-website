@@ -1,0 +1,22 @@
+heading: "Three core features<br/>that make this skill different."
+cards:
+  - title: A site plan with reasoning, before Figma or vibe coding.
+    description: |
+      Sitemap, section structure, and narrative in a single file. Every decision shows its reasoning and the alternatives it rejected. Lands in your workflow before you ever open Figma.
+    links:
+      - label: See the project plan
+        href: /examples/uxd-product-website-v3_project_plan.html
+
+  - title: Files that move straight into Figma AI, Cursor, and Claude.
+    description: |
+      Markdown, HTML, and Excel. Each artifact drops into the next tool in your workflow without conversion. The plan lives in your project files, not in a chat history.
+    links:
+      - label: See example files
+        href: "#dowod"
+
+  - title: Built-in UX expertise. You still make every call.
+    description: |
+      16 page types, 13 UX frameworks, and 50+ section patterns baked in. The skill applies the methodology, but every checkpoint shows you the options and the trade-offs. The decision stays yours.
+    links:
+      - label: See the knowledge base
+        href: "#baza-wiedzy"

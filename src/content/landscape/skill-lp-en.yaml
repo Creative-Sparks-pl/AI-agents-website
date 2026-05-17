@@ -1,0 +1,28 @@
+badge: Free skills
+heading: What about the free skills on GitHub?
+lead: 'We checked the ecosystem. The popular free UX skills for Claude Code fall into four buckets. Each one does its job well. None of them runs a whole site project from brief to wireframes.'
+cards:
+  - variant: default
+    title: Styles and components, stack-specific generators
+    description: 'You get ready-made styling and components for your framework: React, Vue, SwiftUI, or Flutter.'
+    sampleLabel: e.g. ui-ux-pro-max-skill
+  - variant: default
+    title: UX references, WCAG, Nielsen, accessibility
+    description: You ask about a standard or pattern mid-flow with the AI model and get an answer with the source.
+    sampleLabel: e.g. ux-mcp-server
+  - variant: default
+    title: UX prompts you can copy and run
+    description: You grab a prompt from the library, adapt it to your project, and plug it into your own flow.
+    sampleLabel: e.g. claude-code-ui-agents, LibreUIUX
+  - variant: default
+    title: UX research with a formal methodology
+    description: It walks you through user research with an unbiased methodology.
+    sampleLabel: e.g. VoltAgent ux-researcher
+  - variant: highlight
+    title: This is the only skill that runs the whole site project from brief to wireframes
+    description: It takes you through every stage, from the first question about client context all the way to wireframes ready for handoff.
+    bullets:
+      - Discovery (context capture)
+      - Audit of your current site
+      - Site plan and information architecture
+      - Wireframes with real copy

@@ -1,0 +1,71 @@
+badge: Comparison
+heading: "Why Claude Code alone isn't enough,<br/>and why writing your own skill isn't either."
+columns:
+  - key: skill
+    label: UX skill (this product)
+    sub: RECOMMENDED
+    highlight: true
+  - key: claude
+    label: Claude Code alone
+    sub: ALTERNATIVE
+    highlight: false
+  - key: diy
+    label: Your own skill
+    sub: ALTERNATIVE
+    highlight: false
+rows:
+  - feature: UX methodology
+    cells:
+      skill:
+        status: "yes"
+        text: 16 page types, 13 frameworks, 50+ patterns built in.
+      claude:
+        status: "no"
+        text: None. The model applies whatever you put in the prompt.
+      diy:
+        status: "partial"
+        text: You write it yourself. Time cost plus risk of inconsistency.
+  - feature: Time to launch
+    cells:
+      skill:
+        status: "yes"
+        text: 5 minutes (drop the folder into .claude/skills).
+      claude:
+        status: "partial"
+        text: 0 minutes, but 0 methodology.
+      diy:
+        status: "no"
+        text: 80 to 160 hours of writing and testing.
+  - feature: Cross-model (Claude, ChatGPT, Gemini)
+    cells:
+      skill:
+        status: "yes"
+        text: Yes. Works in any tool with any model (Claude Code, Codex, Gemini CLI, Cursor).
+      claude:
+        status: "no"
+        text: Claude only, inside Claude Code. No model choice.
+      diy:
+        status: "partial"
+        text: Yes, if you design it against the open spec yourself.
+  - feature: Reasoning next to every recommendation
+    cells:
+      skill:
+        status: "yes"
+        text: Yes. Reasoning and rejected alternatives next to every decision.
+      claude:
+        status: "no"
+        text: No. The model answers without a trail.
+      diy:
+        status: "partial"
+        text: You'd need to design the decision log yourself.
+  - feature: Cost
+    cells:
+      skill:
+        status: "price"
+        text: From $189, one-time payment.
+      claude:
+        status: "price"
+        text: Claude Pro / Max subscription.
+      diy:
+        status: "price"
+        text: Your time.

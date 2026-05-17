@@ -9,7 +9,7 @@ const { links } = entry.data;
 
 <footer class="py-12 bg-white border-t border-border/20">
   <div class="max-w-screen-2xl mx-auto px-6 flex flex-col md:flex-row justify-between items-start gap-8">
-    <a href="/ux-design-skill" class="text-primary block h-6 [&>svg]:h-full [&>svg]:w-auto" aria-label="Creative Sparks">
+    <a href={locale === 'en' ? '/en/ux-design-skill' : '/ux-design-skill'} class="text-primary block h-6 [&>svg]:h-full [&>svg]:w-auto" aria-label="Creative Sparks">
       <Fragment set:html={Logo} />
     </a>
     <div class="flex flex-wrap gap-x-10 gap-y-3 text-sm font-label">

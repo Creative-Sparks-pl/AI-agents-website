@@ -25,17 +25,30 @@ interface Props extends HTMLAttributes<'section'> {
   cta?: { heading: string; description: string; button: { label: string; href: string } };
 }
 
-const DEFAULT_BADGE = 'Pod maską';
-const DEFAULT_HEADING = 'To nie jest jeden prompt,<br />tylko ~25 000 linijek kodu<br />i przemyślana architektura systemu.';
-const DEFAULT_LEAD = 'Asystent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.';
-const DEFAULT_LINK = { href: '/ux-design-skill/changelog', label: 'Historia zmian i aktualizacji' };
+const locale = localeFromPathname(Astro.url.pathname);
+
+const DEFAULTS_PL = {
+  badge: 'Pod maską',
+  heading: 'To nie jest jeden prompt,<br />tylko ~25 000 linijek kodu<br />i przemyślana architektura systemu.',
+  lead: 'Asystent to instrukcja działania + 92 pliki wiedzy domenowej, ładowane na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań.',
+  link: { href: '/ux-design-skill/changelog', label: 'Historia zmian i aktualizacji' },
+};
+
+const DEFAULTS_EN = {
+  badge: 'Under the hood',
+  heading: 'Not just a prompt.<br />~25,000 lines of code<br />and a real system architecture.',
+  lead: 'UX Design Skill is an operating playbook plus 92 domain knowledge files, loaded on demand. The architecture took months to get right. What ships is the third iteration. The first two missed the bar.',
+  link: { href: '/en/ux-design-skill/changelog', label: 'Changelog and updates' },
+};
+
+const DEFAULTS = locale === 'en' ? DEFAULTS_EN : DEFAULTS_PL;
 
 const {
   class: className,
-  badge = DEFAULT_BADGE,
-  heading = DEFAULT_HEADING,
-  lead = DEFAULT_LEAD,
-  link = DEFAULT_LINK,
+  badge = DEFAULTS.badge,
+  heading = DEFAULTS.heading,
+  lead = DEFAULTS.lead,
+  link = DEFAULTS.link,
   decisions: decisionsProp,
   cta,
   ...rest
@@ -45,7 +58,6 @@ let decisions: DecisionItem[];
 if (decisionsProp) {
   decisions = decisionsProp;
 } else {
-  const locale = localeFromPathname(Astro.url.pathname);
   const entries = (await getLocalizedCollection('architecture', locale))
     .sort((a, b) => a.data.order - b.data.order);
   decisions = entries.map((d) => ({

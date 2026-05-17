@@ -3,9 +3,10 @@ interface Props {
   icon: string;
   name: string;
   desc: string;
+  note?: string;
 }
 
-const { icon, name, desc } = Astro.props;
+const { icon, name, desc, note } = Astro.props;
 ---
 
 <div class="bg-white p-8 flex flex-col gap-6 group hover:bg-primary transition-colors duration-300">
@@ -13,5 +14,8 @@ const { icon, name, desc } = Astro.props;
   <div>
     <h4 class="font-headline font-bold text-base mb-1 group-hover:text-white transition-colors">{name}</h4>
     <p class="text-sm text-muted leading-snug group-hover:text-white/70 transition-colors">{desc}</p>
+    {note && (
+      <p class="mt-2 text-xs italic text-muted/80 leading-snug group-hover:text-white/60 transition-colors">{note}</p>
+    )}
   </div>
 </div>

@@ -16,6 +16,18 @@ const { class: className, ...rest } = Astro.props;
 const locale = localeFromPathname(Astro.url.pathname);
 const plans = (await getLocalizedCollection('pricing', locale))
   .sort((a, b) => a.data.order - b.data.order);
+
+const copy = locale === 'en'
+  ? {
+      badge: 'Launch pricing',
+      heading: 'Three packages, one-time license',
+      refundNote: '14-day refund. Not a fit? Return it.',
+    }
+  : {
+      badge: 'Cennik przedsprzedaży do 30 maja 2026',
+      heading: 'Trzy pakiety, jednorazowa licencja',
+      refundNote: '14 dni na sprawdzenie. Nie pasuje, oddajesz.',
+    };
 ---
 
 <section
@@ -29,20 +41,24 @@ const plans = (await getLocalizedCollection('pricing', locale))
       <Fragment slot="header">
         <div class="inline-flex items-center gap-2 bg-primary/5 px-4 py-1.5 border border-primary/20 mb-6">
           <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
-          <span class="text-sm font-bold text-primary font-label">Cennik przedsprzedaży do 30 maja 2026</span>
+          <span class="text-sm font-bold text-primary font-label">{copy.badge}</span>
         </div>
         <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
-          Trzy pakiety, jednorazowa licencja
+          {copy.heading}
         </h2>
-        <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
-          Sześć miesięcy darmowych aktualizacji w cenie i aż dwanaście w przedsprzedaży.
-          <LinkArrow href="/ux-design-skill/changelog" class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
-            Zobacz changelog
-          </LinkArrow>
-        </p>
-        <p class="text-base md:text-lg text-primary font-medium leading-relaxed mt-3">
-          1 czerwca 2026 startuje globalna sprzedaż i wchodzą wyższe ceny w euro.
-        </p>
+        {locale === 'pl' && (
+          <Fragment>
+            <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
+              Sześć miesięcy darmowych aktualizacji w cenie i aż dwanaście w przedsprzedaży.
+              <LinkArrow href="/ux-design-skill/changelog" class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
+                Zobacz changelog
+              </LinkArrow>
+            </p>
+            <p class="text-base md:text-lg text-primary font-medium leading-relaxed mt-3">
+              1 czerwca 2026 startuje globalna sprzedaż i wchodzą wyższe ceny w euro.
+            </p>
+          </Fragment>
+        )}
       </Fragment>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -60,7 +76,7 @@ const plans = (await getLocalizedCollection('pricing', locale))
 
       <div class="mt-8 px-8 py-4 flex items-center justify-center gap-3 text-center">
         <span class="material-symbols-outlined text-primary text-xl shrink-0" aria-hidden="true">task_alt</span>
-        <p class="font-headline text-base md:text-lg font-bold text-foreground tracking-tight">14 dni na sprawdzenie. Nie pasuje, oddajesz.</p>
+        <p class="font-headline text-base md:text-lg font-bold text-foreground tracking-tight">{copy.refundNote}</p>
       </div>
 
     </SectionWithIcon>

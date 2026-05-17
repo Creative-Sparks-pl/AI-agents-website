@@ -1,0 +1,19 @@
+badge: Install
+heading: Install it like a WordPress plugin
+intro: A folder of markdown files drops into your AI environment. Claude Code, Cursor, ChatGPT, Claude Projects, or Alice. No backend, no accounts, no onboarding queue.
+items:
+  - icon: download
+    label: Step 1
+    title: Download the folder
+    description: After you buy, you get a zipped folder with the skill files.
+  - icon: drive_folder_upload
+    label: Step 2
+    title: Drop it into your environment
+    description: The folder goes into your project directory (e.g. .claude/agents/ for Claude Code), following the per-platform instructions.
+  - icon: play_arrow
+    label: Step 3
+    title: Use it in your next session
+    description: The skill picks up automatically on your next session with the model. No extra configuration.
+footerLink:
+  label: See the full install guide
+  href: /en/ux-design-skill/how-it-works

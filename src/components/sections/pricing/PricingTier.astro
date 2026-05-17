@@ -1,5 +1,6 @@
 ---
 import Button from '../../ui/Button.astro';
+import { localeFromPathname } from '../../../lib/i18n';
 
 interface Props {
   name: string;
@@ -11,6 +12,32 @@ interface Props {
 }
 
 const { name, sub, oldPrice, price, highlight, features } = Astro.props;
+
+const locale = localeFromPathname(Astro.url.pathname);
+
+const copy = locale === 'en'
+  ? {
+      packageLabel: 'Package',
+      presaleLabel: 'Pre-sale',
+      currencySymbol: '$',
+      currencyPosition: 'prefix' as const,
+      taxNote: '',
+      ctaLabel: (n: string) => `Buy ${n}`,
+      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-en',
+    }
+  : {
+      packageLabel: 'Pakiet',
+      presaleLabel: 'Przedsprzedaż',
+      currencySymbol: 'zł',
+      currencyPosition: 'suffix' as const,
+      taxNote: 'netto + VAT 23%',
+      ctaLabel: (n: string) => `Kup pakiet ${n}`,
+      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-lead',
+    };
+
+const oldPriceDisplay = copy.currencyPosition === 'prefix'
+  ? `${copy.currencySymbol}${oldPrice}`
+  : `${oldPrice} ${copy.currencySymbol}`;
 ---
 
 <div class:list={[
@@ -18,19 +45,26 @@ const { name, sub, oldPrice, price, highlight, features } = Astro.props;
   highlight ? 'bg-accent text-foreground' : 'bg-surface'
 ]}>
   <div class="mb-8">
-    <span class="text-xs font-label text-primary mb-2 block">Pakiet</span>
+    <span class="text-xs font-label text-primary mb-2 block">{copy.packageLabel}</span>
     <h3 class="font-headline font-bold text-3xl mb-2">{name}</h3>
     <p class:list={['text-sm', highlight ? 'text-foreground/70' : 'text-muted']}>{sub}</p>
   </div>
 
   <div class="mb-8">
-    <span class="text-xs font-label text-primary font-bold mb-1 block">Przedsprzedaż</span>
-    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/40' : 'text-muted/60']}>{oldPrice} zł</span>
-    <div>
+    <span class="text-xs font-label text-primary font-bold mb-1 block">{copy.presaleLabel}</span>
+    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/40' : 'text-muted/60']}>{oldPriceDisplay}</span>
+    <div class="flex items-baseline">
+      {copy.currencyPosition === 'prefix' && (
+        <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
+      )}
       <span class="font-headline font-bold text-5xl">{price}</span>
-      <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>zł</span>
+      {copy.currencyPosition === 'suffix' && (
+        <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.currencySymbol}</span>
+      )}
     </div>
-    <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/50' : 'text-muted/70']}>netto + VAT 23%</p>
+    {copy.taxNote && (
+      <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/50' : 'text-muted/70']}>{copy.taxNote}</p>
+    )}
   </div>
 
   <div class:list={['border-t mb-8 pt-8', highlight ? 'border-foreground/10' : 'border-border/30']}>
@@ -46,7 +80,7 @@ const { name, sub, oldPrice, price, highlight, features } = Astro.props;
 
   <div class="mt-auto">
     <Button
-      href="https://cart.creativesparks.pl/checkout/ux-design-lead"
+      href={copy.checkoutUrl}
       external
       block
       size="md"
@@ -55,7 +89,7 @@ const { name, sub, oldPrice, price, highlight, features } = Astro.props;
       data-track="InitiateCheckout"
       data-track-plan={name}
     >
-      Kup pakiet {name}
+      {copy.ctaLabel(name)}
     </Button>
   </div>
 </div>

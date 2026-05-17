@@ -1,4 +1,6 @@
 ---
+import { localeFromPathname } from '../../lib/i18n';
+
 type Size = 'md' | 'lg';
 
 interface Props {
@@ -13,17 +15,59 @@ interface Props {
   class?: string;
 }
 
+const locale = localeFromPathname(Astro.url.pathname);
+
+const COPY_PL = {
+  submitLabel: 'Pobierz darmowy skill',
+  placeholder: 'adres email',
+  successHeading: 'Gotowe — paczka czeka.',
+  successNote: 'Wysłaliśmy też link na podany adres email.',
+  downloadLabel: 'Pobierz paczkę',
+  emailLabel: 'Adres email',
+  loadingLabel: 'Wysyłam...',
+  errEmail: 'Podaj poprawny adres email.',
+  errUnavailable: 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.',
+  errGeneric: 'Wystąpił błąd. Spróbuj ponownie za chwilę.',
+  errOffline: 'Brak połączenia. Sprawdź internet i spróbuj ponownie.',
+  disclaimerPrefix: 'Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z ',
+  disclaimerLinkLabel: 'Polityką prywatności',
+  disclaimerSuffix: ').',
+  privacyHref: '/ux-design-skill/polityka-prywatnosci',
+};
+
+const COPY_EN = {
+  submitLabel: 'Get the free skill',
+  placeholder: 'email address',
+  successHeading: 'Done. Your package is ready.',
+  successNote: 'We also emailed you the link.',
+  downloadLabel: 'Download the package',
+  emailLabel: 'Email address',
+  loadingLabel: 'Sending...',
+  errEmail: 'Enter a valid email address.',
+  errUnavailable: 'Temporarily unavailable. Try again in a moment.',
+  errGeneric: 'Something went wrong. Try again in a moment.',
+  errOffline: 'No connection. Check your internet and try again.',
+  disclaimerPrefix: 'By submitting your email you consent to receive product and service updates (per our ',
+  disclaimerLinkLabel: 'Privacy Policy',
+  disclaimerSuffix: ').',
+  privacyHref: '/en/ux-design-skill/privacy-policy',
+};
+
+const COPY = locale === 'en' ? COPY_EN : COPY_PL;
+
 const {
   surface,
   size = 'md',
-  submitLabel = 'Pobierz darmowy skill',
-  placeholder = 'adres email',
-  successHeading = 'Gotowe — paczka czeka.',
-  successNote = 'Wysłaliśmy też link na podany adres email.',
-  downloadLabel = 'Pobierz paczkę',
+  submitLabel = COPY.submitLabel,
+  placeholder = COPY.placeholder,
+  successHeading = COPY.successHeading,
+  successNote = COPY.successNote,
+  downloadLabel = COPY.downloadLabel,
   block = false,
   class: className,
 } = Astro.props;
+
+const privacyHref = COPY.privacyHref;
 
 const inputSizeClasses: Record<Size, string> = {
   md: 'px-6 py-4 text-base',
@@ -45,12 +89,17 @@ const iconSize: Record<Size, string> = {
   class:list={['free-skill-form', block && 'w-full', className]}
   data-surface={surface}
   data-state="idle"
+  data-i18n-loading={COPY.loadingLabel}
+  data-i18n-err-email={COPY.errEmail}
+  data-i18n-err-unavailable={COPY.errUnavailable}
+  data-i18n-err-generic={COPY.errGeneric}
+  data-i18n-err-offline={COPY.errOffline}
 >
   <form
     class="free-skill-form__form flex flex-col sm:flex-row items-stretch gap-0 sm:gap-0"
     novalidate
   >
-    <label class="sr-only" for={`free-skill-email-${surface}`}>Adres email</label>
+    <label class="sr-only" for={`free-skill-email-${surface}`}>{COPY.emailLabel}</label>
     <input
       id={`free-skill-email-${surface}`}
       name="email"
@@ -92,7 +141,7 @@ const iconSize: Record<Size, string> = {
   </form>
 
   <p class="free-skill-form__disclaimer mt-3 text-sm text-muted leading-relaxed">
-    Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z <a href="/ux-design-skill/polityka-prywatnosci" class="underline hover:text-primary">Polityką prywatności</a>).
+    {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix}
   </p>
 
   <p
@@ -180,6 +229,14 @@ const iconSize: Record<Size, string> = {
     const surface = root.dataset.surface ?? 'unknown';
     if (!form || !submit || !submitLabel) return;
 
+    const i18n = {
+      loading: root.dataset.i18nLoading ?? 'Sending...',
+      errEmail: root.dataset.i18nErrEmail ?? 'Enter a valid email address.',
+      errUnavailable: root.dataset.i18nErrUnavailable ?? 'Temporarily unavailable. Try again in a moment.',
+      errGeneric: root.dataset.i18nErrGeneric ?? 'Something went wrong. Try again in a moment.',
+      errOffline: root.dataset.i18nErrOffline ?? 'No connection. Check your internet and try again.',
+    };
+
     const originalLabel = submitLabel.textContent ?? '';
 
     form.addEventListener('submit', async (e) => {
@@ -191,13 +248,13 @@ const iconSize: Record<Size, string> = {
       const website = String(data.get('website') ?? '');
 
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showError(root, 'Podaj poprawny adres email.');
+        showError(root, i18n.errEmail);
         return;
       }
 
       setState(root, 'loading');
       submit.disabled = true;
-      submitLabel.textContent = 'Wysyłam...';
+      submitLabel.textContent = i18n.loading;
 
       try {
         const res = await fetch('/api/subscribe', {
@@ -220,15 +277,15 @@ const iconSize: Record<Size, string> = {
         }
 
         if (payload.reason === 'invalid_email') {
-          showError(root, 'Podaj poprawny adres email.');
+          showError(root, i18n.errEmail);
         } else if (payload.reason === 'not_configured') {
-          showError(root, 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.');
+          showError(root, i18n.errUnavailable);
         } else {
-          showError(root, 'Wystąpił błąd. Spróbuj ponownie za chwilę.');
+          showError(root, i18n.errGeneric);
         }
         setState(root, 'error');
       } catch (_err) {
-        showError(root, 'Brak połączenia. Sprawdź internet i spróbuj ponownie.');
+        showError(root, i18n.errOffline);
         setState(root, 'error');
       } finally {
         submit.disabled = false;

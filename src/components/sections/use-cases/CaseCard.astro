@@ -1,5 +1,6 @@
 ---
 import LinkArrow from '../../ui/LinkArrow.astro';
+import { localeFromPathname } from '../../../lib/i18n';
 
 interface Link {
   label: string;
@@ -29,6 +30,10 @@ const {
   links,
   groupName = 'use-cases',
 } = Astro.props;
+
+const locale = localeFromPathname(Astro.url.pathname);
+const expandLabel = locale === 'en' ? 'Expand' : 'Rozwiń';
+const collapseLabel = locale === 'en' ? 'Collapse' : 'Zwiń';
 ---
 
 <details class="case-card group border-b border-border/30 overflow-hidden bg-white" name={groupName}>
@@ -50,8 +55,8 @@ const {
       </div>
     </div>
     <div class="flex items-center gap-2 shrink-0 pt-2">
-      <span class="font-label text-xs text-muted expand-label-closed">Rozwiń</span>
-      <span class="font-label text-xs text-muted expand-label-open">Zwiń</span>
+      <span class="font-label text-xs text-muted expand-label-closed">{expandLabel}</span>
+      <span class="font-label text-xs text-muted expand-label-open">{collapseLabel}</span>
       <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300" aria-hidden="true">expand_more</span>
     </div>
   </summary>
