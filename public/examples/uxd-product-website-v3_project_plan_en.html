@@ -1,0 +1,3990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>uxd-product-website-v3 Project Plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================ */
+    /* === UNIVERSAL — sync across all workflow templates        === */
+    /* === Base tokens, reset, typography, pills, shell chrome   === */
+    /* ============================================================ */
+
+    :root {
+      --wf-bg: #ffffff;
+      --wf-bg-warm: #f8f7f5;
+      --wf-text: #111111;
+      --wf-secondary: #444444;
+      --wf-muted: #888888;
+      --wf-line: #e0e0e0;
+      --wf-fill: #eeeeee;
+      --wf-accent: #1a1a1a;
+      --wf-gap: 16px;
+      --wf-radius-lg: 16px;
+      --wf-radius-md: 8px;
+      --wf-radius-sm: 4px;
+      --wf-radius: var(--wf-radius-lg);
+      --wf-max-w: 1560px;
+      --wf-font: 'Inter', system-ui, -apple-system, sans-serif;
+      --wf-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+      --wf-section-py: 48px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--wf-font);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--wf-text);
+      background: var(--wf-bg-warm);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1 { font-size: 2.441rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: var(--wf-gap); }
+    h2 { font-size: 1.953rem; font-weight: 700; line-height: 1.2;  letter-spacing: -0.02em; margin-bottom: calc(var(--wf-gap) * 0.75); }
+    h3 { font-size: 1.563rem; font-weight: 700; line-height: 1.25; margin-bottom: calc(var(--wf-gap) * 0.5); }
+    h4 { font-size: 1.25rem;  font-weight: 600; line-height: 1.35; margin: 16px 0 calc(var(--wf-gap) * 0.4); }
+    p, ul, ol { color: var(--wf-text); }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.5rem; }
+    }
+
+    .ui-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-family: inherit;
+      font-size: 0.5625rem;
+      font-weight: 700;
+      line-height: 1.6;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    .ui-badge::before { line-height: 1; }
+
+    .ui-badge--button {
+      background: transparent;
+      color: #555;
+      border: 1px solid #ccc;
+      padding: 0 5px;
+      cursor: pointer;
+      transition: background 120ms, color 120ms, border-color 120ms;
+    }
+    .ui-badge--button:hover { background: #f5f5f5; }
+
+    .ui-badge--green  { background: #d4edda; color: #155724; }
+    .ui-badge--yellow { background: #fff3cd; color: #856404; }
+    .ui-badge--red    { background: #f8d7da; color: #721c24; }
+    .ui-badge--gray   { background: #e9ecef; color: #495057; }
+
+    .ui-badge--content-ready  { background: #d4edda; color: #155724; }
+    .ui-badge--needs-content  { background: #fff3cd; color: #856404; }
+    .ui-badge--tbd-status     { background: #e9ecef; color: #495057; }
+
+    .ui-badge--plain {
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+    }
+    .ui-badge--muted { opacity: 0.55; text-decoration: line-through; text-decoration-color: #aaa; }
+
+    .ui-card-grid {
+      max-width: min(1560px, calc(100vw - 64px));
+      margin: 0 auto;
+    }
+    .ui-card-row {
+      display: grid;
+      gap: var(--wf-gap);
+    }
+    .ui-card-row--three { grid-template-columns: 1fr 1fr 1fr; }
+    .ui-card-row--two   { grid-template-columns: 1fr 1fr; }
+    .ui-card-row--one   { grid-template-columns: 1fr; }
+    .ui-card-row-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--wf-text);
+      margin: 32px 0 12px;
+    }
+    .ui-card {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: var(--wf-bg);
+      border-radius: var(--wf-radius-md);
+      padding: 12px 24px 16px;
+      min-height: 80px;
+    }
+    .ui-card h4 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.35;
+      margin: 16px 0 calc(var(--wf-gap) * 0.4);
+    }
+    .ui-card .lead {
+      font-size: 0.8125rem;
+      color: var(--wf-text);
+      font-style: italic;
+    }
+    .ui-card__meta {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      color: var(--wf-muted);
+      margin-top: auto;
+      padding-top: 8px;
+      border-top: 1px solid var(--wf-line);
+    }
+    .ui-card__meta-label {
+      font-weight: 500;
+      color: var(--wf-text);
+    }
+    .ui-card.ui-card--no-detail { cursor: default; }
+    .ui-card.ui-card--no-detail:hover { box-shadow: none; transform: none; }
+    .ui-card.ui-card--tbd {
+      background: transparent;
+      border: 1px solid var(--wf-line);
+      opacity: 0.5;
+    }
+    .ui-card.ui-card--tbd > *:not(h4) {
+      display: none;
+    }
+
+    .ui-card p {
+      font-size: 0.8125rem;
+      color: var(--wf-text);
+      line-height: 1.5;
+    }
+    .ui-card ul {
+      list-style: none;
+      padding: 0;
+      font-size: 0.8125rem;
+      color: var(--wf-text);
+    }
+    .ui-card ul li { padding: 2px 0; }
+    .ui-card strong { color: var(--wf-text); font-weight: 600; }
+    .ui-card > p,
+    .ui-card > ul,
+    .ui-card > ol,
+    .ui-card > div:not(.ui-card__meta) {
+      margin: 0 0 8px;
+    }
+    .ui-card > ul,
+    .ui-card > ol {
+      padding-left: 0;
+    }
+    .ui-card > *:last-child { margin-bottom: 0; }
+
+    body {
+      padding-bottom: 48px;
+      transition: margin-left 220ms ease;
+    }
+    body.shell-leftpanel-open { margin-left: min(30vw, 500px); }
+    body.shell-leftpanel-open .pp-main {
+      max-width: calc(100vw - min(30vw, 500px) - 64px);
+    }
+
+    .shell-leftpanel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: min(30vw, 500px);
+      height: calc(100vh - 48px);
+      background: #fff;
+      border-right: 1px solid #e5e5e5;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.08);
+      z-index: 9400;
+      transform: translateX(-100%);
+      transition: transform 220ms ease;
+      display: flex;
+      flex-direction: column;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .shell-leftpanel.is-open { transform: translateX(0); }
+
+    .shell-leftpanel__header {
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .shell-leftpanel__back {
+      background: none;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font: inherit;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+    }
+    .shell-leftpanel__back:hover { background: #f5f5f5; color: #000; }
+    .shell-leftpanel__title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+      color: #1a1a1a;
+      flex: 1;
+    }
+    .shell-leftpanel__count {
+      font-size: 11px;
+      color: #888;
+      font-weight: 500;
+    }
+    .shell-leftpanel__nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .shell-leftpanel__nav-btn {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 2px 9px;
+      font: 400 16px/1 ui-monospace, monospace;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 120ms, border-color 120ms, opacity 120ms;
+    }
+    .shell-leftpanel__nav-btn:hover:not(:disabled) { background: #f5f5f5; border-color: #c0c0c0; }
+    .shell-leftpanel__nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .shell-leftpanel__nav-counter {
+      font-size: 12px;
+      color: #555;
+      min-width: 48px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .shell-leftpanel__filter-area {
+      padding: 14px 18px 0;
+      background: #f2f2f2;
+      flex-shrink: 0;
+    }
+    .shell-leftpanel__filter-area:empty { display: none; }
+    .shell-leftpanel__scroll {
+      padding: 0 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+      background: #f2f2f2;
+    }
+    .shell-leftpanel__body {
+      padding: 14px 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+      background: #f2f2f2;
+    }
+
+    .shell-filter-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      margin-bottom: 10px;
+    }
+    .shell-filter-row .shell-filter-toggle { flex: 1; margin-bottom: 0; }
+    .shell-filter-clear {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 0 14px;
+      font: 500 12px/1 Inter, system-ui, sans-serif;
+      color: #c0392b;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .shell-filter-clear:hover { background: #fdecea; border-color: #f1b0b7; }
+    .shell-filter-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      cursor: pointer;
+      font: 500 12px/1 Inter, system-ui, sans-serif;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .shell-filter-toggle:hover { background: #fafafa; }
+    .shell-filter-toggle.is-open { border-color: #d0d0d0; margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .shell-filter-toggle__icon {
+      font: 400 16px/1 ui-monospace, monospace;
+      color: #888;
+    }
+    .shell-leftpanel__filter {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      margin-bottom: 14px;
+    }
+    .shell-leftpanel__filter.is-collapsed { display: none; }
+    .shell-filter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .shell-filter-section__label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: #888;
+    }
+    .shell-filter-section__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .shell-chip {
+      font: 500 11px/1 Inter, system-ui, sans-serif;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #fff;
+      color: #555;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 120ms, color 120ms;
+    }
+    .shell-chip:hover { background: #fafafa; }
+    .shell-chip.is-active {
+      background: #1a1a1a;
+      color: #fff;
+      border-color: #1a1a1a;
+    }
+    .shell-chip-count {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 10px;
+      opacity: 0.75;
+    }
+    .shell-group-header {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: #888;
+      margin: 0 0 10px;
+      padding: 4px 0 4px;
+      border-bottom: 1px solid #eee;
+    }
+    .shell-group { padding-top: 16px; }
+    .shell-group.is-hidden { display: none; }
+    .shell-empty {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      padding: 16px;
+      font-style: italic;
+    }
+    .shell-list { display: flex; flex-direction: column; gap: 8px; }
+    .shell-item {
+      background: #fff;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: box-shadow 120ms, transform 120ms;
+    }
+    .shell-item:hover { box-shadow: 0 2px 12px rgba(192,57,43,0.12); transform: translateY(-1px); }
+    .shell-item.is-hidden { display: none; }
+    .shell-item__row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .shell-item__n {
+      font: 700 11px/1 ui-monospace, monospace;
+      color: #fff;
+      background: #1a1a1a;
+      padding: 4px 7px;
+      border-radius: 3px;
+      min-width: 22px;
+      text-align: center;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .shell-item__tag {
+      font-size: 11px;
+      color: #666;
+      font-weight: 500;
+    }
+    .shell-item__labels {
+      margin-left: auto;
+      display: inline-flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .shell-item__title {
+      font-size: 13px;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .shell-item__page-note {
+      margin: 12px -14px -14px;
+      padding: 8px 14px;
+      background: var(--wf-fill);
+      border-radius: 0 0 var(--wf-radius-md) var(--wf-radius-md);
+      font-size: 12px;
+      color: #555;
+    }
+
+    .shell-detail__meta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 14px;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      background: #fafafa;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      font-size: 13px;
+    }
+    .shell-detail__meta dt {
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 10px;
+      align-self: center;
+    }
+    .shell-detail__meta dd { margin: 0; color: #1a1a1a; }
+    .shell-detail__title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0 0 14px;
+      padding-top: 16px;
+      color: #1a1a1a;
+    }
+    .shell-detail__body {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2a2a2a;
+      white-space: pre-wrap;
+    }
+    .shell-detail__blocks {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .shell-detail__block {
+      padding: 14px 16px;
+      margin: 0;
+      background: transparent;
+    }
+    .shell-detail__block + .shell-detail__block {
+      border-top: 1px solid #eee;
+    }
+    .shell-detail__label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: #888;
+      margin: 0 0 6px;
+    }
+    .shell-detail__text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2a2a2a;
+      margin: 0;
+    }
+
+    @media print {
+      .shell-bottombar, .shell-leftpanel { display: none !important; }
+      body { padding-bottom: 0 !important; margin-left: 0 !important; }
+    }
+
+    .shell-bottombar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: #fafafa;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 12px;
+      z-index: 9500;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 12px;
+      border-top: 1px solid #e5e5e5;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .shell-bottombar__group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      height: 100%;
+    }
+    .shell-bottombar__group + .shell-bottombar__group {
+      border-left: 1px solid #e5e5e5;
+    }
+    .shell-bottombar__spacer { flex: 1; }
+    .shell-bottombar__btn {
+      background: transparent;
+      border: 1px solid var(--wf-line);
+      color: #1a1a1a;
+      font: inherit;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 120ms, border-color 120ms;
+    }
+    .shell-bottombar__btn:hover {
+      background: #efefef;
+      border-color: #e0e0e0;
+    }
+    .shell-bottombar__btn.is-active {
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+      color: #fff;
+    }
+    .shell-bottombar__btn.is-active .shell-bottombar__btn-count {
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+    }
+    .shell-bottombar__btn-count {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font: 700 10px/1 ui-monospace, monospace;
+    }
+    .shell-bottombar__chevron { opacity: 0.55; }
+    .shell-bottombar__select {
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      color: #1a1a1a;
+      font: inherit;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      min-width: 180px;
+    }
+    .shell-bottombar__select:focus { outline: 2px solid #ffa500; outline-offset: 1px; border-color: #ffa500; }
+    .shell-bottombar__check {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+    .shell-bottombar__check:hover { background: #efefef; }
+    .shell-bottombar__check input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 16px;
+      background: #d0d0d0;
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      margin: 0;
+      flex-shrink: 0;
+      transition: background 160ms;
+    }
+    .shell-bottombar__check input[type="checkbox"]::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 160ms;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .shell-bottombar__check input[type="checkbox"]:checked { background: #1a1a1a; }
+    .shell-bottombar__check input[type="checkbox"]:checked::after { transform: translateX(14px); }
+    .shell-bottombar__check input[type="checkbox"]:focus-visible { outline: 2px solid #ffa500; outline-offset: 2px; }
+    .shell-bottombar__status {
+      color: #888;
+      font-size: 11px;
+    }
+
+    /* ============================================================ */
+    /* === PROJECT-PLAN-SPECIFIC — class prefix .pp-*            === */
+    /* ============================================================ */
+
+    .pp-main {
+      max-width: min(var(--wf-max-w), calc(100vw - 64px));
+      margin: 0 auto;
+      padding: 24px 32px 48px;
+    }
+    .pp-page { display: none; }
+    .pp-page.pp-page--active { display: block; }
+    .pp-header {
+      padding: 16px 0 24px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--wf-line);
+    }
+    .pp-header h1 {
+      font-size: 1.953rem;
+      margin-bottom: 4px;
+    }
+    .pp-header__subtitle {
+      color: var(--wf-muted);
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    .pp-chips { display: flex; flex-wrap: wrap; gap: 4px; }
+
+    .pp-ranked { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+    .pp-ranked li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--wf-line);
+      font-size: 0.9375rem;
+    }
+    .pp-ranked li:last-child { border-bottom: none; }
+    .pp-ranked li .pp-rank-n {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      background: var(--wf-accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .pp-scope { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .pp-scope-list { list-style: disc; padding-left: 18px; margin: 4px 0 0; font-size: 0.8125rem; }
+    .pp-scope-list li { padding: 2px 0; }
+    .pp-scope-list li.pp-excluded { text-decoration: line-through; opacity: 0.55; }
+    .pp-bullets { list-style: disc; padding-left: 18px; margin: 4px 0 0; font-size: 0.8125rem; }
+    .pp-bullets li { padding: 2px 0; }
+    .pp-scope strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--wf-secondary);
+      font-size: 0.8125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .ui-card[data-id] { cursor: pointer; transition: box-shadow 120ms; }
+    .ui-card[data-id]:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+    .ui-card[data-id].is-active {
+      box-shadow: none;
+      outline: none;
+      filter:
+        drop-shadow(0 0 10px rgba(0, 0, 0, 0.35))
+        drop-shadow(0 0 28px rgba(0, 0, 0, 0.20));
+      transition: filter 180ms ease;
+    }
+
+    .pp-tree-card {
+      background: var(--wf-bg);
+      padding: 12px 24px 16px;
+      border-radius: var(--wf-radius-md);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 1px 8px rgba(0,0,0,0.03);
+      transition: box-shadow 180ms, filter 180ms;
+    }
+    .pp-tree-card + .pp-tree-card {
+      margin-top: 12px;
+    }
+    .pp-tree-card:has(.pp-tree-row.is-selected) {
+      box-shadow: none;
+      filter:
+        drop-shadow(0 0 10px rgba(0, 0, 0, 0.35))
+        drop-shadow(0 0 28px rgba(0, 0, 0, 0.20));
+    }
+    .pp-tree {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pp-tree ul {
+      list-style: none;
+      margin: 0;
+    }
+    .pp-tree-children {
+      padding-left: 16px;
+      margin-top: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+    }
+    .pp-tree-children::before {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 4px;
+      bottom: 4px;
+      width: 1px;
+      background: var(--wf-line);
+      opacity: 0.6;
+    }
+    .pp-tree-node[data-expanded="false"] > .pp-tree-children { display: none; }
+
+    .pp-tree-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      background: var(--wf-bg);
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 120ms, border-color 120ms, box-shadow 150ms, transform 120ms;
+    }
+    .pp-tree-row:hover {
+      background: #fafafa;
+      border-color: var(--wf-line);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transform: translateY(-1px);
+    }
+    .pp-tree-row.is-selected {
+      background: #f0f4fa;
+      border-color: #b8c9dc;
+    }
+
+    .pp-tree-node--lvl1 > .pp-tree-row {
+      background: transparent;
+      border: none;
+      padding: 8px 0;
+      border-radius: 0;
+    }
+    .pp-tree-node--lvl1 > .pp-tree-row:hover {
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .pp-tree-toggle {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--wf-muted);
+      padding: 0;
+      flex-shrink: 0;
+      border-radius: 3px;
+      font-family: var(--wf-font);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      line-height: 1;
+      transition: background 120ms, color 120ms;
+    }
+    .pp-tree-toggle:hover { background: var(--wf-fill); color: var(--wf-text); }
+    .pp-tree-toggle::before {
+      content: "+";
+      display: inline-block;
+      line-height: 1;
+    }
+    .pp-tree-node[data-expanded="true"] > .pp-tree-row > .pp-tree-toggle::before {
+      content: "−";
+    }
+    .pp-tree-node[data-expanded="true"]:not(:has(> .pp-tree-children > .pp-tree-node[data-expanded])) > .pp-tree-row > .pp-tree-toggle {
+      visibility: hidden;
+    }
+    .pp-tree-toggle--spacer {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .pp-tree-name { font-weight: 500; color: var(--wf-text); }
+    .pp-tree-node--lvl1 > .pp-tree-row > .pp-tree-name { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.005em; }
+    .pp-tree-node--lvl2 > .pp-tree-row > .pp-tree-name { font-size: 0.9375rem; font-weight: 600; }
+    .pp-tree-node--lvl3 > .pp-tree-row > .pp-tree-name { font-size: 0.875rem;  font-weight: 500; color: var(--wf-secondary); }
+    .pp-tree-node--lvl4 > .pp-tree-row > .pp-tree-name { font-size: 0.8125rem; font-weight: 500; color: var(--wf-secondary); }
+
+    .pp-tree-meta {
+      margin-left: auto;
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .pp-tree-hint {
+      font-size: 0.6875rem;
+      color: var(--wf-muted);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .pp-tree-node[data-expanded="true"] > .pp-tree-row > .pp-tree-meta > .pp-tree-hint { display: none; }
+
+    .pp-page-map { margin: 24px auto 0; max-width: 600px; }
+    .pp-page-map__header {
+      padding: 14px 16px;
+      background: var(--wf-bg);
+      border-radius: var(--wf-radius-md);
+      margin-bottom: 12px;
+    }
+    .pp-page-map__title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--wf-accent);
+    }
+    .pp-page-map__goal {
+      color: var(--wf-secondary);
+      font-size: 0.9375rem;
+      margin-top: 4px;
+    }
+    .pp-page-map__tasks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .pp-page-map__header > div:not(.pp-page-map__title) {
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+      margin: 0 0 8px;
+    }
+    .pp-page-map__header > div:not(.pp-page-map__title):last-child { margin-bottom: 0; }
+    .pp-page-map__header > div:not(.pp-page-map__title) > strong {
+      font-weight: 600;
+      color: var(--wf-text);
+    }
+
+    .pp-cell-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: -2px;
+    }
+    .pp-narrative-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #fafafa;
+      border-radius: 3px;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--wf-secondary);
+    }
+    .pp-question {
+      font-style: italic;
+      color: var(--wf-secondary);
+      font-size: 0.8125rem;
+      margin: 0;
+    }
+    .pp-section-card__field {
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+    }
+    .pp-section-card__field-label {
+      font-weight: 600;
+      color: var(--wf-text);
+      margin-right: 4px;
+    }
+    .pp-section-card__field ul,
+    .pp-section-card__content-list {
+      margin: 4px 0 0;
+      padding-left: 18px;
+      list-style: disc;
+    }
+    .pp-section-card__field ul li,
+    .pp-section-card__content-list li { padding: 2px 0; }
+    .pp-sm-switch {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px auto 20px;
+      max-width: 600px;
+    }
+    #pp-page-section-map .pp-header {
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .pp-sm-switch__btn {
+      padding: 6px 14px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      background: #fff;
+      border: 1px solid var(--wf-line);
+      border-radius: 999px;
+      color: var(--wf-text);
+      cursor: pointer;
+      transition: background 120ms, border-color 120ms, color 120ms;
+    }
+    .pp-sm-switch__btn:hover {
+      background: var(--wf-bg);
+      border-color: var(--wf-secondary);
+    }
+    .pp-sm-switch__btn.is-active {
+      background: var(--wf-accent);
+      border-color: var(--wf-accent);
+      color: #fff;
+    }
+    .shell-bottombar__tabs { gap: 4px; }
+
+    .pp-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 24px;
+      margin: 12px 0 24px;
+      padding: 20px 24px;
+      background: var(--wf-bg);
+      border-radius: var(--wf-radius-md);
+    }
+    .pp-summary__stat { text-align: center; }
+    .pp-summary__n {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--wf-accent);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    .pp-summary__label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--wf-muted);
+      margin-top: 6px;
+    }
+
+    .pp-section-index { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 24px; }
+    .pp-section-index .ui-card { padding: 14px 20px 16px; }
+    .ui-card > div:not(.ui-card__meta) {
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+    }
+    .ui-card > div:not(.ui-card__meta) > strong {
+      font-weight: 600;
+      color: var(--wf-text);
+    }
+    .pp-section-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .pp-section-head h4 { margin: 0; }
+    .pp-used-in { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+    .pp-atoms, .pp-variants { margin-top: 6px; }
+    .pp-atoms strong, .pp-variants strong {
+      display: block;
+      color: var(--wf-secondary);
+      font-size: 0.6875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .pp-template-arch {
+      margin-top: 20px;
+      padding: 20px 24px;
+      background: var(--wf-bg);
+      border-radius: var(--wf-radius-md);
+    }
+    .pp-template-arch__head {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .pp-template-arch__title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--wf-accent);
+      margin: 0;
+    }
+    .pp-template-arch__kind {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--wf-muted);
+    }
+    .pp-template-arch__goal { color: var(--wf-secondary); margin-bottom: 14px; font-size: 0.9375rem; }
+
+    .pp-stack-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pp-stack-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      background: #fafafa;
+      border-radius: var(--wf-radius-sm);
+      font-size: 0.9375rem;
+    }
+    .pp-stack-list li .pp-stack-n {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: var(--wf-accent);
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      margin-right: 10px;
+    }
+
+    .pp-pool-subhead {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--wf-muted);
+      margin: 16px 0 6px;
+    }
+    .pp-pool-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .pp-pool-card {
+      background: #fafafa;
+      border-radius: var(--wf-radius-sm);
+      padding: 10px 12px;
+      font-size: 0.9375rem;
+    }
+    .pp-pool-card strong { display: block; margin-bottom: 4px; }
+    .pp-used-by { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .pp-used-by .ui-badge { font-size: 0.6875rem; }
+
+    .pp-atom-palette {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .pp-atom-palette .ui-badge {
+      padding: 6px 12px;
+      font-size: 0.8125rem;
+      background: #fafafa;
+      border: 1px solid var(--wf-line);
+    }
+
+    @media (max-width: 768px) {
+      .shell-bottombar,
+      .shell-leftpanel { display: none !important; }
+      body.shell-leftpanel-open { margin-left: 0 !important; }
+      body { padding-bottom: 0 !important; }
+
+      .pp-main,
+      body.shell-leftpanel-open .pp-main {
+        max-width: min(var(--wf-max-w), calc(100vw - 32px));
+        padding: 16px;
+      }
+
+      .ui-card-grid { max-width: min(1560px, calc(100vw - 32px)); }
+      .ui-card-row--three,
+      .ui-card-row--two { grid-template-columns: 1fr; }
+      .pp-summary { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="shell-leftpanel-open">
+
+<aside aria-hidden="false" class="shell-leftpanel is-open" id="shellLeftpanel" role="dialog">
+  <div class="shell-leftpanel__header" id="shellHeader" style="display:none;">
+    <button class="shell-leftpanel__back" id="shellBack" type="button" data-label-key="back" data-label-prefix="← ">← Back</button>
+    <div class="shell-leftpanel__nav" id="shellNav">
+      <button aria-label="Previous" class="shell-leftpanel__nav-btn" id="shellNavPrev" type="button" data-label-aria-key="nav_prev">‹</button>
+      <span class="shell-leftpanel__nav-counter" id="shellNavCounter">1 of 1</span>
+      <button aria-label="Next" class="shell-leftpanel__nav-btn" id="shellNavNext" type="button" data-label-aria-key="nav_next">›</button>
+    </div>
+  </div>
+  <div class="shell-leftpanel__filter-area" id="shellFilterArea"></div>
+  <div class="shell-leftpanel__scroll" id="shellLeftpanelBody"></div>
+</aside>
+
+<main class="pp-main">
+
+  <section class="pp-page pp-page--active" id="pp-page-context">
+    <header class="pp-header">
+      <h1 data-label-key="pp_context_title">Project context</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_context_subtitle">Discovery: who, what, why</p>
+    </header>
+    <div class="ui-card-grid"></div>
+  </section>
+
+  <section class="pp-page" id="pp-page-strategy">
+    <header class="pp-header">
+      <h1 data-label-key="pp_strategy_title">Strategy</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_strategy_subtitle">Format, archetype, sitemap, messaging, voice</p>
+    </header>
+    <div class="ui-card-grid"></div>
+  </section>
+
+  <section class="pp-page" id="pp-page-section-map">
+    <header class="pp-header">
+      <h1 data-label-key="pp_section_map_title">Section map</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_section_map_subtitle">Section map per page, including the virtual Global page</p>
+    </header>
+    <div class="pp-sm-switch" id="sectionMapPageSwitch" role="tablist"></div>
+    <div class="ui-card-grid"></div>
+  </section>
+
+  <section class="pp-page" id="pp-page-inventory">
+    <header class="pp-header">
+      <h1 data-label-key="pp_inventory_title">Template inventory</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_inventory_subtitle">Templates, sections, reuse map</p>
+    </header>
+    <div class="ui-card-grid"></div>
+  </section>
+
+</main>
+
+<div class="shell-bottombar" id="shellBottombar">
+  <div class="shell-bottombar__group">
+    <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button">
+      <span data-label-key="bar_panel">Rationale</span>
+      <span class="shell-bottombar__chevron">◧</span>
+    </button>
+  </div>
+  <div class="shell-bottombar__group shell-bottombar__tabs" id="shellPageTabs" role="tablist">
+    <label style="color:#666;" data-label-key="bar_change_view">Change view:</label>
+    <button class="shell-bottombar__btn" data-page="context" type="button" role="tab">
+      <span data-label-key="bar_page_context">Project context</span>
+    </button>
+    <button class="shell-bottombar__btn" data-page="strategy" type="button" role="tab">
+      <span data-label-key="bar_page_strategy">Strategy</span>
+    </button>
+    <button class="shell-bottombar__btn" data-page="section-map" type="button" role="tab">
+      <span data-label-key="bar_page_section_map">Section map</span>
+    </button>
+    <button class="shell-bottombar__btn" data-page="inventory" type="button" role="tab">
+      <span data-label-key="bar_page_inventory">Template inventory</span>
+    </button>
+  </div>
+  <div class="shell-bottombar__spacer"></div>
+  <div class="shell-bottombar__group" id="shellDownloadGroup">
+    <label style="color:#666;" data-label-key="bar_download">Download:</label>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadHtml" title="Download the full Project Plan as HTML" data-label-title-key="bar_download_html_title" type="button">
+      <span data-label-key="bar_download_html">Project Plan HTML</span>
+    </button>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadContextMd" title="Download Project context as Markdown" data-label-title-key="bar_download_context_md_title" type="button">
+      <span data-label-key="bar_download_context_md">Project Context MD</span>
+    </button>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadStrategyMd" title="Download Strategy as Markdown" data-label-title-key="bar_download_strategy_md_title" type="button">
+      <span data-label-key="bar_download_strategy_md">Strategy MD</span>
+    </button>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadSectionMapMd" title="Download Section map as Markdown" data-label-title-key="bar_download_section_map_md_title" type="button">
+      <span data-label-key="bar_download_section_map_md">Section Map MD</span>
+    </button>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadInventoryMd" title="Download Template inventory as Markdown" data-label-title-key="bar_download_inventory_md_title" type="button">
+      <span data-label-key="bar_download_inventory_md">Template Inventory MD</span>
+    </button>
+  </div>
+</div>
+
+<script type="application/json" id="context-data">
+{
+  "namespace": "ux-designer-project-plan-uxd-product-website-v3-2026-04-26",
+  "labels": {},
+  "canvas": {
+    "rows": [
+      {
+        "type": "cards",
+        "title": "Universal",
+        "variant": "three",
+        "card_ids": [
+          "context-id-overview",
+          "context-id-goal",
+          "context-id-audience",
+          "context-id-alternative",
+          "context-id-top-tasks",
+          "context-id-scope",
+          "context-id-voice"
+        ]
+      },
+      {
+        "type": "cards",
+        "title": "For this project",
+        "variant": "three",
+        "card_ids": [
+          "context-id-sales-motion",
+          "context-id-pricing-tier",
+          "context-id-conversion-path"
+        ]
+      }
+    ]
+  },
+  "items": [
+    {
+      "id": "context-id-overview",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Business overview",
+      "layout": "simple-meta",
+      "kv": [
+        {
+          "label": "Name",
+          "value": "UX Design Skill, product website v3. A planning tool for site structure and copy."
+        },
+        {
+          "label": "Description",
+          "value": "A planning tool for site structure and copy with UX expertise built in. It helps you decide what belongs on the page and why, plus what to write and how to order it, at the stage before Figma and before any site generator."
+        },
+        {
+          "label": "Business model",
+          "value": "One-time license, pay once and own forever, in three tiers (Solo / Studio / Agency). Pre-sale runs at lower prices; after that, global launch at higher prices. Twelve months of updates included with each tier."
+        }
+      ]
+    },
+    {
+      "id": "context-id-goal",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Strategic goal",
+      "layout": "simple-meta",
+      "kv": [
+        {
+          "label": "Primary goal",
+          "value": "Sell licenses during the pre-sale window, plus build a lead pipeline through the free site audit and the NGO edition."
+        },
+        {
+          "label": "Success metric",
+          "value": "Number of licenses sold during the pre-sale (target value to be set by the owner). Secondary metric: number of free audits started, as a pre-conversion signal."
+        }
+      ],
+      "rationale": "Sales goal takes priority over category building. The skill already exists, the pay-once model needs a pre-sale as the main monetization moment, and prices rise after that with the global launch. Lead-gen through the audit is subordinated to this goal, not a goal in itself.",
+      "alternatives": "Lead-gen as the primary goal (rejected: pay-once means we need revenue now, not a list); category-building campaign (rejected: the skill exists, no need to invent a market when one decision drives the quarter)."
+    },
+    {
+      "id": "context-id-audience",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Target audience",
+      "layout": "simple-meta",
+      "meta_pills": [
+        "Awareness: problem-aware (primary), unaware (category education layer)"
+      ],
+      "kv": [
+        {
+          "label": "Primary persona: Designer",
+          "value": "Freelance or small studio (2 to 8 people), 3 to 15 years of experience, designs websites for clients, where every structural decision goes back to a client or peer for review. Primary trigger: a client comes back with conversion data after launch and asks why the site isn't converting. Buying decision is made solo, or with light backing from the studio owner."
+        },
+        {
+          "label": "Secondary persona: Digital creator",
+          "value": "Vibe coder, indie hacker, course author, founder building their own site with AI. Builds solo with generators (Bolt, v0, Lovable), and the site ends up looking like every other patchwork of default sections. Primary trigger: the product isn't selling and they lack the diagnostic tools to pinpoint what to change. Decides solo, short path."
+        },
+        {
+          "label": "Third persona: Conversion-focused founder",
+          "value": "E-commerce or SaaS owner running paid traffic to a site that doesn't convert. Treats the site like an ad channel that must pay back ROAS. Primary trigger: campaign data shows a weak conversion rate, or an investor conditions the next round on site quality. The decision often needs internal justification (co-founder, CTO)."
+        },
+        {
+          "label": "Anti-persona",
+          "value": "Enterprise with a 20-plus team, in-house UX research, and a budget for name-brand consultants. They need direct sales, contracts, customization. Self-serve won't close them."
+        }
+      ],
+      "rationale": "Persona priority (Designer, then Digital creator, then Founder) confirmed by the project owner. Designer has the cleanest and most repeatable purchase trigger in simulated interviews, the highest willingness to pay (the planning stage is billable to the client), and the shortest decision path. Digital creator and Founder are candidates for primary persona at the English launch.",
+      "alternatives": "Conversion-focused founder as primary (stronger trigger measured in dollars, but a longer decision path with internal blockers, and the segment is globally larger than the local designer market, so we reserve it for the English version). Digital creator as primary (most traffic in that group is English-speaking, the local vibe-coder segment is narrow)."
+    },
+    {
+      "id": "context-id-alternative",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Alternatives",
+      "layout": "simple-meta",
+      "bullets": [
+        "Status quo (I figure it out myself, no process): intuition straight from the brief into Figma, audits by gut feel with no criteria, pen and paper. This cluster shows up across all three personas as a universal baseline.",
+        "Internal DIY (I cobble it together): ChatGPT or Claude used ad hoc, prompt collections for UX, Figma Community UI kits, WordPress or Shopify themes, site generators (Bolt, v0, Lovable, Cursor) with default structures accepted as-is.",
+        "General-purpose tools: Figma, FigJam, Miro, design tools without a structural layer. The skill owns the stage before the first frame, it doesn't compete with Figma, it feeds Figma context.",
+        "Direct competition: freelance UX, consultant, agency, design sprint (recognized but rejected because of the $500 to $8000 cost and the multi-day timeline). Courses (Udemy, Interaction Design Foundation, NN/g, Baymard, Smashing Magazine) and peer feedback from fellow designers or in communities (Discord, IndieHackers)."
+      ],
+      "rationale": "Four clusters cover every alternative named in the simulated interviews with the three personas, described from the buyer's behavior (inside-out) rather than from the product offer. Every alternative named in the brief (chatbots, prompts, templates, consultants) lands in one of the four clusters.",
+      "alternatives": "Google Analytics, Hotjar, Mixpanel as a separate cluster (rejected, these are diagnostic tools at an earlier stage, not an alternative for producing UX documentation). 'I skip UX entirely, ship straight to dev' as a separate cluster (rejected, fits inside cluster 1 already as no-process)."
+    },
+    {
+      "id": "context-id-top-tasks",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Visitor tasks",
+      "layout": "ranked-list",
+      "ranked": [
+        {
+          "text": "Figure out if the skill is for me (Designer / Digital creator / Conversion-focused founder)",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Run a free audit on my own site",
+          "priority": "Recommended"
+        },
+        {
+          "text": "See real example files from the process",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Understand how the process works (six connected stages)",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Compare tiers and pricing",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Check what installation looks like before I buy",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Pick a tier and complete the purchase",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Download the skill files after purchase",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Apply for the NGO edition",
+          "priority": "Consider"
+        }
+      ]
+    },
+    {
+      "id": "context-id-scope",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Functional scope",
+      "layout": "scope-split",
+      "scope_split": {
+        "included": [
+          "Home page in long-form sales page format",
+          "Two supporting subpages: Knowledge base, How it works",
+          "License purchase in three tiers with pre-sale and regular pricing",
+          "Download the skill files after purchase (plug-in style distribution)",
+          "Free site audit (Reverse Wireframing + Review + change proposals) as a pre-conversion lever",
+          "NGO edition: free license in exchange for a public case study",
+          "Sample artifacts preview (gallery of files from this site's own build)",
+          "CTA hierarchy: purchase (primary), audit (secondary), NGO (tertiary)"
+        ],
+        "excluded": [
+          "Localized versions beyond English (require re-authoring, not translation)",
+          "Blog as a standalone content marketing surface (sample artifacts cover that role)",
+          "Persona-specific pages per Designer / Creator / Founder",
+          "Comparison pages (vs Figma, Bolt, ChatGPT)",
+          "Deep workflow documentation (separate subpages per stage)",
+          "About / history / team",
+          "Visual design (color, typography, pixel layout): hard boundary",
+          "Front-end implementation of the site",
+          "In-product onboarding, dashboard, auth flow (no SaaS backend)",
+          "Live interactive AI demo on the page (API cost, abuse risk, 'canned demo' feel)",
+          "Hosted audit web app (revisit if pre-sale shows high drop-off)",
+          "Quick Mode (3-question speedrun): the audit already serves as the fast lane",
+          "Backend subscription enforcement (contradicts pay-once)"
+        ]
+      }
+    },
+    {
+      "id": "context-id-voice",
+      "group": "universal",
+      "confidence": "high",
+      "title": "Brand voice",
+      "layout": "simple-meta",
+      "kv": [
+        {
+          "label": "Three personality attributes",
+          "value": "Analytical: explains why, cites evidence, patterns, and numbers from research, no hedging, surfaces uncertainty directly. Collaborative: treats the reader as the decision-maker, presents options with trade-offs, doesn't lecture or assign motives. Direct: 'do this' or 'don't do this' with a reason, no preambles, no statements of intent."
+        },
+        {
+          "label": "Preferred words",
+          "value": "'the skill', 'files', 'site plan', 'sitemap', 'rationale next to each decision', 'work stage', 'checkpoint', 'audience'"
+        },
+        {
+          "label": "Banned words",
+          "value": "'agent' (1 of 16 acceptance in interviews), 'AI-powered', 'cutting-edge', 'innovative', 'dynamically', 'comprehensive', em dashes, rhetorical triads, 'it's not X, it's Y' framings, forced enthusiasm"
+        },
+        {
+          "label": "Tone across contexts",
+          "value": "Hero and sales sections: direct, confident. Educational layer: analytical, patient. Process evidence: facts without self-promotion. FAQ: collaborative, empathetic. Pricing and tiers: transactional, concrete. Installation: instructional, step-by-step."
+        }
+      ]
+    },
+    {
+      "id": "context-id-sales-motion",
+      "group": "project-specific",
+      "confidence": "high",
+      "title": "Sales motion",
+      "layout": "simple-meta",
+      "kv": [
+        {
+          "label": "Mode",
+          "value": "Hybrid. Self-serve (purchase from the page, short path) plus sales-led through the freemium audit as a case-study pipeline from agencies."
+        },
+        {
+          "label": "Decision pace",
+          "value": "Fast. Designer and Digital creator decide solo within their own budget (Solo and Studio tiers fit a personal call). The Conversion-focused founder may need a co-founder or a small committee (the CTO can be a blocker)."
+        },
+        {
+          "label": "Buying committee",
+          "value": "None. The pre-sale tiers fit a freelancer's solo budget or a small studio owner's discretionary call."
+        },
+        {
+          "label": "Proof strategy",
+          "value": "Radical transparency. The site is its own case study. With no real customers in pre-sale, every process artifact (Project Plan, Communication Foundations, Messaging Draft, wireframes) is published as proof of the skill's output."
+        }
+      ],
+      "rationale": "Hybrid sales motion reconciles two things. Pay-once needs a fast self-serve path for the short-cycle personas (Designer, Creator), while the Conversion-focused founder and agencies need proof of value, which the freemium audit delivers without forcing a classic product demo.",
+      "alternatives": "Pure self-serve without the audit (rejected: no case studies during pre-sale means no proof for the Founder on a real site). Pure sales-led with demo (rejected: contradicts pay-once and is unnecessary for short-cycle personas)."
+    },
+    {
+      "id": "context-id-pricing-tier",
+      "group": "project-specific",
+      "confidence": "high",
+      "title": "Tiers and pricing",
+      "layout": "simple-meta",
+      "kv": [
+        {
+          "label": "Solo",
+          "value": "Pre-sale price (lower tier, single-seat)"
+        },
+        {
+          "label": "Studio",
+          "value": "Pre-sale price (mid tier, small studio)"
+        },
+        {
+          "label": "Agency",
+          "value": "Pre-sale price (top tier, larger team, no user cap)"
+        },
+        {
+          "label": "Updates",
+          "value": "Twelve months included with every tier"
+        },
+        {
+          "label": "Urgency",
+          "value": "Pre-sale runs now, before the global launch raises prices. This is the only urgency frame on the site. No 'notify me at launch' signup, because buyers can already lock in the lower price today."
+        }
+      ]
+    },
+    {
+      "id": "context-id-conversion-path",
+      "group": "project-specific",
+      "confidence": "high",
+      "title": "Primary conversion path",
+      "layout": "simple-meta",
+      "kv": [
+        {
+          "label": "Primary CTA",
+          "value": "Pick a tier and complete checkout during the pre-sale window."
+        },
+        {
+          "label": "Secondary CTA",
+          "value": "Run the free audit on your own site. Works as a value demo of the skill on a real site the buyer cares about. Paid ads land here directly."
+        },
+        {
+          "label": "Tertiary CTA",
+          "value": "Apply for the NGO edition. Pipeline of case studies for the global launch."
+        },
+        {
+          "label": "No free trial",
+          "value": "No free trial or freemium on the skill itself (contradicts pay-once). The audit serves as the fast value demo, and sample artifacts serve as passive proof."
+        }
+      ],
+      "rationale": "The three-CTA hierarchy follows from: (1) monetization model. License sales are the goal, so purchase gets visual and positional priority. (2) Audit as paid-traffic landing page, where a value demo on the buyer's real site converts harder than a generic product demo. (3) NGO edition as case-study source, which is otherwise missing in pre-sale.",
+      "alternatives": "Audit as the primary CTA on home (rejected: pulls visibility from the purchase CTA, even though paid traffic still lands on its own audit subpage). Newsletter / launch signup (rejected outright by the owner: pre-sale is happening now, signing up for an alert would cannibalize sales)."
+    }
+  ],
+  "messaging_routing": "sufficient-skipped"
+}
+</script>
+
+<script type="application/json" id="strategy-data">
+{
+  "labels": {},
+  "site_format": {
+    "value": "landing + subpages",
+    "confidence": "high"
+  },
+  "archetype": {
+    "value": "Authority-Led (proof-first)",
+    "confidence": "high"
+  },
+  "main_menu_meta": {
+    "rationale": "Minimal menu. Logo to home, two anchors on home (Pricing, Audit) absorb the main CTAs without forcing navigation to subpages, two subpages (Knowledge base, How it works) for depth, primary CTA 'See pricing' as the far-right call to action. A skeptical Designer should find both proof (Knowledge base) and pricing in one click.",
+    "alternatives": "Expanded menu linking to every home section (rejected: duplicates the scroll). Hamburger on desktop (rejected: four items fit in the bar, hamburger adds friction). 'Resources' dropdown (rejected: only two resources, grouping adds no value)."
+  },
+  "main_menu": [
+    { "id": "menu-logo", "name": "Logo (→ Home)", "children": [] },
+    { "id": "menu-pricing", "name": "Pricing (#pricing)", "children": [] },
+    { "id": "menu-audit", "name": "Audit (#audit)", "children": [] },
+    { "id": "menu-knowledge-base", "name": "Knowledge base (/knowledge-base)", "children": [] },
+    { "id": "menu-how-it-works", "name": "How it works (/how-it-works)", "children": [] },
+    { "id": "menu-cta", "name": "See pricing (CTA)", "children": [] }
+  ],
+  "sitemap_meta": {
+    "rationale": "Flat hierarchy: Home plus two subpages. All three main CTAs (purchase, audit, NGO) are reachable in one click. Top tasks (persona qualification, file inspection, tier comparison, installation) all live on home as sections or direct links into the subpages.",
+    "alternatives": "Deeper hierarchy with separate /pricing, /audit, /methodology subpages (rejected: unnecessary for this scope, adds friction to purchase without content gain)."
+  },
+  "sitemap": [
+    {
+      "id": "page-home",
+      "name": "Home",
+      "children": [
+        { "id": "page-knowledge-base", "name": "Knowledge base", "children": [] },
+        { "id": "page-how-it-works", "name": "How it works", "children": [] }
+      ]
+    }
+  ],
+  "footer_meta": {
+    "rationale": "Minimal footer. Three columns: Product (links to the main home sections plus both subpages), Company (contact), Legal (privacy policy, terms). No newsletter signup, per the pre-sale decision. Final purchase CTA lives in the 'Final CTA' section above the footer, not in the footer itself.",
+    "alternatives": "Fat footer with newsletter signup (rejected: would compete with purchase during pre-sale). Footer with social links (rejected for this scope, add once there are active marketing channels)."
+  },
+  "footer": [
+    {
+      "id": "footer-product",
+      "name": "Product",
+      "children": [
+        { "id": "footer-pricing", "name": "Pricing", "children": [] },
+        { "id": "footer-audit", "name": "Free audit", "children": [] },
+        { "id": "footer-knowledge-base", "name": "Knowledge base", "children": [] },
+        { "id": "footer-how-it-works", "name": "How it works", "children": [] }
+      ]
+    },
+    {
+      "id": "footer-company",
+      "name": "Company",
+      "children": [
+        { "id": "footer-contact", "name": "Contact", "children": [] }
+      ]
+    },
+    {
+      "id": "footer-legal",
+      "name": "Legal",
+      "children": [
+        { "id": "footer-privacy", "name": "Privacy policy", "children": [] },
+        { "id": "footer-terms", "name": "Terms", "children": [] }
+      ]
+    }
+  ],
+  "items": [
+    {
+      "id": "strategy-id-site-format",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Site format",
+      "name": "Site format",
+      "layout": "simple-meta",
+      "lead": "Landing + subpages",
+      "body": "Home as a long-form sales page (primary CTA = purchase), plus two supporting subpages: Knowledge base and How it works.",
+      "rationale": "The goal is pre-sale revenue, so the hero with the main CTA has to live on home. Audit lives as a `#audit` anchor, pricing as a section, installation as a short summary linking out to /how-it-works. Subpages carry the depth (expertise inventory, full workflow runbook) that doesn't belong in a sales page.",
+      "alternatives": "One-pager without subpages (rejected: /how-it-works needs depth that doesn't fit a sales-page rhythm). Multi-page split (rejected: dilutes the purchase CTA)."
+    },
+    {
+      "id": "strategy-id-archetype",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Archetype",
+      "name": "Archetype",
+      "layout": "simple-meta",
+      "lead": "Authority-Led (proof-first)",
+      "body": "The proof, a clickable gallery of process files, opens the narrative right after the hero, before the reader has read any value claim. The pillars then read as interpretation of what you've already seen.",
+      "rationale": "Designer is a skeptical analyst. Immediate proof ('this site is its own case study') hooks harder than pain empathy or a plain product demo. Radical transparency fits Authority-Led perfectly. Pillar P1 from the messaging canvas ('a plan with rationale next to each decision') is meta-consistent: the site proves P1 with its own structure, not just by talking about it.",
+      "alternatives": "Problem-Led (hero + problem statement + audience qualifier up front, rejected: Designers arrive problem-aware in 80% of cases, so a problem statement risks redundancy). Outcome-Led (hero + 6 expected outcomes up front, rejected: outcomes without a mechanism risk sounding generic, would need very concrete anchoring in real files)."
+    },
+    {
+      "id": "strategy-id-messaging-hierarchy",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Messaging hierarchy",
+      "name": "Messaging hierarchy",
+      "layout": "ranked-list",
+      "lead": "A site plan with rationale next to every decision, before you open Figma or kick off vibe coding. UX expertise built in, the decision stays with you.",
+      "ranked": [
+        { "text": "P1: A site plan with rationale next to every decision" },
+        { "text": "P2: Files ready for you and your client" },
+        { "text": "P3: UX expertise built in, the decision is yours" }
+      ],
+      "rationale": "Hierarchy is taken directly from the approved messaging canvas. The pillars are ordered trigger → mechanism → control: first 'there's a plan' (P1), then 'the files keep working downstream' (P2), then 'you stay in control' (P3). That covers the Designer's most common questions in that order.",
+      "alternatives": "Different ordering (P3 → P1 → P2 as 'expertise first, then mechanism, then distribution') (rejected: the canvas hierarchy was already tested in messaging and works under the proof-first archetype)."
+    },
+    {
+      "id": "strategy-id-voice-brief",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Voice brief",
+      "name": "Voice brief",
+      "layout": "chip-list",
+      "lead": "Analytical, collaborative, direct. Explains why, shows options with trade-offs, says 'do this' or 'don't do this' with a reason.",
+      "chips": [
+        "Analytical",
+        "Collaborative",
+        "Direct",
+        "No hedging",
+        "Reader is the decision-maker"
+      ],
+      "rationale": "Three personality attributes plus two tone modifiers ported straight from the canvas. Preferred words ('the skill', 'files', 'site plan', 'rationale next to each decision') and banned words ('agent', 'AI-powered', 'cutting-edge', em dashes, 'it's not X, it's Y' framings) discipline microcopy across every section.",
+      "alternatives": "Warmer 'mentor / coach' tone (rejected: reads as an authoritative partner, which Designers reject, 1 of 16 acceptance in interviews). Cool corporate tone (rejected: contradicts 'collaborative')."
+    },
+    {
+      "id": "strategy-id-ia-decision-home-format",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Home as a long-form sales page",
+      "element": "Home page",
+      "decision_status": "confirmed",
+      "rationale": "Goal is pre-sale revenue, so the main CTA has to live on home, not get scattered across navigation. A long-form sales page carries the narrative from hero through proof, pillars, comparison, pricing, audit, installation, FAQ, to the final CTA.",
+      "alternatives": "One-pager without subpages (rejected: audit needs its own surface, and Knowledge base + How it works need depth). Multi-page split (rejected: dilutes the purchase CTA)."
+    },
+    {
+      "id": "strategy-id-ia-decision-audit-anchor",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Audit as a `#audit` anchor section on home",
+      "element": "Free audit",
+      "decision_status": "confirmed",
+      "rationale": "Audit is a secondary CTA already in the hero and the second pre-conversion pillar. Ads can link to `#audit` on home, so visitors land on the section that closes the flow. Less surface to maintain, narrative stays coherent.",
+      "alternatives": "Dedicated /audit subpage as a paid-traffic landing (rejected in this pass, but worth revisiting if post-launch data shows the long scroll is killing ad conversion)."
+    },
+    {
+      "id": "strategy-id-ia-decision-pricing-strip",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Pricing as a section on home, no separate subpage",
+      "element": "Tiers and pricing",
+      "decision_status": "confirmed",
+      "rationale": "Three tiers (Solo / Studio / Agency) fit a pricing strip on home. Per-tier 'who it's for' segments the buyer without forcing a full comparison table. Buying redirects to checkout, so no separate surface needed.",
+      "alternatives": "Dedicated /pricing subpage with a full comparison table (rejected: the home section is enough, less friction toward purchase)."
+    },
+    {
+      "id": "strategy-id-ia-decision-knowledge-subpage",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Subpage /knowledge-base instead of /methodology or /ux-expertise",
+      "element": "Expertise inventory subpage",
+      "decision_status": "confirmed",
+      "rationale": "Designer is a skeptical analyst. Transparency ('I'll show you exactly what's in here') works harder than the promise ('we're experts'). The name 'Knowledge base' fits the radical-transparency strategy. It describes the actual contents (16 page types, 13 UX frameworks, 50+ patterns, sources).",
+      "alternatives": "UX Expertise (mirror of pillar P3, rejected: sounds marketing-y to a skeptic). Methodology / Process (rejected: process lives in the 'How it works' section on home)."
+    },
+    {
+      "id": "strategy-id-ia-decision-work-guide-subpage",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "/how-it-works as a broader user guide, not just install",
+      "element": "User-guide subpage",
+      "decision_status": "confirmed",
+      "rationale": "Install is one element. The full subpage also covers the first project, workflow navigation, working with the files. Pre-purchase: removes the 'will I figure this out?' fear. Post-purchase: reference document.",
+      "alternatives": "/install only, narrowly about installation (rejected: post-purchase users also need orientation in the workflow and files). Section on home instead of a subpage (rejected: per-platform install plus troubleshooting needs depth)."
+    },
+    {
+      "id": "strategy-id-ia-decision-merged-proof",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Merge 'Social proof' with 'File gallery' into one section",
+      "element": "Proof-by-transparency section",
+      "decision_status": "confirmed",
+      "rationale": "The claim 'this site is its own case study' should be clickable in the same section where the claim appears. In a proof-first archetype, tell + show works harder together. The split version left the claim hanging through 3 pillar sections with sealing proof arriving too late.",
+      "alternatives": "Split version like the copy doc (claim in prose early + 4 cards later, rejected: worked under a different rhythm of claim → pillar context → sealing proof, but in proof-first the context arrives the other way around)."
+    },
+    {
+      "id": "strategy-id-ia-decision-no-newsletter",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "No 'notify me at launch' signup",
+      "element": "Footer lead capture",
+      "decision_status": "confirmed",
+      "rationale": "Pre-sale is happening now, prices rise at the global launch. A 'notify me' signup would compete with sales. Whoever wants to buy should buy at the lower price now, not register for an alert.",
+      "alternatives": "Footer newsletter signup (rejected outright by the owner). General newsletter (updates, content marketing, rejected for this scope, blog/content marketing is out of scope)."
+    }
+  ],
+  "canvas": {
+    "rows": [
+      { "type": "cards", "title": "Format and archetype", "variant": "two", "card_ids": ["strategy-id-site-format", "strategy-id-archetype"] },
+      { "type": "cards", "title": "Messaging and voice", "variant": "two", "card_ids": ["strategy-id-messaging-hierarchy", "strategy-id-voice-brief"] },
+      { "type": "heading", "title": "Site structure" },
+      { "type": "tree", "kind": "main-menu", "title": "Main menu", "nodes_ref": "main_menu" },
+      { "type": "tree", "kind": "sitemap", "title": "Sitemap", "nodes_ref": "sitemap" },
+      { "type": "tree", "kind": "footer", "title": "Footer", "nodes_ref": "footer" }
+    ]
+  }
+}
+</script>
+
+<script type="application/json" id="section-map-data">
+{
+  "labels": {},
+  "page_sections": [
+    {
+      "page_id": "page-home",
+      "name": "Home",
+      "goal": "Sell licenses during pre-sale. Offer the free audit as pre-conversion alternative.",
+      "top_tasks_served": [
+        "Figure out if the skill is for me",
+        "Run a free audit on my own site",
+        "See real example files from the process",
+        "Understand how the process works",
+        "Compare tiers and pricing",
+        "Check what installation looks like before I buy",
+        "Pick a tier and complete the purchase"
+      ]
+    },
+    {
+      "page_id": "page-knowledge-base",
+      "name": "Knowledge base",
+      "goal": "Show the depth of expertise built into the skill: 16 page types with dedicated reference packs, 13 UX frameworks, 50+ patterns, source list (NN/g, Baymard, Smashing, Interaction Design Foundation). Function: proof for pillar P3 for the skeptical Designer, plus SEO surface.",
+      "top_tasks_served": []
+    },
+    {
+      "page_id": "page-how-it-works",
+      "name": "How it works",
+      "goal": "Full user guide: install per platform (Claude Code, Cursor, ChatGPT, Claude Projects), first project, workflow navigation, working with files and their integration into Figma/Cursor/Claude. Pre-purchase function: remove the 'will I figure this out?' fear. Post-purchase function: reference document.",
+      "top_tasks_served": [
+        "Check what installation looks like before I buy",
+        "Download the skill files after purchase"
+      ]
+    },
+    {
+      "page_id": "global",
+      "name": "Global: navigation and footer",
+      "goal": "Provide consistent navigation and footer across every subpage.",
+      "top_tasks_served": []
+    }
+  ],
+  "canvas": {
+    "rows": [
+      { "type": "page-map", "page_id": "page-home" },
+      { "type": "page-map", "page_id": "page-knowledge-base" },
+      { "type": "page-map", "page_id": "page-how-it-works" },
+      { "type": "page-map", "page_id": "global" }
+    ]
+  },
+  "items": [
+    {
+      "id": "section-map-id-home-hero",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Hero",
+      "name": "Hero",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "hook",
+      "goal": "Grab attention and name the moment the reader is in (before Figma, before any site generator). Time anchor plus a three-pillar promise.",
+      "question": "Is this for me, and is this my moment?",
+      "content_description": "Headline with an action verb ('Plan the structure and copy of your site, before you open Figma or kick off vibe coding, no UX expert required'). Subhead with the three promises (plan with rationale, files ready to use, UX expertise built in, decision stays with the reader). Primary CTA to pricing. Secondary CTA to the free audit (anchor `#audit`). Visual cue: a project folder screenshot showing HTML+MD files side by side.",
+      "content_status": "content-ready",
+      "rationale": "Hero anchors in the Designer's working moment ('before Figma, before vibe coding') instead of in a category name. The reader recognizes the moment, not a shelf label. Primary CTA leads to pricing. Secondary gives skeptics a real test without forcing a decision. Headline reflects the recommended canvas (16 words, within the 25-word limit).",
+      "alternatives": "Hero with a product category ('AI tool for planning site structure', rejected: the 'AI UX' category doesn't exist in the buyer's head, the time anchor works harder). Hero with persona pain as the opener (rejected in archetype A in favor of proof-first)."
+    },
+    {
+      "id": "section-map-id-home-pliki-z-procesu",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Files from the process: see for yourself",
+      "name": "Files from the process: see for yourself",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Show immediately after the hero that this site is its own case study, with clickable proof through four process artifacts.",
+      "question": "Show me the proof, not testimonials, real output.",
+      "content_description": "Lead copy: 'The site you're on is itself an example of working with this skill. The whole build process is public, click and see.' Four link cards, each with a one-sentence description: Project Plan (context, strategy, template inventory). Communication Foundations (ICP, category, alternatives, pillars). Key Messaging Draft (hero, value props, FAQ, CTA). Wireframes (sketches with real copy + before/after audit mockup). Each card opens the file in a new tab.",
+      "content_status": "content-ready",
+      "rationale": "Proof-first archetype demands proof in the second section, before the reader sees any claim. Merging 'Social proof' (prose claim) and 'File gallery' (4 cards) into one section removes redundancy. The 'this site is its own case study' claim becomes clickable in the same beat.",
+      "alternatives": "Split version: Social proof in prose early + File gallery later (as in the copy doc, rejected: the claim hung through 3 pillar sections before the reader got sealing proof, and proof-first 'tell + show' together works harder)."
+    },
+    {
+      "id": "section-map-id-home-filary",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Value propositions: 3 pillars",
+      "name": "3 pillars",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Unfold the three canvas pillars (plan with rationale, ready-to-use files, UX expertise built in) as an interpretation of what the reader already saw in the process files.",
+      "question": "What exactly do I get, and how does it work?",
+      "content_description": "Three blocks in order P1 → P2 → P3. Each one: pillar name, mechanism paragraph from the copy, proof hypothesis linked to a concrete artifact (P1 → sample file gallery, P2 → sample artifacts, P3 → /knowledge-base). Every pillar anchors its claim in a visible, clickable artifact.",
+      "content_status": "content-ready",
+      "rationale": "Pillars ordered trigger → mechanism → control: first 'there's a plan' (P1), then 'files keep working downstream' (P2), then 'you stay in control' (P3). Covers the Designer's most common questions in that order. Proof hypotheses (instead of testimonials) keep the brand voice honest during a pre-sale with no customers yet.",
+      "alternatives": "Different pillar order (rejected: the approved canvas hierarchy already tested in messaging). Pillars without proof hypotheses (rejected: every claim needs a linked artifact per the radical-transparency strategy)."
+    },
+    {
+      "id": "section-map-id-home-jak-to-dziala",
+      "scope": "section",
+      "confidence": "high",
+      "title": "How it works (4 steps)",
+      "name": "How it works",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Show the user's operational path through the skill in four steps, second person. The Designer sees themselves in the loop, not an observer watching an AI.",
+      "question": "What does the work look like from my side?",
+      "content_description": "Four steps in second person: (1) Tell the skill what you're building. (2) Pick a site format and archetype. (3) Lock in positioning and copy. (4) Generate wireframes with real copy. Each step uses an action verb + consequence + output sketch, no internal skill terminology (Discovery, Strategy, etc.).",
+      "content_status": "content-ready",
+      "rationale": "Four steps instead of six workflow stages. Describes the user's path, not internal architecture. Each step starts with an action verb in second person, so the Designer sees themselves in the loop rather than an observer watching an AI.",
+      "alternatives": "Six stages from internal architecture (Discovery, Strategy, Inventory, Wireframing, Review, Messaging, rejected: that's the tool's perspective, not the user's). Three steps (rejected: drops visibility of the messaging stage (P1) as a separate beat)."
+    },
+    {
+      "id": "section-map-id-home-dlaczego-my",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Why us / Comparison",
+      "name": "Why us",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "tension",
+      "goal": "Contrast the skill with the Designer's existing tools (Figma) and AI generators (Bolt/v0). Show it doesn't replace them, it owns a stage nobody else covers.",
+      "question": "Won't this replace the tools I'm already using?",
+      "content_description": "Lead: 'Without a planning layer you're left with a patchwork of intuition, a template, and one-off prompts. The client asks why, and you have nothing to answer with.' Two parallel cards: 'Your design tool stays' (Figma, FigJam, Miro, the skill owns the stage before the first frame, feeds Figma a ready-made brief). 'Your AI generator stays' (Bolt, v0, Lovable, Cursor, the skill feeds the generator a plan and copy in markdown as context).",
+      "content_status": "content-ready",
+      "rationale": "Section addresses the two biggest competitive worries from research: 'will this replace Figma?' and 'I already have Bolt/Cursor.' Parallel cards instead of a table. The category positioning 'owns a stage nobody else covers' from the canvas closes the tension.",
+      "alternatives": "Full comparison table vs ChatGPT, Figma, consultant (rejected: narrows the audience to the segment already considering a consultant, parallel cards target the natural 'will it replace' worry). Move the section earlier (before pillars, rejected: tension before evidence pillar would hurt the proof-first rhythm)."
+    },
+    {
+      "id": "section-map-id-home-pakiety",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Pricing (3-tier strip)",
+      "name": "Pricing",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Show three tiers with pre-sale and regular pricing side by side. Segment the buyer without forcing a full comparison table. Price contrast drives urgency.",
+      "question": "How much does it cost, which tier is for me?",
+      "content_description": "Three cards: Solo (pre-sale / regular, freelancer designing client sites), Studio (pre-sale / regular, small studios up to 5 people), Agency (pre-sale / regular, larger team with no user cap). Each card has 'who it's for' and a CTA to checkout. The pre-sale price contrasts with regular, time pressure is already there. Twelve months of free updates included.",
+      "content_status": "content-ready",
+      "rationale": "Pricing strip on home instead of a separate subpage, decision confirmed by the owner. Per-tier 'who it's for' segments the buyer without forcing a comparison table. Price contrast (pre-sale vs regular) drives urgency without forcing an urgency bar.",
+      "alternatives": "Dedicated Pricing subpage with a full comparison table (rejected in discovery, home section is enough). Single-tier pricing (rejected, the model needs segmentation). Pricing without regular prices shown (rejected, the contrast is the urgency mechanism)."
+    },
+    {
+      "id": "section-map-id-home-audyt",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Free audit (#audit)",
+      "name": "Free audit",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Offer 'test on yourself before you buy' as a secondary CTA and a landing anchor for paid traffic. Absorb ad traffic through `#audit`.",
+      "question": "Can I try this before I buy?",
+      "content_description": "Lead: 'Test on yourself before you buy.' Description of the free audit package: Reverse Wireframing of your own site as lo-fi HTML, six-dimension quality audit (completeness, consistency, quality, language, cognitive load, site-wide coherence), concrete change proposals section by section. Hard differentiator: 'No account. No email. No limits. Decide to buy after a real test on your own project.' CTA: Try the free audit.",
+      "content_status": "content-ready",
+      "rationale": "Section is an escape hatch for skeptics plus a landing anchor for paid traffic. 'No account, no email' is a hard signal of zero barriers, the counterweight to typical SaaS gates, consistent with pay-once-own-forever. FAQ #5 moved from defensive framing to positive narrative.",
+      "alternatives": "Audit as a separate /audit subpage with a dedicated landing (rejected in this pass, the anchor is enough, revisit if paid traffic suffers). Audit with an email gate (rejected, contradicts the 'no friction' positioning)."
+    },
+    {
+      "id": "section-map-id-home-instalacja",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Installation (short version, link to /how-it-works)",
+      "name": "Installation (short)",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Remove the post-purchase technical worry ('can I do this?') with a short install summary plus a link to the full guide on /how-it-works.",
+      "question": "How do I install this? Can I handle it?",
+      "content_description": "Lead: 'Install it like a WordPress plugin.' Three steps: (1) Download the folder after purchase. (2) Drop it into your AI environment (Claude Code, Cursor, ChatGPT, Claude Projects). (3) Use it in your next conversation with the model. List of supported environments as visual icons / chip list. CTA: 'See the full install guide' → /how-it-works.",
+      "content_status": "content-ready",
+      "rationale": "Section addresses post-purchase install anxiety, the worst moment for failure in file-based distribution. 'No backend, no accounts' is a hard signal that separates this from standard SaaS, central to the wedge positioning. Summary on home plus full guide on the subpage.",
+      "alternatives": "No install section on home, only a link to /how-it-works (rejected: a skeptic stalls at the buying decision and needs an early signal that install is simple). Full install guide on home (rejected: lengthens the scroll and duplicates the subpage)."
+    },
+    {
+      "id": "section-map-id-home-faq",
+      "scope": "section",
+      "confidence": "high",
+      "title": "FAQ",
+      "name": "FAQ",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "tension",
+      "goal": "Close the loop with the five most common objections from research before the reader makes a purchase decision.",
+      "question": "What else should I know before buying?",
+      "content_description": "Five questions in an accordion: (1) How is this different from ChatGPT or Claude? (2) Do I need to know UX to use this? (3) What exactly am I buying, is this a subscription? (4) What does install look like? (5) Can I test before buying? Each answer closes the loop with a concrete mechanism (files vs chat, 16 expertise packs, pay once, install like a plugin, free audit), not a marketing promise.",
+      "content_status": "content-ready",
+      "rationale": "Five objections pulled straight from research and product context. Order: from most frequent (difference from chatbot) to most operational (test before buy). Every answer closes the loop with a concrete mechanism, not a marketing promise.",
+      "alternatives": "Shorter FAQ (3 questions, rejected: 5 objections is the validated minimum). Longer FAQ with pricing/legacy questions (rejected: those live in other sections)."
+    },
+    {
+      "id": "section-map-id-home-final-cta",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Final CTA",
+      "name": "Final CTA",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Close the page by repeating the main CTA (purchase) with a pre-sale urgency reminder.",
+      "question": "How do I move forward?",
+      "content_description": "Repeat the main CTA ('See pricing') with an anchor to the Pricing section, or a direct checkout redirect. Short urgency reminder: 'Pre-sale runs through the launch, then prices rise.' Secondary call: 'Or start with the free audit' (link to `#audit`).",
+      "content_status": "content-ready",
+      "rationale": "Repeat CTA at the end of a long sales page, standard pattern. A reader who reached the end should have one more shot at purchase without scrolling back to Pricing. Urgency reminder as a natural beat, not a countdown timer.",
+      "alternatives": "No final CTA (rejected: a long sales page without a close loses conversion on late readers). Countdown timer for urgency (rejected: contradicts the 'analytical, no forced enthusiasm' brand voice)."
+    },
+    {
+      "id": "section-map-id-global-nav",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Global navigation",
+      "name": "Main menu",
+      "page_id": "global",
+      "layout": "section-card",
+      "narrative": "hook",
+      "goal": "Provide one-click access to two main home sections (Pricing, Audit) and two subpages (Knowledge base, How it works). Primary CTA on the right.",
+      "question": "Where am I and what's available?",
+      "content_description": "Top bar with logo (left, link to home), 4 nav items (Pricing #pricing, Audit #audit, Knowledge base /knowledge-base, How it works /how-it-works), primary CTA 'See pricing' (right, contrast). Sticky on scroll. Mobile: hamburger with the same items plus the CTA at the bottom of the expanded list.",
+      "content_status": "content-ready",
+      "rationale": "Minimal menu. 4 items fit in the bar without dropdowns. Anchors on home (Pricing, Audit) absorb the main CTAs without forcing navigation to subpages. A skeptical Designer finds proof (Knowledge base) and pricing in one click.",
+      "alternatives": "Expanded menu linking to every home section (rejected: duplicates the scroll). Hamburger on desktop (rejected: 4 items fit in the bar)."
+    },
+    {
+      "id": "section-map-id-global-footer",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Global footer",
+      "name": "Footer",
+      "page_id": "global",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Close the page with product links (Pricing, Audit, Knowledge base, How it works), company info (Contact), and mandatory Legal (Privacy policy, Terms).",
+      "question": "What else might I need when I reach the bottom?",
+      "content_description": "Three columns: Product (Pricing #pricing, Free audit #audit, Knowledge base /knowledge-base, How it works /how-it-works), Company (Contact: owner email address), Legal (Privacy policy /privacy-policy, Terms /terms). No newsletter signup. Copyright + year at the bottom.",
+      "content_status": "content-ready",
+      "rationale": "Minimal footer. Product + company + legal is enough. No newsletter signup, per the pre-sale decision: whoever wants to buy buys now at the lower price, doesn't register for an alert. Final purchase CTA lives in the 'Final CTA' section above the footer, not in the footer itself.",
+      "alternatives": "Fat footer with newsletter signup (rejected outright by the owner). Footer with social links (rejected for this scope, add once there are active channels)."
+    }
+  ]
+}
+</script>
+
+<script type="application/json" id="inventory-data">
+{
+  "_template_stock": true,
+  "labels": {},
+  "summary": {
+    "total_templates": 3,
+    "unique_sections": 7
+  },
+  "template_map": [
+    {
+      "id": "template-home",
+      "name": "{Home}",
+      "template_type": "standard",
+      "pages_using": ["{Home}"],
+      "goal": "{What this template accomplishes — one-liner on the card.}"
+    },
+    {
+      "id": "template-product",
+      "name": "{Product / Feature}",
+      "template_type": "corporate-pool",
+      "pages_using": ["{Product A}", "{Product B}", "{Product C}"],
+      "goal": "{Template goal — shared shell with pool variants per page.}"
+    },
+    {
+      "id": "template-landing",
+      "name": "{Campaign Landing}",
+      "template_type": "modular",
+      "pages_using": ["{Summer campaign}"],
+      "goal": "{Template goal — atom palette for one-off campaign composition.}"
+    }
+  ],
+  "section_index": [
+    {
+      "id": "section-main-menu",
+      "name": "Main menu",
+      "priority_tier": "critical",
+      "used_in": ["All pages"],
+      "goal": "{Global nav goal — what the main menu has to surface on every page.}",
+      "key_message": "{Core message the nav must land across the site.}",
+      "atoms": ["{logo}", "{nav-items}", "{cta}", "{mega-menu}"],
+      "variants": ["{default}", "{sticky}"],
+      "question": "{User question the nav answers at a glance.}",
+      "narrative": "{hook}",
+      "content_status": "content-ready",
+      "rationale": "{Why this nav architecture globally.}",
+      "alternatives": "{Alternative nav patterns considered.}"
+    },
+    {
+      "id": "section-hero",
+      "name": "{Hero}",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": ["{Home}", "{Product A}"],
+      "goal": "{Section goal — what this section accomplishes on the page.}",
+      "key_message": "{Core message the section must land.}",
+      "atoms": ["{heading}", "{subhead}", "{cta}", "{bg-image}"],
+      "variants": ["{default}", "{video}"],
+      "question": "{User question this section answers.}",
+      "narrative": "{hook}",
+      "content_status": "content-ready",
+      "rationale": "{Priority rationale — anchored to a top task or strategic pillar.}",
+      "alternatives": "{Other section treatments considered; why this one was chosen.}"
+    },
+    {
+      "id": "section-features",
+      "name": "{Features}",
+      "priority_tier": "significant",
+      "template_type": "standard",
+      "used_in": ["{Home}"],
+      "goal": "{Section goal.}",
+      "key_message": "{Core message.}",
+      "atoms": ["{heading}", "{grid}", "{icon}", "{copy-block}"],
+      "variants": ["{default}"],
+      "question": "{User question.}",
+      "narrative": "{evidence}",
+      "content_status": "needs-content",
+      "rationale": "{Priority rationale.}",
+      "alternatives": "Alternatives considered."
+    },
+    {
+      "id": "section-cta",
+      "name": "{CTA band}",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": ["{Home}", "{Product A}", "{Product B}", "{Product C}"],
+      "goal": "{Section goal.}",
+      "key_message": "{Core message.}",
+      "atoms": ["{heading}", "{subhead}", "{primary-cta}", "{secondary-cta}"],
+      "variants": ["{default}", "{inverse}"],
+      "question": "{User question.}",
+      "narrative": "{resolution}",
+      "content_status": "tbd",
+      "rationale": "{Priority rationale.}",
+      "alternatives": "Alternatives considered."
+    },
+    {
+      "id": "section-specs",
+      "name": "{Specs}",
+      "priority_tier": "significant",
+      "template_type": "corporate-pool",
+      "used_in": ["{Product A}", "{Product B}"],
+      "goal": "{Section goal.}",
+      "key_message": "{Core message.}",
+      "atoms": ["{table}", "{note}"],
+      "variants": ["{default}"],
+      "question": "{User question.}",
+      "narrative": "{evidence}",
+      "content_status": "needs-content",
+      "rationale": "{Priority rationale.}",
+      "alternatives": "Alternatives considered."
+    },
+    {
+      "id": "section-reviews",
+      "name": "{Reviews}",
+      "priority_tier": "minor",
+      "template_type": "corporate-pool",
+      "used_in": ["{Product B}", "{Product C}"],
+      "goal": "{Section goal.}",
+      "key_message": "{Core message.}",
+      "atoms": ["{quote}", "{avatar}", "{star-rating}"],
+      "variants": ["{default}"],
+      "question": "{User question.}",
+      "narrative": "{evidence}",
+      "content_status": "tbd",
+      "rationale": "{Priority rationale.}",
+      "alternatives": "Alternatives considered."
+    },
+    {
+      "id": "section-footer",
+      "name": "Footer",
+      "priority_tier": "minor",
+      "template_type": "standard",
+      "used_in": ["{Home}", "{Product A}", "{Product B}", "{Product C}", "{Summer campaign}"],
+      "goal": "{Section goal.}",
+      "key_message": "{Core message.}",
+      "atoms": ["{columns}", "{legal}", "{social}"],
+      "variants": ["{default}"],
+      "question": "{User question.}",
+      "narrative": "{resolution}",
+      "content_status": "content-ready",
+      "rationale": "{Priority rationale.}",
+      "alternatives": "Alternatives considered."
+    }
+  ],
+  "templates": [
+    {
+      "id": "template-home",
+      "name": "{Home}",
+      "template_type": "standard",
+      "sections": ["section-hero", "section-features", "section-cta", "section-footer"]
+    },
+    {
+      "id": "template-product",
+      "name": "{Product / Feature}",
+      "template_type": "corporate-pool",
+      "shared_sections": ["section-hero", "section-cta", "section-footer"],
+      "pool_sections": [
+        { "id": "section-specs",   "name": "{Specs}",   "used_by": ["{Product A}", "{Product B}"] },
+        { "id": "section-reviews", "name": "{Reviews}", "used_by": ["{Product B}", "{Product C}"] }
+      ]
+    },
+    {
+      "id": "template-landing",
+      "name": "{Campaign Landing}",
+      "template_type": "modular",
+      "atoms": ["{hero}", "{testimonial}", "{feature-grid}", "{cta-band}", "{faq}"]
+    }
+  ],
+  "canvas": {
+    "rows": [
+      { "type": "summary" },
+      {
+        "type": "cards",
+        "title": "Unique templates",
+        "variant": "three",
+        "card_ids": ["template-home", "template-product", "template-landing"]
+      },
+      {
+        "type": "cards",
+        "title": "Section index",
+        "variant": "three",
+        "card_ids": ["section-main-menu", "section-hero", "section-features", "section-cta", "section-specs", "section-reviews", "section-footer"]
+      }
+    ]
+  }
+}
+</script>
+
+<script>
+(function() {
+  const ctxEl = document.getElementById('context-data');
+  const stratEl = document.getElementById('strategy-data');
+  const secMapEl = document.getElementById('section-map-data');
+  const invEl = document.getElementById('inventory-data');
+  if (!ctxEl || !stratEl || !secMapEl || !invEl) return;
+
+  const CONTEXT     = JSON.parse(ctxEl.textContent);
+  const STRATEGY    = JSON.parse(stratEl.textContent);
+  const SECTION_MAP = JSON.parse(secMapEl.textContent);
+  const INVENTORY   = JSON.parse(invEl.textContent);
+
+  const SUB_PAGE_DATA = { 'context': CONTEXT, 'strategy': STRATEGY, 'section-map': SECTION_MAP, 'inventory': INVENTORY };
+  const ALL_PAGES = ['context', 'strategy', 'section-map', 'inventory'];
+  const POPULATED_PAGES = ALL_PAGES.filter(function(slug) {
+    var d = SUB_PAGE_DATA[slug];
+    return !!d && d._template_stock !== true;
+  });
+  const DEMO_MODE = POPULATED_PAGES.length === 0;
+  const VISIBLE_PAGES = DEMO_MODE ? ALL_PAGES.slice() : POPULATED_PAGES;
+
+  const NS = CONTEXT.namespace || STRATEGY.namespace || SECTION_MAP.namespace || INVENTORY.namespace || 'ux-designer-project-plan';
+
+  const DEFAULT_LABELS = {
+    confidence_confirmed: 'Confirmed',
+    confidence_likely:    'Likely',
+    confidence_tentative: 'Tentative',
+    axis_group:              'Group',
+    axis_confidence:         'Confidence',
+    group_universal:         'Universal',
+    group_project_specific:  'For this project',
+    axis_scope:    'Scope',
+    scope_page:    'Page',
+    scope_section: 'Section',
+    scope_ia:      'IA decision',
+    axis_page:     'Page',
+    axis_priority:           'Priority',
+    priority_critical:       'Critical',
+    priority_significant:    'Significant',
+    priority_minor:          'Minor',
+    axis_template_type:      'Template type',
+    template_standard:       'Standard',
+    template_corporate_pool: 'Corporate pool',
+    template_modular:        'Modular',
+    filter_all:          'All',
+    filter_label:        'Filters',
+    filter_label_active: 'Filters · active: {n}',
+    filter_clear:        'Clear',
+    back:              'Back',
+    nav_prev:          'Previous',
+    nav_next:          'Next',
+    nav_counter:       '{i} of {total}',
+    nav_counter_empty: '—',
+    group_empty:       '(empty)',
+    pp_context_title:      'Project context',
+    pp_context_subtitle:   'Discovery: who, what, why',
+    pp_strategy_title:        'Strategy',
+    pp_strategy_subtitle:     'Format, archetype, sitemap, messaging, voice',
+    pp_section_map_title:     'Section map',
+    pp_section_map_subtitle:  'Section map per page (including the virtual Global page)',
+    pp_inventory_title:       'Template inventory',
+    pp_inventory_subtitle:    'Templates, sections, reuse map',
+    pp_context_row_universal:        'Universal',
+    pp_context_row_project_specific: 'For this project',
+    pp_scope_included: 'In scope',
+    pp_scope_excluded: 'Out of scope',
+    pp_strategy_site_format:     'Site format',
+    pp_strategy_archetype:       'Archetype',
+    pp_strategy_sitemap:         'Sitemap',
+    pp_strategy_page_maps:       'Per-page section maps',
+    pp_strategy_messaging_voice: 'Messaging and voice',
+    pp_strategy_messaging:       'Messaging hierarchy',
+    pp_strategy_voice:           'Voice brief',
+    pp_content_ready: 'Content ready',
+    pp_needs_content: 'Needs content',
+    pp_tbd_status:    'TBD',
+    pp_section_card_goal:       'Goal:',
+    pp_section_card_message:    'Message:',
+    pp_section_card_content:    'Content:',
+    pp_section_card_readiness:  'Readiness:',
+    detail_rationale:      'Rationale',
+    detail_alternatives:   'Alternatives considered',
+    detail_element:        'Element',
+    detail_decision_status:'Decision status',
+    detail_page:           'Page',
+    detail_narrative:      'Narrative function',
+    detail_goal:           'Goal',
+    detail_question:       'Question',
+    detail_content:        'Content description',
+    detail_content_status: 'Content readiness',
+    group_scope_page:    'Page level',
+    group_scope_section: 'Sections',
+    group_scope_ia:      'IA decisions',
+    page_global_label:   'Global',
+    pp_inventory_total_templates:          'Unique templates',
+    pp_inventory_unique_sections:          'Unique sections',
+    pp_inventory_sections_needing_content: 'Sections needing content',
+    pp_inventory_field_narrative:    'Narrative function',
+    pp_inventory_field_goal:         'Goal',
+    pp_inventory_field_question:     'Question',
+    pp_inventory_field_key_message:  'Key message',
+    pp_inventory_field_used_in:      'Used in',
+    pp_inventory_field_atoms:        'Atoms',
+    pp_inventory_field_variants:     'Variants',
+    pp_inventory_field_readiness:    'Readiness',
+    pp_inventory_field_usage:        'Usage',
+    pp_inventory_template_map:    'Unique templates',
+    pp_inventory_usage_single:    'Single page',
+    pp_inventory_usage_reusable:  'Reusable',
+    pp_inventory_section_index:   'Section index',
+    pp_inventory_template_arch:   'Per-template architecture',
+    pp_inventory_atoms:           'Atoms',
+    pp_inventory_variants:        'Variants',
+    pp_inventory_shared_sections: 'Shared sections',
+    pp_inventory_pool_variants:   'Pool variants',
+    group_kind_section:  'Sections',
+    group_kind_template: 'Templates',
+    detail_used_in:      'Used in',
+    detail_key_message:  'Key message',
+    detail_atoms:        'Atoms',
+    detail_variants:     'Variants',
+    detail_pages_using:  'Pages using',
+    detail_template_type:'Template type',
+    bar_panel:                'Rationale',
+    bar_page:                 'Sub-page:',
+    bar_change_view:               'Change view:',
+    bar_page_context:              'Project context',
+    bar_page_strategy:             'Strategy',
+    bar_page_section_map:          'Section map',
+    bar_page_inventory:            'Template inventory',
+    bar_download:                  'Download:',
+    bar_download_html:             'Project Plan (HTML)',
+    bar_download_context_md:       'Project Context (MD)',
+    bar_download_strategy_md:      'Strategy (MD)',
+    bar_download_section_map_md:   'Section Map (MD)',
+    bar_download_inventory_md:     'Template Inventory (MD)',
+    bar_download_context_md_title:     'Download Project Context as Markdown',
+    bar_download_strategy_md_title:    'Download Strategy as Markdown',
+    bar_download_section_map_md_title: 'Download Section Map as Markdown',
+    bar_download_inventory_md_title:   'Download Template Inventory as Markdown',
+    bar_download_html_title:           'Download the full Project Plan as HTML',
+    md_confidence_confirmed: '🟢 Confirmed',
+    md_confidence_likely:    '🟡 Likely',
+    md_confidence_tentative: '🔴 Tentative',
+    md_confidence:           'Confidence',
+    md_rationale:            'Rationale',
+    md_alternatives:         'Alternatives considered',
+    md_value:                'Value',
+    md_included:             'In scope',
+    md_excluded:             'Out of scope',
+    md_priority:             'Priority',
+    md_meta_pills:           'Tags',
+    md_atoms:                'Atoms',
+    md_variants:             'Variants',
+    md_used_in:              'Used in',
+    md_pages_using:          'Pages using',
+    md_template_type:        'Template type',
+    md_goal:                 'Goal',
+    md_question:             'Question',
+    md_content_description:  'Content',
+    md_key_message:          'Key message',
+    md_narrative:            'Narrative function',
+    md_content_status:       'Content readiness',
+    md_top_tasks_served:     'Top tasks served',
+    md_element:              'Element',
+    md_decision_status:      'Decision status',
+    md_page:                 'Page',
+    md_pp_context_title:     'Project context',
+    md_pp_strategy_title:    'Strategy',
+    md_strategy_section_ia:  'IA decisions',
+    md_pp_section_map_title: 'Section map',
+    md_pp_inventory_title:                          'Template inventory',
+    md_inventory_section_summary:                   'Summary',
+    md_inventory_section_template_map:              'Template map',
+    md_inventory_section_section_index:             'Section index',
+    md_inventory_section_template_arch:             'Per-template architecture',
+    md_inventory_summary_total_templates:           'Templates',
+    md_inventory_summary_unique_sections:           'Unique sections',
+    md_inventory_summary_sections_needing_content:  'Sections needing content',
+    md_inventory_template_arch_corp_pool_shared:    'Shared sections',
+    md_inventory_template_arch_corp_pool_variants:  'Pool variants',
+    md_inventory_template_arch_modular_atoms:       'Atom palette'
+  };
+  const LABELS = Object.assign(
+    {},
+    DEFAULT_LABELS,
+    INVENTORY.labels || {},
+    SECTION_MAP.labels || {},
+    STRATEGY.labels || {},
+    CONTEXT.labels || {}
+  );
+  function tpl(key, vars) {
+    const s = LABELS[key] != null ? LABELS[key] : key;
+    if (!vars) return s;
+    return s.replace(/\{(\w+)\}/g, (_m, k) => (vars[k] != null ? vars[k] : ''));
+  }
+  function applyStaticLabels(root) {
+    (root || document).querySelectorAll('[data-label-key]').forEach(el => {
+      const key = el.getAttribute('data-label-key');
+      if (LABELS[key] == null) return;
+      const prefix = el.getAttribute('data-label-prefix') || '';
+      el.textContent = prefix + LABELS[key];
+    });
+    (root || document).querySelectorAll('[data-label-aria-key]').forEach(el => {
+      const key = el.getAttribute('data-label-aria-key');
+      if (LABELS[key] != null) el.setAttribute('aria-label', LABELS[key]);
+    });
+    (root || document).querySelectorAll('[data-label-title-key]').forEach(el => {
+      const key = el.getAttribute('data-label-title-key');
+      if (LABELS[key] != null) el.setAttribute('title', LABELS[key]);
+    });
+  }
+
+  const CONF_MAP = {
+    'high':   { label: LABELS.confidence_confirmed, cls: 'ui-badge--green' },
+    'medium': { label: LABELS.confidence_likely,    cls: 'ui-badge--yellow' },
+    'low':    { label: LABELS.confidence_tentative, cls: 'ui-badge--red' }
+  };
+  const GROUP_MAP = {
+    'universal':        { label: LABELS.group_universal,        cls: 'ui-badge--gray' },
+    'project-specific': { label: LABELS.group_project_specific, cls: 'ui-badge--yellow' }
+  };
+  const SCOPE_MAP = {
+    'page':    { label: LABELS.scope_page,    cls: 'ui-badge--gray' },
+    'section': { label: LABELS.scope_section, cls: 'ui-badge--gray' },
+    'ia':      { label: LABELS.scope_ia,      cls: 'ui-badge--yellow' }
+  };
+  const PRIORITY_MAP = {
+    'critical':    { label: LABELS.priority_critical,    cls: 'ui-badge--red' },
+    'significant': { label: LABELS.priority_significant, cls: 'ui-badge--yellow' },
+    'minor':       { label: LABELS.priority_minor,       cls: 'ui-badge--green' }
+  };
+  const TEMPLATE_TYPE_MAP = {
+    'standard':       { label: LABELS.template_standard,        cls: 'ui-badge--gray' },
+    'corporate-pool': { label: LABELS.template_corporate_pool,  cls: 'ui-badge--gray' },
+    'modular':        { label: LABELS.template_modular,         cls: 'ui-badge--gray' }
+  };
+  function pill(map, key) {
+    const m = map[key];
+    if (!m) return key;
+    return '<span class="ui-badge ' + m.cls + '">' + m.label + '</span>';
+  }
+
+  const CONTENT_STATUS_MAP = {
+    'content-ready': { cls: 'ui-badge--content-ready', labelKey: 'pp_content_ready' },
+    'needs-content': { cls: 'ui-badge--needs-content', labelKey: 'pp_needs_content' },
+    'tbd':           { cls: 'ui-badge--tbd-status',    labelKey: 'pp_tbd_status' }
+  };
+  function contentStatusPill(status) {
+    const m = CONTENT_STATUS_MAP[status];
+    if (!m) return '';
+    const label = LABELS[m.labelKey] != null ? LABELS[m.labelKey] : status;
+    return '<span class="ui-badge ' + m.cls + '">' + label + '</span>';
+  }
+  function narrativeTag(narrative) {
+    if (!narrative) return '';
+    const v = String(narrative);
+    const inner = v.startsWith('{') && v.endsWith('}') ? v.slice(1, -1) : v;
+    return '<span class="pp-narrative-tag">' + inner + '</span>';
+  }
+  function confidenceBadge(confidence) {
+    return confidence ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_confidence + ':</span>' + pill(CONF_MAP, confidence) + '</div>' : '';
+  }
+  function cardNoDetailClass(item) {
+    return (item && !item.rationale && !item.alternatives) ? ' ui-card--no-detail' : '';
+  }
+  function hasDetail(item) {
+    return !!(item && (item.rationale || item.alternatives));
+  }
+  function plainChip(text) {
+    return '<span class="ui-badge ui-badge--gray ui-badge--plain">' + text + '</span>';
+  }
+  function metaSeg(label, value, tag) {
+    const t = tag || 'div';
+    const v = value == null ? '' : String(value);
+    if (v.startsWith('{') && v.endsWith('}')) {
+      return '<' + t + '>{<strong>' + label + ':</strong> ' + v.slice(1, -1) + '}</' + t + '>';
+    }
+    return '<' + t + '><strong>' + label + ':</strong> ' + v + '</' + t + '>';
+  }
+  function listChipsSeg(label, items, tag) {
+    const t = tag || 'div';
+    const arr = items || [];
+    if (!arr.length) return '';
+    const chips = arr.map(function(i) {
+      const s = String(i == null ? '' : i);
+      const inner = s.startsWith('{') && s.endsWith('}') ? s.slice(1, -1) : s;
+      return '<span class="ui-badge ui-badge--gray ui-badge--plain">' + inner + '</span>';
+    }).join(' ');
+    return '<' + t + '><strong>' + label + ':</strong> ' + chips + '</' + t + '>';
+  }
+
+  function listSeg(label, items, tag) {
+    const t = tag || 'div';
+    const arr = items || [];
+    if (!arr.length) return '';
+    const stripped = arr.map(function(i) {
+      const s = String(i == null ? '' : i);
+      return s.startsWith('{') && s.endsWith('}') ? s.slice(1, -1) : s;
+    });
+    const joined = stripped.join(', ');
+    const allPlaceholders = arr.every(function(i) {
+      const s = String(i == null ? '' : i);
+      return s.startsWith('{') && s.endsWith('}');
+    });
+    if (allPlaceholders) {
+      return '<' + t + '>{<strong>' + label + ':</strong> ' + joined + '}</' + t + '>';
+    }
+    return '<' + t + '><strong>' + label + ':</strong> ' + joined + '</' + t + '>';
+  }
+  function kvSeg(pair) {
+    return metaSeg(pair && pair.label ? pair.label : '', pair && pair.value != null ? pair.value : '');
+  }
+
+  function renderContextSubPage()     { renderCanvasFromRows('context',     CONTEXT); }
+  function renderStrategySubPage()    { renderCanvasFromRows('strategy',    STRATEGY); }
+  function renderSectionMapSubPage()  {
+    renderCanvasFromRows('section-map', SECTION_MAP);
+    renderSectionMapPageSwitcher();
+    const firstPageId = sectionMapFirstPageId();
+    if (firstPageId) showSectionMapPage(firstPageId);
+  }
+
+  function sectionMapFirstPageId() {
+    const rows = (SECTION_MAP.canvas && SECTION_MAP.canvas.rows) || [];
+    const firstMap = rows.find(function(r) { return r.type === 'page-map'; });
+    if (firstMap && firstMap.page_id) return firstMap.page_id;
+    const ps = SECTION_MAP.page_sections || [];
+    return ps.length ? ps[0].page_id : null;
+  }
+  function renderSectionMapPageSwitcher() {
+    const host = document.getElementById('sectionMapPageSwitch');
+    if (!host) return;
+    const pages = SECTION_MAP.page_sections || [];
+    if (!pages.length) { host.innerHTML = ''; return; }
+    host.innerHTML = pages.map(function(p) {
+      const name = p.page_id === 'global' ? (LABELS.page_global_label || p.name || p.page_id) : (p.name || p.page_id);
+      return '<button class="pp-sm-switch__btn" type="button" role="tab" data-page-id="' + p.page_id + '">' + name + '</button>';
+    }).join('');
+    host.addEventListener('click', function(e) {
+      const btn = e.target.closest('.pp-sm-switch__btn[data-page-id]');
+      if (!btn) return;
+      showSectionMapPage(btn.getAttribute('data-page-id'));
+    });
+  }
+  function showSectionMapPage(pageId) {
+    const canvas = document.querySelector('#pp-page-section-map .ui-card-grid');
+    if (canvas) {
+      canvas.querySelectorAll('.pp-page-map').forEach(function(el) {
+        el.style.display = el.getAttribute('data-page-id') === pageId ? '' : 'none';
+      });
+    }
+    const host = document.getElementById('sectionMapPageSwitch');
+    if (host) {
+      host.querySelectorAll('.pp-sm-switch__btn').forEach(function(btn) {
+        btn.classList.toggle('is-active', btn.getAttribute('data-page-id') === pageId);
+      });
+    }
+  }
+  function renderInventorySubPage()   { renderCanvasFromRows('inventory',   INVENTORY); }
+
+  function renderCanvasFromRows(slug, data) {
+    const host = document.querySelector('#pp-page-' + slug + ' .ui-card-grid');
+    if (!host) return;
+    const rows = (data.canvas && data.canvas.rows) || [];
+    const byId = {};
+    (data.items || []).forEach(function(i) { byId[i.id] = i; });
+    if (slug === 'inventory') {
+      (data.template_map || []).forEach(function(t) { byId[t.id] = Object.assign({}, t, { _kind: 'template' }); });
+      (data.section_index || []).forEach(function(s) { byId[s.id] = Object.assign({}, s, { _kind: 'section' }); });
+    }
+    host.innerHTML = rows.map(function(r) { return rowHtml(r, byId, data); }).join('');
+    bindTreeToggles(host);
+  }
+
+  function bindTreeToggles(hostEl) {
+    hostEl.querySelectorAll('.pp-tree-card').forEach(function(card) {
+      const kind = card.dataset.treeKind;
+      card.querySelectorAll('.pp-tree-row').forEach(function(row) {
+        row.addEventListener('click', function(e) {
+          const node = row.parentElement;
+          if (!node) return;
+          const clickedToggle = !!e.target.closest('.pp-tree-toggle');
+          const nodeId = node.dataset.pageId || node.dataset.nodeId;
+          const hasChildren = node.hasAttribute('data-expanded');
+
+          if (clickedToggle) {
+            if (hasChildren) {
+              const expanded = node.getAttribute('data-expanded') === 'true';
+              node.setAttribute('data-expanded', expanded ? 'false' : 'true');
+            }
+            return;
+          }
+
+          if (nodeId) {
+            if (hasChildren) {
+              const expanded = node.getAttribute('data-expanded') === 'true';
+              node.setAttribute('data-expanded', expanded ? 'false' : 'true');
+            }
+            return;
+          }
+          const isOpen = node.getAttribute('data-expanded') === 'true';
+          if (isOpen) {
+            collapseAllTreeZones();
+            closePanel();
+            return;
+          }
+          collapseAllTreeZones();
+          node.setAttribute('data-expanded', 'true');
+          row.classList.add('is-selected');
+          openPanel();
+          renderTreeZoneDetail(kind);
+        });
+      });
+    });
+  }
+
+  function findTreeNodePath(kind, nodeId) {
+    const trees = {
+      'main-menu': (STRATEGY && STRATEGY.main_menu) || [],
+      'sitemap':   (STRATEGY && STRATEGY.sitemap)   || [],
+      'footer':    (STRATEGY && STRATEGY.footer)    || []
+    };
+    const roots = trees[kind] || [];
+    function walk(nodes, path) {
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const newPath = path.concat([n]);
+        if (n.id === nodeId) return newPath;
+        if (n.children && n.children.length) {
+          const found = walk(n.children, newPath);
+          if (found) return found;
+        }
+      }
+      return null;
+    }
+    return walk(roots, []) || [];
+  }
+
+  function renderTreeZoneDetail(kind) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    if (backBtn) backBtn.style.display = 'inline-block';
+    if (navEl) navEl.style.display = 'flex';
+    document.body.classList.add('shell-detail-open');
+
+    const metaKey = kind.replace('-', '_') + '_meta';
+    const meta = (STRATEGY && STRATEGY[metaKey]) || {};
+    const zoneLabel = { 'main-menu': 'Main menu', 'sitemap': 'Sitemap', 'footer': 'Footer' }[kind] || kind;
+
+    const blocks = [];
+    if (meta.rationale)    blocks.push(detailBlock(LABELS.detail_rationale, meta.rationale));
+    if (meta.alternatives) blocks.push(detailBlock(LABELS.detail_alternatives, meta.alternatives));
+    const blocksHTML = blocks.length ? '<div class="shell-detail__blocks">' + blocks.join('') + '</div>' : '';
+
+    panelBody.innerHTML = ''
+      + '<h3 class="shell-detail__title">' + zoneLabel + '</h3>'
+      + blocksHTML;
+  }
+
+  function renderTreeNodeDetail(kind, nodeId) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    if (backBtn) backBtn.style.display = 'inline-block';
+    if (navEl) navEl.style.display = 'flex';
+    document.body.classList.add('shell-detail-open');
+
+    const path = findTreeNodePath(kind, nodeId);
+    if (!path.length) return;
+    const node = path[path.length - 1];
+    const zoneLabel = { 'main-menu': 'Main menu', 'sitemap': 'Sitemap', 'footer': 'Footer' }[kind] || kind;
+
+    const metaRows = [];
+    metaRows.push('<dt>' + (LABELS.detail_tree_zone || 'Zone') + '</dt><dd>' + zoneLabel + '</dd>');
+    if (path.length > 1) {
+      const ancestors = path.slice(0, -1).map(function(n) { return n.name || n.id; }).join(' / ');
+      metaRows.push('<dt>' + (LABELS.detail_tree_path || 'Path') + '</dt><dd>' + ancestors + '</dd>');
+    }
+    const meta = metaRows.join('');
+
+    const blocks = [];
+    if (node.rationale)    blocks.push(detailBlock(LABELS.detail_rationale, node.rationale));
+    if (node.alternatives) blocks.push(detailBlock(LABELS.detail_alternatives, node.alternatives));
+    const blocksHTML = blocks.length ? '<div class="shell-detail__blocks">' + blocks.join('') + '</div>' : '';
+
+    panelBody.innerHTML = ''
+      + '<h3 class="shell-detail__title">' + (node.name || nodeId) + '</h3>'
+      + (meta ? '<dl class="shell-detail__meta">' + meta + '</dl>' : '')
+      + blocksHTML;
+  }
+
+  function rowHtml(row, byId, data) {
+    if (row.type === 'summary')       return summaryHtml(data.summary, data);
+    if (row.type === 'heading')       return '<h2 class="ui-card-row-title">' + (row.title || '') + '</h2>';
+    if (row.type === 'tree')          return treeRowHtml(resolveTreeRow(row, data));
+    if (row.type === 'sitemap')       return treeRowHtml(resolveTreeRow(Object.assign({ kind: 'sitemap', title: row.title || 'Sitemap' }, row), data));
+    if (row.type === 'page-map')      return pageMapHtml(row, data);
+    if (row.type === 'template-arch') return templateArchHtml((data.templates || []).find(function(t) { return t.id === row.template_id; }));
+    return cardsRowHtml(row, byId);
+  }
+
+  function resolveTreeRow(row, data) {
+    if (row.nodes && row.nodes.length) return row;
+    if (row.nodes_ref && data && data[row.nodes_ref]) {
+      return Object.assign({}, row, { nodes: data[row.nodes_ref] });
+    }
+    return Object.assign({}, row, { nodes: [] });
+  }
+
+  function cardsRowHtml(row, byId) {
+    const title = row.title ? '<h2 class="ui-card-row-title">' + row.title + '</h2>' : '';
+    const cards = (row.card_ids || []).map(function(id) { return cardHtml(byId[id]); }).filter(Boolean).join('');
+    if (row.variant == null) {
+      return title + '<div class="pp-section-index">' + cards + '</div>';
+    }
+    return title + '<div class="ui-card-row ui-card-row--' + row.variant + '">' + cards + '</div>';
+  }
+
+  function cardHtml(item) {
+    if (!item) return '';
+    if (item._kind === 'template') return templateMapCardHtml(item);
+    if (item._kind === 'section')  return sectionIndexCardHtml(item);
+    switch (item.layout) {
+      case 'simple-meta':  return simpleMetaCardHtml(item);
+      case 'chip-list':    return chipListCardHtml(item);
+      case 'ranked-list':  return rankedListCardHtml(item);
+      case 'scope-split':  return scopeSplitCardHtml(item);
+      case 'section-card': return sectionCardHtml(item);
+      default:             return '';
+    }
+  }
+
+  function simpleMetaCardHtml(item) {
+    const heading = item.name || item.title || '';
+    const leadHtml = item.lead ? '<p class="lead">' + item.lead + '</p>' : '';
+    const bodyHtml = item.body ? '<p>' + item.body + '</p>' : '';
+    const kvHtml = (item.kv && item.kv.length)
+      ? item.kv.map(kvSeg).join('')
+      : '';
+    const bulletsHtml = (item.bullets && item.bullets.length)
+      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul>'
+      : '';
+    const metaPillsHtml = (item.meta_pills || []).map(plainChip).join('');
+    const confPill = item.confidence
+      ? '<span class="ui-card__meta-label">' + LABELS.axis_confidence + ':</span>' + pill(CONF_MAP, item.confidence)
+      : '';
+    const metaBlock = (metaPillsHtml || confPill)
+      ? '<div class="ui-card__meta">' + metaPillsHtml + confPill + '</div>'
+      : '';
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + heading + '</h4>'
+      +   leadHtml + bodyHtml + kvHtml + bulletsHtml
+      +   metaBlock
+      + '</article>';
+  }
+
+  function chipListCardHtml(item) {
+    const heading = item.name || item.title || '';
+    const leadHtml = item.lead ? '<p class="lead">' + item.lead + '</p>' : '';
+    const chipsHtml = (item.chips || []).map(plainChip).join('');
+    const chipsBlock = chipsHtml ? '<div class="pp-chips">' + chipsHtml + '</div>' : '';
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + heading + '</h4>'
+      +   leadHtml + chipsBlock
+      +   confidenceBadge(item.confidence)
+      + '</article>';
+  }
+
+  function rankedListCardHtml(item) {
+    const heading = item.name || item.title || '';
+    const leadHtml = item.lead ? '<p class="lead">' + item.lead + '</p>' : '';
+    const listHtml = (item.ranked || []).map(function(r, i) {
+      const rightPill = r.priority ? plainChip(r.priority) : '';
+      return '<li><span><span class="pp-rank-n">' + (i + 1) + '</span>' + r.text + '</span>' + rightPill + '</li>';
+    }).join('');
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + heading + '</h4>'
+      +   leadHtml
+      +   (listHtml ? '<ol class="pp-ranked">' + listHtml + '</ol>' : '')
+      +   confidenceBadge(item.confidence)
+      + '</article>';
+  }
+
+  function scopeSplitCardHtml(item) {
+    const heading = item.name || item.title || '';
+    const s = item.scope_split || {};
+    const incHtml = (s.included || []).map(function(t) { return '<li>' + t + '</li>'; }).join('');
+    const excHtml = (s.excluded || []).map(function(t) { return '<li class="pp-excluded">' + t + '</li>'; }).join('');
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + heading + '</h4>'
+      +   '<div class="pp-scope">'
+      +     '<div><strong>' + (LABELS.pp_scope_included || 'Included') + '</strong><ul class="pp-scope-list">' + incHtml + '</ul></div>'
+      +     '<div><strong>' + (LABELS.pp_scope_excluded || 'Excluded') + '</strong><ul class="pp-scope-list">' + excHtml + '</ul></div>'
+      +   '</div>'
+      +   confidenceBadge(item.confidence)
+      + '</article>';
+  }
+
+  function sectionCardHtml(item) {
+    const heading = item.name || item.title || '';
+    const narrInline = item.narrative ? ' ' + narrativeTag(item.narrative) : '';
+    const readinessPill = contentStatusPill(item.content_status);
+    const fields = [
+      sectionFieldRow(LABELS.pp_section_card_goal      || 'Goal:',      item.goal),
+      sectionFieldRow(LABELS.pp_section_card_message   || 'Message:',   item.question),
+      sectionFieldRow(LABELS.pp_section_card_readiness || 'Readiness:', readinessPill),
+      sectionFieldRow(LABELS.pp_section_card_content   || 'Content:',   sectionContentValue(item.content_description))
+    ].join('');
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + heading + narrInline + '</h4>'
+      +   fields
+      + '</article>';
+  }
+
+  function sectionFieldRow(label, value) {
+    if (!value) return '';
+    return '<p class="pp-section-card__field"><span class="pp-section-card__field-label">' + label + '</span>' + value + '</p>';
+  }
+
+  function sectionContentValue(content) {
+    if (!content) return '';
+    const items = Array.isArray(content) ? content : [content];
+    if (!items.length) return '';
+    return '<ul class="pp-section-card__content-list">' + items.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>';
+  }
+
+  function templateMapCardHtml(item) {
+    const usage = templateUsageLabel(item.pages_using);
+    const L = function(key, fallback) {
+      const v = LABELS[key];
+      if (v == null) return fallback;
+      const s = String(v);
+      return s.startsWith('{') && s.endsWith('}') ? s.slice(1, -1) : s;
+    };
+    const parts = [
+      usage              ? metaSeg(L('pp_inventory_field_usage',   'Usage'),       usage)             : '',
+      item.goal          ? metaSeg(L('pp_inventory_field_goal',    'Goal'),        item.goal)         : '',
+      listSeg(L('detail_pages_using', 'Pages using'), item.pages_using)
+    ].join('');
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + (item.name || item.id) + '</h4>'
+      +   parts
+      + '</article>';
+  }
+
+  function templateUsageLabel(pagesUsing) {
+    const arr = pagesUsing || [];
+    if (!arr.length) return '';
+    const stripBraces = function(s) {
+      const v = String(s || '');
+      return v.startsWith('{') && v.endsWith('}') ? v.slice(1, -1) : v;
+    };
+    if (arr.length === 1) return '{' + stripBraces(LABELS.pp_inventory_usage_single || 'Single page') + '}';
+    const base = stripBraces(LABELS.pp_inventory_usage_reusable || 'Reusable');
+    return '{' + base + ' (' + arr.length + ' pages)}';
+  }
+
+  function sectionIndexCardHtml(item) {
+    const L = function(key, fallback) {
+      const v = LABELS[key];
+      if (v == null) return fallback;
+      const s = String(v);
+      return s.startsWith('{') && s.endsWith('}') ? s.slice(1, -1) : s;
+    };
+    const parts = [
+      item.narrative           ? metaSeg(L('pp_inventory_field_narrative',    'Narrative'),    item.narrative)                        : '',
+      item.goal                ? metaSeg(L('pp_inventory_field_goal',         'Goal'),         item.goal)                             : '',
+      item.question            ? metaSeg(L('pp_inventory_field_question',     'Question'),     item.question)                         : '',
+      item.key_message         ? metaSeg(L('pp_inventory_field_key_message',  'Key message'),  item.key_message)                      : '',
+      listSeg(L('pp_inventory_field_used_in', 'Used in'), item.used_in),
+      listChipsSeg(L('pp_inventory_field_atoms',    'Atoms'),    item.atoms),
+      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants),
+      item.content_status      ? metaSeg(L('pp_inventory_field_readiness',    'Readiness'),    contentStatusPill(item.content_status)) : ''
+    ].join('');
+    const priorityMeta = item.priority_tier
+      ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_priority + ':</span>' + pill(PRIORITY_MAP, item.priority_tier) + '</div>'
+      : '';
+    return ''
+      + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
+      +   '<h4>' + (item.name || item.id) + '</h4>'
+      +   parts
+      +   priorityMeta
+      + '</article>';
+  }
+
+  function treeRowHtml(row) {
+    const kind = row.kind || 'tree';
+    const idAttr = kind === 'sitemap' ? 'data-page-id' : 'data-node-id';
+    function nodeHtml(n, level) {
+      const hasChildren = n.children && n.children.length;
+      const toggleHtml = hasChildren
+        ? '<button type="button" class="pp-tree-toggle" aria-label="Toggle"></button>'
+        : '<span class="pp-tree-toggle pp-tree-toggle--spacer"></span>';
+      const metaHtml = hasChildren
+        ? '<span class="pp-tree-meta"><span class="pp-tree-hint">(' + n.children.length + ')</span></span>'
+        : '';
+      const idHtml = n.id ? ' ' + idAttr + '="' + n.id + '"' : '';
+      const expandedHtml = hasChildren ? ' data-expanded="false"' : '';
+      const childrenHtml = hasChildren
+        ? '<ul class="pp-tree-children">' + n.children.map(function(c) { return nodeHtml(c, level + 1); }).join('') + '</ul>'
+        : '';
+      return ''
+        + '<li class="pp-tree-node pp-tree-node--lvl' + level + '"' + idHtml + expandedHtml + '>'
+        +   '<div class="pp-tree-row">'
+        +     toggleHtml
+        +     '<span class="pp-tree-name">' + (n.name || '') + '</span>'
+        +     metaHtml
+        +   '</div>'
+        +   childrenHtml
+        + '</li>';
+    }
+    const rootChildren = (row.nodes || []).map(function(n) { return nodeHtml(n, 2); }).join('');
+    return ''
+      + '<div class="pp-tree-card" data-tree-kind="' + kind + '">'
+      +   '<ul class="pp-tree">'
+      +     '<li class="pp-tree-node pp-tree-node--lvl1" data-expanded="false">'
+      +       '<div class="pp-tree-row">'
+      +         '<button type="button" class="pp-tree-toggle" aria-label="Toggle"></button>'
+      +         '<span class="pp-tree-name">' + (row.title || '') + '</span>'
+      +       '</div>'
+      +       '<ul class="pp-tree-children">' + rootChildren + '</ul>'
+      +     '</li>'
+      +   '</ul>'
+      + '</div>';
+  }
+
+  function pageMapHtml(row, data) {
+    const pageEntry = (data.page_sections || []).find(function(p) { return p.page_id === row.page_id; }) || { name: row.page_id, goal: '', top_tasks_served: [] };
+    const goalSeg  = pageEntry.goal ? metaSeg('Goal', pageEntry.goal) : '';
+    const tasksSeg = listSeg('Top tasks', pageEntry.top_tasks_served);
+    const header = ''
+      + '<header class="pp-page-map__header">'
+      +   '<div class="pp-page-map__title">' + (pageEntry.name || '') + '</div>'
+      +   goalSeg
+      +   tasksSeg
+      + '</header>';
+    const sectionItems = (data.items || []).filter(function(it) {
+      return it.scope === 'section' && it.page_id === row.page_id;
+    });
+    const variant = 'one';
+    const cardsHtml = sectionItems.map(cardHtml).join('');
+    return ''
+      + '<section class="pp-page-map" data-page-id="' + row.page_id + '">'
+      +   header
+      +   '<div class="ui-card-row ui-card-row--' + variant + '">' + cardsHtml + '</div>'
+      + '</section>';
+  }
+
+  function summaryHtml(summary, data) {
+    if (!summary) return '';
+    function stat(n, labelKey, fallback) {
+      return '<div class="pp-summary__stat"><div class="pp-summary__n">' + (n != null ? n : '') + '</div><div class="pp-summary__label">' + (LABELS[labelKey] || fallback) + '</div></div>';
+    }
+    const sections = (data && data.section_index) || [];
+    const needingContent = summary.sections_needing_content != null
+      ? summary.sections_needing_content
+      : sections.filter(function(s) { return s.content_status && s.content_status !== 'content-ready'; }).length;
+    return ''
+      + '<div class="pp-summary">'
+      +   stat(summary.total_templates,  'pp_inventory_total_templates',          'Unique templates')
+      +   stat(summary.unique_sections,  'pp_inventory_unique_sections',          'Unique sections')
+      +   stat(needingContent,           'pp_inventory_sections_needing_content', 'Sections needing content')
+      + '</div>';
+  }
+
+  function templateArchHtml(template) {
+    if (!template) return '';
+    const kindLabelKey = 'template_' + String(template.template_type || '').replace(/-/g, '_');
+    const kindLabel = LABELS[kindLabelKey] || template.template_type || '';
+    const head = ''
+      + '<div class="pp-template-arch__head">'
+      +   '<h3 class="pp-template-arch__title">' + (template.name || template.id) + '</h3>'
+      +   '<span class="pp-template-arch__kind">' + kindLabel + '</span>'
+      + '</div>';
+    const goalHtml = template.goal ? '<div class="pp-template-arch__goal">' + template.goal + '</div>' : '';
+
+    const sectionById = {};
+    (INVENTORY.section_index || []).forEach(function(s) { sectionById[s.id] = s; });
+    function stackItem(id, i) {
+      const s = sectionById[id];
+      const name = s ? s.name : id;
+      const narrative = s ? s.narrative : '';
+      const narrativeChip = narrative ? plainChip(narrative) : '';
+      return '<li><span><span class="pp-stack-n">' + (i + 1) + '</span>' + name + '</span>' + narrativeChip + '</li>';
+    }
+
+    let body = '';
+    const t = template.template_type;
+    if (t === 'standard') {
+      body = '<ol class="pp-stack-list">' + (template.sections || []).map(stackItem).join('') + '</ol>';
+    } else if (t === 'corporate-pool' || t === 'corporate_pool') {
+      const sharedHtml = (template.shared_sections || []).map(stackItem).join('');
+      const poolHtml = (template.pool_sections || []).map(function(p) {
+        const usedBy = (p.used_by || []).map(plainChip).join('');
+        return '<div class="pp-pool-card"><strong>' + (p.name || p.id) + '</strong><div class="pp-used-by">' + usedBy + '</div></div>';
+      }).join('');
+      body = ''
+        + '<div class="pp-pool-subhead">' + (LABELS.pp_inventory_shared_sections || 'Shared sections') + '</div>'
+        + '<ol class="pp-stack-list">' + sharedHtml + '</ol>'
+        + '<div class="pp-pool-subhead">' + (LABELS.pp_inventory_pool_variants || 'Pool variants') + '</div>'
+        + '<div class="pp-pool-gallery">' + poolHtml + '</div>';
+    } else if (t === 'modular') {
+      const atomsHtml = (template.atoms || []).map(plainChip).join('');
+      body = '<div class="pp-atom-palette">' + atomsHtml + '</div>';
+    }
+    return '<div class="pp-template-arch" data-template-id="' + template.id + '">' + head + goalHtml + body + '</div>';
+  }
+
+  const panel = document.getElementById('shellLeftpanel');
+  const panelToggle = document.getElementById('shellPanelToggle');
+  const panelBody = document.getElementById('shellLeftpanelBody');
+  const panelHeader = document.getElementById('shellHeader');
+  const panelFilterArea = document.getElementById('shellFilterArea');
+  const backBtn = document.getElementById('shellBack');
+  const pageTabs = document.getElementById('shellPageTabs');
+  const navEl = document.getElementById('shellNav');
+  const navPrevBtn = document.getElementById('shellNavPrev');
+  const navNextBtn = document.getElementById('shellNavNext');
+  const navCounter = document.getElementById('shellNavCounter');
+
+  let currentPage = 'context';
+  let view = 'list';
+  let navList = [];
+  let navIndex = -1;
+  let activeFilter = {};
+  let filterExpanded = false;
+
+  const _INVENTORY_ITEMS = (function() {
+    const fromSections = (INVENTORY.section_index || []).map(function(s) {
+      return Object.assign({}, s, { kind: 'section', title: s.name });
+    });
+    const fromTemplates = (INVENTORY.template_map || []).map(function(t) {
+      return Object.assign({}, t, { kind: 'template', title: t.name });
+    });
+    return fromSections.concat(fromTemplates);
+  })();
+
+  const PAGE_ID_MAP = (function() {
+    const m = {};
+    (SECTION_MAP.page_sections || []).forEach(function(p) {
+      m[p.page_id] = { label: (p.page_id === 'global' ? (LABELS.page_global_label || p.name) : p.name), cls: 'ui-badge--gray' };
+    });
+    return m;
+  })();
+  const PAGE_ID_VALUES = Object.keys(PAGE_ID_MAP);
+
+  function itemsForPage(page) {
+    if (page === 'context')     return CONTEXT.items || [];
+    if (page === 'strategy')    return STRATEGY.items || [];
+    if (page === 'section-map') return SECTION_MAP.items || [];
+    if (page === 'inventory')   return _INVENTORY_ITEMS;
+    return [];
+  }
+  function axesForPage(page) {
+    if (page === 'context')     return ['group', 'confidence'];
+    if (page === 'strategy')    return ['scope', 'confidence'];
+    if (page === 'section-map') return ['page_id', 'confidence'];
+    if (page === 'inventory')   return ['priority_tier', 'template_type'];
+    return [];
+  }
+  function axisOptionsForPage(page) {
+    if (page === 'context')     return { group: ['universal', 'project-specific'], confidence: ['high', 'medium', 'low'] };
+    if (page === 'strategy')    return { scope: ['page', 'section', 'ia'], confidence: ['high', 'medium', 'low'] };
+    if (page === 'section-map') return { page_id: PAGE_ID_VALUES, confidence: ['high', 'medium', 'low'] };
+    if (page === 'inventory')   return { priority_tier: ['critical', 'significant', 'minor'], template_type: ['standard', 'corporate-pool', 'modular'] };
+    return {};
+  }
+  function mapForAxis(axis) {
+    return { group: GROUP_MAP, confidence: CONF_MAP, scope: SCOPE_MAP, page_id: PAGE_ID_MAP, priority_tier: PRIORITY_MAP, template_type: TEMPLATE_TYPE_MAP }[axis];
+  }
+  function axisLabel(axis) {
+    return { group: LABELS.axis_group, confidence: LABELS.axis_confidence, scope: LABELS.axis_scope, page_id: LABELS.axis_page, priority_tier: LABELS.axis_priority, template_type: LABELS.axis_template_type }[axis];
+  }
+  function resetFilter(page) {
+    activeFilter = {};
+    axesForPage(page).forEach(function(a) { activeFilter[a] = []; });
+  }
+  function matchesFilter(item) {
+    const axes = axesForPage(currentPage);
+    return axes.every(function(a) {
+      const sel = activeFilter[a] || [];
+      if (!sel.length) return true;
+      return sel.indexOf(item[a]) !== -1;
+    });
+  }
+  function pillForItem(item) {
+    if (currentPage === 'context') {
+      return (item.group ? pill(GROUP_MAP, item.group) : '')
+        + (item.confidence ? pill(CONF_MAP, item.confidence) : '');
+    }
+    if (currentPage === 'strategy') {
+      return (item.scope ? pill(SCOPE_MAP, item.scope) : '')
+        + (item.confidence ? pill(CONF_MAP, item.confidence) : '');
+    }
+    if (currentPage === 'section-map') {
+      return (item.page_id ? pill(PAGE_ID_MAP, item.page_id) : '')
+        + (item.confidence ? pill(CONF_MAP, item.confidence) : '');
+    }
+    if (currentPage === 'inventory') {
+      return (item.priority_tier ? pill(PRIORITY_MAP, item.priority_tier) : '')
+        + (item.template_type ? pill(TEMPLATE_TYPE_MAP, item.template_type) : '');
+    }
+    return '';
+  }
+  function metaRowsForItem(item) {
+    const rows = [];
+    if (currentPage === 'context') {
+    } else if (currentPage === 'strategy') {
+      if (item.scope)      rows.push('<dt>' + LABELS.axis_scope + '</dt><dd>' + pill(SCOPE_MAP, item.scope) + '</dd>');
+      if (item.confidence) rows.push('<dt>' + LABELS.axis_confidence + '</dt><dd>' + pill(CONF_MAP, item.confidence) + '</dd>');
+    } else if (currentPage === 'section-map') {
+      if (item.page_id)    rows.push('<dt>' + LABELS.axis_page + '</dt><dd>' + pill(PAGE_ID_MAP, item.page_id) + '</dd>');
+      if (item.confidence) rows.push('<dt>' + LABELS.axis_confidence + '</dt><dd>' + pill(CONF_MAP, item.confidence) + '</dd>');
+    } else if (currentPage === 'inventory') {
+      if (item.priority_tier) rows.push('<dt>' + LABELS.axis_priority + '</dt><dd>' + pill(PRIORITY_MAP, item.priority_tier) + '</dd>');
+      if (item.template_type) rows.push('<dt>' + LABELS.axis_template_type + '</dt><dd>' + pill(TEMPLATE_TYPE_MAP, item.template_type) + '</dd>');
+    }
+    return rows.join('');
+  }
+
+  function openPanel() {
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('shell-leftpanel-open');
+    if (panelToggle) panelToggle.classList.add('is-active');
+    try { localStorage.setItem(NS + '-panel-open', '1'); } catch (e) {}
+  }
+  function closePanel() {
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('shell-leftpanel-open');
+    if (panelToggle) panelToggle.classList.remove('is-active');
+    try { localStorage.setItem(NS + '-panel-open', '0'); } catch (e) {}
+    collapseAllTreeZones();
+  }
+
+  function collapseAllTreeZones() {
+    document.querySelectorAll('.pp-tree-card .pp-tree-node--lvl1[data-expanded="true"]').forEach(function(n) {
+      n.setAttribute('data-expanded', 'false');
+    });
+    document.querySelectorAll('.pp-tree-row.is-selected').forEach(function(r) {
+      r.classList.remove('is-selected');
+    });
+  }
+  function togglePanel() {
+    if (panel.classList.contains('is-open')) closePanel(); else openPanel();
+  }
+
+  function renderFilterChips() {
+    const axes = axesForPage(currentPage);
+    if (!axes.length) { panelFilterArea.innerHTML = ''; return; }
+    const options = axisOptionsForPage(currentPage);
+    const allItems = itemsForPage(currentPage);
+
+    function countForValue(axis, value) {
+      return allItems.filter(function(it) { return it[axis] === value; }).length;
+    }
+    function chipRow(axis) {
+      const sel = activeFilter[axis] || [];
+      const map = mapForAxis(axis);
+      const pieces = [
+        '<button class="shell-chip' + (sel.length === 0 ? ' is-active' : '') + '" data-filter-axis="' + axis + '" data-filter-value="__all" type="button">' + LABELS.filter_all + '<span class="shell-chip-count">' + allItems.length + '</span></button>'
+      ];
+      (options[axis] || []).forEach(function(value) {
+        const isActive = sel.indexOf(value) !== -1;
+        const label = (map && map[value]) ? map[value].label : value;
+        pieces.push('<button class="shell-chip' + (isActive ? ' is-active' : '') + '" data-filter-axis="' + axis + '" data-filter-value="' + value + '" type="button">' + label + '<span class="shell-chip-count">' + countForValue(axis, value) + '</span></button>');
+      });
+      return ''
+        + '<div class="shell-filter-section">'
+        +   '<div class="shell-filter-section__label">' + axisLabel(axis) + '</div>'
+        +   '<div class="shell-filter-section__chips">' + pieces.join('') + '</div>'
+        + '</div>';
+    }
+
+    const activeCount = axes.reduce(function(n, a) { return n + (activeFilter[a] || []).length; }, 0);
+    const filterLabel = activeCount === 0 ? LABELS.filter_label : tpl('filter_label_active', { n: activeCount });
+    const clearBtn = activeCount > 0
+      ? '<button class="shell-filter-clear" id="shellFilterClear" type="button">' + LABELS.filter_clear + '</button>'
+      : '';
+    const sectionsHTML = axes.map(chipRow).join('');
+
+    panelFilterArea.innerHTML = ''
+      + '<div class="shell-filter-row">'
+      +   '<button class="shell-filter-toggle' + (filterExpanded ? ' is-open' : '') + '" id="shellFilterToggle" type="button">'
+      +     '<span>' + filterLabel + '</span>'
+      +     '<span class="shell-filter-toggle__icon">' + (filterExpanded ? '−' : '+') + '</span>'
+      +   '</button>'
+      +   clearBtn
+      + '</div>'
+      + '<div class="shell-leftpanel__filter' + (filterExpanded ? '' : ' is-collapsed') + '" id="shellFilter">' + sectionsHTML + '</div>';
+  }
+
+  function renderContextList() {
+    view = 'list';
+    panelHeader.style.display = 'none';
+    panelFilterArea.style.display = '';
+    document.body.classList.remove('shell-detail-open');
+    setActiveCanvasCard(null);
+
+    renderFilterChips();
+
+    const items = itemsForPage('context').filter(matchesFilter).filter(hasDetail);
+    const groups = [
+      { key: 'universal',        label: LABELS.group_universal },
+      { key: 'project-specific', label: LABELS.group_project_specific }
+    ];
+    const groupsHTML = groups.map(function(g) {
+      const groupItems = items.filter(function(it) { return it.group === g.key; });
+      if (!groupItems.length) return '';
+      const listHTML = groupItems.map(function(item, idx) {
+        const labels = pill(GROUP_MAP, item.group) + (item.confidence ? pill(CONF_MAP, item.confidence) : '');
+        return ''
+          + '<div class="shell-item" data-id="' + item.id + '">'
+          +   '<div class="shell-item__row">'
+          +     '<span class="shell-item__n">#' + (idx + 1) + '</span>'
+          +     '<h4 class="shell-item__title">' + (item.title || item.id) + '</h4>'
+          +     '<span class="shell-item__labels">' + labels + '</span>'
+          +   '</div>'
+          + '</div>';
+      }).join('');
+      return '<div class="shell-group" data-group="' + g.key + '"><h4 class="shell-group-header">' + g.label + ' (' + groupItems.length + ')</h4><div class="shell-list">' + listHTML + '</div></div>';
+    }).join('');
+    const emptyHTML = '<div class="shell-empty">' + LABELS.group_empty + '</div>';
+
+    panelBody.innerHTML = groupsHTML || emptyHTML;
+  }
+
+  function renderContextDetail(id) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    if (backBtn) backBtn.style.display = 'inline-block';
+    if (navEl) navEl.style.display = 'flex';
+    document.body.classList.add('shell-detail-open');
+
+    const item = (itemsForPage('context')).find(function(x) { return x.id === id; });
+    if (!item) return;
+    setActiveCanvasCard(id);
+
+    const meta = metaRowsForItem(item);
+    const blocks = [];
+    if (item.rationale) {
+      blocks.push('<div class="shell-detail__block"><h4 class="shell-detail__label">' + LABELS.detail_rationale + '</h4><p class="shell-detail__text">' + item.rationale + '</p></div>');
+    }
+    if (item.alternatives) {
+      blocks.push('<div class="shell-detail__block"><h4 class="shell-detail__label">' + LABELS.detail_alternatives + '</h4><p class="shell-detail__text">' + item.alternatives + '</p></div>');
+    }
+    const blocksHTML = blocks.length ? '<div class="shell-detail__blocks">' + blocks.join('') + '</div>' : '';
+
+    panelBody.innerHTML = ''
+      + '<h3 class="shell-detail__title">' + (item.title || item.id) + '</h3>'
+      + (meta ? '<dl class="shell-detail__meta">' + meta + '</dl>' : '')
+      + blocksHTML;
+    updateNavCounter();
+  }
+
+  function setActiveCanvasCard(id) {
+    document.querySelectorAll('.pp-page .ui-card.is-active').forEach(function(el) {
+      el.classList.remove('is-active');
+    });
+    collapseAllTreeZones();
+    if (id == null) return;
+    const activePage = document.querySelector('.pp-page--active');
+    if (!activePage) return;
+    const card = activePage.querySelector('.ui-card[data-id="' + id + '"]');
+    if (card) card.classList.add('is-active');
+  }
+
+  function renderStrategyList() {
+    view = 'list';
+    panelHeader.style.display = 'none';
+    panelFilterArea.style.display = '';
+    document.body.classList.remove('shell-detail-open');
+    setActiveCanvasCard(null);
+
+    renderFilterChips();
+
+    const items = itemsForPage('strategy').filter(matchesFilter).filter(hasDetail);
+
+    const scopeGroups = [
+      { key: 'page', label: LABELS.group_scope_page },
+      { key: 'ia',   label: LABELS.group_scope_ia }
+    ];
+    const groupsHTML = scopeGroups.map(function(g) {
+      const groupItems = items.filter(function(it) { return it.scope === g.key; });
+      if (!groupItems.length) return '';
+      const listHTML = groupItems.map(function(item, idx) {
+        const pills = pill(SCOPE_MAP, item.scope) + (item.confidence ? pill(CONF_MAP, item.confidence) : '');
+        const pageNote = (item.scope === 'ia' && item.element)
+          ? '<div class="shell-item__page-note"><strong>' + LABELS.detail_element + ':</strong> ' + item.element + '</div>'
+          : '';
+        return ''
+          + '<div class="shell-item" data-id="' + item.id + '">'
+          +   '<div class="shell-item__row">'
+          +     '<span class="shell-item__n">#' + (idx + 1) + '</span>'
+          +     '<h4 class="shell-item__title">' + (item.title || item.id) + '</h4>'
+          +     '<span class="shell-item__labels">' + pills + '</span>'
+          +   '</div>'
+          +   pageNote
+          + '</div>';
+      }).join('');
+      return '<div class="shell-group" data-group="scope-' + g.key + '"><h4 class="shell-group-header">' + g.label + ' (' + groupItems.length + ')</h4><div class="shell-list">' + listHTML + '</div></div>';
+    }).join('');
+    const emptyHTML = '<div class="shell-empty">' + LABELS.group_empty + '</div>';
+
+    panelBody.innerHTML = groupsHTML || emptyHTML;
+  }
+
+  function renderSectionMapList() {
+    view = 'list';
+    panelHeader.style.display = 'none';
+    panelFilterArea.style.display = '';
+    document.body.classList.remove('shell-detail-open');
+    setActiveCanvasCard(null);
+
+    renderFilterChips();
+
+    const items = itemsForPage('section-map').filter(matchesFilter).filter(hasDetail);
+    const pageSections = SECTION_MAP.page_sections || [];
+
+    const groupsHTML = pageSections.map(function(p) {
+      const groupItems = items.filter(function(it) { return it.page_id === p.page_id; });
+      if (!groupItems.length) return '';
+      const pageLabel = p.page_id === 'global' ? (LABELS.page_global_label || p.name) : p.name;
+      const listHTML = groupItems.map(function(item, idx) {
+        const pills = (item.narrative ? narrativeTag(item.narrative) : '')
+          + (item.confidence ? pill(CONF_MAP, item.confidence) : '');
+        return ''
+          + '<div class="shell-item" data-id="' + item.id + '">'
+          +   '<div class="shell-item__row">'
+          +     '<span class="shell-item__n">#' + (idx + 1) + '</span>'
+          +     '<h4 class="shell-item__title">' + (item.title || item.id) + '</h4>'
+          +     '<span class="shell-item__labels">' + pills + '</span>'
+          +   '</div>'
+          + '</div>';
+      }).join('');
+      return '<div class="shell-group" data-group="page-' + p.page_id + '"><h4 class="shell-group-header">' + pageLabel + ' (' + groupItems.length + ')</h4><div class="shell-list">' + listHTML + '</div></div>';
+    }).join('');
+    const emptyHTML = '<div class="shell-empty">' + LABELS.group_empty + '</div>';
+
+    panelBody.innerHTML = groupsHTML || emptyHTML;
+  }
+
+  function renderStrategyDetail(id) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    if (backBtn) backBtn.style.display = 'inline-block';
+    if (navEl) navEl.style.display = 'flex';
+    document.body.classList.add('shell-detail-open');
+
+    const item = (itemsForPage('strategy')).find(function(x) { return x.id === id; });
+    if (!item) return;
+    setActiveCanvasCard(id);
+
+    const metaRows = [];
+    if (item.scope === 'ia' && item.element)         metaRows.push('<dt>' + LABELS.detail_element + '</dt><dd>' + item.element + '</dd>');
+    if (item.scope === 'ia' && item.decision_status) metaRows.push('<dt>' + LABELS.detail_decision_status + '</dt><dd>' + item.decision_status + '</dd>');
+    const meta = metaRows.join('');
+
+    const blocks = [];
+    if (item.rationale)    blocks.push(detailBlock(LABELS.detail_rationale, item.rationale));
+    if (item.alternatives) blocks.push(detailBlock(LABELS.detail_alternatives, item.alternatives));
+    const blocksHTML = blocks.length ? '<div class="shell-detail__blocks">' + blocks.join('') + '</div>' : '';
+
+    panelBody.innerHTML = ''
+      + '<h3 class="shell-detail__title">' + (item.title || item.id) + '</h3>'
+      + (meta ? '<dl class="shell-detail__meta">' + meta + '</dl>' : '')
+      + blocksHTML;
+    updateNavCounter();
+  }
+
+  function renderSectionMapDetail(id) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    if (backBtn) backBtn.style.display = 'inline-block';
+    if (navEl) navEl.style.display = 'flex';
+    document.body.classList.add('shell-detail-open');
+
+    const item = (itemsForPage('section-map')).find(function(x) { return x.id === id; });
+    if (!item) return;
+    setActiveCanvasCard(id);
+
+    const blocks = [];
+    if (item.rationale)    blocks.push(detailBlock(LABELS.detail_rationale, item.rationale));
+    if (item.alternatives) blocks.push(detailBlock(LABELS.detail_alternatives, item.alternatives));
+    const blocksHTML = blocks.length ? '<div class="shell-detail__blocks">' + blocks.join('') + '</div>' : '';
+
+    panelBody.innerHTML = ''
+      + '<h3 class="shell-detail__title">' + (item.title || item.id) + '</h3>'
+      + blocksHTML;
+    updateNavCounter();
+  }
+
+  function detailBlock(label, text) {
+    return '<div class="shell-detail__block"><h4 class="shell-detail__label">' + label + '</h4><p class="shell-detail__text">' + text + '</p></div>';
+  }
+
+  function renderInventoryList() {
+    view = 'list';
+    panelHeader.style.display = 'none';
+    panelFilterArea.style.display = '';
+    document.body.classList.remove('shell-detail-open');
+    setActiveCanvasCard(null);
+
+    renderFilterChips();
+
+    const items = itemsForPage('inventory').filter(matchesFilter).filter(hasDetail);
+    const kindGroups = [
+      { key: 'section',  label: LABELS.group_kind_section },
+      { key: 'template', label: LABELS.group_kind_template }
+    ];
+    const groupsHTML = kindGroups.map(function(g) {
+      const groupItems = items.filter(function(it) { return it.kind === g.key; });
+      if (!groupItems.length) return '';
+      const listHTML = groupItems.map(function(item, idx) {
+        const priorityPill  = item.priority_tier ? pill(PRIORITY_MAP, item.priority_tier) : '';
+        const templatePill  = item.template_type ? pill(TEMPLATE_TYPE_MAP, item.template_type) : '';
+        return ''
+          + '<div class="shell-item" data-id="' + item.id + '">'
+          +   '<div class="shell-item__row">'
+          +     '<span class="shell-item__n">#' + (idx + 1) + '</span>'
+          +     '<h4 class="shell-item__title">' + (item.title || item.id) + '</h4>'
+          +     '<span class="shell-item__labels">' + priorityPill + templatePill + '</span>'
+          +   '</div>'
+          + '</div>';
+      }).join('');
+      return '<div class="shell-group" data-group="kind-' + g.key + '"><h4 class="shell-group-header">' + g.label + ' (' + groupItems.length + ')</h4><div class="shell-list">' + listHTML + '</div></div>';
+    }).join('');
+    const emptyHTML = '<div class="shell-empty">' + LABELS.group_empty + '</div>';
+
+    panelBody.innerHTML = groupsHTML || emptyHTML;
+  }
+
+  function renderInventoryDetail(id) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    if (backBtn) backBtn.style.display = 'inline-block';
+    if (navEl) navEl.style.display = 'flex';
+    document.body.classList.add('shell-detail-open');
+
+    const item = (itemsForPage('inventory')).find(function(x) { return x.id === id; });
+    if (!item) return;
+    setActiveCanvasCard(id);
+
+    const blocks = [];
+    if (item.rationale)    blocks.push(detailBlock(LABELS.detail_rationale, item.rationale));
+    if (item.alternatives) blocks.push(detailBlock(LABELS.detail_alternatives, item.alternatives));
+    const blocksHTML = blocks.length ? '<div class="shell-detail__blocks">' + blocks.join('') + '</div>' : '';
+
+    panelBody.innerHTML = ''
+      + '<h3 class="shell-detail__title">' + (item.title || item.id) + '</h3>'
+      + blocksHTML;
+    updateNavCounter();
+  }
+
+  function renderList() {
+    if (currentPage === 'context')     return renderContextList();
+    if (currentPage === 'strategy')    return renderStrategyList();
+    if (currentPage === 'section-map') return renderSectionMapList();
+    if (currentPage === 'inventory')   return renderInventoryList();
+  }
+
+  function renderDetail(id) {
+    if (currentPage === 'context')     return renderContextDetail(id);
+    if (currentPage === 'strategy')    return renderStrategyDetail(id);
+    if (currentPage === 'section-map') return renderSectionMapDetail(id);
+    if (currentPage === 'inventory')   return renderInventoryDetail(id);
+  }
+
+  function captureNavList() {
+    navList = itemsForPage(currentPage).filter(matchesFilter).filter(hasDetail).map(function(it) { return { id: it.id }; });
+  }
+  function updateNavCounter() {
+    if (!navList.length) {
+      if (navCounter) navCounter.textContent = LABELS.nav_counter_empty;
+      if (navPrevBtn) navPrevBtn.disabled = true;
+      if (navNextBtn) navNextBtn.disabled = true;
+      return;
+    }
+    if (navCounter) navCounter.textContent = tpl('nav_counter', { i: navIndex + 1, total: navList.length });
+    if (navPrevBtn) navPrevBtn.disabled = navIndex <= 0;
+    if (navNextBtn) navNextBtn.disabled = navIndex >= navList.length - 1;
+  }
+  function goPrev() {
+    if (navIndex > 0) { navIndex--; renderDetail(navList[navIndex].id); }
+  }
+  function goNext() {
+    if (navIndex < navList.length - 1) { navIndex++; renderDetail(navList[navIndex].id); }
+  }
+
+  function activatePage(slug) {
+    if (VISIBLE_PAGES.indexOf(slug) === -1) return;
+    currentPage = slug;
+    resetFilter(slug);
+    filterExpanded = false;
+    const pages = document.querySelectorAll('.pp-page');
+    pages.forEach(function(p) {
+      p.classList.toggle('pp-page--active', p.id === 'pp-page-' + slug);
+    });
+    if (pageTabs) {
+      pageTabs.querySelectorAll('.shell-bottombar__btn').forEach(function(btn) {
+        btn.classList.toggle('is-active', btn.getAttribute('data-page') === slug);
+      });
+    }
+    renderList();
+  }
+
+  if (panelToggle) panelToggle.addEventListener('click', togglePanel);
+
+  if (pageTabs) {
+    pageTabs.addEventListener('click', function(e) {
+      const btn = e.target.closest('.shell-bottombar__btn[data-page]');
+      if (!btn) return;
+      const slug = btn.getAttribute('data-page');
+      activatePage(slug);
+      location.hash = '#' + slug;
+    });
+    window.addEventListener('hashchange', function() {
+      const slug = (location.hash || '').slice(1);
+      if (VISIBLE_PAGES.indexOf(slug) !== -1) activatePage(slug);
+    });
+  }
+
+  panelBody.addEventListener('click', function(e) {
+    const item = e.target.closest('.shell-item');
+    if (item) {
+      captureNavList();
+      navIndex = navList.findIndex(function(x) { return x.id === item.dataset.id; });
+      renderDetail(item.dataset.id);
+    }
+  });
+
+  panelFilterArea.addEventListener('click', function(e) {
+    const clearBtn = e.target.closest('#shellFilterClear');
+    if (clearBtn) {
+      resetFilter(currentPage);
+      renderList();
+      return;
+    }
+    const toggleBtn = e.target.closest('#shellFilterToggle');
+    if (toggleBtn) {
+      filterExpanded = !filterExpanded;
+      renderList();
+      return;
+    }
+    const chip = e.target.closest('.shell-chip');
+    if (chip) {
+      const axis = chip.dataset.filterAxis;
+      const value = chip.dataset.filterValue;
+      if (!axis) return;
+      if (value === '__all') {
+        activeFilter[axis] = [];
+      } else {
+        const arr = activeFilter[axis] || (activeFilter[axis] = []);
+        const idx = arr.indexOf(value);
+        if (idx === -1) arr.push(value);
+        else arr.splice(idx, 1);
+      }
+      renderList();
+    }
+  });
+
+  const ppMain = document.querySelector('.pp-main');
+  if (ppMain) {
+    ppMain.addEventListener('click', function(e) {
+      const card = e.target.closest('.ui-card[data-id]:not(.ui-card--no-detail)');
+      if (!card) return;
+      const id = card.dataset.id;
+      if (view === 'detail' && card.classList.contains('is-active')) {
+        renderList();
+        return;
+      }
+      openPanel();
+      captureNavList();
+      navIndex = navList.findIndex(function(x) { return x.id === id; });
+      renderDetail(id);
+    });
+  }
+
+  if (backBtn) backBtn.addEventListener('click', function() {
+    if (view === 'detail') renderList();
+  });
+  if (navPrevBtn) navPrevBtn.addEventListener('click', goPrev);
+  if (navNextBtn) navNextBtn.addEventListener('click', goNext);
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) {
+      if (view === 'detail') renderList();
+      else closePanel();
+    }
+  });
+
+  function _md_stripBraces(v) {
+    var s = (v == null) ? '' : String(v);
+    return (s.length >= 2 && s.charAt(0) === '{' && s.charAt(s.length - 1) === '}') ? s.slice(1, -1) : s;
+  }
+  function _md_confidenceLabel(c) {
+    if (c === 'high')   return LABELS.md_confidence_confirmed;
+    if (c === 'medium') return LABELS.md_confidence_likely;
+    if (c === 'low')    return LABELS.md_confidence_tentative;
+    return c || '';
+  }
+  function _md_priorityLabel(p) {
+    if (p === 'critical')    return LABELS.priority_critical;
+    if (p === 'significant') return LABELS.priority_significant;
+    if (p === 'minor')       return LABELS.priority_minor;
+    return p || '';
+  }
+  function _md_templateTypeLabel(t) {
+    if (t === 'standard')       return LABELS.template_standard;
+    if (t === 'corporate-pool') return LABELS.template_corporate_pool;
+    if (t === 'modular')        return LABELS.template_modular;
+    return t || '';
+  }
+  function _md_contentStatusLabel(s) {
+    if (s === 'content-ready') return LABELS.pp_content_ready;
+    if (s === 'needs-content') return LABELS.pp_needs_content;
+    if (s === 'tbd')           return LABELS.pp_tbd_status;
+    return s || '';
+  }
+  function _md_joinChips(arr) {
+    if (!arr || !arr.length) return '';
+    return arr.map(_md_stripBraces).join(', ');
+  }
+  function _md_renderCardBody(item) {
+    var lines = [];
+    if (item.lead) lines.push(_md_stripBraces(item.lead), '');
+    if (item.body) lines.push(_md_stripBraces(item.body), '');
+    if (item.kv && item.kv.length) {
+      item.kv.forEach(function(entry) {
+        var label = _md_stripBraces(entry.label);
+        var value = _md_stripBraces(entry.value);
+        lines.push('- **' + label + ':** ' + value);
+      });
+      lines.push('');
+    }
+    if (item.bullets && item.bullets.length) {
+      item.bullets.forEach(function(b) { lines.push('- ' + _md_stripBraces(b)); });
+      lines.push('');
+    }
+    if (item.ranked && item.ranked.length) {
+      item.ranked.forEach(function(entry, i) {
+        var text = _md_stripBraces(entry.text);
+        var suffix = entry.priority ? ' (' + _md_stripBraces(entry.priority) + ')' : '';
+        lines.push((i + 1) + '. ' + text + suffix);
+      });
+      lines.push('');
+    }
+    if (item.chips && item.chips.length) {
+      item.chips.forEach(function(c) { lines.push('- ' + _md_stripBraces(c)); });
+      lines.push('');
+    }
+    if (item.scope_split) {
+      var inc = (item.scope_split.included || []).map(_md_stripBraces);
+      var exc = (item.scope_split.excluded || []).map(_md_stripBraces);
+      if (inc.length) lines.push('**' + LABELS.md_included + ':** ' + inc.join(', '));
+      if (exc.length) lines.push('**' + LABELS.md_excluded + ':** ' + exc.join(', '));
+      if (inc.length || exc.length) lines.push('');
+    }
+    if (item.confidence) {
+      lines.push('**' + LABELS.md_confidence + ':** ' + _md_confidenceLabel(item.confidence));
+    }
+    if (item.meta_pills && item.meta_pills.length) {
+      lines.push('**' + LABELS.md_meta_pills + ':** ' + _md_joinChips(item.meta_pills));
+    }
+    if (item.rationale) {
+      lines.push('', '**' + LABELS.md_rationale + ':**', '', _md_stripBraces(item.rationale));
+    }
+    if (item.alternatives) {
+      lines.push('', '**' + LABELS.md_alternatives + ':**', '', _md_stripBraces(item.alternatives));
+    }
+    return lines.join('\n').replace(/\n+$/, '');
+  }
+  function _md_renderTree(nodes, depth) {
+    if (!nodes || !nodes.length) return '';
+    var indent = new Array((depth || 0) + 1).join('  ');
+    var out = [];
+    nodes.forEach(function(n) {
+      out.push(indent + '- ' + _md_stripBraces(n.name || n.id || ''));
+      if (n.children && n.children.length) {
+        out.push(_md_renderTree(n.children, (depth || 0) + 1));
+      }
+    });
+    return out.join('\n');
+  }
+
+  function formatContextMd(data) {
+    data = data || CONTEXT;
+    var parts = ['# ' + LABELS.md_pp_context_title, ''];
+    var byId = {};
+    (data.items || []).forEach(function(it) { byId[it.id] = it; });
+    var rows = (data.canvas && data.canvas.rows) || [];
+    rows.forEach(function(row) {
+      if (row.type !== 'cards') return;
+      if (row.title) parts.push('## ' + _md_stripBraces(row.title), '');
+      (row.card_ids || []).forEach(function(id) {
+        var it = byId[id];
+        if (!it) return;
+        parts.push('### ' + _md_stripBraces(it.title || id), '');
+        var body = _md_renderCardBody(it);
+        if (body) parts.push(body, '');
+        parts.push('---', '');
+      });
+    });
+    return { md: parts.join('\n').replace(/\n+$/, '\n'), filename: NS + '-project-context.md' };
+  }
+
+  function formatStrategyMd(data) {
+    data = data || STRATEGY;
+    var parts = ['# ' + LABELS.md_pp_strategy_title, ''];
+    var byId = {};
+    (data.items || []).forEach(function(it) { byId[it.id] = it; });
+    var rows = (data.canvas && data.canvas.rows) || [];
+    rows.forEach(function(row) {
+      if (row.type === 'cards') {
+        if (row.title) parts.push('## ' + _md_stripBraces(row.title), '');
+        (row.card_ids || []).forEach(function(id) {
+          var it = byId[id];
+          if (!it) return;
+          parts.push('### ' + _md_stripBraces(it.title || id), '');
+          var body = _md_renderCardBody(it);
+          if (body) parts.push(body, '');
+          parts.push('---', '');
+        });
+      } else if (row.type === 'heading') {
+        if (row.title) parts.push('## ' + _md_stripBraces(row.title), '');
+      } else if (row.type === 'tree' || row.type === 'sitemap') {
+        var kind = row.kind || (row.type === 'sitemap' ? 'sitemap' : null);
+        var nodes = row.nodes || (row.nodes_ref ? data[row.nodes_ref] : null) || [];
+        var title = row.title ? _md_stripBraces(row.title) : (kind || '');
+        parts.push('## ' + title, '');
+        var meta = (kind === 'sitemap'   && data.sitemap_meta)   ? data.sitemap_meta
+                 : (kind === 'main-menu' && data.main_menu_meta) ? data.main_menu_meta
+                 : (kind === 'footer'    && data.footer_meta)    ? data.footer_meta
+                 : null;
+        var tree = _md_renderTree(nodes, 0);
+        if (tree) parts.push(tree, '');
+        if (meta && meta.rationale) {
+          parts.push('**' + LABELS.md_rationale + ':**', '', _md_stripBraces(meta.rationale), '');
+        }
+        if (meta && meta.alternatives) {
+          parts.push('**' + LABELS.md_alternatives + ':**', '', _md_stripBraces(meta.alternatives), '');
+        }
+        parts.push('---', '');
+      }
+    });
+    var iaItems = (data.items || []).filter(function(it) { return it.scope === 'ia'; });
+    if (iaItems.length) {
+      parts.push('## ' + LABELS.md_strategy_section_ia, '');
+      iaItems.forEach(function(it) {
+        parts.push('### ' + _md_stripBraces(it.title || it.id), '');
+        if (it.element)         parts.push('- **' + LABELS.md_element + ':** ' + _md_stripBraces(it.element));
+        if (it.decision_status) parts.push('- **' + LABELS.md_decision_status + ':** ' + _md_stripBraces(it.decision_status));
+        if (it.confidence)      parts.push('- **' + LABELS.md_confidence + ':** ' + _md_confidenceLabel(it.confidence));
+        parts.push('');
+        if (it.rationale) {
+          parts.push('**' + LABELS.md_rationale + ':**', '', _md_stripBraces(it.rationale), '');
+        }
+        if (it.alternatives) {
+          parts.push('**' + LABELS.md_alternatives + ':**', '', _md_stripBraces(it.alternatives), '');
+        }
+        parts.push('---', '');
+      });
+    }
+    return { md: parts.join('\n').replace(/\n+$/, '\n'), filename: NS + '-project-strategy.md' };
+  }
+
+  function formatSectionMapMd(data) {
+    data = data || SECTION_MAP;
+    var parts = ['# ' + LABELS.md_pp_section_map_title, ''];
+    var pages = data.page_sections || [];
+    var sections = (data.items || []).filter(function(it) { return it.scope === 'section'; });
+    pages.forEach(function(page) {
+      var name = _md_stripBraces(page.name || page.page_id || '');
+      var goal = page.goal ? ': ' + _md_stripBraces(page.goal) : '';
+      parts.push('## ' + name + goal, '');
+      if (page.top_tasks_served && page.top_tasks_served.length) {
+        parts.push('*' + LABELS.md_top_tasks_served + ':* ' + _md_joinChips(page.top_tasks_served), '');
+      }
+      var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
+      pageSections.forEach(function(s) {
+        var heading = '### ' + _md_stripBraces(s.title || s.id || '');
+        if (s.narrative) heading += ': ' + _md_stripBraces(s.narrative);
+        var pillBits = [];
+        if (s.confidence)     pillBits.push(_md_confidenceLabel(s.confidence));
+        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
+        if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
+        parts.push(heading, '');
+        if (s.goal)                parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
+        if (s.question)            parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
+        if (s.content_description) parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        if (s.rationale)           parts.push('- **' + LABELS.md_rationale + ':** ' + _md_stripBraces(s.rationale));
+        if (s.alternatives)        parts.push('- **' + LABELS.md_alternatives + ':** ' + _md_stripBraces(s.alternatives));
+        parts.push('');
+      });
+      parts.push('---', '');
+    });
+    return { md: parts.join('\n').replace(/\n+$/, '\n'), filename: NS + '-section-map.md' };
+  }
+
+  function formatInventoryMd(data) {
+    data = data || INVENTORY;
+    var parts = ['# ' + LABELS.md_pp_inventory_title, ''];
+    var summary = data.summary || {};
+    var sectionsNeeding = (typeof summary.sections_needing_content === 'number')
+      ? summary.sections_needing_content
+      : (data.section_index || []).filter(function(s) { return s.content_status !== 'content-ready'; }).length;
+    parts.push('## ' + LABELS.md_inventory_section_summary, '');
+    parts.push('- **' + LABELS.md_inventory_summary_total_templates + ':** ' + (summary.total_templates || 0));
+    parts.push('- **' + LABELS.md_inventory_summary_unique_sections + ':** ' + (summary.unique_sections || 0));
+    parts.push('- **' + LABELS.md_inventory_summary_sections_needing_content + ':** ' + sectionsNeeding);
+    parts.push('', '---', '');
+    var templateMap = data.template_map || [];
+    if (templateMap.length) {
+      parts.push('## ' + LABELS.md_inventory_section_template_map, '');
+      templateMap.forEach(function(t) {
+        var heading = '### ' + _md_stripBraces(t.name || t.id || '');
+        if (t.template_type) heading += ' (' + _md_templateTypeLabel(t.template_type) + ')';
+        parts.push(heading, '');
+        if (t.goal)         parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(t.goal));
+        if (t.pages_using && t.pages_using.length) {
+          parts.push('- **' + LABELS.md_pages_using + ':** ' + _md_joinChips(t.pages_using));
+        }
+        parts.push('');
+      });
+      parts.push('---', '');
+    }
+    var sectionIndex = data.section_index || [];
+    var sectionById = {};
+    sectionIndex.forEach(function(s) { sectionById[s.id] = s; });
+    if (sectionIndex.length) {
+      parts.push('## ' + LABELS.md_inventory_section_section_index, '');
+      sectionIndex.forEach(function(s) {
+        var heading = '### ' + _md_stripBraces(s.name || s.id || '');
+        var pillBits = [];
+        if (s.priority_tier)  pillBits.push(_md_priorityLabel(s.priority_tier));
+        if (s.template_type)  pillBits.push(_md_templateTypeLabel(s.template_type));
+        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
+        if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
+        parts.push(heading, '');
+        if (s.narrative)   parts.push('- **' + LABELS.md_narrative + ':** ' + _md_stripBraces(s.narrative));
+        if (s.used_in && s.used_in.length) {
+          parts.push('- **' + LABELS.md_used_in + ':** ' + _md_joinChips(s.used_in));
+        }
+        if (s.goal)        parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
+        if (s.question)    parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
+        if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
+        if (s.atoms && s.atoms.length) {
+          parts.push('- **' + LABELS.md_atoms + ':** ' + _md_joinChips(s.atoms));
+        }
+        if (s.variants && s.variants.length) {
+          parts.push('- **' + LABELS.md_variants + ':** ' + _md_joinChips(s.variants));
+        }
+        if (s.confidence)  parts.push('- **' + LABELS.md_confidence + ':** ' + _md_confidenceLabel(s.confidence));
+        parts.push('');
+        if (s.rationale) {
+          parts.push('**' + LABELS.md_rationale + ':**', '', _md_stripBraces(s.rationale), '');
+        }
+        if (s.alternatives) {
+          parts.push('**' + LABELS.md_alternatives + ':**', '', _md_stripBraces(s.alternatives), '');
+        }
+        parts.push('---', '');
+      });
+    }
+    var templates = data.templates || [];
+    if (templates.length) {
+      parts.push('## ' + LABELS.md_inventory_section_template_arch, '');
+      templates.forEach(function(t) {
+        var heading = '### ' + _md_stripBraces(t.name || t.id || '');
+        if (t.template_type) heading += ': ' + _md_templateTypeLabel(t.template_type);
+        parts.push(heading, '');
+        if (t.template_type === 'standard') {
+          (t.sections || []).forEach(function(secId, i) {
+            var sec = sectionById[secId];
+            if (!sec) { parts.push((i + 1) + '. ' + _md_stripBraces(secId)); return; }
+            var name = _md_stripBraces(sec.name || sec.id);
+            var narr = sec.narrative ? ' (' + _md_stripBraces(sec.narrative) + ')' : '';
+            parts.push((i + 1) + '. ' + name + narr);
+          });
+          parts.push('');
+        } else if (t.template_type === 'corporate-pool') {
+          var sharedNames = (t.shared_sections || []).map(function(secId) {
+            var sec = sectionById[secId];
+            return _md_stripBraces(sec ? (sec.name || sec.id) : secId);
+          });
+          if (sharedNames.length) {
+            parts.push('**' + LABELS.md_inventory_template_arch_corp_pool_shared + ':** ' + sharedNames.join(', '));
+          }
+          var pool = t.pool_sections || [];
+          if (pool.length) {
+            parts.push('**' + LABELS.md_inventory_template_arch_corp_pool_variants + ':**');
+            pool.forEach(function(v) {
+              var name = _md_stripBraces(v.name || v.id || '');
+              var usedBy = (v.used_by && v.used_by.length) ? ': ' + _md_joinChips(v.used_by) : '';
+              parts.push('- ' + name + usedBy);
+            });
+          }
+          parts.push('');
+        } else if (t.template_type === 'modular') {
+          var atoms = (t.atoms || []).map(_md_stripBraces);
+          if (atoms.length) {
+            parts.push('**' + LABELS.md_inventory_template_arch_modular_atoms + ':** ' + atoms.join(', '));
+          }
+          parts.push('');
+        }
+        parts.push('---', '');
+      });
+    }
+    return { md: parts.join('\n').replace(/\n+$/, '\n'), filename: NS + '-design-plan.md' };
+  }
+
+  function triggerDownload(filename, content, mime) {
+    var blob = new Blob([content], { type: (mime || 'text/plain') + ';charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function _downloadHtml() {
+    var docClone = document.documentElement.cloneNode(true);
+    var content = '<!DOCTYPE html>\n' + docClone.outerHTML;
+    triggerDownload(NS + '-project-plan.html', content, 'text/html');
+  }
+
+  var dlContextBtn = document.getElementById('shellDownloadContextMd');
+  if (dlContextBtn) dlContextBtn.addEventListener('click', function() {
+    var r = formatContextMd(CONTEXT);
+    triggerDownload(r.filename, r.md, 'text/markdown');
+  });
+  var dlStrategyBtn = document.getElementById('shellDownloadStrategyMd');
+  if (dlStrategyBtn) dlStrategyBtn.addEventListener('click', function() {
+    var r = formatStrategyMd(STRATEGY);
+    triggerDownload(r.filename, r.md, 'text/markdown');
+  });
+  var dlSectionMapBtn = document.getElementById('shellDownloadSectionMapMd');
+  if (dlSectionMapBtn) dlSectionMapBtn.addEventListener('click', function() {
+    var r = formatSectionMapMd(SECTION_MAP);
+    triggerDownload(r.filename, r.md, 'text/markdown');
+  });
+  var dlInventoryBtn = document.getElementById('shellDownloadInventoryMd');
+  if (dlInventoryBtn) dlInventoryBtn.addEventListener('click', function() {
+    var r = formatInventoryMd(INVENTORY);
+    triggerDownload(r.filename, r.md, 'text/markdown');
+  });
+  var dlHtmlBtn = document.getElementById('shellDownloadHtml');
+  if (dlHtmlBtn) dlHtmlBtn.addEventListener('click', _downloadHtml);
+
+  applyStaticLabels();
+  function applyTemplateStockVisibility() {
+    if (DEMO_MODE) return;
+    var MD_BUTTON_BY_SLUG = {
+      'context':     'shellDownloadContextMd',
+      'strategy':    'shellDownloadStrategyMd',
+      'section-map': 'shellDownloadSectionMapMd',
+      'inventory':   'shellDownloadInventoryMd'
+    };
+    ALL_PAGES.forEach(function(slug) {
+      if (VISIBLE_PAGES.indexOf(slug) !== -1) return;
+      if (pageTabs) {
+        var btn = pageTabs.querySelector('.shell-bottombar__btn[data-page="' + slug + '"]');
+        if (btn) btn.style.display = 'none';
+      }
+      var pageEl = document.getElementById('pp-page-' + slug);
+      if (pageEl) pageEl.style.display = 'none';
+      var dlBtn = document.getElementById(MD_BUTTON_BY_SLUG[slug]);
+      if (dlBtn) dlBtn.style.display = 'none';
+    });
+    var dlHtmlBtn = document.getElementById('shellDownloadHtml');
+    if (dlHtmlBtn && VISIBLE_PAGES.length === 0) dlHtmlBtn.style.display = 'none';
+    var dlGroup = document.getElementById('shellDownloadGroup');
+    if (dlGroup && VISIBLE_PAGES.length === 0) dlGroup.style.display = 'none';
+  }
+  applyTemplateStockVisibility();
+  if (VISIBLE_PAGES.indexOf('context') !== -1)     renderContextSubPage();
+  if (VISIBLE_PAGES.indexOf('strategy') !== -1)    renderStrategySubPage();
+  if (VISIBLE_PAGES.indexOf('section-map') !== -1) renderSectionMapSubPage();
+  if (VISIBLE_PAGES.indexOf('inventory') !== -1)   renderInventorySubPage();
+  const initialHash = (location.hash || '').slice(1);
+  let initialPage;
+  if (VISIBLE_PAGES.indexOf(initialHash) !== -1) {
+    initialPage = initialHash;
+  } else if (VISIBLE_PAGES.indexOf('context') !== -1) {
+    initialPage = 'context';
+  } else {
+    initialPage = VISIBLE_PAGES[0];
+  }
+  if (initialPage) activatePage(initialPage);
+
+  let initialOpen = null;
+  try { initialOpen = localStorage.getItem(NS + '-panel-open'); } catch (e) {}
+  if (initialOpen === '1') openPanel();
+})();
+</script>
+
+</body>
+</html>

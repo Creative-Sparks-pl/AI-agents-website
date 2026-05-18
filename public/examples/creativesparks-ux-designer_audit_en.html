@@ -1,0 +1,4504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{slug}: Audit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================================ */
+    /* === UNIVERSAL — sync across all workflow templates        === */
+    /* === Base tokens, reset, typography, shared badge pills    === */
+    /* ============================================================ */
+
+    :root {
+      --wf-bg: #ffffff;
+      --wf-bg-warm: #f8f7f5;
+      --wf-text: #111111;
+      --wf-secondary: #444444;
+      --wf-muted: #888888;
+      --wf-line: #e0e0e0;
+      --wf-fill: #eeeeee;
+      --wf-accent: #1a1a1a;
+      --wf-gap: 16px;
+      --wf-radius-lg: 16px;
+      --wf-radius-md: 8px;
+      --wf-radius-sm: 4px;
+      --wf-radius: var(--wf-radius-lg);
+      --wf-max-w: 1560px;
+      --wf-font: 'Inter', system-ui, -apple-system, sans-serif;
+      --wf-font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', monospace;
+      --wf-section-py: 48px;
+      --shell-pin-color: #c0392b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--wf-font);
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--wf-text);
+      background: var(--wf-bg-warm);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1 { font-size: 2.441rem; font-weight: 700; line-height: 1.15; letter-spacing: -0.03em; margin-bottom: var(--wf-gap); }
+    h2 { font-size: 1.953rem; font-weight: 700; line-height: 1.2;  letter-spacing: -0.02em; margin-bottom: calc(var(--wf-gap) * 0.75); }
+    h3 { font-size: 1.563rem; font-weight: 700; line-height: 1.25; margin-bottom: calc(var(--wf-gap) * 0.5); }
+    h4 { font-size: 1.25rem;  font-weight: 600; line-height: 1.35; margin: 16px 0 calc(var(--wf-gap) * 0.4); }
+    p, ul, ol { color: var(--wf-text); }
+
+    @media (max-width: 768px) {
+      h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.5rem; }
+    }
+
+    /* mc-badge — universal pill. Compose modifiers for variants:
+       color only (--green/--yellow/--red), decision state (--accepted/--rejected),
+       or interactive (--button). Same size, padding, font everywhere.
+       font/line-height set explicitly so <button>-based pills don't fall back to UA defaults. */
+    .mc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-family: inherit;
+      font-size: 0.5625rem;
+      font-weight: 700;
+      line-height: 1.6;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+    /* Constrain icon glyphs so they don't stretch the pill beyond the text line. */
+    .mc-badge::before { line-height: 1; }
+
+    /* Button variant — transparent with a real 1px border. Declared FIRST so state
+       modifiers (color or decision) override its background/color when composed.
+       Padding is reduced by 1px on each side to compensate for the border so the
+       button matches the size of non-bordered pills. */
+    .mc-badge--button {
+      background: transparent;
+      color: #555;
+      border: 1px solid #ccc;
+      padding: 0 5px;
+      cursor: pointer;
+      transition: background 120ms, color 120ms, border-color 120ms;
+    }
+    .mc-badge--button:hover { background: #f5f5f5; }
+    /* When a decision state is selected, hide the border so only the fill reads. */
+    .mc-badge--button.mc-badge--accepted,
+    .mc-badge--button.mc-badge--rejected { border-color: transparent; }
+    /* Decision buttons always show their icon — active or not — so the affordance
+       is visible before the user clicks. Icon is keyed off data-decision-set. */
+    .mc-badge--button[data-decision-set="accepted"]::before { content: "✓"; font-weight: 700; }
+    .mc-badge--button[data-decision-set="rejected"]::before { content: "✗"; font-weight: 700; }
+
+    .mc-badge--green  { background: #d4edda; color: #155724; }
+    .mc-badge--yellow { background: #fff3cd; color: #856404; }
+    .mc-badge--red    { background: #f8d7da; color: #721c24; }
+
+    /* Decision-state variants — color + icon. Work as read-only pills or on buttons. */
+    .mc-badge--accepted { background: #d4edda; color: #155724; }
+    .mc-badge--accepted::before { content: "✓"; font-weight: 700; }
+    .mc-badge--rejected { background: #f8d7da; color: #721c24; }
+    .mc-badge--rejected::before { content: "✗"; font-weight: 700; }
+
+    /* ============================================================ */
+    /* === WIREFRAME-SPECIFIC — sync across wireframe-using      === */
+    /* === templates (audit, wireframing, reverse-wireframing)   === */
+    /* === Class prefix: .wf-*                                    === */
+    /* ============================================================ */
+
+    /* === Low-Fi Wireframe Extensions — consolidated wireframe deliverable === */
+    /* Requires: UNIVERSAL tokens above (variables, reset, typography).          */
+
+    /* === Page containers (single-file routing for index.html deliverable) === */
+    .wf-page { display: none; padding: 0 0 48px; }
+    .wf-page.wf-page--active { display: block; }
+    body:not(:has(.wf-page--active)) .wf-page#home { display: block; } /* no-JS fallback */
+
+    /* === Section cards === */
+    .wf-section {
+      background: var(--wf-bg);
+      border-radius: var(--wf-radius-lg);
+      max-width: min(var(--wf-max-w), calc(100vw - 64px));
+      margin: 0 auto 64px;
+      padding: var(--wf-section-py) 32px;
+    }
+    .wf-section--warm { background: var(--wf-bg-warm); }
+    .wf-section--white { background: var(--wf-bg); }
+    .wf-section--with-note-inside {
+      padding-top: 24px;
+      padding-bottom: 24px;
+    }
+    body.wf-notes-hidden .wf-section--with-note-inside {
+      padding-top: var(--wf-section-py);
+      padding-bottom: var(--wf-section-py);
+    }
+    /* Vertical rhythm inside a section: flex column with gap so every direct child
+       (paragraphs, grids, cards, media, buttons, extension blocks) gets consistent
+       spacing regardless of kind. Cards still handle their own inner rhythm via their
+       own flex gap. */
+    .wf-inner {
+      max-width: none; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 32px;
+    }
+
+    /* === Layout utilities === */
+    /* Grid — gap raised to 32px in v4.3. Renderer may emit inline
+       `grid-template-columns` when `columns` is an array for asymmetric ratios. */
+    .wf-grid { display: grid; gap: 32px; align-items: stretch; }
+    .wf-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .wf-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .wf-grid-4 { grid-template-columns: repeat(4, 1fr); }
+    /* Card — v4.3 flip:
+       - default: flush (transparent, no padding) — layout grouping only
+       - .wf-card--tile: warm fill + rounded + padding — when DOM shows a visible bordered tile
+       - .wf-card--highlight: accent border + main bg — unchanged */
+    .wf-card {
+      background: transparent;
+      padding: 0;
+      display: flex; flex-direction: column; gap: 12px;
+      align-self: stretch;
+    }
+    .wf-card--tile {
+      background: var(--wf-bg-warm);
+      border-radius: 8px;
+      padding: var(--wf-gap);
+    }
+    .wf-section--warm .wf-card--tile { background: var(--wf-bg); }
+    .wf-card--highlight {
+      background: var(--wf-bg);
+      border: 1.5px solid var(--wf-accent);
+      border-radius: 8px;
+      padding: var(--wf-gap);
+    }
+    .wf-section--warm .wf-card--highlight { background: var(--wf-bg); }
+    /* Back-compat alias — v4.2 data emitting `variant: flush` renders like v4.3 default. */
+    .wf-card--flush {
+      background: transparent;
+      padding: 0;
+    }
+
+    /* Nested-grid cosmetic — tighter gap + inline padding for cards inside a NESTED inner grid only.
+       Scope includes the extra `.wf-grid` so the flush-default cards in outer-level grids stay
+       truly flush (no padding override). */
+    .wf-grid .wf-grid { gap: 24px; }
+    .wf-grid .wf-grid .wf-card { padding-inline: 12px; }
+
+    /* === Media ===
+       `media.height` controls vertical space — sm|md|lg|cover (default md).
+       `media.width` optionally caps horizontal size — sm|md|lg (default: container-driven).
+       `cover` fills the parent card's available vertical space (requires .wf-card flex-column). */
+    .wf-media {
+      background: var(--wf-fill);
+      border-radius: 8px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      gap: 12px;
+      color: var(--wf-muted); font-size: 0.8125rem;
+      padding: var(--wf-gap); text-align: center;
+      min-height: 240px;
+    }
+    /* Placeholder icon — classic "picture" glyph, muted. Fills the box above the label. */
+    .wf-media::before {
+      content: "";
+      flex: 1;
+      width: 100%;
+      min-height: 48px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 48px 48px;
+      opacity: 0.5;
+    }
+    .wf-media--sm    { min-height: 120px; }
+    .wf-media--sm::before { background-size: 32px 32px; min-height: 32px; }
+    .wf-media--md    { min-height: 240px; }
+    .wf-media--lg    { min-height: 400px; }
+    .wf-media--lg::before { background-size: 64px 64px; }
+    .wf-media--cover { min-height: 240px; flex: 1 1 auto; align-self: stretch; }
+    .wf-media--cover::before { background-size: 64px 64px; }
+    /* Optional width caps — use for icons/logos that should NOT fill their container.
+       Default alignment is start (left in LTR): `align-self: flex-start` keeps the icon
+       at the start edge of a flex-column parent, matching live-page layouts where icons
+       above headings sit left-aligned. Inside a regular block parent, `align-self` has
+       no effect and the natural content-width position is unaffected. */
+    .wf-media--w-sm { max-width: 120px; align-self: flex-start; }
+    .wf-media--w-md { max-width: 240px; align-self: flex-start; }
+    .wf-media--w-lg { max-width: 400px; align-self: flex-start; }
+
+    .wf-button {
+      display: inline-block; padding: 12px 24px;
+      border: 1px solid var(--wf-line); border-radius: 6px;
+      font-weight: 600; font-size: 0.875rem; font-family: var(--wf-font);
+      cursor: pointer; background: transparent; color: var(--wf-text); text-decoration: none;
+      margin: 4px 8px 8px 0;
+      /* Sit at natural content width, never stretch in a flex-column parent. */
+      width: fit-content; align-self: flex-start;
+    }
+    .wf-button--primary   { background: var(--wf-accent); border-color: var(--wf-accent); color: #ffffff; }
+    .wf-button--secondary { background: transparent; border-color: var(--wf-line); color: var(--wf-text); }
+
+    /* === Link — inline / text-styled navigation links.
+       `plain` is a normal text link; `arrow` appends a chevron glyph and removes underline. */
+    .wf-link {
+      display: inline; font-family: var(--wf-font); color: var(--wf-text); font-weight: 500;
+      margin-right: 8px;
+    }
+    .wf-link--plain { text-decoration: underline; text-underline-offset: 2px; }
+    .wf-link--arrow {
+      text-decoration: none;
+      color: var(--wf-accent);
+      display: inline-flex; align-items: center; gap: 4px;
+    }
+    .wf-link--arrow::after { content: " →"; font-weight: 600; }
+
+    .wf-field {
+      display: block; width: 100%; padding: 10px 12px;
+      border: 1px solid var(--wf-line); border-radius: 6px;
+      font-size: 1rem; font-family: var(--wf-font); margin-bottom: var(--wf-gap);
+    }
+
+    .wf-list { list-style: none; padding: 0; }
+    .wf-list li { padding: 8px 0; border-bottom: 1px solid var(--wf-line); }
+
+    .wf-label {
+      font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; color: var(--wf-muted); margin-bottom: 8px;
+    }
+    .wf-micro { font-size: 0.8125rem; color: var(--wf-muted); font-style: italic; line-height: 1.5; }
+
+    /* === Stat — value + label, optional detail + icon === */
+    .wf-stat {
+      display: flex; flex-direction: column; gap: 4px; padding: 16px 0;
+    }
+    .wf-stat__icon { width: 32px; height: 32px; margin-bottom: 8px; color: var(--wf-muted); font-size: 0.75rem; display: flex; align-items: center; }
+    .wf-stat__value {
+      font-size: 2.5rem; font-weight: 700; line-height: 1.1; color: var(--wf-text); letter-spacing: -0.02em;
+    }
+    .wf-stat__label { font-size: 0.875rem; color: var(--wf-muted); font-weight: 500; }
+    .wf-stat__detail { font-size: 0.8125rem; color: var(--wf-muted); margin-top: 4px; }
+
+    /* === Testimonial === */
+    .wf-testimonial {
+      display: flex; flex-direction: column; gap: 16px; padding: var(--wf-gap);
+      background: var(--wf-bg-warm); border-radius: 8px;
+    }
+    .wf-section--warm .wf-testimonial { background: var(--wf-bg); }
+    .wf-testimonial__rating { color: var(--wf-accent); font-size: 0.875rem; letter-spacing: 2px; }
+    .wf-testimonial__quote {
+      font-size: 1rem; line-height: 1.6; color: var(--wf-text); margin: 0;
+      font-style: italic; quotes: "\201C" "\201D";
+    }
+    .wf-testimonial__quote::before { content: open-quote; }
+    .wf-testimonial__quote::after  { content: close-quote; }
+    .wf-testimonial__attribution { display: flex; align-items: center; gap: 12px; }
+    .wf-testimonial__photo {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--wf-fill);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--wf-muted); font-size: 0.625rem; flex-shrink: 0;
+    }
+    .wf-testimonial__author-block { display: flex; flex-direction: column; }
+    .wf-testimonial__author { font-size: 0.875rem; font-weight: 600; color: var(--wf-text); }
+    .wf-testimonial__role-company { font-size: 0.8125rem; color: var(--wf-muted); }
+
+    /* === Accordion — wrapper around <details> / <summary> === */
+    .wf-accordion { display: flex; flex-direction: column; }
+    .wf-accordion__item {
+      border-bottom: 1px solid var(--wf-line);
+    }
+    .wf-accordion__item:first-child { border-top: 1px solid var(--wf-line); }
+    .wf-accordion__summary {
+      cursor: pointer; padding: 16px 0; font-weight: 600; font-size: 0.9375rem;
+      list-style: none; display: flex; justify-content: space-between; align-items: center;
+    }
+    .wf-accordion__summary::-webkit-details-marker { display: none; }
+    .wf-accordion__summary::after { content: "+"; font-weight: 400; font-size: 1.25rem; color: var(--wf-muted); }
+    .wf-accordion__item[open] .wf-accordion__summary::after { content: "−"; }
+    .wf-accordion__body {
+      padding: 0 0 16px; color: var(--wf-text); font-size: 0.9375rem; line-height: 1.6;
+    }
+
+    /* === Trust-bar — single-row strip of logos / badges ===
+       Each item renders as a logo-placeholder box (gray fill + picture icon) with
+       the human-readable label beneath. Matches the wireframe-placeholder treatment
+       of .wf-media so "logos are images" stays visually true. */
+    .wf-trust-bar {
+      display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center;
+      gap: 24px; padding: var(--wf-gap) 0;
+    }
+    .wf-trust-bar__item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--wf-muted); font-size: 0.75rem; font-weight: 500;
+      text-align: center; opacity: 0.85;
+    }
+    .wf-trust-bar__item::before {
+      content: "";
+      display: block;
+      width: 112px; height: 36px;
+      background-color: var(--wf-fill);
+      border-radius: 4px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21 15 16 10 5 21'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: 18px 18px;
+    }
+
+    /* === Banner — single-line top-of-page strip === */
+    .wf-banner {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; padding: 12px 24px; background: var(--wf-fill);
+      font-size: 0.875rem; color: var(--wf-text); border-radius: 6px;
+      margin-bottom: var(--wf-gap);
+    }
+    .wf-banner__close {
+      background: transparent; border: none; cursor: pointer; color: var(--wf-muted);
+      font-size: 1rem; padding: 0 4px;
+    }
+
+    /* === Extension kinds ===
+       Generic fallback so unknown kinds remain visible rather than silently dropped.
+       The base look matches .wf-card (warm fill, no border) so an unstyled extension
+       reads as a sibling of the core kinds. Authors supply per-kind styling via
+       `data.customStyles` (namespace-guarded to `.wf-ext-*`); they should use the
+       same tokens (--wf-line, --wf-fill, --wf-accent, --wf-gap, --wf-radius-*) so
+       extensions feel like part of the same vocabulary.
+
+       The ::before label is a small authoring cue showing which extension kind
+       rendered. Authors who want it hidden can add `.wf-ext-{kind}::before { display: none; }`
+       to their customStyles (see the process-step example in the Preview data). */
+    .wf-ext {
+      background: var(--wf-bg-warm);
+      border-radius: 6px;
+      padding: var(--wf-gap); margin: 8px 0;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .wf-section--warm .wf-ext { background: var(--wf-bg); }
+    .wf-ext::before {
+      content: "ext: " attr(data-kind);
+      font-size: 0.6875rem; font-weight: 600; text-transform: uppercase;
+      color: var(--wf-muted); letter-spacing: 0.08em;
+    }
+    .wf-ext__field {
+      display: flex; gap: 8px; font-size: 0.875rem; color: var(--wf-text);
+    }
+    .wf-ext__field-key { font-weight: 600; color: var(--wf-muted); }
+
+    /* === Annotations === */
+    /* Base — used by rare inline data-gap notes */
+    .wf-note {
+      font-family: var(--wf-font);
+      font-size: 12px;
+      color: var(--wf-muted);
+      padding: 8px 0;
+      margin: var(--wf-gap) 0;
+      line-height: 1.6;
+    }
+
+    /* Title — eyebrow label at top of section */
+    .wf-note--title {
+      max-width: none;
+      margin: 0 0 24px;
+      padding: 0;
+      background: none;
+      border: none;
+      color: var(--wf-muted);
+      font-family: var(--wf-font);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Meta — footnote-style at bottom of section, flex row of 3 segments */
+    .wf-note--meta {
+      max-width: none;
+      margin: 24px 0 0;
+      padding: 24px 0 0;
+      background: none;
+      border-top: 1px solid var(--wf-line);
+      color: var(--wf-muted);
+      font-family: var(--wf-font);
+      font-size: 12px;
+    }
+    .wf-note--meta .wf-note__row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    /* Boxed meta variant — default. Full-width gray strip glued to section bottom. */
+    .wf-note--meta-boxed {
+      margin: 32px -32px -24px;
+      padding: 20px 32px;
+      background: var(--wf-fill);
+      border: none;
+      border-radius: 0 0 var(--wf-radius-lg) var(--wf-radius-lg);
+    }
+
+    /* Hide all annotations when the reviewer toggles them off via the FAB */
+    body.wf-notes-hidden .wf-note { display: none; }
+
+    /* === Nav === */
+    /* Top nav is a PLACEHOLDER representation of the site's menu — labels only,
+       no links, no page switching. Sized like a wireframe section so nav +
+       sections flow with consistent gutters (nav is part of the wireframe). */
+    .wf-nav {
+      background: var(--wf-bg); border-bottom: 1px solid var(--wf-line);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      max-width: min(var(--wf-max-w), calc(100vw - 64px));
+      margin: 0 auto 24px;
+    }
+    .wf-nav__logo { font-weight: 700; font-size: 1.125rem; letter-spacing: -0.02em; white-space: nowrap; }
+    .wf-nav__links { display: flex; gap: 16px; list-style: none; padding: 0; margin: 0; align-items: center; }
+    .wf-nav__label {
+      font: 500 0.875rem/1 var(--wf-font);
+      color: var(--wf-muted);
+    }
+
+    /* === Footer === */
+    .wf-footer {
+      background: var(--wf-bg);
+      max-width: min(var(--wf-max-w), calc(100vw - 64px));
+      margin: 16px auto 0;
+      border-radius: var(--wf-radius-lg);
+      border-top: none;
+      padding: var(--wf-section-py) 32px 32px;
+    }
+
+    /* === Hero-ish page variant — hero section spans full bleed within the page === */
+    .wf-page--hero-ish > .wf-section:first-child {
+      border-radius: 0;
+      margin-bottom: 0;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 768px) {
+      .wf-grid-2, .wf-grid-3, .wf-grid-4 { grid-template-columns: 1fr; }
+      .wf-section { padding: 48px 16px; }
+      .wf-nav { padding: 0 16px; }
+      .wf-nav__links { display: none; }
+      .wf-footer { padding: 48px 16px 16px; }
+    }
+
+    /* ============================================================ */
+    /* === AUDIT-SPECIFIC — Shell — Audit + shell-bar            === */
+    /* === Class prefix: .shell-*                                 === */
+    /* ============================================================ */
+
+    /* Badges on elements — pointers only, no glow */
+    body [data-shell-n],
+    body [data-shell-id] {
+      position: relative;
+      --shell-badge-inset: -18px;
+    }
+    /* Large-radius containers: pull the badge inward so it hugs the rounded corner. */
+    body .wf-section[data-shell-n],
+    body .wf-section[data-shell-id] { --shell-badge-inset: -14px; }
+    body .shell-badge {
+      position: absolute;
+      top: var(--shell-badge-inset, -18px);
+      left: var(--shell-badge-inset, -18px);
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--shell-pin-color);
+      color: #fff;
+      border: 2px solid #fff;
+      font: 700 12px/1 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 0;
+      transition: transform 120ms ease, background-color 120ms ease;
+    }
+    body .shell-badge:hover { transform: scale(1.15); background: var(--shell-pin-color); }
+    body .shell-badge:focus-visible { outline: 3px solid #ffa500; outline-offset: 2px; }
+
+    /* Detail view open: hide badges on every other annotated element —
+       only the active section's badge remains visible. */
+    body.shell-detail-open [data-shell-n]:not(.is-shell-active) > .shell-badge,
+    body.shell-detail-open [data-shell-id]:not(.is-shell-active) > .shell-badge { display: none; }
+
+    /* Badges have their own toggle (Show audit findings) */
+    body.shell-badges-hidden .shell-badge { display: none; }
+
+    /* Reserve space for the bottom bar + shift content when left panel opens */
+    body {
+      padding-bottom: 48px;
+      transition: margin-left 220ms ease;
+    }
+    body.shell-leftpanel-open { margin-left: min(30vw, 500px); }
+    /* Cap wf-section/footer max-width to the reduced viewport so sections keep
+       symmetric left/right gutters (32px) inside the remaining working area. */
+    body.shell-leftpanel-open .wf-nav,
+    body.shell-leftpanel-open .wf-section,
+    body.shell-leftpanel-open .wf-footer {
+      max-width: calc(100vw - min(30vw, 500px) - 64px);
+    }
+
+    /* ---------- Left panel ---------- */
+    .shell-leftpanel {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: min(30vw, 500px);
+      height: calc(100vh - 48px);
+      background: #fff;
+      border-right: 1px solid #e5e5e5;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.08);
+      z-index: 9400;
+      transform: translateX(-100%);
+      transition: transform 220ms ease;
+      display: flex;
+      flex-direction: column;
+      font-family: Inter, system-ui, sans-serif;
+    }
+    .shell-leftpanel.is-open { transform: translateX(0); }
+
+    .shell-leftpanel__header {
+      padding: 14px 18px 12px;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .shell-leftpanel__back {
+      background: none;
+      border: 1px solid #e5e5e5;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font: inherit;
+      font-size: 12px;
+      color: #555;
+      cursor: pointer;
+    }
+    .shell-leftpanel__back:hover { background: #f5f5f5; color: #000; }
+    .shell-leftpanel__title {
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+      color: #1a1a1a;
+      flex: 1;
+    }
+    .shell-leftpanel__count {
+      font-size: 11px;
+      color: #888;
+      font-weight: 500;
+    }
+    .shell-leftpanel__nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-left: auto;
+    }
+    .shell-leftpanel__nav-btn {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 2px 9px;
+      font: 400 16px/1 ui-monospace, monospace;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 120ms, border-color 120ms, opacity 120ms;
+    }
+    .shell-leftpanel__nav-btn:hover:not(:disabled) { background: #f5f5f5; border-color: #c0c0c0; }
+    .shell-leftpanel__nav-btn:disabled { opacity: 0.3; cursor: default; }
+    .shell-leftpanel__nav-counter {
+      font-size: 12px;
+      color: #555;
+      min-width: 48px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .shell-leftpanel__filter-area {
+      padding: 14px 18px 0;
+      background: #f2f2f2;
+      flex-shrink: 0;
+    }
+    .shell-leftpanel__filter-area:empty { display: none; }
+    .shell-leftpanel__scroll {
+      padding: 0 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+      background: #f2f2f2;
+    }
+    .shell-leftpanel__body {
+      padding: 14px 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+      background: #f2f2f2;
+    }
+
+    /* List mode — filter toggle + chip row */
+    .shell-filter-row {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+      margin-bottom: 10px;
+    }
+    .shell-filter-row .shell-filter-toggle { flex: 1; margin-bottom: 0; }
+    .shell-filter-clear {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      padding: 0 14px;
+      font: 500 12px/1 Inter, system-ui, sans-serif;
+      color: #c0392b;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .shell-filter-clear:hover { background: #fdecea; border-color: #f1b0b7; }
+    .shell-filter-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 10px 12px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      cursor: pointer;
+      font: 500 12px/1 Inter, system-ui, sans-serif;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .shell-filter-toggle:hover { background: #fafafa; }
+    .shell-filter-toggle.is-open { border-color: #d0d0d0; margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+    .shell-filter-toggle__icon {
+      font: 400 16px/1 ui-monospace, monospace;
+      color: #888;
+    }
+    .shell-leftpanel__filter {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #eee;
+      border-top: none;
+      border-radius: 0 0 6px 6px;
+      margin-bottom: 14px;
+    }
+    .shell-leftpanel__filter.is-collapsed { display: none; }
+    .shell-filter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .shell-filter-section__label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: #888;
+    }
+    .shell-filter-section__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .shell-chip {
+      font: 500 11px/1 Inter, system-ui, sans-serif;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: #fff;
+      color: #555;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 120ms, color 120ms;
+    }
+    .shell-chip:hover { background: #fafafa; }
+    .shell-chip.is-active {
+      background: #1a1a1a;
+      color: #fff;
+      border-color: #1a1a1a;
+    }
+    .shell-chip-count {
+      display: inline-block;
+      margin-left: 5px;
+      font-size: 10px;
+      opacity: 0.75;
+    }
+    .shell-group-header {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: #888;
+      margin: 0 0 10px;
+      padding: 4px 0 4px;
+      border-bottom: 1px solid #eee;
+    }
+    .shell-group { padding-top: 16px; }
+    .shell-group.is-hidden { display: none; }
+    .shell-empty {
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+      padding: 16px;
+      font-style: italic;
+    }
+    .shell-list { display: flex; flex-direction: column; gap: 8px; }
+    .shell-item {
+      background: #fff;
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: box-shadow 120ms, transform 120ms;
+    }
+    .shell-item:hover { box-shadow: 0 2px 12px rgba(192,57,43,0.12); transform: translateY(-1px); }
+    .shell-item.is-hidden { display: none; }
+    .shell-item__row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .shell-item__n {
+      font: 700 11px/1 ui-monospace, monospace;
+      color: #fff;
+      background: #1a1a1a;
+      padding: 4px 7px;
+      border-radius: 3px;
+      min-width: 22px;
+      text-align: center;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .shell-item__tag {
+      font-size: 11px;
+      color: #666;
+      font-weight: 500;
+    }
+    .shell-item__labels {
+      margin-left: auto;
+      display: inline-flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .shell-item__title {
+      font-size: 13px;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin: 0;
+      line-height: 1.4;
+    }
+    .shell-item__page-note {
+      margin: 12px -14px -14px;
+      padding: 8px 14px;
+      background: var(--wf-fill);
+      border-radius: 0 0 var(--wf-radius-md) var(--wf-radius-md);
+      font-size: 12px;
+      color: #555;
+    }
+
+    /* Detail mode */
+    .shell-detail__meta {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 8px 14px;
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      background: #fafafa;
+      border-radius: 8px;
+      border: 1px solid #eee;
+      font-size: 13px;
+    }
+    .shell-detail__meta dt {
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-size: 10px;
+      align-self: center;
+    }
+    .shell-detail__meta dd { margin: 0; color: #1a1a1a; }
+    .shell-detail__title {
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.35;
+      margin: 0 0 14px;
+      padding-top: 16px;
+      color: #1a1a1a;
+    }
+    .shell-detail__body {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2a2a2a;
+      white-space: pre-wrap;
+    }
+    .shell-detail__blocks {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .shell-detail__block {
+      padding: 14px 16px;
+      margin: 0;
+      background: transparent;
+    }
+    .shell-detail__block + .shell-detail__block {
+      border-top: 1px solid #eee;
+    }
+    .shell-detail__label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      color: #888;
+      margin: 0 0 6px;
+    }
+    .shell-detail__text {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2a2a2a;
+      margin: 0;
+    }
+    ul.shell-detail__text { padding-left: 1.25em; list-style: disc outside; }
+    ul.shell-detail__text li + li { margin-top: 6px; }
+
+    /* Decision toggle per finding (accepted / rejected / pending) */
+    .shell-decision {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 18px;
+      padding: 10px 12px;
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #eee;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .shell-decision__label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 700;
+      color: #888;
+      margin-right: 4px;
+    }
+    @media print {
+      .shell-bottombar, .shell-leftpanel { display: none !important; }
+      body .shell-badge { display: none !important; }
+      body [data-shell-n] { filter: none !important; }
+      body { padding-bottom: 0 !important; margin-left: 0 !important; }
+    }
+
+    /* ---------- Bottom bar ---------- */
+    .shell-bottombar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: #fafafa;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      padding: 0 12px;
+      z-index: 9500;
+      font-family: Inter, system-ui, sans-serif;
+      font-size: 12px;
+      border-top: 1px solid #e5e5e5;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .shell-bottombar__group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 12px;
+      height: 100%;
+    }
+    .shell-bottombar__group + .shell-bottombar__group {
+      border-left: 1px solid #e5e5e5;
+    }
+    .shell-bottombar__spacer { flex: 1; }
+    .shell-bottombar__btn {
+      background: transparent;
+      border: 1px solid var(--wf-line);
+      color: #1a1a1a;
+      font: inherit;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 120ms, border-color 120ms;
+    }
+    .shell-bottombar__btn:hover {
+      background: #efefef;
+      border-color: #e0e0e0;
+    }
+    .shell-bottombar__btn.is-active {
+      background: #1a1a1a;
+      border-color: #1a1a1a;
+      color: #fff;
+    }
+    .shell-bottombar__btn.is-active .shell-bottombar__btn-count {
+      background: rgba(255,255,255,0.22);
+      color: #fff;
+    }
+    .shell-bottombar__btn-count {
+      background: #1a1a1a;
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font: 700 10px/1 ui-monospace, monospace;
+    }
+    .shell-bottombar__chevron { opacity: 0.55; }
+    .shell-bottombar__select {
+      background: #fff;
+      border: 1px solid #d0d0d0;
+      color: #1a1a1a;
+      font: inherit;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      min-width: 180px;
+    }
+    .shell-bottombar__select:focus { outline: 2px solid #ffa500; outline-offset: 1px; border-color: #ffa500; }
+    .shell-bottombar__check {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+    }
+    .shell-bottombar__check:hover { background: #efefef; }
+    .shell-bottombar__check input[type="checkbox"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 30px;
+      height: 16px;
+      background: #d0d0d0;
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      margin: 0;
+      flex-shrink: 0;
+      transition: background 160ms;
+    }
+    .shell-bottombar__check input[type="checkbox"]::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 160ms;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    }
+    .shell-bottombar__check input[type="checkbox"]:checked { background: #1a1a1a; }
+    .shell-bottombar__check input[type="checkbox"]:checked::after { transform: translateX(14px); }
+    .shell-bottombar__check input[type="checkbox"]:focus-visible { outline: 2px solid #ffa500; outline-offset: 2px; }
+    .shell-bottombar__status {
+      color: #888;
+      font-size: 11px;
+    }
+
+    /* === Mobile (max-width: 768px) — hide audit chrome, collapse asymmetric grids === */
+    @media (max-width: 768px) {
+      .shell-bottombar,
+      .shell-leftpanel { display: none !important; }
+      body.shell-leftpanel-open { margin-left: 0 !important; }
+      body { padding-bottom: 0 !important; }
+
+      body.shell-leftpanel-open .wf-nav,
+      body.shell-leftpanel-open .wf-section,
+      body.shell-leftpanel-open .wf-footer {
+        max-width: min(var(--wf-max-w), calc(100vw - 32px));
+      }
+
+      .wf-grid[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+      .wf-grid > * { min-width: 0; }
+    }
+
+    /* ============================================================ */
+    /* === ELEMENT-PIN EXTENSION — appended to source CSS block. === */
+    /* === Source CSS block preserved verbatim                    === */
+    /* === above this sentinel. Element badges use the same       === */
+    /* === .shell-badge style as section badges; no new classes.  === */
+    /* ============================================================ */
+
+    /* Element targets rendered with data-shell-element-id become a positioning
+       context so the appended .shell-badge sits at their corner, not the
+       nearest ancestor. Inset uses the same --shell-badge-inset custom property
+       already declared on [data-shell-id] elements in the shell block. */
+    body [data-shell-element-id] {
+      position: relative;
+    }
+  </style>
+</head>
+<body class="shell-leftpanel-open">
+
+<!-- ============================================================
+     SHELL — markup
+     ============================================================ -->
+
+<!-- Audit left panel -->
+<aside aria-hidden="false" class="shell-leftpanel is-open" id="shellLeftpanel" role="dialog">
+  <div class="shell-leftpanel__header" id="shellHeader" style="display:none;">
+    <button class="shell-leftpanel__back" id="shellBack" type="button" data-label-key="back" data-label-prefix="← ">← {Back}</button>
+    <div class="shell-leftpanel__nav" id="shellNav">
+      <button aria-label="Previous" class="shell-leftpanel__nav-btn" id="shellNavPrev" type="button" data-label-aria-key="nav_prev">‹</button>
+      <span class="shell-leftpanel__nav-counter" id="shellNavCounter">1 of 1</span>
+      <button aria-label="Next" class="shell-leftpanel__nav-btn" id="shellNavNext" type="button" data-label-aria-key="nav_next">›</button>
+    </div>
+  </div>
+  <div class="shell-leftpanel__filter-area" id="shellFilterArea"></div>
+  <div class="shell-leftpanel__scroll" id="shellLeftpanelBody"></div>
+</aside>
+
+<!-- Wireframe pages — populated at init by renderWireframePage() for each wireframes[] entry. -->
+<main id="shellPages"></main>
+
+<!-- Audit bottom bar -->
+<div class="shell-bottombar" id="shellBottombar">
+  <div class="shell-bottombar__group">
+    <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button">
+      <span data-label-key="bar_audit">{Audit findings}</span>
+      <span class="shell-bottombar__btn-count">0</span>
+      <span class="shell-bottombar__chevron">▧</span>
+    </button>
+  </div>
+  <div class="shell-bottombar__group">
+    <label for="shellPageSelect" style="color:#666;" data-label-key="bar_page">{Page:}</label>
+    <select class="shell-bottombar__select" id="shellPageSelect">
+      <!-- options populated by IIFE from wireframes[].slug / .title -->
+    </select>
+  </div>
+  <div class="shell-bottombar__group">
+    <label class="shell-bottombar__check">
+      <input checked="" id="wfNotesToggle" type="checkbox">
+      <span data-label-key="bar_section_notes">{Show annotations}</span>
+    </label>
+    <label class="shell-bottombar__check">
+      <input checked="" id="shellBadgesToggle" type="checkbox">
+      <span data-label-key="bar_pin_toggle">{Show audit findings}</span>
+    </label>
+  </div>
+  <div class="shell-bottombar__spacer"></div>
+  <div class="shell-bottombar__group" id="shellDownloadGroup">
+    <label style="color:#666;" data-label-key="bar_download">{Download:}</label>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadHtml" title="[Download the current state of the deliverable as a self-contained HTML file]" data-label-title-key="bar_download_html_title" type="button">
+      <span data-label-key="bar_download_html">{Audit HTML}</span>
+    </button>
+    <button class="shell-bottombar__btn is-active" id="shellDownloadMd" title="[Download audit findings as Markdown]" data-label-title-key="bar_download_md_title" type="button">
+      <span data-label-key="bar_download_md">{Audit MD}</span>
+    </button>
+  </div>
+</div>
+
+<!-- ============================================================
+     DATA BLOCK — populate with audit findings per deliverable
+     Schema: audit-schema.md §JSON Data Block Shape
+     ============================================================ -->
+<script type="application/json" id="audit-findings-data">
+{
+  "namespace": "audit-creativesparks-ux-designer-2026-04-27",
+  "labels": {
+    "confidence_high": "High",
+    "confidence_medium": "Medium",
+    "confidence_low": "Low",
+    "axis_page": "Page",
+    "axis_confidence": "Confidence",
+    "category_all": "All",
+    "filter_label": "Filters",
+    "filter_label_active": "Filters · active: {n}",
+    "filter_clear": "Clear",
+    "group_section_choices": "Strategy findings ({n})",
+    "group_page_choices": "Page-level findings ({n})",
+    "snapshot_info": "Snapshot of the existing site",
+    "meta_section": "Section:",
+    "meta_narrative": "Narrative:",
+    "meta_question": "Question:",
+    "meta_goal": "Goal:",
+    "back": "Back",
+    "nav_prev": "Previous",
+    "nav_next": "Next",
+    "nav_counter": "{i} of {total}",
+    "nav_counter_empty": "-",
+    "detail_page": "Page",
+    "detail_confidence": "Confidence",
+    "detail_reasoning": "Reasoning",
+    "detail_alternatives": "Alternatives considered",
+    "detail_source": "Source",
+    "detail_observation": "Current state",
+    "detail_standard": "Standard",
+    "detail_effect": "Effect",
+    "detail_exception": "When this may be fine",
+    "detail_tag": "Dimension",
+    "detail_impact": "Impact",
+    "detail_decision_status": "Review status",
+    "md_page": "Page",
+    "md_scope": "Scope",
+    "md_confidence": "Confidence",
+    "md_reasoning": "Reasoning",
+    "md_alternatives": "Alternatives",
+    "md_source": "Source",
+    "md_brief_title": "Audit findings",
+    "md_brief_intro": "Audit findings produced by the agent.",
+    "md_doc_title": "Wireframes",
+    "md_page_label": "Page:",
+    "md_purpose": "Purpose:",
+    "md_section_inline": "Section",
+    "md_narrative": "Narrative:",
+    "md_question": "Question:",
+    "md_goal": "Goal:",
+    "md_layout": "Layout:",
+    "md_trusted_by": "Trusted by:",
+    "md_banner_prefix": "banner:",
+    "md_design_choices": "Design choices",
+    "md_page_design_choices": "Page-level design choices",
+    "md_reasoning_inline": "Reasoning:",
+    "md_alternatives_inline": "Alternatives:",
+    "md_rejected_inline": "rejected:",
+    "md_confidence_inline": "confidence:",
+    "md_secondary_suffix": "secondary",
+    "file_wfd_with_decisions": "audit-with-decisions.html",
+    "file_brief": "audit-findings.md",
+    "bar_audit": "Audit findings",
+    "bar_page": "Page:",
+    "bar_section_notes": "Show annotations",
+    "bar_design_choices": "Show audit findings",
+    "bar_download": "Download:",
+    "bar_download_html": "Audit HTML",
+    "bar_download_md": "Audit MD",
+    "bar_download_html_title": "Download the current state as a self-contained HTML file",
+    "bar_download_md_title": "Download audit findings as Markdown",
+    "bar_pin_toggle": "Show audit findings"
+  },
+  "chrome": {
+    "nav": {
+      "brand": {
+        "kind": "label",
+        "text": "[Logo Creative Sparks Agents]"
+      },
+      "links": [
+        {
+          "text": "Who it's for",
+          "href": "#zastosowanie"
+        },
+        {
+          "text": "Pricing",
+          "href": "#cennik"
+        },
+        {
+          "text": "Demo",
+          "href": "#demo"
+        },
+        {
+          "text": "How it works",
+          "href": "#proces"
+        },
+        {
+          "text": "Comparison",
+          "href": "#porownanie"
+        }
+      ],
+      "cta": {
+        "kind": "button",
+        "label": "Early access",
+        "variant": "primary"
+      }
+    },
+    "footer": {
+      "columns": [
+        {
+          "title": "Legal",
+          "links": [
+            {
+              "text": "Privacy policy",
+              "href": "/ux-designer/polityka-prywatnosci"
+            },
+            {
+              "text": "Terms of sale",
+              "href": "/ux-designer/regulamin"
+            },
+            {
+              "text": "Changelog",
+              "href": "/ux-designer/changelog"
+            },
+            {
+              "text": "Contact",
+              "href": "mailto:tomasz@creativesparks.pl"
+            }
+          ]
+        }
+      ],
+      "legal": ""
+    }
+  },
+  "wireframes": [
+    {
+      "slug": "ux-designer-page",
+      "title": "Page /ux-designer/",
+      "purpose": "Sell the UX Design Skill (early access).",
+      "sourceUrl": "https://agents.creativesparks.pl/ux-designer/",
+      "extractionMode": "phantom-browser",
+      "capturedAt": "2026-04-27T22:59:00Z",
+      "pageDeliberations": [],
+      "sections": [
+        {
+          "type": "hero",
+          "purpose": "Sell the product in a single screen.",
+          "userQuestion": "What is this and what exactly do I get?",
+          "narrative": "opening",
+          "layout": "2-col 60/40 (asymmetric). Left column top-to-bottom: eyebrow + H1 + lead + 6 H4 feature pairs with descriptions (live site uses a 2x3 mini-grid; the wireframe stacks vertically due to schema limits) + primary CTA + micro. Right column: tall demo tile with an agent dialog (terminal mock) filling the full height of the left column.",
+          "elements": [
+            {
+              "kind": "grid",
+              "columns": [
+                3,
+                2
+              ],
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "default",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Early access"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 1,
+                      "text": "A UX lead on tap. For every project."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "A page-planning skill with senior UX expertise, powered by AI. A professional UX process with real copy, ready for design in 2-3 hours."
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Professional UX process",
+                      "id": "hero-feature-heading-1"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "No weeks and no five-figure agency invoices."
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Real copy, any language"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "No more lorem ipsum. Wireframes ship with real copy from day one."
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "16 page types and accessibility"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "92 knowledge files: page types, section patterns, accessibility."
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Context lives in files"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Pick up where you left off. Decisions live in files."
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Decisions with alternatives"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Every option spells out what you gain and what you give up."
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Buy once, use everywhere"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Runs on your Claude, ChatGPT, or Gemini account."
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Unlock early access",
+                      "variant": "primary",
+                      "href": "#cennik"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "Capped at 30 seats. Open pre-sale launches in 1-2 months.",
+                      "id": "hero-cta-micro-1"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "// UX DESIGN SKILL: DISCOVERY",
+                      "id": "hero-demo-label-1"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "[INPUT] \"Building a site for a labor-law firm, employment law specialty\""
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "[AGENT RESPONSE]"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "Page type: Local business (inferred from context)",
+                        "Industry: Law firm, employment law (inferred from context)",
+                        "Goal: B2B and B2C client acquisition (verify)",
+                        "Persona: HR manager, 50-200 employees (verify)",
+                        "Awareness: problem-aware, not solution-aware (verify, \"firing an employee\" not \"law firm\")",
+                        "Differentiator: employment-law specialty (inferred from context)"
+                      ]
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "QUESTIONS:"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": true,
+                      "items": [
+                        "Target customer: companies, individuals, or both?",
+                        "Primary conversion: contact, form, online consultation?"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "features",
+          "purpose": "Show concrete deliverables and use-case scenarios.",
+          "userQuestion": "What exactly comes out of this and who benefits?",
+          "narrative": "evidence",
+          "layout": "Full width. Eyebrow with icon + H2. Then a sub-section: H3 + 4-column grid with 8 example deliverable tiles (each: icon + title + one-line description). Below that an accordion with 4 case studies (Designer / Creator / Marketer / Project Manager).",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Use cases"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "What can you do with this? This page is one example."
+            },
+            {
+              "kind": "heading",
+              "level": 3,
+              "text": "Examples of work produced with the UX Design Skill"
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Site plan"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Sitemap with notes and voice brief."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Wireframe HTML"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Interactive lo-fi mock in the browser."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Wireframe in Google Docs"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Wireframe with real copy and section rationale."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Wireframe in Figma AI"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Generated from the wireframe by Figma AI."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Project context"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Personas, goals, top tasks: a ready-to-use brief."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Decision log"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Decisions documented with rationale."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Design in Google Stitch"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Design generated from the wireframe."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Design in Gemini"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Design generated from the wireframe."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "accordion",
+              "items": [
+                {
+                  "label": "Case 01 · Designer: from brief to wireframe in 2-3 hours.",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Collapsed content. The case body is hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Case 02 · Creator: vibe coding with a defensible structure.",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Collapsed content. The case body is hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Case 03 · Marketer: a professional brief for an agency in 2-3 hours, tops.",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Collapsed content. The case body is hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Case 04 · Project Manager: a client-ready concept in a few hours.",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Collapsed content. The case body is hidden behind expand_more on the live page."
+                    }
+                  ]
+                }
+              ],
+              "id": "examples-accordion-1"
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "process",
+          "purpose": "Show the working method step by step, plus the evidence.",
+          "userQuestion": "How does this skill actually work, and what comes out at each stage?",
+          "narrative": "evidence",
+          "layout": "Full width. Eyebrow with icon + H2. Below: 2-column grid, 3 rows (6 tiles with number, title, stage description, and a link to an example output file). At the end, a callout: pause icon + text + 2 role badges.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Process"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "This page is an example of the process and the documentation. It was built over a weekend."
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "01"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Discovery"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Describe your project, even in one sentence. The skill identifies page type, industry, personas, goals, and differentiator, each tagged with a confidence tier."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "project_context.md"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill understood the project from a short brief and summarized context, personas, and top tasks."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "02"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Strategy and IA"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill proposes a page format and 2-3 strategic archetypes, each with what you gain and what you give up. Together, you converge on a sitemap."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "ux_strategy.md"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Strategy, sitemap, and voice brief nailed on the first pass. I didn't have to write the brief from scratch."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "03"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Template Inventory"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "For multi-page projects: the skill analyzes the sitemap, groups pages by type, and identifies repeatable templates."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "template_inventory.xlsx + .md"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Useful on larger projects. Maps sections and identifies reusable templates."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "04"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Wireframing"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill proposes a section sequence with reasoning. Once approved, it writes the full wireframe with real copy."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "wireframe.md"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Took 2-3 hours. The structure was right immediately; most of the time went into polishing the copy."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "05"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Review"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill audits any deliverable across 6 dimensions: completeness, consistency, quality, language, cognitive load, and site-level quality."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Audit report"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The audit caught 3 copy inconsistencies and a missing CTA. I wouldn't have seen them without it."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "06"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Decision Log"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Every important design decision is captured: what was decided, what the alternatives were, and why."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "decision_log.md"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "A history of changes and decisions with reasoning. You know why this way, not another."
+                    }
+                  ]
+                }
+              ],
+              "id": "process-grid-1"
+            },
+            {
+              "kind": "card",
+              "variant": "highlight",
+              "children": [
+                {
+                  "kind": "label",
+                  "text": "pause · checkpoint"
+                },
+                {
+                  "kind": "paragraph",
+                  "text": "At every stage, the skill pauses, shows 2-3 options with trade-offs, and waits for your call. You lead, the skill executes."
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "pricing",
+          "purpose": "Close the buying decision across three tiers.",
+          "userQuestion": "How much does it cost, and which tier is for me?",
+          "narrative": "resolution",
+          "layout": "Full width. Eyebrow with icon + H2. Below: 3 paragraphs (comparison against cost alternatives). Then a 3-column grid with three tier cards (Studio as the highlighted tier). Below the grid, a short payment note and a link to the changelog.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Early-access pricing · Capped at 30 seats"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "One-time purchase. 14-day refund. No subscription. No hidden costs."
+            },
+            {
+              "kind": "paragraph",
+              "text": "A UX consultant will charge thousands of dollars for discovery and strategy alone."
+            },
+            {
+              "kind": "paragraph",
+              "text": "Building the process yourself means weeks of trial and error."
+            },
+            {
+              "kind": "paragraph",
+              "text": "The skill gives you a proven process for a fraction of that."
+            },
+            {
+              "kind": "grid",
+              "columns": 3,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Solo"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "1 user"
+                    },
+                    {
+                      "kind": "media",
+                      "label": "[Early-access price]",
+                      "height": "sm"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "before tax"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "92 knowledge files",
+                        "16 page types",
+                        "Skill files in the current version (v2.6)",
+                        "6 months of updates",
+                        "Community Discord"
+                      ]
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Unlock early access",
+                      "variant": "primary",
+                      "href": "https://cart.creativesparks.pl/checkout/ux-design-lead"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "highlight",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Studio"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Up to 5 users"
+                    },
+                    {
+                      "kind": "media",
+                      "label": "[Early-access price]",
+                      "height": "sm"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "before tax"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "92 knowledge files",
+                        "16 page types",
+                        "Skill files in the current version (v2.6)",
+                        "6 months of updates",
+                        "Community Discord"
+                      ]
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Unlock early access",
+                      "variant": "primary",
+                      "href": "https://cart.creativesparks.pl/checkout/ux-design-lead"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Agency"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Unlimited users"
+                    },
+                    {
+                      "kind": "media",
+                      "label": "[Early-access price]",
+                      "height": "sm"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "before tax"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "92 knowledge files",
+                        "16 page types",
+                        "Skill files in the current version (v2.6)",
+                        "6 months of updates",
+                        "Community Discord",
+                        "1x consultation with the author"
+                      ]
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Unlock early access",
+                      "variant": "primary",
+                      "href": "https://cart.creativesparks.pl/checkout/ux-design-lead"
+                    }
+                  ]
+                }
+              ],
+              "id": "pricing-grid-1"
+            },
+            {
+              "kind": "paragraph",
+              "text": "One-time purchase. Runs on your Claude, ChatGPT, or Gemini account. Early-access prices; they go up when early access ends."
+            },
+            {
+              "kind": "link",
+              "label": "6 months of updates: see changelog",
+              "variant": "arrow",
+              "href": "/ux-designer/changelog"
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "cta",
+          "purpose": "De-risk the buy: let users try it on a live project.",
+          "userQuestion": "Can I see this in action before I pay?",
+          "narrative": "tension",
+          "layout": "2-col 50/50. Left: H2 + paragraph + 1 primary CTA (Launch in ChatGPT) + 2 text links (Download demo, How to use it). Right: 3 mini-cards with numbered demo stages (Discovery / Strategy / Wireframing).",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Try it free"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Test the skill on a live nonprofit project."
+            },
+            {
+              "kind": "paragraph",
+              "text": "The demo is scoped to nonprofit site knowledge and walks you through 3 stages. Describe your organization or use the ready-made brief."
+            },
+            {
+              "kind": "button",
+              "label": "Launch in ChatGPT",
+              "variant": "primary",
+              "href": "https://chatgpt.com/g/g-69c113abc168819180640bbac04e29ca-ux-designer",
+              "id": "demo-button-1"
+            },
+            {
+              "kind": "link",
+              "label": "Download demo",
+              "variant": "arrow",
+              "href": "https://cart.creativesparks.pl/checkout/ux-design-lead-ngo"
+            },
+            {
+              "kind": "link",
+              "label": "How to use the skill",
+              "variant": "arrow",
+              "href": "/ux-designer/instrukcja"
+            },
+            {
+              "kind": "grid",
+              "columns": 1,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Stage 1: Discovery"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Understand the project, audience, and organizational goals."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Stage 2: Strategy"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Plan the structure and messaging for a nonprofit site."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Stage 3: Wireframing"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Wireframe with real copy, ready for design. Domain scoped to nonprofit sites."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "integration",
+          "purpose": "Defuse the worry: \"will this work in my environment?\"",
+          "userQuestion": "Where does this run, and do I have to switch tools?",
+          "narrative": "tension",
+          "layout": "2-col 60/40. Left: H2 + 2x2 grid with 4 platform tiles (Claude/ChatGPT, Custom GPTs/Gems, Claude Code CLI, VS Code/IDE). Right: a card with H3 + 4-point list of what's in the bundle + a closing paragraph.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Platforms"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "One folder. Runs on the platforms you already use."
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Claude / ChatGPT in the browser"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "As a project instruction."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Custom GPTs / Gemini Gems"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Compatible as a knowledge + instruction set."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Claude Code (CLI)"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Full file access, direct write of deliverables."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "VS Code / IDE"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Integrated with your working environment."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "card",
+              "variant": "highlight",
+              "children": [
+                {
+                  "kind": "heading",
+                  "level": 3,
+                  "text": "The bundle is a complete skill."
+                },
+                {
+                  "kind": "list",
+                  "ordered": false,
+                  "items": [
+                    "Full skill definition with 6 workflows",
+                    "92 domain-knowledge files (16 page types, 14 areas)",
+                    "Python script for Excel generation",
+                    "Install and configuration"
+                  ]
+                },
+                {
+                  "kind": "paragraph",
+                  "text": "No extra dependencies. Upload the folder, open your platform, start your first project."
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "problem",
+          "purpose": "Name the pain the audience actually feels.",
+          "userQuestion": "Does this skill really solve the problem I have?",
+          "narrative": "tension",
+          "layout": "Full width. Eyebrow with icon + H2. 4-column grid, 4 problem tiles (each: H3 + short explanatory paragraph).",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Problem"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "UX often ends up as the stage \"there's no time for\"."
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Cost is too high"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "A proper process costs thousands of dollars or weeks of work, which not every startup can afford."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "No foundations"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "No discovery, no strategy. Just an empty Figma file and a one-week deadline."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Content problem"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "You design the look while content is \"for later\". The design ends up disconnected from the real message."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "A chatbot is not a process"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Plain prompts give you random scraps of knowledge. None of them remember what came before."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "solution",
+          "purpose": "Contrast the skill against four common alternatives.",
+          "userQuestion": "How does this differ from other tools, and why is it supposed to work?",
+          "narrative": "tension",
+          "layout": "2-col 50/50. Left: H2 + 2x2 grid (4 alternatives: Chatbot / Prompt packs / UI templates / UX Design Skill, last one accented). Right: a short paragraph explaining who this is for.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Why it exists"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "I built the skill I wanted to have."
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Chatbot"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Just answers questions. Doesn't lead a project step by step."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Prompt packs"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Give you fragments, but lack a coherent methodology and project memory."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "UI templates"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Look nice but carry no strategy. Looks without process."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "highlight",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "UX Design Skill"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Runs the whole process. Strategy, personas, and a wireframe with real copy."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "paragraph",
+              "text": "Saves a designer hours. Gives a marketer or developer something that used to require a consultant's budget."
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "features",
+          "purpose": "Show that there's architecture underneath, not a single prompt.",
+          "userQuestion": "What concretely sets this apart from another prompt pack?",
+          "narrative": "evidence",
+          "layout": "2-col 40/60. Left: H2 + paragraph + link to changelog. Right: 2-column grid with 8 architecture-principle tiles (each: H4 + short paragraph).",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Under the hood"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Not just a prompt. A deliberate architecture."
+            },
+            {
+              "kind": "paragraph",
+              "text": "The skill is an operating playbook plus 92 domain-knowledge files, loaded on demand. Getting to this architecture took months."
+            },
+            {
+              "kind": "link",
+              "label": "Change history and updates",
+              "variant": "arrow",
+              "href": "/ux-designer/changelog"
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Knowledge separated from instruction."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "AGENTS.md defines the logic; the references/ folder holds the raw domain knowledge."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Files loaded on demand."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill detects the page type dynamically and loads only the relevant data pack, saving context window."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "One skill, full cycle."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "One skill runs the work from discovery to wireframe. Context doesn't get lost in handoffs."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Checkpoints at every stage."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Forced checkpoints guarantee that an early-stage mistake costs exactly zero."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Assumptions first, then questions."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Confidence tiers let the skill act proactively while keeping you in control."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Copy leads design."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill designs the content structure and real copy first, instead of relying on empty placeholders."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Files as project memory."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Project state is written to markdown files, independent of any ephemeral chat session."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Audit gives you the diagnosis."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "The skill generates audit-driven recommendations. You make the changes."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "comparison-table",
+          "purpose": "Counter the \"this is the same as ChatGPT\" objection.",
+          "userQuestion": "How does this differ from tools I already know?",
+          "narrative": "evidence",
+          "layout": "Full width. Eyebrow with icon + H2. Below: 5x5 table (5 columns: UX Design Skill | ChatGPT | Prompt packs | UI templates | UX consultant; 5 rows: Full UX process / Output / Project memory / Decisions with trade-offs / Copy). Each cell: check_circle / close icon + short description.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Comparison"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "How this differs from ChatGPT, prompt packs, UI templates, and a UX consultant."
+            },
+            {
+              "kind": "grid",
+              "columns": 5,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "UX Design Skill"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Full UX process: 6 end-to-end workflows"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Output: .md, .xlsx"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Project memory: persistent files"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Decisions with trade-offs: options with trade-offs"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Copy: in the project's language"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "ChatGPT / Chatbots"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Full UX process: answers without a process"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Output: chat messages"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Project memory: every session from scratch"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Decisions with trade-offs: none"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "~ Copy: generic"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Prompt packs"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Full UX process: fragments without context"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Output: prompts"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Project memory: every prompt from scratch"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Decisions with trade-offs: none"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Copy: template-driven"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "UI templates"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Full UX process: looks without process"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Output: image files"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "~ Project memory: n/a"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Decisions with trade-offs: none"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✗ Copy: lorem ipsum"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "UX consultant"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Full UX process: full cycle"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Output: documents"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Project memory: in the consultant's head"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Decisions with trade-offs: meetings and consultations"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Copy: professional"
+                    }
+                  ]
+                }
+              ],
+              "id": "comparison-grid-1"
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "features",
+          "purpose": "Show the depth of knowledge built into the skill.",
+          "userQuestion": "Does the skill actually understand my project's domain?",
+          "narrative": "evidence",
+          "layout": "Full width. H2 + link to knowledge map. Below: 3-column grid with three long lists: page types (16) / UX frameworks (13) / section patterns (50+).",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Knowledge base"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Underneath sits a knowledge base I've collected as a UX Design Lead over years."
+            },
+            {
+              "kind": "link",
+              "label": "Skill knowledge map",
+              "variant": "arrow",
+              "href": "/ux-designer/baza-wiedzy"
+            },
+            {
+              "kind": "grid",
+              "columns": 3,
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Page types (16)"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "B2B SaaS · Subscription products",
+                        "B2B Services · Agencies, consulting",
+                        "B2B Industrial · Manufacturers, distributors",
+                        "E-commerce · Online stores, DTC",
+                        "Portfolio · Studios, freelancers",
+                        "Local Business · Local services",
+                        "Marketplace · Two-sided platforms",
+                        "Community · Groups, forums",
+                        "Course · Courses, training",
+                        "Media · Publishers, blogs",
+                        "Event · Conferences",
+                        "Nonprofit · Foundations, NGOs",
+                        "Enterprise · Corporate tools",
+                        "Government · Public institutions",
+                        "Documentation · Knowledge bases",
+                        "Service Utility · Online tools"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "UX frameworks (13)"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "Design Psychology · Don Norman",
+                        "Hierarchy of User Needs · Aarron Walter",
+                        "Usability Heuristics · Jakob Nielsen",
+                        "LIFT Model · Conversion Optimization",
+                        "CCD · Customer Centric Design",
+                        "Emotional Targeting · 223 triggers",
+                        "Buyer Legends · Narrative framing",
+                        "FAST Architecture · Persuasion sequencing",
+                        "Narrative Arc · Hook, tension, evidence, resolution",
+                        "ResearchXL · Structured UX research",
+                        "Messaging Hierarchy · B2B 5-layer model",
+                        "Awareness Model · 5 levels of awareness",
+                        "Funnel Psychology · Awareness, consideration, decision"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Section patterns (50+)"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "Hero · Page-opening variants",
+                        "Navigation · Sticky, mega menu, mobile",
+                        "Social proof · Testimonials, logos, case studies",
+                        "FAQ / objections · Accordion, 4 buying barriers",
+                        "Forms · Lead capture, contact, RFQ",
+                        "Pricing · Tiers, anchor pricing, decoy",
+                        "Comparison · Tables vs. competitors",
+                        "Case study · Result + quote + metrics",
+                        "Pricing page · Pricing psychology, tiers",
+                        "Comparison · vs. pages, switcher proof",
+                        "Trust bar · Logos, badges, certifications",
+                        "Stats block · Metrics, scale, impact",
+                        "Sticky CTA · Floating, bottom bar",
+                        "Mid-page CTA · Contextual call",
+                        "+ 35 more"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "id": "knowledge-grid-1"
+            },
+            {
+              "kind": "paragraph",
+              "text": "92 knowledge files with methodology, ready-made patterns, and examples. 14+ areas, from brand strategy to accessibility."
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "faq",
+          "purpose": "Close the most common pre-purchase objections.",
+          "userQuestion": "What if this doesn't work the way you promise?",
+          "narrative": "tension",
+          "layout": "Full width. H2 (shorter, sentence case). Below: an 8-question accordion (each expanded via expand_more). After the accordion, a short link to the changelog (\"Will there be updates\" leads to the change history).",
+          "elements": [
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "What to know before you buy."
+            },
+            {
+              "kind": "accordion",
+              "items": [
+                {
+                  "label": "Can I do this on my own?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Doesn't the output sound like AI?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Is this just a prompt, or something more?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Does the skill work equally well for every page type?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "How much time will I save?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "What if the output needs editing?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "Will there be updates?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                },
+                {
+                  "label": "What platforms does this run on?",
+                  "body": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Answer body hidden behind expand_more on the live page."
+                    }
+                  ]
+                }
+              ],
+              "id": "faq-accordion-1"
+            },
+            {
+              "kind": "link",
+              "label": "See changelog",
+              "variant": "arrow",
+              "href": "/ux-designer/changelog"
+            }
+          ],
+          "deliberations": []
+        },
+        {
+          "type": "about",
+          "purpose": "Close the trust gap with the author's name and story.",
+          "userQuestion": "Who's behind this, and why should I trust them?",
+          "narrative": "resolution",
+          "layout": "2-col 35/65. Left: author photo (full-height tile) with label \"Experience · 15+ years\". Right: H3 (name and role) + bio paragraph + a contact line with mailto.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "The maker"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Who's behind this",
+              "id": "about-heading-1"
+            },
+            {
+              "kind": "grid",
+              "columns": [
+                1,
+                2
+              ],
+              "children": [
+                {
+                  "kind": "card",
+                  "variant": "tile",
+                  "children": [
+                    {
+                      "kind": "media",
+                      "label": "[Author photo: Tomasz Maciąg]",
+                      "height": "lg"
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Experience · 15+ years"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "variant": "default",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Tomasz Maciąg, Founder of Fuse Collective."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "I've been designing sites and brand identity systems for companies for more than 15 years. I built the UX Design Skill because I needed a process I could repeat on every project."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Direct contact"
+                    },
+                    {
+                      "kind": "link",
+                      "label": "tomasz@creativesparks.pl",
+                      "variant": "arrow",
+                      "href": "mailto:tomasz@creativesparks.pl"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "Got questions? Drop a line at the address above."
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "deliberations": []
+        }
+      ]
+    }
+  ],
+  "strategy": [
+    {
+      "id": "sp-1",
+      "n": 1,
+      "tag": "archetype",
+      "title": "Full SaaS-landing canon used for a one-time digital bundle",
+      "observation": "The page runs a long, 13-section narrative typical of full subscription sales (opening + evidence + objection-handling + comparison vs. alternatives + FAQ + about section), even though the product is a one-time purchase of a digital bundle (a file set plus an agent definition).",
+      "standard": "A sales page for a one-time tool is usually shorter than a subscription page: one screen with the offer plus four to six supporting sections. A subscription needs a longer narrative because the buyer is committing to a recurring fee.",
+      "effect": "A buyer chasing a quick decision sees a long path to the buy button and may bail before reaching pricing. A buyer doing deep research gets the material, but the length wasn't needed for them.",
+      "exception": "Acceptable if the page plays a double role (sales + market education). The \"UX Design Skill\" idea is new enough that a long narrative can be intentional. If so, the hero should clearly signal that the page is also a \"how it works\" deep-dive.",
+      "confidence": "medium",
+      "impact": "high",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md"
+    },
+    {
+      "id": "sp-2",
+      "n": 2,
+      "tag": "archetype",
+      "title": "Hybrid of methodology and author authority with no clear dominant",
+      "observation": "The page mixes two strong patterns: showing the process (Process, Under the Hood, Knowledge Base sections) and the author's personal authority (The Maker section: photo, bio, and 15 years of experience, but only at the very end). Both patterns play solidly; neither dominates.",
+      "standard": "A methodology-led page leads with process as its main evidence wall (placed at the top, highly visible). An authority-led page leads with the person (founder visible from the first screen, name over the offer, face in the hero).",
+      "effect": "The buyer doesn't know whether they're buying \"a tool with a process\" or \"a tool from a specific practitioner.\" The lack of a dominant scatters the positioning and both patterns lose force.",
+      "exception": "Acceptable if the target buyer is a savvy designer or developer for whom both signals matter. The combination is then intentional but needs a clearer signal that this is \"tool + process + author\" (e.g., a hero eyebrow other than \"Early access\").",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md"
+    },
+    {
+      "id": "sp-3",
+      "n": 3,
+      "tag": "ia",
+      "title": "Nav doesn't visually distinguish the demo path from the buy path",
+      "observation": "The nav has five items: Who it's for, Pricing, Demo, How it works, Comparison. The 'Demo' item points at the free nonprofit demo section, but on the live page that's one path while 'Pricing' (buy) is another. The nav levels them visually.",
+      "standard": "A page with two conversion paths (free demo first, then buy) usually differentiates the nav entries visually: one as the primary action button (buy), the other as a secondary link (demo). The signal of which path is primary shouldn't be hidden.",
+      "effect": "A buyer asking \"can I try this before I buy\" may miss that the nonprofit demo is a different path from the main offer. The confusion lowers conversion on both paths.",
+      "exception": "Acceptable if analytics show that most buyers skip the demo and buy outright. In that case, demo as a peer nav item makes sense.",
+      "confidence": "medium",
+      "impact": "high",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md"
+    },
+    {
+      "id": "sp-4",
+      "n": 4,
+      "tag": "ia",
+      "title": "Urgency signal only in hero microcopy and the pricing section title",
+      "observation": "The offer is positioned as early access with a 30-seat cap. The urgency signal only appears in a single line of small text under the hero's primary button and in the pricing-section title. The other eleven sections have no reminder of the limit.",
+      "standard": "An offer with a concrete limit should sustain the urgency signal across the full page (a sticky top bar, a mid-page reminder, a remaining-seats counter), especially when the page is long and scrolling to pricing takes a minute.",
+      "effect": "A buyer scrolling the lower sections loses the reason to act now. \"Capped at 30 seats\" stops being a decision factor in the second half of the page.",
+      "exception": "Acceptable if you intentionally don't want to play FOMO and the cap exists only as service capacity, not as a sales mechanic.",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "hero-cta-micro-1"
+    }
+  ],
+  "wireframe": [
+    {
+      "id": "an-1",
+      "n": 1,
+      "tag": "anatomy",
+      "title": "Hero: six features between the lead paragraph and the primary button create a long pre-roll",
+      "page": "ux-designer-page",
+      "observation": "After the page H1 and a short lead paragraph come six product features (each a mini-title plus one-line description), only then the primary action button. The whole feature block takes a sizable chunk of the left column (~350 px on desktop, far more on phone where features stack one below the other).",
+      "standard": "A hero should deliver three things: what it is, who it's for, and the action to take. Additional product features belong in a separate section below the hero, not inside it.",
+      "effect": "The buyer scrolls noticeably longer before hitting the action button. On phone, the button falls below the second screen, which lowers the chance of clicking from the hero.",
+      "exception": "Acceptable if the hero is the only place where the buyer sees features (short pages with no separate features section). Here, the page has dedicated sections covering these points more deeply, so the duplication in the hero isn't justified.",
+      "confidence": "medium",
+      "impact": "high",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "hero-feature-heading-1"
+    },
+    {
+      "id": "an-2",
+      "n": 2,
+      "tag": "anatomy",
+      "title": "Hero: the demo tile is very text-heavy",
+      "page": "ux-designer-page",
+      "observation": "The hero's right column contains a multi-line agent dialog with confidence markers (green, yellow), six bullet points, and two questions in a numbered list. About fifteen lines of text in total.",
+      "standard": "A hero's right-side visual element (photo, video, demo tile) should be scannable in 2-3 seconds. A demo dialog at full length doesn't meet that bar.",
+      "effect": "Instead of reinforcing the headline, the visual becomes content to read on its own. The hero stops being a starting point and becomes two equal content blocks. The buyer's attention splits between them.",
+      "exception": "Acceptable if the demo is the only way to convey the unique value (the product is abstract enough that you have to see it in action). In that case the demo must sit in the hero, but it needs to be trimmed to one or two strongest lines plus a link to the full demo.",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "hero-demo-label-1"
+    },
+    {
+      "id": "an-3",
+      "n": 3,
+      "tag": "anatomy",
+      "title": "Examples: 4 cases in an accordion, all collapsed",
+      "page": "ux-designer-page",
+      "observation": "The Examples section has four case studies (Designer / Creator / Marketer / PM). Each is visible only as a title, with all the content behind an expand toggle.",
+      "standard": "A case-study accordion should have at least one case open by default (the strongest buyer persona for that page), so the buyer can see the quality of the content without having to click.",
+      "effect": "The buyer sees only headings and doesn't know whether the cases include concrete metrics, results, or quotes. Fewer expansion clicks means less delivered social proof.",
+      "exception": "Acceptable if all four cases are equivalent and you don't want to favor one. Rare. Usually one persona dominates (here, probably Designer).",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "examples-accordion-1"
+    },
+    {
+      "id": "an-4",
+      "n": 4,
+      "tag": "anatomy",
+      "title": "Process: six steps with five items each create density that's hard to skim",
+      "page": "ux-designer-page",
+      "observation": "Each of the six process steps (Discovery through Decision Log) contains: a number, a stage name, a short description of what happens at the stage, a reference to an example output file (e.g., project_context.md, ux_strategy.md), and a short rationale note. About thirty elements to skim in one section, plus a callout at the bottom with a pause icon describing the checkpoint mechanism.",
+      "standard": "A process section with N steps should present each step as one compact block (at most three elements: name, short description, optional proof). Above that, the brain reads the section as a to-do list, not as a process narrative.",
+      "effect": "Most buyers skip the process section entirely. The file reference and the rationale note get lost in the density, even though they're the strongest element showing that the process produces concrete results.",
+      "exception": "Acceptable for a practitioner buyer (designer, developer) who reads the process step by step like a spec. For a decision-maker buyer (project manager, founder), it's too dense.",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "process-grid-1"
+    },
+    {
+      "id": "an-5",
+      "n": 5,
+      "tag": "anatomy",
+      "title": "Pricing: three tiers differ only in user count",
+      "page": "ux-designer-page",
+      "observation": "Solo / Studio / Agency have identical feature lists (five items each); Agency has one extra ('1x consultation with the author'). The price difference only reflects user count (1 / up to 5 / unlimited).",
+      "standard": "A pricing page with N tiers should show what the buyer of a higher tier gets (more features, better support, dedicated contact). User count alone as the sole difference usually doesn't justify a higher price in the buyer's eyes.",
+      "effect": "The buyer looks at three columns and sees no difference beyond seat limits. They may pick Solo even when Studio would suit their team, because Studio doesn't feel like it delivers anything more.",
+      "exception": "Acceptable if per-seat value is obvious (per-seat licensing is the industry standard, e.g., Figma, Notion). For a file-based tool where files are copyable, per-seat licensing needs a clearer justification.",
+      "confidence": "medium",
+      "impact": "high",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "pricing-grid-1"
+    },
+    {
+      "id": "an-6",
+      "n": 6,
+      "tag": "anatomy",
+      "title": "Demo: CTA mentions only ChatGPT, omits the other platforms",
+      "page": "ux-designer-page",
+      "observation": "The 'Try it free' section has a single primary CTA: 'Launch in ChatGPT'. According to the 'Platforms' section, the product also runs on Claude, Gemini, and Custom GPTs.",
+      "standard": "If the product runs on four or more platforms, the demo section's primary CTA should either (a) list all of them and let the user pick, or (b) state plainly: 'demo available only in ChatGPT; the full product runs on every platform.'",
+      "effect": "A Claude or Gemini buyer may think the demo (and maybe the product) only works in ChatGPT and bail on testing.",
+      "exception": "Acceptable if ChatGPT is the deliberately chosen primary demo platform and the dominant platform for target buyers (e.g., data shows 70%+ of buyers work in ChatGPT).",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "demo-button-1"
+    },
+    {
+      "id": "an-7",
+      "n": 7,
+      "tag": "anatomy",
+      "title": "Comparison: a wide table doesn't reflow well on mobile",
+      "page": "ux-designer-page",
+      "observation": "The Comparison section shows a table: five alternatives (UX Design Skill, ChatGPT, Prompt packs, UI templates, UX consultant) across five rows (Full UX process, Output, Project memory, Decisions with trade-offs, Copy). Each cell is 25-30 characters wide. On desktop it barely fits.",
+      "standard": "A B2B comparison table with four or more columns should have a dedicated mobile mode: a vertical stack with each alternative as its own block, or filter buttons ('compare with X') plus a dynamic two-column table.",
+      "effect": "Mobile buyers see horizontal scrolling or shrunken text. A section meant to be a decision killer loses its punch on mobile.",
+      "exception": "Acceptable if analytics show conversion only closes on desktop. Rare for B2B tools, where buyers often start their research on mobile.",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "comparison-grid-1"
+    },
+    {
+      "id": "an-8",
+      "n": 8,
+      "tag": "anatomy",
+      "title": "Knowledge base: nearly 80 items across three lists is a dump, not a navigation",
+      "page": "ux-designer-page",
+      "observation": "The 'Knowledge base' section contains three long side-by-side lists: 16 page types, 13 UX frameworks, more than 50 section patterns. Almost 80 items in one landing-page section.",
+      "standard": "A list of 50+ items doesn't serve the buyer; it just performs scale. It should be cut to five-to-seven items most relevant to the persona, plus a 'see the full knowledge map' link.",
+      "effect": "The buyer sees a wall of text and scrolls on. An impression of depth is created, but not a single item is remembered.",
+      "exception": "Acceptable for a practitioner buyer who wants to verify whether a specific framework or page type is covered ('is ResearchXL there? Funnel Psychology?'). The list then plays a reference role, but it should have a search box or live on its own page.",
+      "confidence": "medium",
+      "impact": "low",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "knowledge-grid-1"
+    },
+    {
+      "id": "an-9",
+      "n": 9,
+      "tag": "anatomy",
+      "title": "FAQ: 8 questions, all collapsed",
+      "page": "ux-designer-page",
+      "observation": "The FAQ section has eight questions in an accordion, all collapsed by default. The buyer only sees the headings: 'Can I do this on my own?', 'Doesn't the output sound like AI?', and so on.",
+      "standard": "FAQ is the last barrier before conversion. One or two highest-friction questions (e.g., 'Doesn't the output sound like AI?', 'What if the output needs editing?') should be open by default so the buyer can knock down the objection without having to click.",
+      "effect": "A buyer with a concrete objection ('I'm afraid this is AI lorem ipsum') doesn't see that the page has an answer unless they click. Many bail before clicking.",
+      "exception": "Acceptable if the FAQ is a secondary trust source and the primary one is, say, a testimonial or case study. There are no testimonials here, so the FAQ should pick up that role.",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "faq-accordion-1"
+    },
+    {
+      "id": "an-10",
+      "n": 10,
+      "tag": "anatomy",
+      "title": "Author: the maker section sits at the very end of the page",
+      "page": "ux-designer-page",
+      "observation": "The author (Tomasz Maciąg, Founder of Fuse Collective) with 15+ years of experience only appears in the last section of the page, after nearly 15,000 pixels of scrolling, i.e., a dozen-plus screens. The hero, where the buyer decides whether to keep reading, carries no signal about who the author is.",
+      "standard": "A founder-authority page should surface the author's face earlier: at minimum as a small bio block after the hero or after the first evidence section, or as a signature in the nav bar ('by Tomasz Maciąg, 15+ years') or in small text under the hero.",
+      "effect": "A buyer deciding 'does this guy know what he's talking about' has to jump to the last section. Most buyers never get there.",
+      "exception": "Acceptable if brand authority doesn't depend on the person (a company brand with reputation). Here, the entire product is the author's personal project, so the person IS the brand.",
+      "confidence": "medium",
+      "impact": "medium",
+      "decision_status": "pending",
+      "domain_ref": "domains/b2b-saas/b2b-saas-archetypes.md",
+      "attached_to": "about-heading-1"
+    }
+  ],
+  "questions": []
+}
+</script>
+
+<!-- ============================================================
+     SHELL JS — IIFE
+     ============================================================ -->
+<script>
+(function() {
+  // Audit data lives in the <script type="application/json" id="audit-findings-data"> block.
+  const _dataEl = document.getElementById('audit-findings-data');
+  if (!_dataEl) return; // graceful no-op if deliverable has no data block
+  const _data = JSON.parse(_dataEl.textContent);
+
+  // ---- Audit data shape (schema: audit-schema.md) ----
+  const WIREFRAMES = _data.wireframes || [];
+  const CHROME     = _data.chrome || { nav: {}, footer: {} };
+
+  // ---- Flat ALL_ENTRIES list — audit variant ----
+  // Populated from strategy[] (cross-page findings) and wireframe[] (page/element-scope findings).
+  // Each entry carries kind='finding' so renderDetail can dispatch on it.
+  // n is pre-assigned in the data block (authoring time); stored on the entry for badge display.
+  const ALL_ENTRIES = [];
+
+  (_data.strategy || []).forEach(d => {
+    ALL_ENTRIES.push({ d, kind: 'finding', scope: 'strategy', pageSlug: null, pageTitle: 'Strategy', sectionIndex: null, sectionType: null });
+  });
+
+  (_data.wireframe || []).forEach(d => {
+    const scope = d.attached_to ? 'element' : 'page';
+    ALL_ENTRIES.push({ d, kind: 'finding', scope, pageSlug: d.page || null, pageTitle: d.page || 'Unknown page', sectionIndex: null, sectionType: null });
+  });
+
+  // Carry pre-assigned n from data, or assign sequentially as fallback.
+  ALL_ENTRIES.forEach((entry, idx) => {
+    if (entry.d.n == null) entry.d.n = idx + 1;
+    entry.n = entry.d.n;
+  });
+
+  const DELIB_MAP = Object.fromEntries(ALL_ENTRIES.map(entry => [entry.d.id, entry]));
+  const TOTAL = ALL_ENTRIES.length;
+
+  // ---- UI labels (audit variant) ----
+  // Source-of-truth defaults are English. A deliverable may override any key
+  // by supplying `labels: { <key>: '<localized>' }` inside the embedded
+  // <script type="application/json" id="audit-findings-data"> block.
+  // Runtime localization is the adapter's concern, not the shell's.
+  const DEFAULT_LABELS = {
+    // Confidence values
+    confidence_high:    '{High}',
+    confidence_medium:  '{Medium}',
+    confidence_low:     '{Low}',
+    // Filter axis headings
+    axis_page:          '{Page}',
+    axis_confidence:    '{Confidence}',
+    // Category chip built-ins
+    category_all:       '{All}',
+    // Filter controls
+    filter_label:          '{Filters}',
+    filter_label_active:   '{Filters · active: {n}}',
+    filter_clear:          '{Clear}',
+    // Group headers — two groups: strategy-scope findings, page-scope findings
+    group_section_choices: '{Strategy findings ({n})}',
+    group_page_choices:    '{Page-level findings ({n})}',
+    // Reverse-mode indicator shown in the bottom bar's center when any wireframe has sourceUrl
+    snapshot_info: '{Snapshot of existing site}',
+    // Section meta strip labels (rendered inside each wireframe section)
+    meta_section:  '{Section:}',
+    meta_narrative: '{Narrative:}',
+    meta_question: '{Question:}',
+    meta_goal:     '{Goal:}',
+    // Panel header / nav
+    back:              '{Back}',
+    nav_prev:          '{Previous}',
+    nav_next:          '{Next}',
+    nav_counter:       '{{i} of {total}}',
+    nav_counter_empty: '—',
+    // Detail header hints — shared
+    detail_page:        '{Page}',
+    detail_confidence:  '{Confidence}',
+    detail_reasoning:   '{Reasoning}',
+    detail_alternatives: '{Alternatives considered}',
+    detail_source:      '{Source}',
+    // Detail header hints — audit-specific
+    detail_observation:  '{Current state}',
+    detail_standard:     '{Standard}',
+    detail_effect:       '{Effect}',
+    detail_exception:    '{When this may be fine}',
+    detail_tag:          '{Dimension}',
+    detail_impact:       '{Impact}',
+    detail_decision_status: '{Review status}',
+    // MD export — deliberations / findings
+    md_page:            '{Page}',
+    md_scope:           '{Scope}',
+    md_confidence:      '{Confidence}',
+    md_reasoning:       '{Reasoning}',
+    md_alternatives:    '{Alternatives}',
+    md_source:          '{Source}',
+    // MD export — brief document
+    md_brief_title:            '{Audit findings}',
+    md_brief_intro:            '{Audit findings produced by the agent.}',
+    // MD export — wireframes document (used by renderMarkdown)
+    md_doc_title:              '{Wireframes}',
+    md_page_label:             '{Page:}',
+    md_purpose:                '{Purpose:}',
+    md_section_inline:         '{Section}',
+    md_narrative:              '{Narrative:}',
+    md_question:               '{Question:}',
+    md_goal:                   '{Goal:}',
+    md_layout:                 '{Layout:}',
+    md_trusted_by:             '{Trusted by:}',
+    md_banner_prefix:          '{banner:}',
+    md_design_choices:         '{Design choices}',
+    md_page_design_choices:    '{Page design choices}',
+    md_reasoning_inline:       '{Reasoning:}',
+    md_alternatives_inline:    '{Alternatives:}',
+    md_rejected_inline:        '{rejected:}',
+    md_confidence_inline:      '{confidence:}',
+    md_secondary_suffix:       '{secondary}',
+    // Download filenames
+    file_wfd_with_decisions: 'audit-with-decisions.html',
+    file_brief:               'audit-findings.md',
+    // Bottom bar controls
+    bar_audit:              '{Audit findings}',
+    bar_page:               '{Page:}',
+    bar_section_notes:      '{Show annotations}',
+    bar_design_choices:     '{Show audit findings}',
+    bar_download:           '{Download:}',
+    bar_download_html:      '{Audit HTML}',
+    bar_download_md:        '{Audit MD}',
+    bar_download_html_title: '{Download the current state of the deliverable as a self-contained HTML file}',
+    bar_download_md_title:   '{Download audit findings as Markdown}',
+    bar_pin_toggle:          '{Show audit findings}',
+  };
+  // Merge deliverable overrides (e.g. Polish labels) over the English defaults.
+  const LABELS = Object.assign({}, DEFAULT_LABELS, _data.labels || {});
+
+  /* ===== UNIFIED-ENGINE-START — character-identical between wireframing and audit templates ===== */
+
+  // Tiny interpolator: 'Filters · active: {n}' → tpl('filter_label_active', { n: 3 }) → 'Filters · active: 3'
+  function tpl(key, vars) {
+    const s = LABELS[key] != null ? LABELS[key] : key;
+    if (!vars) return s;
+    return s.replace(/\{(\w+)\}/g, (_m, k) => (vars[k] != null ? vars[k] : ''));
+  }
+  // Fill any static markup that advertises a LABELS key. Elements with
+  // data-label-key="<key>" get their textContent replaced; data-label-aria-key
+  // sets the aria-label attribute. Keeps the Back/Prev/Next buttons localizable
+  // without re-rendering markup in JS.
+  function applyStaticLabels(root) {
+    (root || document).querySelectorAll('[data-label-key]').forEach(el => {
+      const key = el.getAttribute('data-label-key');
+      if (LABELS[key] == null) return;
+      const prefix = el.getAttribute('data-label-prefix') || '';
+      el.textContent = prefix + LABELS[key];
+    });
+    (root || document).querySelectorAll('[data-label-aria-key]').forEach(el => {
+      const key = el.getAttribute('data-label-aria-key');
+      if (LABELS[key] != null) el.setAttribute('aria-label', LABELS[key]);
+    });
+    (root || document).querySelectorAll('[data-label-title-key]').forEach(el => {
+      const key = el.getAttribute('data-label-title-key');
+      if (LABELS[key] != null) el.setAttribute('title', LABELS[key]);
+    });
+  }
+
+  const CONF_MAP = {
+    'high':   { label: LABELS.confidence_high,   cls: 'mc-badge--green' },
+    'medium': { label: LABELS.confidence_medium,  cls: 'mc-badge--yellow' },
+    'low':    { label: LABELS.confidence_low,     cls: 'mc-badge--red' },
+  };
+  function pill(map, key) {
+    const m = map[key];
+    if (!m) return `<span class="mc-badge">${key}</span>`;
+    return `<span class="mc-badge ${m.cls}">${m.label}</span>`;
+  }
+
+  // Decision state removed — design choices are pure rationale, not approvable items.
+  const NS = _data.namespace || 'wireframes-default';
+
+  const panel = document.getElementById('shellLeftpanel');
+  const panelToggle = document.getElementById('shellPanelToggle');
+  // Title + count removed from header per UX cleanup — these are no-op stubs so
+  // existing render code (which still sets text/visibility) doesn't need a sweep.
+  const panelTitle = { textContent: '', style: {} };
+  const panelCount = { textContent: '', style: {} };
+  const panelBody = document.getElementById('shellLeftpanelBody');
+  const panelHeader = document.getElementById('shellHeader');
+  const panelFilterArea = document.getElementById('shellFilterArea');
+  const backBtn = document.getElementById('shellBack');
+  const pageSelect = document.getElementById('shellPageSelect');
+  const navEl = document.getElementById('shellNav');
+  const navPrevBtn = document.getElementById('shellNavPrev');
+  const navNextBtn = document.getElementById('shellNavNext');
+  const navCounter = document.getElementById('shellNavCounter');
+
+  // Navigation state — sequence of visible list items captured when entering detail
+  let navList = [];
+  let navIndex = -1;
+
+  let view = 'list'; // 'list' | 'detail'
+  // Empty array = no filter on this axis. Non-empty = OR within axis. AND across axes.
+  let activeFilter = { page: [], confidence: [] };
+  let filterExpanded = false;
+
+  // ---- Panel open/close ----
+  function openPanel() {
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('shell-leftpanel-open');
+    if (panelToggle) panelToggle.classList.add('is-active');
+    try { localStorage.setItem(`${NS}-panel-open`, '1'); } catch (e) {}
+  }
+  function closePanel() {
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('shell-leftpanel-open');
+    if (panelToggle) panelToggle.classList.remove('is-active');
+    try { localStorage.setItem(`${NS}-panel-open`, '0'); } catch (e) {}
+  }
+  function togglePanel() {
+    if (panel.classList.contains('is-open')) closePanel(); else openPanel();
+  }
+
+  // ---- List mode render ----
+  function renderList() {
+    view = 'list';
+    panelHeader.style.display = 'none';
+    panelFilterArea.style.display = '';
+    setActiveWireframeElement(null);
+    document.body.classList.remove('shell-detail-open');
+
+    // Filter axes: page, confidence
+    const uniquePages = [...new Map(WIREFRAMES.map(wf => [wf.slug, wf.title])).entries()];
+    const confCount = (val) => ALL_ENTRIES.filter(e => e.d.confidence === val).length;
+
+    const pageChips = [
+      { key: 'all', label: LABELS.category_all, count: TOTAL },
+      ...uniquePages.map(([slug, title]) => ({ key: slug, label: title, count: ALL_ENTRIES.filter(e => e.pageSlug === slug).length })),
+    ];
+    const confidenceChips = [
+      { key: 'all',    label: LABELS.category_all,      count: TOTAL },
+      { key: 'high',   label: LABELS.confidence_high,   count: confCount('high') },
+      { key: 'medium', label: LABELS.confidence_medium, count: confCount('medium') },
+      { key: 'low',    label: LABELS.confidence_low,    count: confCount('low') },
+    ];
+
+    function chipsRow(label, dim, list) {
+      const sel = activeFilter[dim];
+      const html = list.map(c => {
+        const isActive = c.key === 'all' ? sel.length === 0 : sel.includes(c.key);
+        return `
+          <button class="shell-chip${isActive ? ' is-active' : ''}" data-filter-dim="${dim}" data-filter="${c.key}" type="button">
+            ${c.label}<span class="shell-chip-count">${c.count}</span>
+          </button>
+        `;
+      }).join('');
+      return `<div class="shell-filter-section"><div class="shell-filter-section__label">${label}</div><div class="shell-filter-section__chips">${html}</div></div>`;
+    }
+
+    const chipsHTML =
+      chipsRow(LABELS.axis_page, 'page', pageChips) +
+      chipsRow(LABELS.axis_confidence, 'confidence', confidenceChips);
+
+    function renderItem(entry) {
+      const { d, n, scope, pageSlug, pageTitle, sectionType } = entry;
+      // Group header already signals page vs section scope; list item only
+      // adds the section type when the item is section-scoped.
+      const sectionSuffix = scope === 'section' && sectionType ? ` &middot; ${sectionType}` : '';
+      return `
+        <div class="shell-item" data-id="${d.id}" data-page="${pageSlug || ''}" data-scope="${scope}" data-confidence="${d.confidence}">
+          <div class="shell-item__row">
+            <span class="shell-item__n">#${n}</span>
+            <span class="shell-item__labels">
+              ${d.confidence !== 'high' ? pill(CONF_MAP, d.confidence) : ''}
+            </span>
+          </div>
+          <h4 class="shell-item__title">${d.title || d.summary}</h4>
+          <div class="shell-item__page-note"><strong>${LABELS.detail_page}:</strong> ${pageTitle}${sectionSuffix}</div>
+        </div>
+      `;
+    }
+    const sectionEntries = ALL_ENTRIES.filter(e => e.scope === 'section' || e.scope === 'element');
+    const pageEntries    = ALL_ENTRIES.filter(e => e.scope === 'page' || e.scope === 'strategy');
+    const sectionHTML = sectionEntries.map(renderItem).join('');
+    const pageHTML    = pageEntries.map(renderItem).join('');
+
+    const activeChipCount = Object.values(activeFilter).reduce((acc, arr) => acc + arr.length, 0);
+    const filterLabel = activeChipCount === 0 ? LABELS.filter_label : tpl('filter_label_active', { n: activeChipCount });
+    const clearBtn = activeChipCount > 0
+      ? `<button class="shell-filter-clear" id="shellFilterClear" type="button">${LABELS.filter_clear}</button>`
+      : '';
+    panelFilterArea.innerHTML = `
+      <div class="shell-filter-row">
+        <button class="shell-filter-toggle${filterExpanded ? ' is-open' : ''}" id="shellFilterToggle" type="button">
+          <span>${filterLabel}</span>
+          <span class="shell-filter-toggle__icon">${filterExpanded ? '−' : '+'}</span>
+        </button>
+        ${clearBtn}
+      </div>
+      <div class="shell-leftpanel__filter${filterExpanded ? '' : ' is-collapsed'}" id="shellFilter">${chipsHTML}</div>
+    `;
+    const sectionGroupHTML = sectionEntries.length ? `
+      <div class="shell-group" data-group="section">
+        <h4 class="shell-group-header">${tpl('group_section_choices', { n: sectionEntries.length })}</h4>
+        <div class="shell-list">${sectionHTML}</div>
+      </div>
+    ` : '';
+    const pageGroupHTML = pageEntries.length ? `
+      <div class="shell-group" data-group="page">
+        <h4 class="shell-group-header">${tpl('group_page_choices', { n: pageEntries.length })}</h4>
+        <div class="shell-list">${pageHTML}</div>
+      </div>
+    ` : '';
+    panelBody.innerHTML = sectionGroupHTML + pageGroupHTML;
+
+    applyFilter();
+  }
+
+  function matchesPage(item) {
+    const sel = activeFilter.page;
+    if (!sel.length) return true;
+    return sel.includes(item.dataset.page);
+  }
+  function matchesConfidence(item) {
+    const sel = activeFilter.confidence;
+    if (!sel.length) return true;
+    return sel.includes(item.dataset.confidence);
+  }
+  function applyFilter() {
+    const items = panelBody.querySelectorAll('.shell-item');
+    const groups = panelBody.querySelectorAll('.shell-group');
+    items.forEach(item => {
+      const visible = matchesPage(item) && matchesConfidence(item);
+      item.classList.toggle('is-hidden', !visible);
+    });
+    groups.forEach(g => {
+      const visibleItems = g.querySelectorAll('.shell-item:not(.is-hidden)');
+      g.classList.toggle('is-hidden', visibleItems.length === 0);
+    });
+  }
+
+  function setFilter(dim, key) {
+    if (key === 'all') {
+      activeFilter[dim] = [];
+    } else {
+      const arr = activeFilter[dim];
+      const idx = arr.indexOf(key);
+      if (idx === -1) arr.push(key);
+      else arr.splice(idx, 1);
+    }
+    renderList();
+  }
+
+  // ---- Navigation sequence (prev/next within current filter) ----
+  function captureNavList() {
+    navList = Array.from(panelBody.querySelectorAll('.shell-item:not(.is-hidden)')).map(el => ({
+      id: el.dataset.id,
+      page: el.dataset.page || null,
+    }));
+  }
+  function ensureNavContains(id) {
+    const found = navList.findIndex(x => x.id === id);
+    if (found === -1) {
+      captureNavList();
+      navIndex = navList.findIndex(x => x.id === id);
+      if (navIndex === -1) {
+        navList = ALL_ENTRIES.map(e => ({ id: e.d.id, page: e.pageSlug }));
+        navIndex = navList.findIndex(x => x.id === id);
+      }
+    } else {
+      navIndex = found;
+    }
+  }
+  function updateNavCounter() {
+    if (!navList.length) { navCounter.textContent = LABELS.nav_counter_empty; navPrevBtn.disabled = true; navNextBtn.disabled = true; return; }
+    navCounter.textContent = tpl('nav_counter', { i: navIndex + 1, total: navList.length });
+    navPrevBtn.disabled = navIndex <= 0;
+    navNextBtn.disabled = navIndex >= navList.length - 1;
+  }
+  function goPrevItem() {
+    if (navIndex > 0) {
+      navIndex--;
+      const x = navList[navIndex];
+      renderDetail(x.id);
+      goToDeliberation(x.id, x.page);
+    }
+  }
+  function goNextItem() {
+    if (navIndex < navList.length - 1) {
+      navIndex++;
+      const x = navList[navIndex];
+      renderDetail(x.id);
+      goToDeliberation(x.id, x.page);
+    }
+  }
+
+  // ---- Detail mode render ----
+  function renderDetail(id) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    backBtn.style.display = 'inline-block';
+    navEl.style.display = 'flex';
+    const entry = DELIB_MAP[id];
+    if (!entry) return;
+    const { d, scope, pageTitle, sectionType } = entry;
+    backBtn.style.display = 'inline-block';
+    setActiveWireframeElement(id);
+    document.body.classList.add('shell-detail-open');
+
+    // Scope is communicated by the group the item came from; detail panel
+    // shows page + (when section-scoped) section type as a suffix on the
+    // page row instead of a dedicated Scope row.
+    const sectionSuffix = scope === 'section' && sectionType ? ` &middot; ${sectionType}` : '';
+    const alternativesBlock = (d.alternatives && d.alternatives.length) ? `
+      <div class="shell-detail__block">
+        <h4 class="shell-detail__label">${LABELS.detail_alternatives}</h4>
+        <ul class="shell-detail__text">${d.alternatives.map(a => `<li><strong>${a.desc}</strong> — ${a.rejected}</li>`).join('')}</ul>
+      </div>
+    ` : '';
+    panelBody.innerHTML = `
+      <h3 class="shell-detail__title">${d.title || d.summary}</h3>
+      <dl class="shell-detail__meta">
+        <dt>${LABELS.detail_page}</dt><dd>${pageTitle}${sectionSuffix}</dd>
+        <dt>${LABELS.detail_confidence}</dt><dd>${pill(CONF_MAP, d.confidence)}</dd>
+      </dl>
+      <div class="shell-detail__blocks">
+        <div class="shell-detail__block">
+          <h4 class="shell-detail__label">${LABELS.detail_reasoning}</h4>
+          <p class="shell-detail__text">${d.reasoning}</p>
+        </div>
+        ${alternativesBlock}
+      </div>
+    `;
+    updateNavCounter();
+  }
+
+  // ---- Event wiring ----
+
+  // Bottom bar — panel toggle
+  if (panelToggle) panelToggle.addEventListener('click', togglePanel);
+
+  // Bottom bar — page select drives .wf-page--active toggle + URL hash + nav re-render.
+  if (pageSelect) {
+    function activatePage(slug) {
+      if (!slug) return;
+      const wfPages = document.querySelectorAll('.wf-page');
+      wfPages.forEach(p => p.classList.toggle('wf-page--active', p.id === slug));
+      if (pageSelect.value !== slug) pageSelect.value = slug;
+    }
+    pageSelect.addEventListener('change', (e) => {
+      const slug = e.target.value;
+      activatePage(slug);
+      location.hash = '#' + slug;
+    });
+    window.addEventListener('hashchange', () => {
+      activatePage((location.hash || '').slice(1));
+    });
+    document.addEventListener('DOMContentLoaded', () => {
+      const wfPages = document.querySelectorAll('.wf-page');
+      const initial = (location.hash || '').slice(1) || (pageSelect.value || (wfPages[0] && wfPages[0].id));
+      activatePage(initial);
+    });
+    const wfPagesNow = document.querySelectorAll('.wf-page');
+    const initialNow = (location.hash || '').slice(1) || (pageSelect.value || (wfPagesNow[0] && wfPagesNow[0].id));
+    activatePage(initialNow);
+  }
+
+  // Section-annotations toggle — hides/shows the gray .wf-note meta footer
+  // under each wireframe section (Section/Narrative/Question/Goal band).
+  const wfNotesToggle = document.getElementById('wfNotesToggle');
+  if (wfNotesToggle) {
+    let storedNotes = null;
+    try { storedNotes = localStorage.getItem(`${NS}-wf-notes-visible`); } catch (e) {}
+    const initialNotes = storedNotes === null ? true : storedNotes === '1';
+    wfNotesToggle.checked = initialNotes;
+    document.body.classList.toggle('wf-notes-hidden', !initialNotes);
+    wfNotesToggle.addEventListener('change', (e) => {
+      const show = e.target.checked;
+      document.body.classList.toggle('wf-notes-hidden', !show);
+      try { localStorage.setItem(`${NS}-wf-notes-visible`, show ? '1' : '0'); } catch (_e) {}
+    });
+  }
+
+  // Design-choices toggle — hides/shows numbered pointer badges on sections.
+  const shellBadgesToggle = document.getElementById('shellBadgesToggle');
+  if (shellBadgesToggle) {
+    let storedBadges = null;
+    try { storedBadges = localStorage.getItem(`${NS}-shell-badges-visible`); } catch (e) {}
+    const initialBadges = storedBadges === null ? true : storedBadges === '1';
+    shellBadgesToggle.checked = initialBadges;
+    document.body.classList.toggle('shell-badges-hidden', !initialBadges);
+    shellBadgesToggle.addEventListener('change', (e) => {
+      const show = e.target.checked;
+      document.body.classList.toggle('shell-badges-hidden', !show);
+      try { localStorage.setItem(`${NS}-shell-badges-visible`, show ? '1' : '0'); } catch (_e) {}
+    });
+  }
+
+  // Scroll viewport to the section that contains the badge for deliberation `id`
+  function scrollToBadge(id) {
+    const el = document.querySelector(`[data-shell-id="${id}"]`);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const top = window.scrollY + rect.top - 80;
+    window.scrollTo({ top, behavior: 'smooth' });
+  }
+
+  // Highlight the wireframe section linked to the currently-open deliberation.
+  // Pass `null` to clear (on back-to-list or close).
+  function setActiveWireframeElement(id) {
+    document.querySelectorAll('[data-shell-id].is-shell-active')
+      .forEach(el => el.classList.remove('is-shell-active'));
+    if (id == null) return;
+    const el = document.querySelector(`[data-shell-id="${id}"]`);
+    if (el) el.classList.add('is-shell-active');
+  }
+
+  // Navigate to the page containing deliberation, then scroll to its badge
+  function goToDeliberation(id, targetPage) {
+    const currentHash = (location.hash || '').slice(1);
+    if (targetPage && currentHash !== targetPage) {
+      location.hash = '#' + targetPage;
+      setTimeout(() => scrollToBadge(id), 120);
+    } else {
+      scrollToBadge(id);
+    }
+  }
+
+  // Filter area — delegated clicks (filter toggle + chips, lives outside scrollable body)
+  panelFilterArea.addEventListener('click', (e) => {
+    const clearBtn = e.target.closest('#shellFilterClear');
+    if (clearBtn) {
+      activeFilter = { page: [], confidence: [] };
+      renderList();
+      return;
+    }
+    const filterToggle = e.target.closest('#shellFilterToggle');
+    if (filterToggle) {
+      filterExpanded = !filterExpanded;
+      renderList();
+      return;
+    }
+    const chip = e.target.closest('.shell-chip');
+    if (chip) { setFilter(chip.dataset.filterDim || 'category', chip.dataset.filter); return; }
+  });
+
+  // Panel body — delegated clicks (list items + decision buttons)
+  panelBody.addEventListener('click', (e) => {
+    const filterToggle = e.target.closest('#shellFilterToggle');
+    if (filterToggle) {
+      filterExpanded = !filterExpanded;
+      renderList();
+      return;
+    }
+    const chip = e.target.closest('.shell-chip');
+    if (chip) { setFilter(chip.dataset.filterDim || 'page', chip.dataset.filter); return; }
+    const item = e.target.closest('.shell-item');
+    if (item) {
+      captureNavList();
+      const id = item.dataset.id;
+      navIndex = navList.findIndex(x => x.id === id);
+      renderDetail(id);
+      goToDeliberation(id, item.dataset.page);
+      return;
+    }
+  });
+
+  // Back button — detail → list
+  backBtn.addEventListener('click', () => {
+    if (view === 'detail') renderList();
+  });
+
+  // Badges on sections — open detail for that deliberation (delegated on shellPages)
+  document.getElementById('shellPages').addEventListener('click', (e) => {
+    const btn = e.target.closest('.shell-badge');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const id = btn.dataset.id;
+    if (!id) return;
+    openPanel();
+    ensureNavContains(id);
+    renderDetail(id);
+  });
+
+  // Prev/Next navigation buttons
+  if (navPrevBtn) navPrevBtn.addEventListener('click', goPrevItem);
+  if (navNextBtn) navNextBtn.addEventListener('click', goNextItem);
+
+  // Keyboard — ESC closes
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && panel.classList.contains('is-open')) {
+      if (view === 'detail') renderList();
+      else closePanel();
+    }
+  });
+
+  function triggerDownload(filename, text, mime) {
+    const blob = new Blob([text], { type: (mime || 'text/plain') + ';charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ---- Wireframe-with-decisions export (full HTML + decisions MD) ----
+  function deliberationMdSection(entry) {
+    const { d, scope, pageTitle, sectionType } = entry;
+    const scopeLabel = scope === 'page' ? 'page' : `section · ${sectionType}`;
+    const lines = [
+      `### ${d.id} — ${d.title || d.summary}`,
+      '',
+      `**${LABELS.md_page}:** \`${pageTitle}\`  `,
+      `**${LABELS.md_scope}:** ${scopeLabel}  `,
+      `**${LABELS.md_confidence}:** ${d.confidence}`,
+      '',
+      `**${LABELS.md_reasoning}:**`, '', d.reasoning,
+    ];
+    if (d.alternatives && d.alternatives.length) {
+      lines.push('', `**${LABELS.md_alternatives}:**`);
+      d.alternatives.forEach(a => lines.push(`- ${a.desc} — rejected: ${a.rejected}`));
+    }
+    if (d.inputSource) {
+      lines.push('', `**${LABELS.md_source}:** ${d.inputSource.kind}:${d.inputSource.ref}`);
+    }
+    return lines.join('\n');
+  }
+  function generateDecisionsMd() {
+    const parts = [
+      `# ${LABELS.md_brief_title}`,
+      '',
+      LABELS.md_brief_intro,
+      '',
+      '---',
+      '',
+    ];
+    ALL_ENTRIES.forEach(e => { parts.push(deliberationMdSection(e), '', '---', ''); });
+    return parts.join('\n').replace(/\n+$/, '\n');
+  }
+  function buildHtmlWithDecisions() {
+    const dataEl = document.getElementById('wireframes-findings-data');
+    const payload = JSON.parse(dataEl.textContent);
+    const docClone = document.documentElement.cloneNode(true);
+    const cloneData = docClone.querySelector('#wireframes-findings-data');
+    if (cloneData) cloneData.textContent = '\n' + JSON.stringify(payload, null, 2) + '\n';
+    // Reset every container the IIFE populates at init — the data block is the
+    // single source of truth and the renderers rebuild from it on reload.
+    // Without this, IIFE-appenders (insertAdjacentHTML, appendChild) run on the
+    // already-populated clone and produce 2× the entries on reload.
+    ['shellPages', 'shellLeftpanelBody', 'shellFilterArea', 'shellPageSelect'].forEach(id => {
+      const el = docClone.querySelector('#' + id);
+      if (el) el.innerHTML = '';
+    });
+    return '<!DOCTYPE html>\n' + docClone.outerHTML;
+  }
+  function downloadWfdHtml() {
+    const html = buildHtmlWithDecisions();
+    const wfs = _data.wireframes || [];
+    const ns = (_data.namespace || '').replace(/^ux-designer-wireframes-/, '').replace(/-\d{4}-\d{2}-\d{2}$/, '');
+    const fileSlug = ns || (wfs[0] && wfs[0].slug) || 'wireframes';
+    triggerDownload(`${fileSlug}-wireframes.html`, html, 'text/html');
+  }
+  function downloadDecisionsMd() {
+    const md = generateDecisionsMd();
+    triggerDownload(LABELS.file_brief, md, 'text/markdown');
+  }
+  const dlHtmlBtn = document.getElementById('shellDownloadHtml');
+  if (dlHtmlBtn) dlHtmlBtn.addEventListener('click', downloadWfdHtml);
+  const dlMdBtn = document.getElementById('shellDownloadMd');
+  if (dlMdBtn) dlMdBtn.addEventListener('click', downloadWireframesMd);
+
+  // Download visibility — per shared convention (interactive-deliverable-shell.md
+  // §Download button convention). Hide buttons when target content isn't populated;
+  // hide the entire group when no buttons are visible.
+  const HTML_VISIBLE = WIREFRAMES.length > 0;
+  const MD_VISIBLE = WIREFRAMES.length > 0;
+  if (dlHtmlBtn && !HTML_VISIBLE) dlHtmlBtn.style.display = 'none';
+  if (dlMdBtn && !MD_VISIBLE) dlMdBtn.style.display = 'none';
+  const dlGroup = document.getElementById('shellDownloadGroup');
+  if (dlGroup && !HTML_VISIBLE && !MD_VISIBLE) dlGroup.style.display = 'none';
+
+  // ---- Wireframe content MD formatter ----
+  // Renders _data as Markdown per the element → MD mapping in wireframing-schema.md §MD output.
+  // Deliberations ARE included: schema §MD output example shows "### Design choices" block.
+  // Contract: formatWireframesMd(data) → { md: string, filename: string }
+  // See references/shared/interactive-deliverable-shell.md §MD export convention.
+  function formatWireframesMd(data) {
+    const wfs = data.wireframes || [];
+    // Derive filename slug: strip "ux-designer-wireframes-" prefix and any date suffix from namespace.
+    const ns = (data.namespace || '').replace(/^ux-designer-wireframes-/, '').replace(/-\d{4}-\d{2}-\d{2}$/, '');
+    const fileSlug = ns || (wfs[0] && wfs[0].slug) || 'wireframes';
+
+    // Frontmatter
+    const today = new Date().toISOString().slice(0, 10);
+    const projectName = ns || 'Project';
+    const lines = [];
+    lines.push('---');
+    lines.push(`project: ${projectName}`);
+    lines.push(`generated: ${today}`);
+    lines.push('---');
+    lines.push('');
+    lines.push(`# ${LABELS.md_doc_title} — ${projectName}`);
+    lines.push('');
+
+    wfs.forEach(wf => {
+      // Page boundary
+      lines.push(`# ${LABELS.md_page_label} ${wf.title || wf.slug}`);
+      lines.push(`${LABELS.md_purpose} ${wf.purpose || ''}`);
+      lines.push('');
+
+      (wf.sections || []).forEach(sec => {
+        // Section boundary
+        lines.push(`## ${LABELS.md_section_inline} — ${sec.type}`);
+        lines.push(`${LABELS.md_section_inline}: ${sec.type}`);
+        lines.push(`${LABELS.md_narrative} ${sec.narrative}`);
+        lines.push(`${LABELS.md_question} ${sec.userQuestion}`);
+        lines.push(`${LABELS.md_goal} ${sec.purpose}`);
+        lines.push(`${LABELS.md_layout} ${sec.layout}`);
+        lines.push('');
+
+        // Elements — per schema §MD output mapping.
+        // Container kinds (grid/card/accordion) are flattened — MD has no multi-column concept.
+        const renderElementMd = (el) => {
+          if (!el || !el.kind) return;
+          switch (el.kind) {
+            case 'heading': {
+              const hashes = '#'.repeat(el.level || 1);
+              lines.push(`${hashes} ${el.text}`);
+              break;
+            }
+            case 'paragraph':
+              lines.push(el.text);
+              break;
+            case 'cta': {
+              // Deprecated alias — keep [CTA: ...] form for one release of MD-diff stability.
+              const suffix = el.variant === 'secondary' ? ` (${LABELS.md_secondary_suffix})` : '';
+              lines.push(`[CTA: ${el.label}]${suffix}`);
+              break;
+            }
+            case 'button': {
+              const suffix = el.variant === 'secondary' ? ` (${LABELS.md_secondary_suffix})` : '';
+              lines.push(`[Button: ${el.label}]${suffix}`);
+              break;
+            }
+            case 'link': {
+              const suffix = el.variant === 'arrow' ? ' →' : '';
+              lines.push(`[Link: ${el.label}${suffix}]`);
+              break;
+            }
+            case 'media':
+              // height is a render-only hint, no MD representation
+              lines.push(`[Media: ${el.label || el.description || ''}]`);
+              break;
+            case 'label':
+              lines.push(`**${el.text}**`);
+              break;
+            case 'list': {
+              (el.items || []).forEach((item, i) => {
+                lines.push(el.ordered ? `${i + 1}. ${item}` : `- ${item}`);
+              });
+              break;
+            }
+            case 'field':
+              lines.push(`[Field: ${el.name} (${el.fieldType})]`);
+              break;
+            case 'micro':
+              lines.push(`_${el.text}_`);
+              break;
+            case 'stat': {
+              lines.push(`**${el.value}** — ${el.label}`);
+              if (el.detail) lines.push(el.detail);
+              break;
+            }
+            case 'testimonial': {
+              lines.push(`> ${el.quote}`);
+              const role = el.role || '';
+              const company = el.company || '';
+              const roleCompany = role && company ? `${role} @ ${company}` : (role || company || '');
+              const attribution = roleCompany ? `${el.author}, ${roleCompany}` : el.author;
+              lines.push(`> — ${attribution}`);
+              break;
+            }
+            case 'trust-bar': {
+              const items = (el.items || []).map(item => {
+                return typeof item === 'string' ? item : (item.label || item.description || '');
+              });
+              lines.push(`${LABELS.md_trusted_by} ${items.join(' · ')}`);
+              break;
+            }
+            case 'banner': {
+              lines.push(`> ${LABELS.md_banner_prefix} ${el.text}`);
+              break;
+            }
+            case 'accordion': {
+              (el.items || []).forEach(item => {
+                lines.push(`### ${item.label}`);
+                lines.push('');
+                (item.body || []).forEach(child => renderElementMd(child));
+              });
+              break;
+            }
+            case 'grid': {
+              // MD has no multi-column concept — flatten children in document order
+              (el.children || []).forEach(child => renderElementMd(child));
+              break;
+            }
+            case 'card': {
+              // Card boundary as a separator before the children, except for the first card in a grid
+              lines.push('--- card ---');
+              (el.children || []).forEach(child => renderElementMd(child));
+              break;
+            }
+            default: {
+              // Extension fallback: emit fallbackMd verbatim, or [{kind}] placeholder
+              if (el.fallbackMd) {
+                lines.push(el.fallbackMd);
+              } else if (Array.isArray(el.children)) {
+                lines.push(`[${el.kind}]`);
+                el.children.forEach(child => renderElementMd(child));
+              } else {
+                lines.push(`[${el.kind}]`);
+              }
+              break;
+            }
+          }
+          lines.push('');
+        };
+        (sec.elements || []).forEach(el => renderElementMd(el));
+
+        // Section deliberations — included per schema §MD output example
+        const sDelibsRaw = (sec.deliberations || []);
+        if (sDelibsRaw.length) {
+          lines.push(`### ${LABELS.md_design_choices}`);
+          sDelibsRaw.forEach(d => {
+            lines.push(`- ${d.title || d.summary} (${LABELS.md_confidence_inline} ${d.confidence})`);
+            if (d.reasoning) lines.push(`  - ${LABELS.md_reasoning_inline} ${d.reasoning}`);
+            (d.alternatives || []).forEach(alt => {
+              lines.push(`  - ${LABELS.md_alternatives_inline} ${alt.desc} — ${LABELS.md_rejected_inline} ${alt.rejected}`);
+            });
+          });
+          lines.push('');
+        }
+      });
+
+      // Page deliberations
+      const pDelibsRaw = (wf.pageDeliberations || []);
+      if (pDelibsRaw.length) {
+        lines.push(`### ${LABELS.md_page_design_choices}`);
+        pDelibsRaw.forEach(d => {
+          lines.push(`- ${d.title || d.summary} (${LABELS.md_confidence_inline} ${d.confidence})`);
+          if (d.reasoning) lines.push(`  - ${LABELS.md_reasoning_inline} ${d.reasoning}`);
+          (d.alternatives || []).forEach(alt => {
+            lines.push(`  - ${LABELS.md_alternatives_inline} ${alt.desc} — ${LABELS.md_rejected_inline} ${alt.rejected}`);
+          });
+        });
+        lines.push('');
+      }
+    });
+
+    return { md: lines.join('\n'), filename: `${fileSlug}-wireframes.md` };
+  }
+
+  function downloadWireframesMd() {
+    const { md, filename } = formatWireframesMd(_data);
+    triggerDownload(filename, md, 'text/markdown');
+  }
+
+  // ---- Section + page rendering from JSON ----
+
+  // renderElement(el) — returns HTML string for one element per schema mapping.
+  // 3-line wrapper: if el.id is present, injects data-shell-element-id on the outermost
+  // rendered tag so the post-render badge pass can attach a .shell-badge to it.
+  function renderElement(el) {
+    if (!el || typeof el.kind !== 'string') return '';
+    const _rawHTML = _renderElementInner(el);   // line 1 of wrapper
+    if (el.id && _rawHTML) {                     // line 2 of wrapper
+      return _rawHTML.replace(/^(<[a-zA-Z][^>]*)>/, `$1 data-shell-element-id="${el.id}">`);
+    }                                            // line 3 of wrapper
+    return _rawHTML;
+  }
+  function _renderElementInner(el) {
+    if (!el || typeof el.kind !== 'string') return '';
+    switch (el.kind) {
+      case 'heading':
+        return `<h${el.level}>${el.text}</h${el.level}>`;
+      case 'paragraph':
+        return `<p>${el.text}</p>`;
+      case 'cta':
+        // Deprecated alias — routes to button renderer for one release of back-compat.
+        // New content should use kind: 'button' directly.
+        return renderElement({ kind: 'button', label: el.label, variant: el.variant, href: el.href });
+      case 'button': {
+        const variant = el.variant === 'secondary' ? 'secondary' : 'primary';
+        if (el.href) {
+          return `<a class="wf-button wf-button--${variant}" href="${el.href}">${el.label}</a>`;
+        }
+        return `<button class="wf-button wf-button--${variant}" type="button">${el.label}</button>`;
+      }
+      case 'link': {
+        const variant = el.variant === 'arrow' ? 'arrow' : 'plain';
+        const href = el.href || '#';
+        return `<a class="wf-link wf-link--${variant}" href="${href}">${el.label}</a>`;
+      }
+      case 'media': {
+        // Optional `height` field: sm | md | lg | cover (default md).
+        // Optional `width`  field: sm | md | lg (default: container-driven — no width class emitted).
+        const allowedHeights = ['sm', 'md', 'lg', 'cover'];
+        const allowedWidths = ['sm', 'md', 'lg'];
+        const height = allowedHeights.indexOf(el.height) >= 0 ? el.height : 'md';
+        const width = allowedWidths.indexOf(el.width) >= 0 ? el.width : '';
+        const widthClass = width ? ` wf-media--w-${width}` : '';
+        return `<div class="wf-media wf-media--${height}${widthClass}">${el.label || ''}</div>`;
+      }
+      case 'label':
+        return `<div class="wf-label">${el.text}</div>`;
+      case 'list': {
+        const tag = el.ordered ? 'ol' : 'ul';
+        const items = (el.items || []).map(i => `<li>${i}</li>`).join('');
+        return `<${tag} class="wf-list">${items}</${tag}>`;
+      }
+      case 'field': {
+        if (el.fieldType === 'textarea') return `<textarea class="wf-field" name="${el.name}" placeholder="${el.placeholder || ''}"></textarea>`;
+        if (el.fieldType === 'select') return `<select class="wf-field" name="${el.name}"><option>${el.placeholder || 'Select…'}</option></select>`;
+        return `<input class="wf-field" type="${el.fieldType || 'text'}" name="${el.name}" placeholder="${el.placeholder || ''}">`;
+      }
+      case 'micro':
+        return `<em class="wf-micro">${el.text}</em>`;
+      case 'stat': {
+        const iconHTML = el.icon
+          ? (typeof el.icon === 'string'
+              ? `<div class="wf-stat__icon">${el.icon}</div>`
+              : `<div class="wf-stat__icon">${el.icon.label || el.icon.description || ''}</div>`)
+          : '';
+        const detailHTML = el.detail ? `<div class="wf-stat__detail">${el.detail}</div>` : '';
+        return `<div class="wf-stat">${iconHTML}<div class="wf-stat__value">${el.value}</div><div class="wf-stat__label">${el.label}</div>${detailHTML}</div>`;
+      }
+      case 'testimonial': {
+        const ratingHTML = el.rating
+          ? `<div class="wf-testimonial__rating">${'★'.repeat(Math.round(el.rating)) + '☆'.repeat(Math.max(0, 5 - Math.round(el.rating)))}</div>`
+          : '';
+        const photoHTML = el.photo
+          ? `<div class="wf-testimonial__photo">${el.photo.label || el.photo.description || '[photo]'}</div>`
+          : '';
+        const role = el.role || '';
+        const company = el.company || '';
+        const roleCompany = role && company ? `${role} @ ${company}` : (role || company || '');
+        const roleCompanyHTML = roleCompany ? `<div class="wf-testimonial__role-company">${roleCompany}</div>` : '';
+        return `<div class="wf-testimonial">${ratingHTML}<blockquote class="wf-testimonial__quote">${el.quote}</blockquote><div class="wf-testimonial__attribution">${photoHTML}<div class="wf-testimonial__author-block"><div class="wf-testimonial__author">${el.author}</div>${roleCompanyHTML}</div></div></div>`;
+      }
+      case 'accordion': {
+        const items = (el.items || []).map(item => {
+          const isOpen = el.defaultOpen && item.label === el.defaultOpen ? ' open' : '';
+          const bodyHTML = (item.body || []).map(child => renderElement(child)).join('\n');
+          return `<details class="wf-accordion__item"${isOpen}><summary class="wf-accordion__summary">${item.label}</summary><div class="wf-accordion__body">${bodyHTML}</div></details>`;
+        }).join('');
+        return `<div class="wf-accordion">${items}</div>`;
+      }
+      case 'trust-bar': {
+        const items = (el.items || []).map(item => {
+          const text = typeof item === 'string' ? item : (item.label || item.description || '');
+          return `<div class="wf-trust-bar__item">${text}</div>`;
+        }).join('');
+        return `<div class="wf-trust-bar">${items}</div>`;
+      }
+      case 'banner': {
+        const closeHTML = el.dismissible ? '<button class="wf-banner__close" type="button" aria-label="Dismiss">×</button>' : '';
+        return `<div class="wf-banner"><span>${el.text}</span>${closeHTML}</div>`;
+      }
+      case 'grid': {
+        // Container kind — walks children, wraps in .wf-grid + column spec.
+        // v4.3: columns may be an integer (2|3|4 → .wf-grid-N equal cols) OR an
+        // array of positive numbers (inline style `grid-template-columns: Nfr Nfr ...`).
+        // Array form supports asymmetric layouts (hero 1/2, problems 1/2, etc).
+        const childrenHTML = (el.children || []).map(child => renderElement(child)).join('\n');
+        if (Array.isArray(el.columns) && el.columns.every(n => typeof n === 'number' && n > 0)) {
+          const template = el.columns.map(n => `${n}fr`).join(' ');
+          return `<div class="wf-grid" style="grid-template-columns: ${template};">${childrenHTML}</div>`;
+        }
+        const cols = (el.columns === 2 || el.columns === 3 || el.columns === 4) ? el.columns : 3;
+        return `<div class="wf-grid wf-grid-${cols}">${childrenHTML}</div>`;
+      }
+      case 'card': {
+        // Container kind — walks children, wraps in .wf-card + optional variant class.
+        // v4.3 variants:
+        //   default (none)   → transparent, no padding — layout grouping (was `flush` in v4.2)
+        //   "tile"           → warm fill + rounded + padding — visible bordered card on live page
+        //   "highlight"      → accent border + main bg
+        //   "flush"          → back-compat alias for v4.2 data; renders like default
+        const variantClass = el.variant === 'tile'      ? ' wf-card--tile'
+                           : el.variant === 'highlight' ? ' wf-card--highlight'
+                           : el.variant === 'flush'     ? ' wf-card--flush'
+                           : '';
+        const childrenHTML = (el.children || []).map(child => renderElement(child)).join('\n');
+        return `<div class="wf-card${variantClass}">${childrenHTML}</div>`;
+      }
+      default:
+        // Generic fallback for extension kinds.
+        return renderExtensionElement(el);
+    }
+  }
+
+  // renderExtensionElement(el) — generic fallback for unknown kinds (extension envelope).
+  // Wraps element in .wf-ext .wf-ext--{kind} {className} and walks children OR renders fields
+  // as a definition-list. customStyles (top-level data field) is injected at DOMContentLoaded
+  // by injectCustomStyles() so authored CSS scoped to .wf-ext-* applies to the rendered output.
+  function renderExtensionElement(el) {
+    const kind = String(el.kind || 'unknown').replace(/[^a-zA-Z0-9_-]/g, '');
+    const className = (typeof el.className === 'string' && /^wf-ext-/.test(el.className))
+      ? el.className
+      : `wf-ext-${kind}`;
+    let bodyHTML = '';
+    if (Array.isArray(el.children)) {
+      bodyHTML = el.children.map(child => renderElement(child)).join('\n');
+    } else if (el.fields && typeof el.fields === 'object') {
+      bodyHTML = Object.entries(el.fields).map(([k, v]) => {
+        return `<div class="wf-ext__field"><span class="wf-ext__field-key">${k}:</span><span>${typeof v === 'object' ? JSON.stringify(v) : String(v)}</span></div>`;
+      }).join('');
+    }
+    return `<div class="wf-ext wf-ext--${kind} ${className}" data-kind="${kind}">${bodyHTML}</div>`;
+  }
+
+  // injectCustomStyles() — reads data.customStyles and injects a <style> tag at DOMContentLoaded.
+  // Namespace guard: parses the rules and keeps only those whose selector starts with .wf-ext-
+  // (or descends from one). Prevents extension CSS from leaking into core .wf-* classes.
+  function injectCustomStyles() {
+    const css = (_data && typeof _data.customStyles === 'string') ? _data.customStyles.trim() : '';
+    if (!css) return;
+    // Coarse selector-prefix scrub: split on closing braces, keep rules whose first selector
+    // matches .wf-ext-... (allows descendant combinators inside the selector).
+    const ruleBlocks = css.split('}').map(b => b.trim()).filter(Boolean);
+    const safeRules = ruleBlocks.filter(block => {
+      const openIdx = block.indexOf('{');
+      if (openIdx < 0) return false;
+      const selectorList = block.slice(0, openIdx);
+      // Each selector in the list must start with .wf-ext- (after optional whitespace)
+      return selectorList.split(',').every(sel => /^\s*\.wf-ext-/.test(sel));
+    });
+    if (!safeRules.length) return;
+    const styleEl = document.createElement('style');
+    styleEl.setAttribute('data-source', 'wireframes-customStyles');
+    styleEl.textContent = safeRules.map(r => r + '}').join('\n');
+    document.head.appendChild(styleEl);
+  }
+
+  // renderSection(section, sectionDeliberationIds) — returns HTML for one <section class="wf-section">
+  function renderSection(section, deliberationIds) {
+    const elementsHTML = (section.elements || []).map(el => renderElement(el)).join('\n');
+    // Numbered badge buttons for deliberations attached to this section
+    const badgesHTML = (deliberationIds || []).map(id => {
+      const n = DELIB_MAP[id] ? DELIB_MAP[id].n : '?';
+      return `<button class="shell-badge" data-id="${id}" aria-label="{Design choice} ${id}" type="button">${n}</button>`;
+    }).join('');
+    // data-shell-id for the first deliberation — used by setActiveWireframeElement
+    const firstId = (deliberationIds && deliberationIds.length) ? deliberationIds[0] : null;
+    const shellAttr = firstId ? ` data-shell-id="${firstId}"` : '';
+    // Labels in the template source are wrapped in {} as a translation discovery marker.
+    // The meta strip owns its own bracketing, so strip the label wrapper
+    // before rendering. If the value is itself a placeholder ({foo}), merge label + value
+    // into a single outer bracket pair; real values render plainly without brackets.
+    const metaSeg = (label, value) => {
+      const v = value == null ? '' : String(value);
+      const lbl = label.startsWith('{') && label.endsWith('}') ? label.slice(1, -1) : label;
+      if (v.startsWith('{') && v.endsWith('}')) {
+        return `<span class="wf-note__seg">{<strong>${lbl}</strong> ${v.slice(1, -1)}}</span>`;
+      }
+      return `<span class="wf-note__seg"><strong>${lbl}</strong> ${v}</span>`;
+    };
+    return `
+      <section class="wf-section wf-section--with-note-inside"${shellAttr}>
+        ${badgesHTML}
+        <div class="wf-inner">
+          ${elementsHTML}
+          <div class="wf-note wf-note--meta wf-note--meta-boxed">
+            <div class="wf-note__row">
+              ${metaSeg(LABELS.meta_section, section.type)}
+              ${metaSeg(LABELS.meta_narrative, section.narrative)}
+              ${metaSeg(LABELS.meta_question, section.userQuestion)}
+              ${metaSeg(LABELS.meta_goal, section.purpose)}
+            </div>
+          </div>
+        </div>
+      </section>
+    `;
+  }
+
+  // renderChromeNav(navObj) — returns HTML string for site nav
+  function renderChromeNav(navObj) {
+    if (!navObj) return '';
+    const brandHTML = navObj.brand ? `<span class="wf-nav__logo">${navObj.brand.text || ''}</span>` : '';
+    const linksHTML = (navObj.links || []).map(l => `<span class="wf-nav__label">${l.text}</span>`).join('');
+    const ctaHTML = navObj.cta ? `<button class="wf-button wf-button--${navObj.cta.variant || 'primary'}" type="button">${navObj.cta.label}</button>` : '';
+    return `${brandHTML}<div class="wf-nav__links">${linksHTML}</div>${ctaHTML}`;
+  }
+
+  // renderChromeFooter(footerObj) — returns HTML string for site footer
+  function renderChromeFooter(footerObj) {
+    if (!footerObj) return '';
+    const colsHTML = (footerObj.columns || []).map(col => {
+      const linksHTML = (col.links || []).map(l => `<span class="wf-nav__label" style="display:block;margin:4px 0;">${l.text}</span>`).join('');
+      return `<div style="margin-right:32px;"><strong>${col.title}</strong>${linksHTML}</div>`;
+    }).join('');
+    const legal = footerObj.legal ? `<div style="margin-top:16px;color:#888;font-size:0.8em;">${footerObj.legal}</div>` : '';
+    return `<div style="display:flex;flex-wrap:wrap;">${colsHTML}</div>${legal}`;
+  }
+
+  // renderWireframePage(wireframe) — builds full .wf-page div (nav + sections + footer)
+  function renderWireframePage(wireframe) {
+    const resolvedNav    = wireframe.navOverride    != null ? wireframe.navOverride    : CHROME.nav;
+    const resolvedFooter = wireframe.footerOverride != null ? wireframe.footerOverride : CHROME.footer;
+    const sectionsHTML = (wireframe.sections || []).map((sec, si) => {
+      const deliberationIds = (sec.deliberations || []).map(d => d.id);
+      return renderSection(sec, deliberationIds);
+    }).join('');
+    return `
+      <div class="wf-page" id="${wireframe.slug}">
+        <nav class="wf-nav">${renderChromeNav(resolvedNav)}</nav>
+        ${sectionsHTML}
+        <footer class="wf-footer">
+          ${renderChromeFooter(resolvedFooter)}
+        </footer>
+      </div>
+    `;
+  }
+
+  /* ===== UNIFIED-ENGINE-END ===== */
+  // ---- Inject scoped CSS for extension kinds before pages render ----
+  injectCustomStyles();
+
+  // ---- Populate page switcher options + render all wireframe pages ----
+  const pagesContainer = document.getElementById('shellPages');
+  if (pagesContainer && pageSelect) {
+    WIREFRAMES.forEach((wf, idx) => {
+      // Page switcher option
+      const opt = document.createElement('option');
+      opt.value = wf.slug;
+      opt.textContent = wf.title;
+      pageSelect.appendChild(opt);
+      // Render page HTML
+      pagesContainer.insertAdjacentHTML('beforeend', renderWireframePage(wf));
+    });
+    // Activate first page
+    const firstSlug = WIREFRAMES[0] && WIREFRAMES[0].slug;
+    if (firstSlug) {
+      document.querySelectorAll('.wf-page').forEach((p, i) => p.classList.toggle('wf-page--active', i === 0));
+      pageSelect.value = firstSlug;
+    }
+  }
+
+  // Initial state
+  applyStaticLabels();
+  const _btnCountEl = document.querySelector('#shellPanelToggle .shell-bottombar__btn-count');
+  if (_btnCountEl) _btnCountEl.textContent = TOTAL;
+
+  // Hide panel toggle + badges toggle when no findings exist.
+  if (TOTAL === 0) {
+    const panelToggleEl = document.getElementById('shellPanelToggle');
+    if (panelToggleEl) panelToggleEl.style.display = 'none';
+    const badgesToggleLabel = document.querySelector('label.shell-bottombar__check:has(#shellBadgesToggle)');
+    if (badgesToggleLabel) badgesToggleLabel.style.display = 'none';
+    document.body.classList.remove('shell-leftpanel-open');
+    const leftpanelEl = document.getElementById('shellLeftpanel');
+    if (leftpanelEl) leftpanelEl.classList.remove('is-open');
+  }
+
+  // ELEMENT-PIN HOOK: attach .shell-badge to each rendered element that has a
+  // matching element-scope finding. Runs after all pages are in the DOM.
+  ALL_ENTRIES.filter(e => e.scope === 'element').forEach(entry => {
+    const slug   = entry.d.attached_to;
+    const n      = entry.n;
+    const id     = entry.d.id;
+    const target = pagesContainer
+      ? pagesContainer.querySelector('[data-shell-element-id="' + slug + '"]')
+      : null;
+    if (!target) return;
+    // Make target a positioning context for the badge
+    if (getComputedStyle(target).position === 'static') target.style.position = 'relative';
+    const badge = document.createElement('button');
+    badge.className   = 'shell-badge';
+    badge.dataset.id  = id;
+    badge.setAttribute('aria-label', '{Audit finding} ' + id);
+    badge.type        = 'button';
+    badge.textContent = String(n);
+    target.appendChild(badge);
+  });
+
+  renderList();
+  let initialOpen = null;
+  try { initialOpen = localStorage.getItem(`${NS}-panel-open`); } catch (e) {}
+  if (initialOpen === '1' && TOTAL > 0) openPanel();
+
+  // ---- renderDetail (audit variant — outside engine sentinels) ----
+  // Dispatches on entry.kind: 'finding' renders audit fields (observation/standard/effect/exception);
+  // 'deliberation' renders wireframing fields (summary/reasoning/alternatives) for forward-compat.
+  // The engine calls renderDetail(id) from inside the sentinels — this function must be defined
+  // outside them (after the engine, in the same IIFE scope) to override the forward declaration.
+  function renderDetail(id) {
+    view = 'detail';
+    panelHeader.style.display = '';
+    panelFilterArea.style.display = 'none';
+    panelFilterArea.innerHTML = '';
+    backBtn.style.display = 'inline-block';
+    navEl.style.display = 'flex';
+    const entry = DELIB_MAP[id];
+    if (!entry) return;
+    const { d, kind, scope, pageTitle, sectionType } = entry;
+    backBtn.style.display = 'inline-block';
+    setActiveWireframeElement(id);
+    document.body.classList.add('shell-detail-open');
+
+    const sectionSuffix = scope === 'section' && sectionType ? ` &middot; ${sectionType}` : '';
+
+    if (kind === 'finding') {
+      // Audit finding detail — renders observation/standard/effect/exception
+      const scopeLabel = scope === 'strategy'
+        ? 'Strategy'
+        : (scope === 'element' ? (pageTitle || 'Unknown page') + ' · element' : (pageTitle || 'Unknown page'));
+      const tagBadge    = d.tag    ? `<span class="mc-badge mc-badge--yellow">${d.tag}</span>`    : '';
+      const impactBadge = d.impact ? pill(CONF_MAP, d.impact) : '';
+      const statusBadge = d.decision_status === 'accepted'
+        ? '<span class="mc-badge mc-badge--accepted">accepted</span>'
+        : d.decision_status === 'rejected'
+        ? '<span class="mc-badge mc-badge--rejected">rejected</span>'
+        : '<span class="mc-badge">pending</span>';
+      const exceptionBlock = d.exception ? `
+        <div class="shell-detail__block">
+          <h4 class="shell-detail__label">${LABELS.detail_exception}</h4>
+          <p class="shell-detail__text">${d.exception}</p>
+        </div>
+      ` : '';
+      panelBody.innerHTML = `
+        <h3 class="shell-detail__title">${d.title}</h3>
+        <dl class="shell-detail__meta">
+          <dt>${LABELS.detail_page}</dt><dd>${scopeLabel}</dd>
+          <dt>${LABELS.detail_tag}</dt><dd>${tagBadge}</dd>
+          <dt>${LABELS.detail_confidence}</dt><dd>${pill(CONF_MAP, d.confidence)}</dd>
+          <dt>${LABELS.detail_impact}</dt><dd>${impactBadge}</dd>
+          <dt>${LABELS.detail_decision_status}</dt><dd>${statusBadge}</dd>
+        </dl>
+        <div class="shell-detail__blocks">
+          <div class="shell-detail__block">
+            <h4 class="shell-detail__label">${LABELS.detail_observation}</h4>
+            <p class="shell-detail__text">${d.observation}</p>
+          </div>
+          <div class="shell-detail__block">
+            <h4 class="shell-detail__label">${LABELS.detail_standard}</h4>
+            <p class="shell-detail__text">${d.standard}</p>
+          </div>
+          <div class="shell-detail__block">
+            <h4 class="shell-detail__label">${LABELS.detail_effect}</h4>
+            <p class="shell-detail__text">${d.effect}</p>
+          </div>
+          ${exceptionBlock}
+        </div>
+      `;
+    } else {
+      // Deliberation detail (kind: 'deliberation') — forward-compat with strategy entries
+      const alternativesBlock = (d.alternatives && d.alternatives.length) ? `
+        <div class="shell-detail__block">
+          <h4 class="shell-detail__label">${LABELS.detail_alternatives}</h4>
+          <ul class="shell-detail__text">${d.alternatives.map(a => `<li><strong>${a.desc}</strong> — ${a.rejected}</li>`).join('')}</ul>
+        </div>
+      ` : '';
+      panelBody.innerHTML = `
+        <h3 class="shell-detail__title">${d.summary}</h3>
+        <dl class="shell-detail__meta">
+          <dt>${LABELS.detail_page}</dt><dd>${pageTitle}${sectionSuffix}</dd>
+          <dt>${LABELS.detail_confidence}</dt><dd>${pill(CONF_MAP, d.confidence)}</dd>
+        </dl>
+        <div class="shell-detail__blocks">
+          <div class="shell-detail__block">
+            <h4 class="shell-detail__label">${LABELS.detail_reasoning}</h4>
+            <p class="shell-detail__text">${d.reasoning}</p>
+          </div>
+          ${alternativesBlock}
+        </div>
+      `;
+    }
+    updateNavCounter();
+  }
+
+})();
+</script>
+
+
+</body>
+</html>
