@@ -8,6 +8,7 @@ import ChangelogEntry from './ChangelogEntry.astro';
 const locale = localeFromPathname(Astro.url.pathname);
 const entries = (await getLocalizedCollection('changelog', locale))
   .sort((a, b) => b.data.date.localeCompare(a.data.date));
+const sectionHeading = locale === 'en' ? 'Release notes' : 'Historia zmian';
 ---
 
 <section class="py-20 md:py-28 px-6 bg-surface-primary" id="changelog">
@@ -16,7 +17,7 @@ const entries = (await getLocalizedCollection('changelog', locale))
       <Fragment slot="header">
         <span class="font-label text-primary text-sm mb-4">Changelog</span>
         <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
-          Historia zmian
+          {sectionHeading}
         </h2>
       </Fragment>
 

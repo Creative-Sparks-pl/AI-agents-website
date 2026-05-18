@@ -1,8 +1,33 @@
 ---
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-4.svg';
+import { localeFromPathname } from '../../../lib/i18n';
 
-const pageTypes = [
+const locale = localeFromPathname(Astro.url.pathname);
+
+const COPY_PL = {
+  eyebrow: 'Typy stron',
+  heading: 'Typy stron (16)',
+  navAriaLabel: 'Typy stron',
+  selectedLabel: 'Wybrany typ strony',
+  archetypes: 'Archetypy',
+  patterns: 'Wzorce sekcji',
+  discovery: 'Discovery',
+};
+
+const COPY_EN = {
+  eyebrow: 'Page types',
+  heading: 'Page types (16)',
+  navAriaLabel: 'Page types',
+  selectedLabel: 'Selected page type',
+  archetypes: 'Archetypes',
+  patterns: 'Section patterns',
+  discovery: 'Discovery',
+};
+
+const copy = locale === 'en' ? COPY_EN : COPY_PL;
+
+const PAGE_TYPES_PL = [
   {
     name: 'B2B SaaS',
     badge: 'Standard rynkowy',
@@ -324,14 +349,339 @@ const pageTypes = [
     ],
   },
 ];
+
+const PAGE_TYPES_EN = [
+  {
+    name: 'B2B SaaS',
+    badge: 'Market standard',
+    description: 'Optimized for trial-to-paid conversion and a clear value proposition.',
+    archetypes: [
+      { name: 'Product-Led Growth', sub: 'Model centered on self-serve user onboarding.' },
+      { name: 'Enterprise Sales', sub: 'Leads routed to a sales team with heavy personalization.' },
+      { name: 'Developer Tool', sub: 'Focus on documentation and technical utility value.' },
+    ],
+    patterns: [
+      { name: 'Pricing Tiers (Complex)', sub: 'Plan comparison with a feature matrix.' },
+      { name: 'Feature Deep-dive', sub: 'Interactive walkthroughs of key capabilities.' },
+      { name: 'Integration Cloud', sub: 'Ecosystem of apps that connect to the product.' },
+    ],
+    discovery: [
+      { name: 'User Jobs-to-be-done', sub: 'Identifying the goals users want to accomplish.' },
+      { name: 'Pain Point Mapping', sub: 'Analyzing bottlenecks in the customer\'s current process.' },
+      { name: 'Technical Stack Audit', sub: 'Verifying technology compatibility.' },
+    ],
+  },
+  {
+    name: 'B2B Services',
+    badge: 'Professional services',
+    description: 'Agencies, consultancies, software houses. Building trust and generating leads.',
+    archetypes: [
+      { name: 'Agency', sub: 'Portfolio showcase and engagement process.' },
+      { name: 'Consultancy', sub: 'Thought leadership and case studies as proof of expertise.' },
+      { name: 'Outsourcing', sub: 'Team scale, certifications, compliance.' },
+    ],
+    patterns: [
+      { name: 'Case Study Grid', sub: 'Project gallery with success metrics.' },
+      { name: 'Process Timeline', sub: 'Visualization of engagement phases.' },
+      { name: 'Team Showcase', sub: 'Surfacing team expertise.' },
+    ],
+    discovery: [
+      { name: 'Service Differentiation', sub: 'What sets you apart from competitors.' },
+      { name: 'Client Pain Points', sub: 'Problems clients want solved.' },
+      { name: 'Competitor Positioning', sub: 'Mapping the competitive landscape.' },
+    ],
+  },
+  {
+    name: 'B2B Industrial',
+    badge: 'Industrial',
+    description: 'Manufacturers and distributors. Product catalogs and requests for quote.',
+    archetypes: [
+      { name: 'Manufacturer', sub: 'Technical product catalog with specifications.' },
+      { name: 'Distributor', sub: 'Inventory search and availability lookup.' },
+      { name: 'OEM', sub: 'Partner portal with technical documentation.' },
+    ],
+    patterns: [
+      { name: 'Product Catalog', sub: 'Filtering by technical parameters.' },
+      { name: 'RFQ Form', sub: 'Request-for-quote form with a configurator.' },
+      { name: 'Technical Specs', sub: 'Downloadable spec sheets (PDF).' },
+    ],
+    discovery: [
+      { name: 'Buyer Journey Mapping', sub: 'Path from research to order.' },
+      { name: 'Technical Requirements', sub: 'Buyer-side technical needs.' },
+      { name: 'Compliance Needs', sub: 'Industry standards and certifications.' },
+    ],
+  },
+  {
+    name: 'E-commerce',
+    badge: 'Online retail',
+    description: 'Online stores and DTC brands. Optimizing the purchase path and conversion.',
+    archetypes: [
+      { name: 'DTC Brand', sub: 'Brand selling directly to the consumer.' },
+      { name: 'Multi-brand Store', sub: 'Store carrying multiple brands and categories.' },
+      { name: 'Subscription Box', sub: 'Subscription model with recurring delivery.' },
+    ],
+    patterns: [
+      { name: 'Product Grid', sub: 'Product grid with filters and sorting.' },
+      { name: 'Cart Optimization', sub: 'Cart with cross-sell and reduced abandonment.' },
+      { name: 'Urgency Triggers', sub: 'Countdowns, limited stock, social proof.' },
+    ],
+    discovery: [
+      { name: 'Purchase Motivation', sub: 'Why the customer buys this product.' },
+      { name: 'Abandonment Analysis', sub: 'Where and why carts get abandoned.' },
+      { name: 'AOV Optimization', sub: 'Strategies for raising average order value.' },
+    ],
+  },
+  {
+    name: 'Portfolio',
+    badge: 'Creatives',
+    description: 'Creative studios and freelancers. Showcasing work and attracting clients.',
+    archetypes: [
+      { name: 'Design Studio', sub: 'Team with a broad portfolio and clear process.' },
+      { name: 'Freelancer', sub: 'Personal brand with a niche specialization.' },
+      { name: 'Creative Agency', sub: 'Creative agency with campaigns and case studies.' },
+    ],
+    patterns: [
+      { name: 'Project Gallery', sub: 'Work gallery with category filtering.' },
+      { name: 'Client Testimonials', sub: 'Client recommendations with project context.' },
+      { name: 'About/Story', sub: 'Narrative about approach and values.' },
+    ],
+    discovery: [
+      { name: 'Target Client Profile', sub: 'Who the ideal client is.' },
+      { name: 'Unique Value Prop', sub: 'What sets you apart from other studios.' },
+      { name: 'Work Showcase Strategy', sub: 'How best to present projects.' },
+    ],
+  },
+  {
+    name: 'Local Business',
+    badge: 'Local services',
+    description: 'Local services. Local SEO, maps, bookings.',
+    archetypes: [
+      { name: 'Restaurant', sub: 'Menu, reservations, location.' },
+      { name: 'Medical Practice', sub: 'Online booking, specialties, reviews.' },
+      { name: 'Service Provider', sub: 'Plumber, electrician: quick contact and service area.' },
+    ],
+    patterns: [
+      { name: 'Location Map', sub: 'Map with opening hours and directions.' },
+      { name: 'Booking Widget', sub: 'Reservation form with a calendar.' },
+      { name: 'Reviews Carousel', sub: 'Reviews from Google and Facebook.' },
+    ],
+    discovery: [
+      { name: 'Local Search Intent', sub: 'Location-based queries (e.g. "dentist Krakow").' },
+      { name: 'Service Area Analysis', sub: 'Geographic reach of services.' },
+      { name: 'Competitor Audit', sub: 'Comparison with local competitors.' },
+    ],
+  },
+  {
+    name: 'Marketplace',
+    badge: 'Platforms',
+    description: 'Two-sided platforms. Balancing the needs of sellers and buyers.',
+    archetypes: [
+      { name: 'B2C Marketplace', sub: 'Consumers buy from many sellers.' },
+      { name: 'B2B Marketplace', sub: 'Wholesale orders between companies.' },
+      { name: 'Service Marketplace', sub: 'Connecting service providers with clients.' },
+    ],
+    patterns: [
+      { name: 'Dual CTA Hero', sub: 'Separate paths for buyers and sellers.' },
+      { name: 'Seller Onboarding', sub: 'Seller registration and activation flow.' },
+      { name: 'Trust & Safety', sub: 'Verification, ratings, guarantees.' },
+    ],
+    discovery: [
+      { name: 'Two-sided Value Prop', sub: 'Value delivered to both sides of the market.' },
+      { name: 'Network Effects', sub: 'How scale improves platform quality.' },
+      { name: 'Chicken-and-Egg Problem', sub: 'Bootstrapping strategy without critical mass.' },
+    ],
+  },
+  {
+    name: 'Community',
+    badge: 'Communities',
+    description: 'Groups, forums, social platforms. Engagement and retention.',
+    archetypes: [
+      { name: 'Professional Network', sub: 'Industry network for knowledge exchange.' },
+      { name: 'Interest Group', sub: 'Community around a hobby or topic.' },
+      { name: 'Learning Community', sub: 'Group learning together with mentors.' },
+    ],
+    patterns: [
+      { name: 'Activity Feed', sub: 'Stream of activity and discussions.' },
+      { name: 'Member Profiles', sub: 'Profiles with achievements and roles.' },
+      { name: 'Event Calendar', sub: 'Upcoming meetups and webinars.' },
+    ],
+    discovery: [
+      { name: 'Community Purpose', sub: 'Why people join and stay.' },
+      { name: 'Engagement Loops', sub: 'Mechanisms that drive return visits and activity.' },
+      { name: 'Moderation Strategy', sub: 'Rules and moderation tooling.' },
+    ],
+  },
+  {
+    name: 'Course',
+    badge: 'Education',
+    description: 'Online courses and training. Converting visitors to enrollments and presenting the curriculum.',
+    archetypes: [
+      { name: 'Self-paced Course', sub: 'Course completed at the learner\'s own pace.' },
+      { name: 'Cohort-based', sub: 'Groups starting on the same date.' },
+      { name: 'Workshop', sub: 'Intensive hands-on workshops.' },
+    ],
+    patterns: [
+      { name: 'Curriculum Breakdown', sub: 'Module and lesson breakdown.' },
+      { name: 'Instructor Bio', sub: 'Instructor expertise and experience.' },
+      { name: 'Student Results', sub: 'Graduate success metrics.' },
+    ],
+    discovery: [
+      { name: 'Learning Outcomes', sub: 'What the learner will be able to do after the course.' },
+      { name: 'Student Persona', sub: 'Skill level and goals.' },
+      { name: 'Pricing Psychology', sub: 'Perceived value vs. price.' },
+    ],
+  },
+  {
+    name: 'Media',
+    badge: 'Content',
+    description: 'Publishers, blogs, magazines. Readability and content monetization.',
+    archetypes: [
+      { name: 'News Portal', sub: 'News with a fast publication cycle.' },
+      { name: 'Niche Blog', sub: 'Specialist blog with deep content.' },
+      { name: 'Digital Magazine', sub: 'Magazine with visual storytelling.' },
+    ],
+    patterns: [
+      { name: 'Article Grid', sub: 'Article grid with categories and tags.' },
+      { name: 'Newsletter CTA', sub: 'Subscription prompt with a lead magnet.' },
+      { name: 'Category Navigation', sub: 'Navigation by topic and series.' },
+    ],
+    discovery: [
+      { name: 'Content Strategy', sub: 'Which content attracts and converts.' },
+      { name: 'Audience Segmentation', sub: 'Splitting readers into segments.' },
+      { name: 'Monetization Model', sub: 'Ads, paywall, sponsorships.' },
+    ],
+  },
+  {
+    name: 'Event',
+    badge: 'Events',
+    description: 'Conferences, webinars, events. Registration and agenda.',
+    archetypes: [
+      { name: 'Conference', sub: 'Multi-day event with multiple tracks.' },
+      { name: 'Webinar Series', sub: 'Recurring online presentations.' },
+      { name: 'Workshop Event', sub: 'Workshop with limited seats.' },
+    ],
+    patterns: [
+      { name: 'Speaker Grid', sub: 'Speaker showcase with bios.' },
+      { name: 'Agenda Timeline', sub: 'Daily schedule split by track.' },
+      { name: 'Ticket Tiers', sub: 'Tickets with different access levels.' },
+    ],
+    discovery: [
+      { name: 'Attendee Motivation', sub: 'Why people attend.' },
+      { name: 'Event Positioning', sub: 'What makes this event stand out.' },
+      { name: 'Sponsorship Value', sub: 'Value for sponsors and partners.' },
+    ],
+  },
+  {
+    name: 'Nonprofit',
+    badge: 'Organizations',
+    description: 'Foundations and NGOs. Storytelling and donation prompts.',
+    archetypes: [
+      { name: 'Charity', sub: 'Charity organization with a social mission.' },
+      { name: 'Foundation', sub: 'Foundation with grant programs.' },
+      { name: 'Social Enterprise', sub: 'Business with a social mission.' },
+    ],
+    patterns: [
+      { name: 'Impact Stats', sub: 'Impact metrics and achievements.' },
+      { name: 'Donation CTA', sub: 'Donation form with preset amounts.' },
+      { name: 'Beneficiary Stories', sub: 'Stories of the people helped.' },
+    ],
+    discovery: [
+      { name: 'Donor Persona', sub: 'Who the typical donor is.' },
+      { name: 'Impact Measurement', sub: 'How to measure and communicate impact.' },
+      { name: 'Trust Building', sub: 'Transparency and accountability.' },
+    ],
+  },
+  {
+    name: 'Enterprise',
+    badge: 'Corporations',
+    description: 'Enterprise tooling. Long sales cycle, many decision-makers.',
+    archetypes: [
+      { name: 'Enterprise SaaS', sub: 'Software for large organizations.' },
+      { name: 'Platform', sub: 'Platform integrating multiple tools.' },
+      { name: 'Infrastructure', sub: 'Technical infrastructure (cloud, hosting).' },
+    ],
+    patterns: [
+      { name: 'Security & Compliance', sub: 'Certifications, audits, policies.' },
+      { name: 'ROI Calculator', sub: 'Return-on-investment calculator.' },
+      { name: 'Customer Logos Grid', sub: 'Enterprise customer logos.' },
+    ],
+    discovery: [
+      { name: 'Buying Committee Mapping', sub: 'Who makes purchasing decisions.' },
+      { name: 'Integration Requirements', sub: 'What it must integrate with.' },
+      { name: 'Security Concerns', sub: 'Security and compliance requirements.' },
+    ],
+  },
+  {
+    name: 'Government',
+    badge: 'Public sector',
+    description: 'Public institutions. Accessibility, WCAG, transparency.',
+    archetypes: [
+      { name: 'Municipal Website', sub: 'City or municipality site with e-services.' },
+      { name: 'Public Service', sub: 'Service portal for a public institution.' },
+      { name: 'Regulatory Body', sub: 'Regulatory authority with documentation.' },
+    ],
+    patterns: [
+      { name: 'Service Finder', sub: 'Public service search.' },
+      { name: 'Document Library', sub: 'Downloadable document library.' },
+      { name: 'Accessibility Features', sub: 'Text resizing, contrast, screen reader support.' },
+    ],
+    discovery: [
+      { name: 'Citizen Needs', sub: 'Which matters citizens handle online.' },
+      { name: 'Compliance Requirements', sub: 'WCAG, GDPR, accessibility laws.' },
+      { name: 'Digital Inclusion', sub: 'Access for seniors and underserved users.' },
+    ],
+  },
+  {
+    name: 'Documentation',
+    badge: 'Docs & Help',
+    description: 'Knowledge bases and docs. Navigation and search across technical content.',
+    archetypes: [
+      { name: 'API Docs', sub: 'API documentation with code examples.' },
+      { name: 'Knowledge Base', sub: 'Knowledge base with articles and FAQs.' },
+      { name: 'Help Center', sub: 'Help center with how-to guides.' },
+    ],
+    patterns: [
+      { name: 'Search-first Nav', sub: 'Search as the primary navigation surface.' },
+      { name: 'Code Samples', sub: 'Code blocks with copy and language switching.' },
+      { name: 'Version Switcher', sub: 'Documentation version switcher.' },
+    ],
+    discovery: [
+      { name: 'User Task Analysis', sub: 'What tasks readers come to accomplish.' },
+      { name: 'Content Architecture', sub: 'Content structure and taxonomy.' },
+      { name: 'Search Patterns', sub: 'What people search for and how they phrase it.' },
+    ],
+  },
+  {
+    name: 'Service Utility',
+    badge: 'Tools',
+    description: 'Online tools, calculators, generators. Immediate value on arrival.',
+    archetypes: [
+      { name: 'Online Tool', sub: 'Browser-based tool.' },
+      { name: 'Calculator', sub: 'Calculator with real-time results.' },
+      { name: 'Generator', sub: 'Content, code, or graphic generator.' },
+    ],
+    patterns: [
+      { name: 'Tool-first Hero', sub: 'Tool visible in the hero section.' },
+      { name: 'How-it-works', sub: 'Three steps to a result.' },
+      { name: 'Use Case Gallery', sub: 'Example use cases for the tool.' },
+    ],
+    discovery: [
+      { name: 'Core Job-to-be-done', sub: 'The core task the tool solves.' },
+      { name: 'Activation Flow', sub: 'How quickly the user sees value.' },
+      { name: 'Upgrade Triggers', sub: 'What motivates upgrading to a paid tier.' },
+    ],
+  },
+];
+
+const pageTypes = locale === 'en' ? PAGE_TYPES_EN : PAGE_TYPES_PL;
 ---
 
 <section class="py-20 md:py-28 bg-surface-primary" id="typy-stron">
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <p class="font-label text-xs uppercase tracking-widest text-primary mb-2">Typy stron</p>
-        <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight">Typy stron (16)</h2>
+        <p class="font-label text-xs uppercase tracking-widest text-primary mb-2">{copy.eyebrow}</p>
+        <h2 class="font-headline text-4xl md:text-5xl font-bold tracking-tight">{copy.heading}</h2>
       </Fragment>
     <!-- Mobile: accordions -->
     <div class="lg:hidden flex flex-col gap-3">
@@ -348,7 +698,7 @@ const pageTypes = [
             <p class="text-muted text-sm leading-relaxed mb-6">{type.description}</p>
             <div class="flex flex-col gap-4">
               <div class="bg-surface-primary p-5 flex flex-col gap-4">
-                <h4 class="font-headline text-lg font-bold tracking-tight">Archetypy</h4>
+                <h4 class="font-headline text-lg font-bold tracking-tight">{copy.archetypes}</h4>
                 <ul class="space-y-3">
                   {type.archetypes.map((a) => (
                     <li>
@@ -359,7 +709,7 @@ const pageTypes = [
                 </ul>
               </div>
               <div class="bg-surface-primary p-5 flex flex-col gap-4">
-                <h4 class="font-headline text-lg font-bold tracking-tight">Wzorce sekcji</h4>
+                <h4 class="font-headline text-lg font-bold tracking-tight">{copy.patterns}</h4>
                 <ul class="space-y-3">
                   {type.patterns.map((p) => (
                     <li>
@@ -370,7 +720,7 @@ const pageTypes = [
                 </ul>
               </div>
               <div class="bg-surface-primary p-5 flex flex-col gap-4">
-                <h4 class="font-headline text-lg font-bold tracking-tight">Discovery</h4>
+                <h4 class="font-headline text-lg font-bold tracking-tight">{copy.discovery}</h4>
                 <ul class="space-y-3">
                   {type.discovery.map((d) => (
                     <li>
@@ -390,7 +740,7 @@ const pageTypes = [
     <div class="hidden lg:grid lg:grid-cols-12 gap-6 items-start">
       <!-- Left: nav -->
       <div class="lg:col-span-3">
-        <nav class="flex flex-col gap-2" aria-label="Typy stron">
+        <nav class="flex flex-col gap-2" aria-label={copy.navAriaLabel}>
           {pageTypes.map((type, i) => (
           <button
             data-idx={i}
@@ -418,7 +768,7 @@ const pageTypes = [
           ]}
         >
           <div class="p-6 md:p-8 lg:p-10">
-            <p class="font-label text-xs uppercase tracking-widest text-muted mb-3">Wybrany typ strony</p>
+            <p class="font-label text-xs uppercase tracking-widest text-muted mb-3">{copy.selectedLabel}</p>
             <h3 class="font-headline text-2xl md:text-4xl font-bold uppercase tracking-tight mb-2">{type.name}</h3>
             <p class="text-muted text-base leading-relaxed max-w-2xl">{type.description}</p>
           </div>
@@ -429,7 +779,7 @@ const pageTypes = [
                 <span class="material-symbols-outlined text-primary text-2xl">category</span>
                 <span class="font-label text-xs text-muted">01</span>
               </div>
-              <h4 class="font-headline text-lg font-bold tracking-tight">Archetypy</h4>
+              <h4 class="font-headline text-lg font-bold tracking-tight">{copy.archetypes}</h4>
               <ul class="space-y-3">
                 {type.archetypes.map((a) => (
                   <li>
@@ -444,7 +794,7 @@ const pageTypes = [
                 <span class="material-symbols-outlined text-primary text-2xl">layers</span>
                 <span class="font-label text-xs text-muted">02</span>
               </div>
-              <h4 class="font-headline text-lg font-bold tracking-tight">Wzorce sekcji</h4>
+              <h4 class="font-headline text-lg font-bold tracking-tight">{copy.patterns}</h4>
               <ul class="space-y-3">
                 {type.patterns.map((p) => (
                   <li>
@@ -459,7 +809,7 @@ const pageTypes = [
                 <span class="material-symbols-outlined text-primary text-2xl">search</span>
                 <span class="font-label text-xs text-muted">03</span>
               </div>
-              <h4 class="font-headline text-lg font-bold tracking-tight">Discovery</h4>
+              <h4 class="font-headline text-lg font-bold tracking-tight">{copy.discovery}</h4>
               <ul class="space-y-3">
                 {type.discovery.map((d) => (
                   <li>

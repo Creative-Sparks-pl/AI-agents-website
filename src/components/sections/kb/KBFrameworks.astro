@@ -1,35 +1,65 @@
 ---
-const frameworks = [
-  { name: 'Design Psychology', sub: 'Don Norman', description: 'Wykorzystanie błędów poznawczych i zasad Gestalt w celu prowadzenia wzroku użytkownika.' },
-  { name: 'Hierarchy of User Needs', sub: 'Aarron Walter', description: 'Model piramidy od funkcjonalności do emocjonalnego przywiązania marki.' },
-  { name: 'Usability Heuristics', sub: 'Jakob Nielsen', description: '10 fundamentalnych zasad Jakoba Nielsena do audytu interakcji.' },
-  { name: 'LIFT Model', sub: 'Conversion Optimization', description: 'Analiza 6 czynników wpływających na konwersję (Clarity, Relevance, Urgency...).' },
-  { name: 'CCD', sub: 'Customer Centric Design', description: 'Dostarczanie treści precyzyjnie dopasowanej do etapu świadomości użytkownika.' },
-  { name: 'Emotional Targeting', sub: '223 triggers', description: 'Budowanie persony zakupowej w oparciu o wyzwalacze emocjonalne.' },
-  { name: 'Buyer Legends', sub: 'Narrative framing', description: 'Narracyjny framework mapowania ścieżki zakupowej od startu do mety.' },
-  { name: 'FAST Architecture', sub: 'Persuasion sequencing', description: 'Optymalizacja szybkości poznawczej interfejsu (Flow, Attention, Simplicity, Trust).' },
-  { name: 'Narrative Arc', sub: 'Hook, tension, evidence, resolution', description: 'Struktura narracji strony prowadząca użytkownika od problemu do rozwiązania.' },
-  { name: 'ResearchXL', sub: 'Structured UX research', description: 'Strukturalny framework do prowadzenia badań UX i analizy danych.' },
-  { name: 'Messaging Hierarchy', sub: 'B2B 5-layer model', description: 'Model 5 warstw komunikacji B2B — od nagłówka do mikrokopii.' },
-  { name: 'Awareness Model', sub: '5 poziomów świadomości', description: '5 poziomów świadomości klienta wg Schwartza. Dopasowanie przekazu do etapu.' },
-  { name: 'Funnel Psychology', sub: 'Awareness, consideration, decision', description: 'Psychologia lejka zakupowego. Taktyki konwersji na każdy etap.' },
-];
+import { localeFromPathname } from '../../../lib/i18n';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-5.svg';
+
+const locale = localeFromPathname(Astro.url.pathname);
+
+const COPY_PL = {
+  badge: 'Frameworki',
+  heading: 'Frameworki decyzyjne (13)',
+  frameworks: [
+    { name: 'Design Psychology', sub: 'Don Norman', description: 'Wykorzystanie błędów poznawczych i zasad Gestalt w celu prowadzenia wzroku użytkownika.' },
+    { name: 'Hierarchy of User Needs', sub: 'Aarron Walter', description: 'Model piramidy od funkcjonalności do emocjonalnego przywiązania marki.' },
+    { name: 'Usability Heuristics', sub: 'Jakob Nielsen', description: '10 fundamentalnych zasad Jakoba Nielsena do audytu interakcji.' },
+    { name: 'LIFT Model', sub: 'Conversion Optimization', description: 'Analiza 6 czynników wpływających na konwersję (Clarity, Relevance, Urgency...).' },
+    { name: 'CCD', sub: 'Customer Centric Design', description: 'Dostarczanie treści precyzyjnie dopasowanej do etapu świadomości użytkownika.' },
+    { name: 'Emotional Targeting', sub: '223 triggers', description: 'Budowanie persony zakupowej w oparciu o wyzwalacze emocjonalne.' },
+    { name: 'Buyer Legends', sub: 'Narrative framing', description: 'Narracyjny framework mapowania ścieżki zakupowej od startu do mety.' },
+    { name: 'FAST Architecture', sub: 'Persuasion sequencing', description: 'Optymalizacja szybkości poznawczej interfejsu (Flow, Attention, Simplicity, Trust).' },
+    { name: 'Narrative Arc', sub: 'Hook, tension, evidence, resolution', description: 'Struktura narracji strony prowadząca użytkownika od problemu do rozwiązania.' },
+    { name: 'ResearchXL', sub: 'Structured UX research', description: 'Strukturalny framework do prowadzenia badań UX i analizy danych.' },
+    { name: 'Messaging Hierarchy', sub: 'B2B 5-layer model', description: 'Model 5 warstw komunikacji B2B — od nagłówka do mikrokopii.' },
+    { name: 'Awareness Model', sub: '5 poziomów świadomości', description: '5 poziomów świadomości klienta wg Schwartza. Dopasowanie przekazu do etapu.' },
+    { name: 'Funnel Psychology', sub: 'Awareness, consideration, decision', description: 'Psychologia lejka zakupowego. Taktyki konwersji na każdy etap.' },
+  ],
+};
+
+const COPY_EN = {
+  badge: 'Frameworks',
+  heading: 'Decision frameworks (13)',
+  frameworks: [
+    { name: 'Design Psychology', sub: 'Don Norman', description: 'Uses cognitive biases and Gestalt principles to guide the user’s eye.' },
+    { name: 'Hierarchy of User Needs', sub: 'Aarron Walter', description: 'Pyramid model from raw functionality up to emotional brand attachment.' },
+    { name: 'Usability Heuristics', sub: 'Jakob Nielsen', description: 'Ten foundational Nielsen heuristics for auditing interaction design.' },
+    { name: 'LIFT Model', sub: 'Conversion Optimization', description: 'Analysis of six factors that drive conversion (Clarity, Relevance, Urgency...).' },
+    { name: 'CCD', sub: 'Customer Centric Design', description: 'Delivers content tightly matched to the user’s stage of awareness.' },
+    { name: 'Emotional Targeting', sub: '223 triggers', description: 'Builds the buyer persona around explicit emotional triggers.' },
+    { name: 'Buyer Legends', sub: 'Narrative framing', description: 'Narrative framework that maps the purchase journey from start to finish.' },
+    { name: 'FAST Architecture', sub: 'Persuasion sequencing', description: 'Optimizes cognitive speed of the interface (Flow, Attention, Simplicity, Trust).' },
+    { name: 'Narrative Arc', sub: 'Hook, tension, evidence, resolution', description: 'Page narrative structure that walks the user from problem to resolution.' },
+    { name: 'ResearchXL', sub: 'Structured UX research', description: 'Structured framework for running UX research and analyzing the data.' },
+    { name: 'Messaging Hierarchy', sub: 'B2B 5-layer model', description: 'A five-layer model of B2B messaging, from headline down to microcopy.' },
+    { name: 'Awareness Model', sub: '5 awareness stages', description: 'Schwartz’s five customer awareness stages. Match the message to the stage.' },
+    { name: 'Funnel Psychology', sub: 'Awareness, consideration, decision', description: 'Psychology of the purchase funnel. Conversion tactics for each stage.' },
+  ],
+};
+
+const COPY = locale === 'en' ? COPY_EN : COPY_PL;
 ---
 
 <section class="py-20 md:py-28 bg-surface-accent" id="frameworki">
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <span class="text-sm font-label text-primary mb-4">Frameworki</span>
+        <span class="text-sm font-label text-primary mb-4">{COPY.badge}</span>
         <h2 class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
-          Frameworki decyzyjne (13)
+          {COPY.heading}
         </h2>
       </Fragment>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 lg:gap-x-16">
-        {frameworks.map((fw) => (
+        {COPY.frameworks.map((fw) => (
           <div class="py-5 border-b border-border/20">
             <span class="text-foreground font-headline font-bold text-lg block">{fw.name}</span>
             <span class="text-xs font-label text-muted">{fw.sub}</span>
