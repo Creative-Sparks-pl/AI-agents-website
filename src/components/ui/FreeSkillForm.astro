@@ -89,6 +89,7 @@ const iconSize: Record<Size, string> = {
   class:list={['free-skill-form', block && 'w-full', className]}
   data-surface={surface}
   data-state="idle"
+  data-locale={locale}
   data-i18n-loading={COPY.loadingLabel}
   data-i18n-err-email={COPY.errEmail}
   data-i18n-err-unavailable={COPY.errUnavailable}
@@ -238,6 +239,7 @@ const iconSize: Record<Size, string> = {
     };
 
     const originalLabel = submitLabel.textContent ?? '';
+    const locale = root.dataset.locale ?? 'pl';
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -260,7 +262,7 @@ const iconSize: Record<Size, string> = {
         const res = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, website }),
+          body: JSON.stringify({ email, website, locale }),
         });
 
         const payload = (await res.json().catch(() => ({}))) as {

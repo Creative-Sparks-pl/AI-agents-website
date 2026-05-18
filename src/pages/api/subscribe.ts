@@ -4,18 +4,21 @@ export const prerender = false;
 
 interface SubscribeBody {
   email?: string;
+  locale?: string;
   // honeypot — bots fill this, humans don't
   website?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ALLOWED_LOCALES = new Set(['pl', 'en']);
 
 export const POST: APIRoute = async ({ request }) => {
   const apiKey = import.meta.env.MAILERLITE_API_KEY;
-  const groupId = import.meta.env.MAILERLITE_GROUP_ID;
+  const groupIdPl = import.meta.env.MAILERLITE_GROUP_ID;
+  const groupIdEn = import.meta.env.MAILERLITE_GROUP_ID_EN;
   const downloadUrl = import.meta.env.FREE_SKILL_DOWNLOAD_URL;
 
-  if (!apiKey || !groupId || !downloadUrl) {
+  if (!apiKey || !groupIdPl || !downloadUrl) {
     return json({ ok: false, reason: 'not_configured' }, 503);
   }
 
@@ -34,6 +37,9 @@ export const POST: APIRoute = async ({ request }) => {
   if (!email || !EMAIL_RE.test(email) || email.length > 254) {
     return json({ ok: false, reason: 'invalid_email' }, 422);
   }
+
+  const locale = ALLOWED_LOCALES.has(body.locale ?? '') ? (body.locale as 'pl' | 'en') : 'pl';
+  const groupId = locale === 'en' && groupIdEn ? groupIdEn : groupIdPl;
 
   try {
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
