@@ -1,0 +1,16 @@
+badge: What you get
+heading: A wireframe of your site with findings in one HTML file
+lead: The audit doesn't end with a PDF you copy and paste from. It returns an HTML file you open in the browser. Your site as a wireframe with findings pinned to sections and elements.
+cards:
+  - title: Findings pinned to the place they're about
+    description: No external checklist to jump back and forth from. You open the HTML, see the rebuilt layout of your site, and every section and element has the auditor's comment attached right there.
+    shape: nested
+    link:
+      label: See an example audit
+      href: /examples/creativesparks-ux-designer_audit_en.html
+  - title: Compared to the standard for your site type
+    description: "Every finding says 'current state vs standard for your site type'. The skill audits four types: portfolio, studio or small agency, digital product, SaaS. Each finding gets a confidence level (high, medium, low)."
+    shape: grid
+    link:
+      label: See an example audit
+      href: /examples/creativesparks-ux-designer_audit_en.html

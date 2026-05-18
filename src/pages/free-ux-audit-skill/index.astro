@@ -7,7 +7,6 @@ import ProcessSection from '../../components/sections/process/ProcessSection.ast
 import DemoSection from '../../components/sections/demo/DemoSection.astro';
 import FreeSkillForm from '../../components/ui/FreeSkillForm.astro';
 import ArchitectureSection from '../../components/sections/architecture/ArchitectureSection.astro';
-import AudienceFilterSection from '../../components/sections/audience-filter/AudienceFilterSection.astro';
 import FAQSection from '../../components/sections/faqs/FAQSection.astro';
 import AuthorSection from '../../components/sections/author/AuthorSection.astro';
 import Footer from '../../components/sections/footer/Footer.astro';
@@ -128,17 +127,6 @@ const navLinks: { label: string; href: string }[] = [];
         button: { label: 'Sprawdź UX Design Skill', href: '/ux-design-skill/' },
       }}
     />
-    <AudienceFilterSection
-      badge="Dla kogo"
-      heading="Audyt dla Twoich własnych projektów"
-      lead="Skill audytuje strony, które Ty prowadzisz: portfolio, stronę studia, własny digital product, własny SaaS."
-      cards={[
-        { icon: 'person', title: 'Portfolio designera', description: 'Twoja strona portfolio, freelancera albo niezależnego projektanta. Audyt mówi, co tracisz na poziomie pozycjonowania, czytelności prac, ścieżki do kontaktu.' },
-        { icon: 'groups', title: 'Strona studia lub agencji', description: 'Strona Twojego studia projektowego. Audyt mówi, czy oferta i ścieżki kontaktowe są czytelne dla potencjalnego klienta.' },
-        { icon: 'apps', title: 'Własny digital product', description: 'Indie product, narzędzie, paczka edukacyjna, aplikacja. Audyt mówi, gdzie konkretnie strona produktu blokuje konwersję.' },
-        { icon: 'cloud', title: 'Własny SaaS', description: 'Landing produktu SaaS, MVP startupu. Audyt mówi, czy strona spełnia standard dla tego typu serwisu.' },
-      ]}
-    />
     <ProblemsSection
       id="granice"
       headingId="boundaries-heading"
@@ -147,6 +135,7 @@ const navLinks: { label: string; href: string }[] = [];
       items={boundariesEntry.data.items}
       columns={2}
       icon={boundariesIcon}
+      class="!bg-surface"
     />
     <ProblemsSection
       headingId="install-heading"
@@ -159,10 +148,7 @@ const navLinks: { label: string; href: string }[] = [];
       footerLink={installEntry.data.footerLink}
       icon={installIcon}
     />
-    <FAQSection
-      heading="Cztery pytania, które dostajemy najczęściej"
-      entries={faqEntries}
-    />
+    <FAQSection entries={faqEntries} />
     <AuthorSection />
     <DemoSection
       heading={finalCtaEntry.data.heading}

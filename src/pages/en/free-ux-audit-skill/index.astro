@@ -7,7 +7,6 @@ import ProcessSection from '../../../components/sections/process/ProcessSection.
 import DemoSection from '../../../components/sections/demo/DemoSection.astro';
 import FreeSkillForm from '../../../components/ui/FreeSkillForm.astro';
 import ArchitectureSection from '../../../components/sections/architecture/ArchitectureSection.astro';
-import AudienceFilterSection from '../../../components/sections/audience-filter/AudienceFilterSection.astro';
 import FAQSection from '../../../components/sections/faqs/FAQSection.astro';
 import AuthorSection from '../../../components/sections/author/AuthorSection.astro';
 import Footer from '../../../components/sections/footer/Footer.astro';
@@ -15,37 +14,37 @@ import proofIcon from '../../../assets/icons/shape-2.svg';
 import installIcon from '../../../assets/icons/shape-7.svg';
 import boundariesIcon from '../../../assets/icons/shape-8.svg';
 import finalCtaIcon from '../../../assets/icons/shape-9.svg';
-import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
+import { localeFromPathname, requireEntry, requireLocalizedEntry, localizedId } from '../../../lib/i18n';
 
 const locale = localeFromPathname(Astro.url.pathname);
 
 const installEntry = await requireLocalizedEntry('install', locale);
 
-const boundariesEntry = await requireEntry('boundaries', 'free-audit-skill');
+const boundariesEntry = await requireEntry('boundaries', localizedId('free-audit-skill', locale), 'free-audit-skill');
 
-const finalCtaEntry = await requireEntry('final-cta', 'free-audit-skill');
+const finalCtaEntry = await requireEntry('final-cta', localizedId('free-audit-skill', locale), 'free-audit-skill');
 
 const faqEntries = [
   {
-    q: 'Co dostaję dokładnie?',
-    body: 'Plik HTML, który otwierasz w przeglądarce. Wewnątrz: makieta odtworzonej Twojej strony jako lo-fi wireframe, wnioski w formie adnotacji dopiętych do sekcji i elementów, każdy wniosek porównuje stan obecny do standardu dla Twojego typu strony, z oznaczonym poziomem pewności (wysoki, średni, niski). Plus krótka lista zmian, które wynikają z audytu.',
+    q: 'What do I get exactly?',
+    body: 'An HTML file you open in the browser. Inside: a wireframe rebuilt from your site as a lo-fi sketch, findings as annotations pinned to sections and elements, each finding comparing the current state to the standard for your site type, with a confidence level (high, medium, low). Plus a short list of changes that follow from the audit.',
   },
   {
-    q: 'Co Skill robi z moją stroną? Jakie dane wysyła?',
-    body: 'Skill pobiera publicznie dostępną wersję Twojej strony (tę samą, którą widzi każdy odwiedzający) i analizuje strukturę w Twoim modelu AI. Nic nie wraca na nasz serwer (nie mamy serwera). Skill żyje lokalnie w Twoim Claude Code, Cursorze albo ChatGPT. Klucz API do modelu jest po Twojej stronie.',
+    q: 'What does the skill do with my site? What data does it send?',
+    body: 'The skill fetches the publicly available version of your site (the same one every visitor sees) and analyzes the structure inside your AI model. Nothing comes back to our server (we don\'t have a server). The skill lives locally in your Claude Code, Cursor, or ChatGPT. Your AI model API key stays with you.',
   },
   {
-    q: 'Co jeśli Skill nie ogarnie mojego typu strony?',
-    body: "Skill audytuje cztery typy stron: portfolio designera, stronę studia (albo małej agencji), własny digital product, własny landing produktu SaaS. Jeśli Twoja strona jest na styku dwóch typów, Skill mówi wprost 'rozpoznałem jako X z poziomem pewności średnim' i prowadzi audyt z odpowiednim oznaczeniem wniosków.",
+    q: 'What if the skill can\'t handle my site type?',
+    body: "The skill audits four site types: designer portfolio, studio site (or small agency), your own digital product, your own SaaS landing page. If your site sits between two types, the skill says it plainly: 'recognized as X with medium confidence' and runs the audit with that flagged on every finding.",
   },
   {
-    q: 'Czym to się różni od pełnej paczki UX Design Skill?',
-    body: 'Ten Skill diagnozuje istniejącą stronę: pokazuje co jest, gdzie odbiega od standardu, z jakim poziomem pewności. Pełna paczka UX Design Skill prowadzi cały proces projektowy od briefu do gotowej makiety z tekstami: discovery, strategia, plan sekcji, copy, wireframe. Jeśli audyt pokaże, że strona wymaga redesignu, pełna paczka go projektuje.',
-    link: { label: 'Zobacz pełną paczkę UX Design Skill', href: '/ux-design-skill/' },
+    q: 'How is this different from the full UX Design Skill package?',
+    body: 'This skill diagnoses an existing site: shows what\'s there, where it deviates from the standard, with what confidence. The full UX Design Skill package runs the whole design process from brief to a finished wireframe with copy: discovery, strategy, section plan, copy, wireframes. If the audit shows your site needs a redesign, the full package designs it.',
+    link: { label: 'See the full UX Design Skill', href: '/en/ux-design-skill/' },
   },
 ];
 
-const proofEntry = await requireEntry('proof-gallery', 'free-audit-skill');
+const proofEntry = await requireEntry('proof-gallery', localizedId('free-audit-skill', locale), 'free-audit-skill');
 const proofCards = proofEntry.data.cards.map((c) => ({
   title: c.title,
   description: c.description,
@@ -61,26 +60,26 @@ const architectureDecisions = [
   {
     icon: 'account_tree',
     label: '01',
-    title: 'Wiedza oddzielona od instrukcji.',
-    desc: 'Agent.md definiuje logikę audytu, folder references/ przechowuje wzorce branżowe per typ strony.',
+    title: 'Knowledge separated from instructions.',
+    desc: 'AGENTS.md defines the audit logic. The references/ folder holds the industry standards for each site type.',
   },
   {
     icon: 'auto_awesome',
     label: '02',
-    title: 'Pakiet wiedzy ładowany po wykryciu typu.',
-    desc: 'Skill rozpoznaje typ Twojej strony i ładuje tylko wzorce dla tej kategorii, zamiast generycznej checklisty.',
+    title: 'Knowledge pack loaded after the type is detected.',
+    desc: 'The skill detects your site type and loads only the patterns for that category, instead of running a generic checklist.',
   },
   {
     icon: 'verified',
     label: '03',
-    title: 'Każdy wniosek z poziomem pewności.',
-    desc: 'Trzy poziomy: wysoki, średni, niski. Tam, gdzie AI zgaduje, oznaczamy to wprost na adnotacji.',
+    title: 'Every finding shows its confidence level.',
+    desc: 'Three levels: high, medium, low. Wherever the AI is guessing, we flag it directly on the annotation.',
   },
   {
     icon: 'troubleshoot',
     label: '04',
-    title: 'Audyt dostarcza diagnozę.',
-    desc: 'Skill generuje wnioski porównane do standardu branżowego. Decyzje o zmianach zostają po Twojej stronie.',
+    title: 'The audit delivers the diagnosis.',
+    desc: 'The skill generates findings compared to the industry standard. Decisions about changes stay with you.',
   },
 ];
 
@@ -90,10 +89,10 @@ const navLinks: { label: string; href: string }[] = [];
 ---
 
 <BaseLayout
-  title="Asystent UX — proces UX od briefu do wireframe'u | Creative Sparks"
-  description="Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup."
-  ogTitle="Zaplanuj strukturę i treści strony, zanim ruszysz w Figmę"
-  ogDescription="Asystent UX, który prowadzi od briefu do gotowej makiety z prawdziwym copy. Pakiety od 599 zł."
+  title="Free UX Audit Skill: UX audit of your site, run in Claude Code | Creative Sparks"
+  description="A free UX audit skill that runs in Claude Code on your own site. Returns a wireframe with findings pinned to each section. 4 site types, 3 confidence levels, one HTML file."
+  ogTitle="Audit your site with the free UX skill in Claude Code"
+  ogDescription="Give it a URL. The skill returns an HTML file with your site as a wireframe and per-section findings."
   ogImage="/uxd-share.jpg"
 >
   <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
@@ -103,7 +102,6 @@ const navLinks: { label: string; href: string }[] = [];
         slot="primary-cta"
         size="lg"
         surface="free_audit_skill_hero"
-        submitLabel="Pobierz"
         block
       />
     </HeroSection>
@@ -117,27 +115,16 @@ const navLinks: { label: string; href: string }[] = [];
       icon={proofIcon}
     />
     <ArchitectureSection
-      badge="Pod maską"
-      heading="To nie jest jeden prompt,<br />tylko fragment systemu UX Design Skill."
-      lead="Audyt korzysta z tej samej dojrzałej architektury, co pełna paczka UX Design Skill: agent.md jako instrukcja działania, pakiety wiedzy domenowej ładowane po wykryciu typu strony. Architektura dojrzewała kilka miesięcy w pełnej paczce; audyt to wycinek, który ładuje cztery z szesnastu pakietów wiedzy o typach stron."
+      badge="Under the hood"
+      heading="Not just a prompt.<br />A slice of the UX Design Skill system."
+      lead="The audit uses the same mature architecture as the full UX Design Skill package: AGENTS.md as the operating playbook, domain knowledge packs loaded after the site type is detected. The architecture took months to get right in the full package. The audit is the slice that loads four of the sixteen site-type knowledge packs."
       link={null}
       decisions={architectureDecisions}
       cta={{
-        heading: 'Co dostajesz w pełnej wersji UX Design Skill',
-        description: 'Audyt pokazuje diagnozę istniejącej strony. Pełny skill prowadzi cały proces projektowy: discovery, strategia, plan sekcji, copy i wireframe, każda decyzja z uzasadnieniem.',
-        button: { label: 'Sprawdź UX Design Skill', href: '/ux-design-skill/' },
+        heading: 'What you get in the full UX Design Skill',
+        description: 'The audit shows the diagnosis of an existing site. The full skill runs the whole design process: discovery, strategy, section plan, copy, and wireframes, every decision with its reasoning.',
+        button: { label: 'See UX Design Skill', href: '/en/ux-design-skill/' },
       }}
-    />
-    <AudienceFilterSection
-      badge="Dla kogo"
-      heading="Audyt dla Twoich własnych projektów"
-      lead="Skill audytuje strony, które Ty prowadzisz: portfolio, stronę studia, własny digital product, własny SaaS."
-      cards={[
-        { icon: 'person', title: 'Portfolio designera', description: 'Twoja strona portfolio, freelancera albo niezależnego projektanta. Audyt mówi, co tracisz na poziomie pozycjonowania, czytelności prac, ścieżki do kontaktu.' },
-        { icon: 'groups', title: 'Strona studia lub agencji', description: 'Strona Twojego studia projektowego. Audyt mówi, czy oferta i ścieżki kontaktowe są czytelne dla potencjalnego klienta.' },
-        { icon: 'apps', title: 'Własny digital product', description: 'Indie product, narzędzie, paczka edukacyjna, aplikacja. Audyt mówi, gdzie konkretnie strona produktu blokuje konwersję.' },
-        { icon: 'cloud', title: 'Własny SaaS', description: 'Landing produktu SaaS, MVP startupu. Audyt mówi, czy strona spełnia standard dla tego typu serwisu.' },
-      ]}
     />
     <ProblemsSection
       id="granice"
@@ -147,6 +134,7 @@ const navLinks: { label: string; href: string }[] = [];
       items={boundariesEntry.data.items}
       columns={2}
       icon={boundariesIcon}
+      class="!bg-surface"
     />
     <ProblemsSection
       headingId="install-heading"
@@ -159,10 +147,7 @@ const navLinks: { label: string; href: string }[] = [];
       footerLink={installEntry.data.footerLink}
       icon={installIcon}
     />
-    <FAQSection
-      heading="Cztery pytania, które dostajemy najczęściej"
-      entries={faqEntries}
-    />
+    <FAQSection entries={faqEntries} />
     <AuthorSection />
     <DemoSection
       heading={finalCtaEntry.data.heading}
