@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+/* Self-hosted Noto Sans + Noto Sans Mono via @fontsource. The master CSS
+   files (400.css etc.) declare every subset (latin, latin-ext, cyrillic,
+   greek, devanagari, vietnamese) with a unicode-range — browsers only
+   download woff2 files whose range matches characters on the page, so
+   PL+EN content fetches only Latin and Latin-ext. Removes the Google Fonts
+   CSS round-trip that was costing ~780 ms of FCP. */
+@import "@fontsource/noto-sans/400.css";
+@import "@fontsource/noto-sans/500.css";
+@import "@fontsource/noto-sans/600.css";
+@import "@fontsource/noto-sans/700.css";
+
+@import "@fontsource/noto-sans-mono/400.css";
+@import "@fontsource/noto-sans-mono/500.css";
+@import "@fontsource/noto-sans-mono/700.css";
+
 /* Lock Material Symbols spans to 1em × 1em so the ligature-text fallback
    (the literal word "download", "play_arrow", etc.) doesn't shift layout
    when the icon font loads. Without this, the fallback renders ~5 chars
@@ -13,12 +28,14 @@
   line-height: 1;
 }
 
+/* Gilroy — self-hosted woff2 (Latin + Latin Extended-A subset, generated
+   via scripts/convert-gilroy.mjs). 54 KB .otf -> 17 KB woff2 per weight. */
 @font-face {
   font-family: "Gilroy";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("../assets/fonts/Radomir-Tinkov---Gilroy-Regular.otf") format("opentype");
+  src: url("../assets/fonts/Radomir-Tinkov---Gilroy-Regular.woff2") format("woff2");
 }
 
 @font-face {
@@ -26,7 +43,7 @@
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url("../assets/fonts/Radomir-Tinkov---Gilroy-Bold.otf") format("opentype");
+  src: url("../assets/fonts/Radomir-Tinkov---Gilroy-Bold.woff2") format("woff2");
 }
 
 @theme {

@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { localeFromPathname, locales, pathForLocale, defaultLocale } from '../lib/i18n';
+import gilroyBoldUrl from '../assets/fonts/Radomir-Tinkov---Gilroy-Bold.woff2?url';
 
 interface ViewContentParams {
   content_name: string;
@@ -130,15 +131,14 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
     <meta name="twitter:description" content={ogDescription} />
     <meta name="twitter:image" content={ogImageURL} />
 
-    <!-- Google Fonts preconnect -->
+    <!-- Material Symbols still hosted by Google Fonts (subset to 28 icons). Noto Sans + Mono are now self-hosted via @fontsource — see global.css. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Wistia preconnect — player scripts load on click, but warming the connection saves ~360 ms at first play -->
     <link rel="preconnect" href="https://fast.wistia.net" crossorigin />
-    <!-- Preload Noto Sans 400 (body-text weight, largest single font payload) so text renders ~300 ms sooner -->
-    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/notosans/v42/o-0bIpQlx3QUlC5A4PNB6Ryti20_6n1iPHjc5aDdu3mhPy1Fig.woff2" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-    <!-- Material Symbols subset — request only the 28 icons used across the site. Saves ~1 MB of font payload. When adding a new icon, append it to icon_names alphabetically. -->
+    <!-- Preload Gilroy Bold — the LCP element is the hero <h1> in Gilroy. Preloading it before paint kills the font-swap LCP-shift. -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href={gilroyBoldUrl} />
+    <!-- Material Symbols subset — request only the 28 icons used across the site. When adding a new icon, append it to icon_names alphabetically. -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&icon_names=account_tree,arrow_forward,article,auto_awesome,block,category,check,check_circle,description,download,expand_more,folder,folder_open,format_quote,forum,info,keyboard_arrow_down,layers,menu_book,pause,payments,play_arrow,schedule,search,shopping_cart,star,task_alt,trending_flat,verified&display=swap" rel="stylesheet" />
 
     <!-- JSON-LD Structured Data -->

@@ -14,13 +14,16 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
     "@astrojs/vercel": "^10.0.5",
+    "@fontsource/noto-sans": "^5.2.10",
+    "@fontsource/noto-sans-mono": "^5.2.10",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.1",
     "tailwindcss": "^4.2.2"
   },
   "devDependencies": {
     "@astrojs/mdx": "^5.0.4",
-    "@playwright/test": "^1.58.2"
+    "@playwright/test": "^1.58.2",
+    "subset-font": "^2.5.0"
   },
   "overrides": {
     "path-to-regexp": "^8.4.2"
