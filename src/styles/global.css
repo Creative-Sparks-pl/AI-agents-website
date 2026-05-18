@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+/* Lock Material Symbols spans to 1em × 1em so the ligature-text fallback
+   (the literal word "download", "play_arrow", etc.) doesn't shift layout
+   when the icon font loads. Without this, the fallback renders ~5 chars
+   wide, then swaps to a 24px glyph and triggers CLS. */
+.material-symbols-outlined {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  overflow: hidden;
+  vertical-align: middle;
+  line-height: 1;
+}
+
 @font-face {
   font-family: "Gilroy";
   font-style: normal;

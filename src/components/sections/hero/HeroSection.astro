@@ -113,8 +113,6 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
       </div>
 
       <div class="lg:col-span-5 relative">
-        <script is:inline async src="https://fast.wistia.com/player.js"></script>
-        <script is:inline async type="module" src="https://fast.wistia.com/embed/1siqhsesz9.js"></script>
         <wistia-player
           media-id="1siqhsesz9"
           popover-content="link"
@@ -122,7 +120,7 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
           aspect="1.7777777777777777"
           style="display: block;"
         >
-          <a href="#" class="block group cursor-pointer">
+          <a href="#" class="block group cursor-pointer" data-wistia-trigger>
             <div class="relative shadow-[24px_24px_0px_#E5FA00] overflow-hidden border-t-4 border-primary">
               <div class="bg-zinc-900 p-6 font-label text-sm text-zinc-300 leading-relaxed">
                 <div class="flex gap-2 mb-4 border-b border-zinc-800 pb-2">
@@ -195,6 +193,38 @@ const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tag
     </div>
   </div>
 </section>
+
+<script is:inline>
+  (function () {
+    var trigger = document.querySelector('[data-wistia-trigger]');
+    if (!trigger) return;
+    var loaded = false;
+    var loading = false;
+    trigger.addEventListener('click', function (e) {
+      if (loaded) return;
+      e.preventDefault();
+      if (loading) return;
+      loading = true;
+      var s1 = document.createElement('script');
+      s1.async = true;
+      s1.src = 'https://fast.wistia.com/player.js';
+      document.head.appendChild(s1);
+      var s2 = document.createElement('script');
+      s2.async = true;
+      s2.type = 'module';
+      s2.src = 'https://fast.wistia.com/embed/1siqhsesz9.js';
+      document.head.appendChild(s2);
+      if (window.customElements && customElements.whenDefined) {
+        customElements.whenDefined('wistia-player').then(function () {
+          requestAnimationFrame(function () {
+            loaded = true;
+            trigger.click();
+          });
+        });
+      }
+    }, true);
+  })();
+</script>
 
 <style>
   .architectural-grid {
