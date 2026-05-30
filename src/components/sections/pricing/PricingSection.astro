@@ -6,6 +6,7 @@ import sectionIcon from '../../../assets/icons/shape-12.svg';
 import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import PricingTier from './PricingTier.astro';
 import LinkArrow from '../../ui/LinkArrow.astro';
+import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
 
 interface Props extends HTMLAttributes<'section'> {
   class?: string;
@@ -19,12 +20,10 @@ const plans = (await getLocalizedCollection('pricing', locale))
 
 const copy = locale === 'en'
   ? {
-      badge: 'Launch pricing',
       heading: 'Three packages, one-time license',
       refundNote: '14-day refund. Not a fit? Return it.',
     }
   : {
-      badge: 'Cennik przedsprzedaży do 30 maja 2026',
       heading: 'Trzy pakiety, jednorazowa licencja',
       refundNote: '14 dni na sprawdzenie. Nie pasuje, oddajesz.',
     };
@@ -39,9 +38,14 @@ const copy = locale === 'en'
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <div class="inline-flex items-center gap-2 bg-primary/5 px-4 py-1.5 border border-primary/20 mb-6">
+        <div
+          class="inline-flex items-center gap-2 bg-accent border border-accent text-foreground px-4 py-1.5 mb-6"
+          data-presale-badge
+        >
           <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
-          <span class="text-sm font-bold text-primary font-label">{copy.badge}</span>
+          <span class="text-sm font-bold text-foreground font-label">
+            <PreSaleCountdown />
+          </span>
         </div>
         <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
           {copy.heading}

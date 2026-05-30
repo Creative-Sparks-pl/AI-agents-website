@@ -1,0 +1,83 @@
+---
+import { localeFromPathname } from '../../lib/i18n';
+import {
+  PRESALE_DEADLINE_MS,
+  PRESALE_PREFIX,
+  getRemaining,
+  formatRemaining,
+} from '../../lib/presale';
+
+const locale = localeFromPathname(Astro.url.pathname);
+const initialRemaining = getRemaining(Date.now());
+const initialText = initialRemaining ? formatRemaining(initialRemaining, locale) : '';
+const prefix = PRESALE_PREFIX[locale];
+
+// If the pre-sale is already over at build time we still emit the markup —
+// the inline script runs on the client, sees Date.now() > deadline, and
+// hides the badge. Server-rendered text is the static fallback for the
+// pre-JS paint window; never visible to anyone past the deadline because
+// the client script removes it before paint becomes interactive.
+---
+
+<span
+  class="inline-flex items-baseline gap-1.5"
+  data-presale-countdown
+  data-presale-deadline={PRESALE_DEADLINE_MS}
+  data-presale-locale={locale}
+>
+  <span>{prefix}</span>
+  <span class="font-bold" data-presale-body>{initialText}</span>
+</span>
+
+<script is:inline define:vars={{ PRESALE_DEADLINE_MS }}>
+  (function () {
+    function polishPlural(n, one, few, many) {
+      if (n === 1) return one;
+      var m10 = n % 10;
+      var m100 = n % 100;
+      if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+      return many;
+    }
+
+    function formatRemaining(r, locale) {
+      var parts = [];
+      if (locale === 'pl') {
+        if (r.days > 0) parts.push(r.days + ' ' + (r.days === 1 ? 'dzień' : 'dni'));
+        if (r.hours > 0 || r.days > 0) parts.push(r.hours + ' ' + polishPlural(r.hours, 'godzina', 'godziny', 'godzin'));
+        parts.push(r.minutes + ' min');
+        parts.push(r.seconds + ' sek');
+      } else {
+        if (r.days > 0) parts.push(r.days + ' ' + (r.days === 1 ? 'day' : 'days'));
+        if (r.hours > 0 || r.days > 0) parts.push(r.hours + ' ' + (r.hours === 1 ? 'hour' : 'hours'));
+        parts.push(r.minutes + ' min');
+        parts.push(r.seconds + ' sec');
+      }
+      return parts.join(' ');
+    }
+
+    function tick(el) {
+      var bodyEl = el.querySelector('[data-presale-body]');
+      var locale = el.getAttribute('data-presale-locale') || 'pl';
+      var diff = PRESALE_DEADLINE_MS - Date.now();
+      if (diff <= 0) {
+        // Past deadline — hide the closest presale-badge ancestor (or the countdown itself if none).
+        var badge = el.closest('[data-presale-badge]') || el;
+        badge.style.display = 'none';
+        return false;
+      }
+      var days = Math.floor(diff / 86400000);
+      var hours = Math.floor((diff % 86400000) / 3600000);
+      var minutes = Math.floor((diff % 3600000) / 60000);
+      var seconds = Math.floor((diff % 60000) / 1000);
+      bodyEl.textContent = formatRemaining({ days: days, hours: hours, minutes: minutes, seconds: seconds }, locale);
+      return true;
+    }
+
+    document.querySelectorAll('[data-presale-countdown]').forEach(function (el) {
+      if (!tick(el)) return;
+      var iv = setInterval(function () {
+        if (!tick(el)) clearInterval(iv);
+      }, 1000);
+    });
+  })();
+</script>
