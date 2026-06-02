@@ -1,6 +1,7 @@
 ---
 import Button from '../../ui/Button.astro';
 import { localeFromPathname } from '../../../lib/i18n';
+import { isPresaleActive } from '../../../lib/presale';
 
 interface Props {
   name: string;
@@ -38,6 +39,11 @@ const copy = locale === 'en'
 const oldPriceDisplay = copy.currencyPosition === 'prefix'
   ? `${copy.currencySymbol}${oldPrice}`
   : `${oldPrice} ${copy.currencySymbol}`;
+
+// Server-rendered initial state. The inline script in PreSaleCountdown also
+// swaps these at runtime when the deadline crosses mid-session, so a stale
+// build will self-correct in the browser.
+const presaleActive = isPresaleActive(Date.now());
 ---
 
 <div class:list={[
@@ -50,7 +56,7 @@ const oldPriceDisplay = copy.currencyPosition === 'prefix'
     <p class:list={['text-sm', highlight ? 'text-foreground/70' : 'text-muted']}>{sub}</p>
   </div>
 
-  <div class="mb-8">
+  <div class="mb-8" data-presale-only style={presaleActive ? undefined : 'display:none'}>
     <span class="text-xs font-label text-primary font-bold mb-1 block">{copy.presaleLabel}</span>
     <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/40' : 'text-muted/60']}>{oldPriceDisplay}</span>
     <div class="flex items-baseline">
@@ -58,6 +64,21 @@ const oldPriceDisplay = copy.currencyPosition === 'prefix'
         <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
       )}
       <span class="font-headline font-bold text-5xl">{price}</span>
+      {copy.currencyPosition === 'suffix' && (
+        <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.currencySymbol}</span>
+      )}
+    </div>
+    {copy.taxNote && (
+      <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/50' : 'text-muted/70']}>{copy.taxNote}</p>
+    )}
+  </div>
+
+  <div class="mb-8" data-postsale-only style={presaleActive ? 'display:none' : undefined}>
+    <div class="flex items-baseline">
+      {copy.currencyPosition === 'prefix' && (
+        <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
+      )}
+      <span class="font-headline font-bold text-5xl">{oldPrice}</span>
       {copy.currencyPosition === 'suffix' && (
         <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.currencySymbol}</span>
       )}

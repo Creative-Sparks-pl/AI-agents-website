@@ -14,6 +14,10 @@ export interface RemainingTime {
   seconds: number;
 }
 
+export function isPresaleActive(now: number): boolean {
+  return now < PRESALE_DEADLINE_MS;
+}
+
 export function getRemaining(now: number): RemainingTime | null {
   const diff = PRESALE_DEADLINE_MS - now;
   if (diff <= 0) return null;

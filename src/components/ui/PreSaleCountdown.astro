@@ -55,14 +55,30 @@ const prefix = PRESALE_PREFIX[locale];
       return parts.join(' ');
     }
 
+    var postsaleApplied = false;
+    function applyPostsale() {
+      if (postsaleApplied) return;
+      postsaleApplied = true;
+      // Hide every pre-sale badge wrapper.
+      document.querySelectorAll('[data-presale-badge]').forEach(function (el) {
+        el.style.display = 'none';
+      });
+      // Swap presale-only / postsale-only blocks page-wide. Pricing tiers, badge
+      // copy, anywhere else this contract is used.
+      document.querySelectorAll('[data-presale-only]').forEach(function (el) {
+        el.style.display = 'none';
+      });
+      document.querySelectorAll('[data-postsale-only]').forEach(function (el) {
+        el.style.removeProperty('display');
+      });
+    }
+
     function tick(el) {
       var bodyEl = el.querySelector('[data-presale-body]');
       var locale = el.getAttribute('data-presale-locale') || 'pl';
       var diff = PRESALE_DEADLINE_MS - Date.now();
       if (diff <= 0) {
-        // Past deadline — hide the closest presale-badge ancestor (or the countdown itself if none).
-        var badge = el.closest('[data-presale-badge]') || el;
-        badge.style.display = 'none';
+        applyPostsale();
         return false;
       }
       var days = Math.floor(diff / 86400000);
