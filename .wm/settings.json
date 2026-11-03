@@ -3,5 +3,8 @@
     "code": ["src/"],
     "notes": ["design.md", "docs/"],
     "skip": ["public/", "scripts/", "tests/", ".vscode/"]
+  },
+  "discovery": {
+    "contract_files": ["design.md", "src/content.config.ts"]
   }
 }
