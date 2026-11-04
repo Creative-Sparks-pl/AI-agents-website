@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@astrojs/mdx": "^5.0.4",
+    "@axe-core/playwright": "^4.14.0",
     "@playwright/test": "^1.58.2",
     "subset-font": "^2.5.0"
   },
