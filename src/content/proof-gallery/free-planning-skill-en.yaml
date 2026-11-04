@@ -8,11 +8,11 @@ cards:
     link:
       label: Open the Brief
       href: /examples/website-planning-skill_project_plan_en.html#context
-  - title: Site map
+  - title: Sitemap
     description: The page map, menu and footer. Every decision comes with its reasoning and the options it ruled out.
     shape: grid
     link:
-      label: Open the Site map
+      label: Open the Sitemap
       href: /examples/website-planning-skill_project_plan_en.html#strategy
   - title: Content guidelines
     description: "The sections of every page: which visitor question each one answers, what it is for and what has to go in it."
