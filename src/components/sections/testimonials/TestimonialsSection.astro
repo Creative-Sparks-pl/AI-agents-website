@@ -66,8 +66,8 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
               data-slide
             >
               <blockquote class="mb-4 lg:mb-0">
-                <p class="text-3xl lg:text-4xl 2xl:text-5xl leading-normal font-semibold italic text-primary">
-                  <span class="block lg:inline" aria-hidden="true">“ </span>{item.pullQuote}
+                <p class="relative text-3xl lg:text-4xl 2xl:text-5xl leading-normal font-semibold italic text-primary">
+                  <span class="absolute right-full top-0 pr-0.5 lg:pr-1" aria-hidden="true">“</span>{item.pullQuote}
                 </p>
                 <p class="mt-4 text-3xl lg:text-2xl 2xl:text-3xl leading-normal italic text-foreground">{item.body}</p>
               </blockquote>
