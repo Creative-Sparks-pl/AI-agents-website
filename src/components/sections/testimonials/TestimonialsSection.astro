@@ -62,10 +62,10 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
         <div class="grid">
           {items.map((item, index) => (
             <figure
-              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col', index !== 0 && 'invisible']}
+              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col lg:pr-84 xl:pr-128', index !== 0 && 'invisible']}
               data-slide
             >
-              <blockquote class="mb-4 lg:mb-0 lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
+              <blockquote class="mb-4 lg:mb-0">
                 <p class="text-3xl lg:text-4xl 2xl:text-5xl leading-normal font-semibold italic text-primary">
                   <span class="block lg:inline" aria-hidden="true">“ </span>{item.pullQuote}
                 </p>
@@ -94,7 +94,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
               </div>
 
               {/* Slides share one grid cell sized to the longest quote. The auto margins (photo on mobile, name on desktop) put the spare room above them, so the name stays right above the arrows. */}
-              <figcaption class="pt-16 lg:mt-auto lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
+              <figcaption class="pt-16 lg:mt-auto">
                 <p class="font-headline text-3xl font-bold text-foreground">{item.name}</p>
                 {item.company && (
                   <p class="mt-4 font-headline text-2xl text-primary">
