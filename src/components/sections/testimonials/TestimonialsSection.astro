@@ -1,0 +1,161 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { Image } from 'astro:assets';
+import Button from '../../ui/Button.astro';
+import LinkArrow from '../../ui/LinkArrow.astro';
+import SectionWithIcon from '../../ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/testimonials/icon.svg';
+import speckles from '../../../assets/testimonials/speckles.svg';
+import { localeFromPathname, requireLocalizedEntry } from '../../../lib/i18n';
+
+interface SectionLink {
+  label: string;
+  href: string;
+}
+
+interface Props extends HTMLAttributes<'section'> {
+  buttons?: { primary?: SectionLink; secondary?: SectionLink };
+  /** Only needed when one page renders the section twice, so each heading id stays unique. */
+  headingId?: string;
+  class?: string;
+}
+
+const {
+  buttons,
+  headingId = 'testimonials-heading',
+  'aria-labelledby': labelledBy = headingId,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const locale = localeFromPathname(Astro.url.pathname);
+const entry = await requireLocalizedEntry('testimonials', locale);
+const { heading, subheading, items } = entry.data;
+
+const copy = locale === 'en'
+  ? { group: 'Customer reviews', counter: 'Review', prev: 'Previous review', next: 'Next review' }
+  : { group: 'Opinie klientów', counter: 'Opinia', prev: 'Poprzednia opinia', next: 'Następna opinia' };
+
+const navButtons = [
+  { action: 'prev', label: copy.prev, iconClass: '-scale-x-100' },
+  { action: 'next', label: copy.next, iconClass: '' },
+];
+
+const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
+---
+
+<section
+  class:list={['relative overflow-hidden bg-accent py-12 lg:pt-20 lg:pb-36 lg:min-h-216 xl:min-h-290', className]}
+  aria-labelledby={labelledBy}
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
+    <SectionWithIcon icon={sectionIcon}>
+      <Fragment slot="header">
+        <h2 id={headingId} class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+          {heading}
+        </h2>
+        <p class="mt-6 text-2xl text-foreground">{subheading}</p>
+      </Fragment>
+
+      <div class="mt-4 md:mt-6" role="group" aria-label={copy.group} data-testimonials>
+        <div class="grid">
+          {items.map((item, index) => (
+            <figure
+              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col', index !== 0 && 'invisible']}
+              data-slide
+            >
+              <blockquote class="lg:max-w-md xl:max-w-xl">
+                <p class="text-3xl lg:text-4xl xl:text-5xl leading-normal font-semibold italic text-primary">
+                  <span class="block lg:inline" aria-hidden="true">“ </span>{item.pullQuote}
+                </p>
+                <p class="mt-4 text-3xl lg:text-2xl xl:text-3xl leading-normal italic text-foreground">{item.body}</p>
+              </blockquote>
+
+              <div class="relative mt-4 h-149 lg:absolute lg:right-0 lg:top-64 lg:mt-0 lg:h-128 lg:w-64 xl:top-75.5 xl:h-180 xl:w-90">
+                <img
+                  src={speckles.src}
+                  width={speckles.width}
+                  height={speckles.height}
+                  alt=""
+                  aria-hidden="true"
+                  loading="lazy"
+                  class="absolute left-0.5 top-64.5 w-61.25 h-auto max-w-none lg:-left-20 lg:top-60 lg:w-60 xl:-left-26.5 xl:top-84.75 xl:w-80"
+                />
+                <Image
+                  src={item.photo}
+                  alt={item.name}
+                  width={360}
+                  height={720}
+                  densities={[1, 2]}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  class="absolute right-0 top-0 h-135 w-67.5 object-cover lg:h-full lg:w-full"
+                />
+              </div>
+
+              {/* Slides share one grid cell sized to the longest quote; mt-auto keeps the name right above the arrows. */}
+              <figcaption class="mt-auto pt-16 lg:max-w-md xl:max-w-xl">
+                <p class="font-headline text-3xl font-bold text-foreground">{item.name}</p>
+                <p class="mt-4 font-headline text-2xl text-primary">{item.company}</p>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        {items.length > 1 && (
+          <div class="mt-12 flex items-center gap-6">
+            {navButtons.map((nav, navIndex) => (
+              <>
+                <button
+                  type="button"
+                  aria-label={nav.label}
+                  class="flex h-16 w-16 shrink-0 items-center justify-center border-2 border-foreground text-foreground transition-colors hover:bg-foreground hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                  data-nav={nav.action}
+                >
+                  <svg class:list={['h-5.5 w-5.5', nav.iconClass]} viewBox="0 0 22 22" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.3049 10.3194L14.4306 3.4441L13.7498 2.76332L12.3882 4.12489L13.069 4.80567L18.3013 10.0371H0.412128V11.9626H18.3002L13.069 17.1947L12.3882 17.8744L13.7498 19.236L14.4306 18.5552L21.3049 11.6799L21.9856 11.0002L21.3049 10.3194Z" />
+                  </svg>
+                </button>
+                {navIndex === 0 && (
+                  <p class="text-2xl text-foreground tabular-nums" aria-live="polite" aria-atomic="true">
+                    <span class="sr-only">{copy.counter} </span><span data-counter>1</span>/{items.length}
+                  </p>
+                )}
+              </>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {hasButtons && (
+        <div class="mt-16 flex flex-col items-stretch gap-4.5 sm:items-start">
+          {buttons?.primary && <Button href={buttons.primary.href} class="justify-center">{buttons.primary.label}</Button>}
+          {buttons?.secondary && <LinkArrow href={buttons.secondary.href} trailingIcon="" class="justify-center">{buttons.secondary.label}</LinkArrow>}
+        </div>
+      )}
+    </SectionWithIcon>
+  </div>
+</section>
+
+<script>
+  function attach(root: HTMLElement) {
+    const slides = Array.from(root.querySelectorAll<HTMLElement>('[data-slide]'));
+    const counter = root.querySelector<HTMLElement>('[data-counter]');
+    const prev = root.querySelector<HTMLButtonElement>('[data-nav="prev"]');
+    const next = root.querySelector<HTMLButtonElement>('[data-nav="next"]');
+    if (!counter || !prev || !next) return;
+
+    let current = 0;
+    const show = (index: number) => {
+      slides[current].classList.add('invisible');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.remove('invisible');
+      counter.textContent = String(current + 1);
+    };
+
+    prev.addEventListener('click', () => show(current - 1));
+    next.addEventListener('click', () => show(current + 1));
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-testimonials]').forEach(attach);
+</script>
