@@ -100,6 +100,7 @@ const navLinks: { label: string; href: string }[] = [];
     <HeroSection entryId="free-audit-skill">
       <FreeSkillForm
         slot="primary-cta"
+        skill="audit"
         size="lg"
         surface="free_audit_skill_hero"
         submitLabel="Pobierz"
@@ -156,7 +157,7 @@ const navLinks: { label: string; href: string }[] = [];
       note={finalCtaEntry.data.note}
       icon={finalCtaIcon}
     >
-      <FreeSkillForm slot="cta" surface="free_audit_skill_final" block class="sm:max-w-2xl" />
+      <FreeSkillForm slot="cta" skill="audit" surface="free_audit_skill_final" block class="sm:max-w-2xl" />
     </DemoSection>
   </main>
   <Footer />

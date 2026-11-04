@@ -2,9 +2,11 @@
 import { localeFromPathname } from '../../lib/i18n';
 
 type Size = 'md' | 'lg';
+type Skill = 'audit' | 'planning';
 
 interface Props {
   surface: string;
+  skill: Skill;
   size?: Size;
   submitLabel?: string;
   placeholder?: string;
@@ -57,6 +59,7 @@ const COPY = locale === 'en' ? COPY_EN : COPY_PL;
 
 const {
   surface,
+  skill,
   size = 'md',
   submitLabel = COPY.submitLabel,
   placeholder = COPY.placeholder,
@@ -88,6 +91,7 @@ const iconSize: Record<Size, string> = {
 <div
   class:list={['free-skill-form', block && 'w-full', className]}
   data-surface={surface}
+  data-skill={skill}
   data-state="idle"
   data-locale={locale}
   data-i18n-loading={COPY.loadingLabel}
@@ -210,12 +214,12 @@ const iconSize: Record<Size, string> = {
     document.body.removeChild(trigger);
   }
 
-  function trackLead(surface: string) {
+  function trackLead(surface: string, skill: string) {
     const w = window as unknown as {
       trackConversion?: (event: string, params: Record<string, string>) => void;
     };
     if (typeof w.trackConversion === 'function') {
-      w.trackConversion('Lead', { content_name: 'free_skill', content_id: surface });
+      w.trackConversion('Lead', { content_name: `free_${skill}_skill`, content_id: surface });
     }
     const u = window as unknown as { umami?: { track: (name: string) => void } };
     if (u.umami && typeof u.umami.track === 'function') {
@@ -228,6 +232,7 @@ const iconSize: Record<Size, string> = {
     const submit = root.querySelector<HTMLButtonElement>('.free-skill-form__submit');
     const submitLabel = root.querySelector<HTMLElement>('.free-skill-form__submit-label');
     const surface = root.dataset.surface ?? 'unknown';
+    const skill = root.dataset.skill ?? '';
     if (!form || !submit || !submitLabel) return;
 
     const i18n = {
@@ -262,7 +267,7 @@ const iconSize: Record<Size, string> = {
         const res = await fetch('/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, website, locale }),
+          body: JSON.stringify({ email, website, locale, skill }),
         });
 
         const payload = (await res.json().catch(() => ({}))) as {
@@ -273,7 +278,7 @@ const iconSize: Record<Size, string> = {
 
         if (res.ok && payload.ok && payload.downloadUrl) {
           setState(root, 'success');
-          trackLead(surface);
+          trackLead(surface, skill);
           showSuccess(root, payload.downloadUrl);
           return;
         }
