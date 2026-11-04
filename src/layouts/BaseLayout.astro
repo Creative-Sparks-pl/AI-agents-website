@@ -138,8 +138,8 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
     <link rel="preconnect" href="https://fast.wistia.net" crossorigin />
     <!-- Preload Gilroy Bold — the LCP element is the hero <h1> in Gilroy. Preloading it before paint kills the font-swap LCP-shift. -->
     <link rel="preload" as="font" type="font/woff2" crossorigin href={gilroyBoldUrl} />
-    <!-- Material Symbols subset — request only the 28 icons used across the site. When adding a new icon, append it to icon_names alphabetically. -->
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&icon_names=account_tree,arrow_forward,article,auto_awesome,block,category,check,check_circle,description,download,expand_more,folder,folder_open,format_quote,forum,info,keyboard_arrow_down,layers,menu_book,pause,payments,play_arrow,schedule,search,shopping_cart,star,task_alt,trending_flat,verified&display=swap" rel="stylesheet" />
+    <!-- Material Symbols subset — request only the 47 icons used across the public pages. When adding a new icon, append it to icon_names alphabetically. -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&icon_names=account_balance,account_tree,arrow_forward,article,auto_awesome,biotech,block,bolt,category,check,check_circle,chevron_right,close,code,description,download,drive_folder_upload,edit_note,expand_more,fact_check,folder,folder_open,format_quote,forum,horizontal_rule,info,keyboard_arrow_down,layers,mail,menu_book,pause,payments,play_arrow,psychology,public,save,schedule,search,shopping_cart,signal_cellular_alt,star,sync,task_alt,terminal,trending_flat,troubleshoot,verified&display=swap" rel="stylesheet" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(productStructuredData)} />
