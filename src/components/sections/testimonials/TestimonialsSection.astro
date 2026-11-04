@@ -62,7 +62,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
         <div class="grid">
           {items.map((item, index) => (
             <figure
-              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col lg:pr-84 xl:pr-128', index !== 0 && 'invisible']}
+              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col transition-[opacity,visibility] duration-300 motion-reduce:transition-none lg:pr-84 xl:pr-128', index !== 0 && 'invisible opacity-0']}
               data-slide
             >
               <blockquote class="mb-4 lg:mb-0">
@@ -159,9 +159,9 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
 
     let current = 0;
     const show = (index: number) => {
-      slides[current].classList.add('invisible');
+      slides[current].classList.add('invisible', 'opacity-0');
       current = (index + slides.length) % slides.length;
-      slides[current].classList.remove('invisible');
+      slides[current].classList.remove('invisible', 'opacity-0');
       counter.textContent = String(current + 1);
     };
 
