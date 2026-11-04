@@ -112,18 +112,19 @@ const sections = [
 ---
 
 <PreviewLayout title="Sections" current="sections">
-  <div class="bg-foreground text-background py-3 sticky top-[88px] z-40">
-    <div class="max-w-screen-2xl mx-auto px-6 flex items-center gap-4">
-      <p class="hidden md:block shrink-0 font-label text-xs uppercase tracking-widest text-background/60">Jump to section</p>
-      <div class="flex min-w-0 gap-2 overflow-x-auto [scrollbar-width:thin]">
-        {sections.map((s) => (
-          <a href={`#${s.anchor}`} class="shrink-0 whitespace-nowrap px-3 py-1.5 bg-background/10 hover:bg-accent hover:text-foreground transition-colors font-label text-xs">
-            {s.name}
-          </a>
-        ))}
-      </div>
-    </div>
-  </div>
+  <details class="group fixed bottom-6 right-6 z-50" data-jump-menu>
+    <summary class="flex cursor-pointer list-none items-center gap-3 bg-foreground px-4 py-3 font-label text-xs text-background shadow-lg hover:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+      Jump to section
+      <span class="transition-transform group-open:rotate-180" aria-hidden="true">▲</span>
+    </summary>
+    <nav class="absolute bottom-full right-0 mb-2 max-h-[70vh] w-72 max-w-[calc(100vw-3rem)] overflow-y-auto bg-foreground py-2 text-background shadow-lg" aria-label="Sections on this page">
+      {sections.map((s) => (
+        <a href={`#${s.anchor}`} class="block px-4 py-2 font-label text-xs hover:bg-accent hover:text-foreground focus-visible:bg-accent focus-visible:text-foreground focus-visible:outline-none">
+          {s.name}
+        </a>
+      ))}
+    </nav>
+  </details>
 
   <div class="max-w-3xl mx-auto px-6 py-12">
     <p class="text-sm text-muted leading-relaxed">
@@ -379,3 +380,21 @@ const sections = [
 
   </div>
 </PreviewLayout>
+
+<script>
+  const menu = document.querySelector<HTMLDetailsElement>('[data-jump-menu]');
+  if (menu) {
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) menu.open = false;
+    });
+    document.addEventListener('click', (event) => {
+      if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
