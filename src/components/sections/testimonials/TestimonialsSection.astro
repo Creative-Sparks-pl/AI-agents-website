@@ -52,7 +52,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
   <div class="max-w-screen-2xl mx-auto px-4 lg:px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <h2 id={headingId} class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
+        <h2 id={headingId} class="max-w-3xl font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
           {heading}
         </h2>
         <p class="mt-6 text-2xl text-foreground">{subheading}</p>
@@ -65,14 +65,14 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
               class:list={['col-start-1 row-start-1 flex min-w-0 flex-col', index !== 0 && 'invisible']}
               data-slide
             >
-              <blockquote class="lg:max-w-md xl:max-w-xl">
+              <blockquote class="mb-4 lg:mb-0 lg:max-w-md xl:max-w-xl">
                 <p class="text-3xl lg:text-4xl xl:text-5xl leading-normal font-semibold italic text-primary">
                   <span class="block lg:inline" aria-hidden="true">“ </span>{item.pullQuote}
                 </p>
                 <p class="mt-4 text-3xl lg:text-2xl xl:text-3xl leading-normal italic text-foreground">{item.body}</p>
               </blockquote>
 
-              <div class="relative mt-4 h-149 lg:absolute lg:right-0 lg:top-64 lg:mt-0 lg:h-128 lg:w-64 xl:top-75.5 xl:h-180 xl:w-90">
+              <div class="relative mt-auto h-149 lg:absolute lg:right-0 lg:top-64 lg:mt-0 lg:h-128 lg:w-64 xl:top-75.5 xl:h-180 xl:w-90">
                 <img
                   src={speckles.src}
                   width={speckles.width}
@@ -93,8 +93,8 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
                 />
               </div>
 
-              {/* Slides share one grid cell sized to the longest quote; mt-auto keeps the name right above the arrows. */}
-              <figcaption class="mt-auto pt-16 lg:max-w-md xl:max-w-xl">
+              {/* Slides share one grid cell sized to the longest quote. The auto margins (photo on mobile, name on desktop) put the spare room above them, so the name stays right above the arrows. */}
+              <figcaption class="pt-16 lg:mt-auto lg:max-w-md xl:max-w-xl">
                 <p class="font-headline text-3xl font-bold text-foreground">{item.name}</p>
                 <p class="mt-4 font-headline text-2xl text-primary">{item.company}</p>
               </figcaption>
