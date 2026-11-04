@@ -88,23 +88,23 @@ const { badge, heading, nameFirst, nameLast, role, bio, email, contactNote, link
 
 <style>
   .author-agency-link {
-    color: var(--color-primary, #0007bc);
+    color: var(--color-primary);
     text-decoration: underline;
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
-    text-decoration-color: color-mix(in srgb, var(--color-primary, #0007bc) 30%, transparent);
+    text-decoration-color: color-mix(in srgb, var(--color-primary) 30%, transparent);
     transition: text-decoration-color 0.3s, color 0.3s;
     animation: author-link-pulse 3.2s ease-in-out infinite;
   }
 
   .author-agency-link:hover {
-    text-decoration-color: var(--color-primary, #0007bc);
+    text-decoration-color: var(--color-primary);
     animation: none;
   }
 
   @keyframes author-link-pulse {
-    0%, 100% { text-decoration-color: color-mix(in srgb, var(--color-primary, #0007bc) 25%, transparent); }
-    50% { text-decoration-color: var(--color-primary, #0007bc); }
+    0%, 100% { text-decoration-color: color-mix(in srgb, var(--color-primary) 25%, transparent); }
+    50% { text-decoration-color: var(--color-primary); }
   }
 
   @media (prefers-reduced-motion: reduce) {
