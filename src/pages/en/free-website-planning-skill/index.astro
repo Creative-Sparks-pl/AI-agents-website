@@ -1,0 +1,233 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
+import HeroSection from '../../../components/sections/hero/HeroSection.astro';
+import ProblemsSection from '../../../components/sections/problems/ProblemsSection.astro';
+import ProcessSection from '../../../components/sections/process/ProcessSection.astro';
+import DemoSection from '../../../components/sections/demo/DemoSection.astro';
+import FreeSkillForm from '../../../components/ui/FreeSkillForm.astro';
+import ArchitectureSection from '../../../components/sections/architecture/ArchitectureSection.astro';
+import TestimonialsSection from '../../../components/sections/testimonials/TestimonialsSection.astro';
+import FAQSection from '../../../components/sections/faqs/FAQSection.astro';
+import Footer from '../../../components/sections/footer/Footer.astro';
+import proofIcon from '../../../assets/icons/shape-2.svg';
+import stepsIcon from '../../../assets/icons/shape-7.svg';
+import boundariesIcon from '../../../assets/icons/shape-8.svg';
+import finalCtaIcon from '../../../assets/icons/shape-9.svg';
+import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
+
+const locale = localeFromPathname(Astro.url.pathname);
+
+const installEntry = await requireLocalizedEntry('install', locale);
+const boundariesEntry = await requireEntry('boundaries', 'free-planning-skill-en');
+const finalCtaEntry = await requireEntry('final-cta', 'free-planning-skill-en');
+const proofEntry = await requireEntry('proof-gallery', 'free-planning-skill-en');
+
+const proofCards = proofEntry.data.cards.map((c) => ({
+  title: c.title,
+  description: c.description,
+  shape: c.shape,
+  output: c.link.label,
+  outputLink: c.link.href,
+  outputIcon: 'description',
+  trackEvent: 'ViewContent',
+  trackParams: { content_name: 'value_props_free_planning', content_id: c.title },
+}));
+
+const architectureDecisions = [
+  {
+    icon: 'account_tree',
+    label: '01',
+    title: 'Knowledge kept apart from instructions.',
+    desc: 'The operating file runs the conversation and the plan. The references/ folder holds patterns for each page type.',
+  },
+  {
+    icon: 'auto_awesome',
+    label: '02',
+    title: 'A knowledge pack loaded once the type is detected.',
+    desc: 'The skill recognizes your page type and loads patterns for that category only, not a generic list of best practices.',
+  },
+  {
+    icon: 'verified',
+    label: '03',
+    title: 'Every assumption has a confidence level.',
+    desc: 'Three levels: high, medium, low. Where the AI is guessing, the file says so.',
+  },
+  {
+    icon: 'task_alt',
+    label: '04',
+    title: 'The skill delivers a plan.',
+    desc: 'Every decision has its reasoning and the options it ruled out. Which one to build stays your call.',
+  },
+];
+
+const stepItems = [
+  {
+    icon: 'download',
+    label: 'Step 1',
+    title: 'You install it',
+    description: 'Point Claude Code or a similar tool at the INSTALL.md file and it installs the skill itself.',
+  },
+  {
+    icon: 'forum',
+    label: 'Step 2',
+    title: 'You talk about the project',
+    description: 'The skill asks about the goal, the audience and the context. Where it guesses, it tags the assumption with a confidence level.',
+  },
+  {
+    icon: 'description',
+    label: 'Step 3',
+    title: 'You get the plan',
+    description: 'Open the plan file in your browser. Use it as the basis for your wireframes and site design.',
+  },
+];
+
+const faqEntries = [
+  {
+    q: 'Do I need to know UX to use it?',
+    body: "No, but experience designing websites helps, because you will fit the plan to your context better. The skill knows the patterns, but it has neither a designer's experience nor your full context, so treat the plan as a good starting point for discussion.",
+    open: true,
+  },
+  {
+    q: 'What happens to my project data?',
+    body: 'The skill runs in Claude Code or whichever similar tool you use. The conversation and your plan file stay on your side. All we ever receive is feedback, and only if you choose to send it.',
+  },
+  {
+    q: 'How is it different from the full UX Design Skill package?',
+    body: 'The free version stops at the site plan. The full package goes further: messaging, a page template list, wireframes with copy, and a review. The two stages in the free version work the same in both.',
+    link: { label: 'See the UX Design Skill packages', href: '/en/ux-design-skill/' },
+  },
+  {
+    q: 'How do I install it?',
+    body: 'Point Claude Code or a similar tool at the INSTALL.md file and it installs the skill itself.',
+  },
+  {
+    q: 'What does it cost, and what will I get by email?',
+    body: "It's free. Leave your email and download the skill right away. The link also arrives by email, and we'll send you news about our products and services.",
+  },
+];
+
+const treeFiles = ['workflow-discovery.md', 'workflow-strategy.md'];
+const treeFolders = ['shared/', 'project-plan/', 'templates/', 'scripts/'];
+const treeDomains = ['b2b-saas/', 'b2b-services/', 'portfolio/', 'ecommerce/', 'marketplace/', '+ more'];
+
+// Single-funnel LP: logo-only header (non-sticky, no nav, no CTA).
+const navLinks: { label: string; href: string }[] = [];
+---
+
+<BaseLayout
+  title="Free Website Planning Skill: a brief and site map with content guidelines | Creative Sparks"
+  description="A free skill for planning websites. It asks about your project, plans the site map and lays out the sections of every page. Every decision comes with its reasoning."
+  ogTitle="Plan your site before you start building it"
+  ogDescription="A free skill for Claude Code: a brief and site map with content guidelines, every decision with its reasoning."
+  ogImage="/uxd-share.jpg"
+>
+  <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
+  <main>
+    <HeroSection entryId="free-planning-skill">
+      <FreeSkillForm
+        slot="primary-cta"
+        skill="planning"
+        size="lg"
+        surface="free_planning_skill_hero"
+        submitLabel="Download"
+        block
+      />
+    </HeroSection>
+    <ProcessSection
+      id="what-you-get"
+      headingId="value-props-heading"
+      badge={proofEntry.data.badge}
+      heading={proofEntry.data.heading}
+      lead={proofEntry.data.lead}
+      cards={proofCards}
+      icon={proofIcon}
+    />
+    <ArchitectureSection
+      badge="Under the hood"
+      heading="Not just a prompt.<br />A slice of the UX Design Skill system."
+      lead="Website Planning Skill is the first two stages of the full UX Design Skill: the project conversation and the site plan. It runs on the same architecture: an operating file plus knowledge packs for each page type, loaded once the type is detected. That architecture took months to mature. Once it recognizes your site, the skill loads the right one of its 16 knowledge packs."
+      link={null}
+      decisions={architectureDecisions}
+      cta={{
+        heading: 'What you get in the full skill',
+        description: 'Website Planning Skill gives you the brief and the site map. The full package takes you through the whole design process: messaging, a page template list, wireframes with copy, and a review, every decision with its reasoning.',
+        button: { label: 'See the UX Design Skill packages', href: '/en/ux-design-skill/', variant: 'secondary' },
+      }}
+    >
+      <Fragment slot="tree">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="material-symbols-outlined text-accent" aria-hidden="true">folder_open</span>
+          <span class="font-label text-sm font-bold uppercase tracking-wider">skills/website-planning/</span>
+        </div>
+        <div class="space-y-1 font-label text-sm text-white/60">
+          <div class="flex items-center gap-2 py-1.5 pl-4">
+            <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">description</span>
+            <span>SKILL.md</span>
+          </div>
+          <div class="pl-4">
+            <div class="flex items-center gap-2 py-1.5 border-l border-white/20 pl-4">
+              <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+              <span class="font-bold text-white">references/</span>
+            </div>
+            <div class="pl-8 border-l border-white/20 ml-4">
+              {treeFiles.map((file) => (
+                <div class="flex items-center gap-2 py-1.5 pl-4">
+                  <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">article</span>
+                  <span>{file}</span>
+                </div>
+              ))}
+              {treeFolders.map((folder) => (
+                <div class="flex items-center gap-2 py-1.5 pl-4">
+                  <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+                  <span>{folder}</span>
+                </div>
+              ))}
+              <div class="flex items-center gap-2 py-1.5 pl-4">
+                <span class="material-symbols-outlined text-accent text-base" aria-hidden="true">folder</span>
+                <span class="font-bold text-white">domains/</span>
+              </div>
+              <div class="pl-8 border-l border-white/20 ml-4">
+                {treeDomains.map((domain) => (
+                  <div class="flex items-center gap-2 py-1 pl-4"><span>{domain}</span></div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Fragment>
+    </ArchitectureSection>
+    <TestimonialsSection />
+    <ProblemsSection
+      id="how-it-works"
+      headingId="steps-heading"
+      badge="How it works"
+      heading="Three steps from install to site plan"
+      intro="Install it once, then start every new project with a conversation."
+      items={stepItems}
+      columns={3}
+      footerLink={installEntry.data.footerLink}
+      icon={stepsIcon}
+    />
+    <ProblemsSection
+      id="limits"
+      headingId="boundaries-heading"
+      badge={boundariesEntry.data.badge}
+      heading={boundariesEntry.data.heading}
+      items={boundariesEntry.data.items}
+      columns={3}
+      icon={boundariesIcon}
+      class="!bg-surface"
+    />
+    <FAQSection heading="Five questions before you download" entries={faqEntries} />
+    <DemoSection
+      id="download"
+      heading={finalCtaEntry.data.heading}
+      intro={finalCtaEntry.data.intro}
+      icon={finalCtaIcon}
+    >
+      <FreeSkillForm slot="cta" skill="planning" surface="free_planning_skill_final" block class="sm:max-w-2xl" />
+    </DemoSection>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,22 @@
+badge: Proof
+heading: We planned this page with the skill, and the whole plan is public.
+lead: Open each of the three parts in your browser. The full file also comes with a markdown version to download.
+cards:
+  - title: Brief
+    description: Who the site is for, what it has to achieve, who it competes with and how it sounds. Every point comes with its reasoning and a confidence level.
+    shape: nested
+    link:
+      label: Open the Brief
+      href: /examples/website-planning-skill_project_plan_en.html#context
+  - title: Site map
+    description: The page map, menu and footer. Every decision comes with its reasoning and the options it ruled out.
+    shape: grid
+    link:
+      label: Open the Site map
+      href: /examples/website-planning-skill_project_plan_en.html#strategy
+  - title: Content guidelines
+    description: The sections of every page. Which visitor question each one answers, what it is for and what has to go in it.
+    shape: bars
+    link:
+      label: Open the Content guidelines
+      href: /examples/website-planning-skill_project_plan_en.html#section-map

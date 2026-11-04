@@ -1,0 +1,12 @@
+badge: Limits of the tool
+heading: What this skill doesn't do
+items:
+  - icon: block
+    title: It doesn't make decisions for you.
+    description: It shows the options and their consequences. You choose.
+  - icon: article
+    title: It doesn't create wireframes or write finished copy.
+    description: Those are the next stages, and the full UX Design Skill package has them.
+  - icon: category
+    title: It doesn't create visual designs.
+    description: ""
