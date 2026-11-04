@@ -1,0 +1,22 @@
+badge: Dowód
+heading: Tę stronę zaplanowaliśmy tym skillem, a cały plan jest publiczny.
+lead: Każdą z trzech części otwierasz w przeglądarce, a cały plik ma wersję markdown do pobrania.
+cards:
+  - title: Brief
+    description: Dla kogo jest strona, jaki ma cel, z czym konkuruje i jakim głosem mówi. Przy każdym punkcie uzasadnienie i poziom pewności.
+    shape: nested
+    link:
+      label: Otwórz Brief
+      href: /examples/website-planning-skill_project_plan.html#context
+  - title: Mapa strony
+    description: Mapa podstron, menu i stopka. Przy każdej decyzji uzasadnienie i odrzucone warianty.
+    shape: grid
+    link:
+      label: Otwórz Mapę strony
+      href: /examples/website-planning-skill_project_plan.html#strategy
+  - title: Wytyczne zawartości
+    description: Sekcje każdej podstrony. Na jakie pytanie odwiedzającego odpowiada każda z nich, jaki ma cel i co ma się w niej znaleźć.
+    shape: bars
+    link:
+      label: Otwórz Wytyczne zawartości
+      href: /examples/website-planning-skill_project_plan.html#section-map
