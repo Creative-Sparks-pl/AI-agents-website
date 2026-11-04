@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Port 4321 is often held by another local project, and `astro preview` serves no pages with this adapter.
+const PORT = 4325;
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
@@ -9,7 +12,7 @@ export default defineConfig({
   reporter: 'html',
   snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}',
   use: {
-    baseURL: 'http://localhost:4321',
+    baseURL: `http://localhost:${PORT}`,
   },
   projects: [
     {
@@ -22,8 +25,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run preview',
-    port: 4321,
+    command: `npx astro dev --port ${PORT}`,
+    port: PORT,
     reuseExistingServer: !process.env.CI,
   },
 });
