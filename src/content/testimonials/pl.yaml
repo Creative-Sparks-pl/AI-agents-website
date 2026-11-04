@@ -1,0 +1,18 @@
+heading: Paczka zbiera świetne opinie wśród agencji i freelancerów
+subheading: A podobnego produktu nie ma na rynku!
+items:
+  - pullQuote: Placeholder 1, krótki cytat
+    body: Placeholder 1. Tekst zastępczy do testów sekcji, nie do publikacji. Prawdziwa opinia pojawi się tu przed wydaniem.
+    name: Placeholder Pierwszy
+    company: Firma Placeholder 1
+    photo: ../../assets/testimonials/placeholder-1.jpg
+  - pullQuote: Placeholder 2, krótki cytat
+    body: Placeholder 2. Tekst zastępczy do testów sekcji, nie do publikacji. Ta wersja jest dłuższa, żeby sprawdzić, czy układ znosi różną długość opinii bez przeskakiwania elementów pod spodem.
+    name: Placeholder Druga
+    company: Firma Placeholder 2
+    photo: ../../assets/testimonials/placeholder-2.jpg
+  - pullQuote: Placeholder 3, krótki cytat
+    body: Placeholder 3. Tekst zastępczy do testów sekcji, nie do publikacji.
+    name: Placeholder Trzeci
+    company: Firma Placeholder 3
+    photo: ../../assets/testimonials/placeholder-3.jpg

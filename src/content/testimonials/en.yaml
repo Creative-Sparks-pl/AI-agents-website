@@ -1,0 +1,18 @@
+heading: The package is earning great reviews from agencies and freelancers
+subheading: And there's nothing like it on the market!
+items:
+  - pullQuote: Placeholder 1, short quote
+    body: Placeholder 1. Stand-in text for testing the section, not for publishing. A real review goes here before release.
+    name: Placeholder Pierwszy
+    company: Firma Placeholder 1
+    photo: ../../assets/testimonials/placeholder-1.jpg
+  - pullQuote: Placeholder 2, short quote
+    body: Placeholder 2. Stand-in text for testing the section, not for publishing. This one runs longer, to check that the layout copes with reviews of different lengths without the elements below it jumping around.
+    name: Placeholder Druga
+    company: Firma Placeholder 2
+    photo: ../../assets/testimonials/placeholder-2.jpg
+  - pullQuote: Placeholder 3, short quote
+    body: Placeholder 3. Stand-in text for testing the section, not for publishing.
+    name: Placeholder Trzeci
+    company: Firma Placeholder 3
+    photo: ../../assets/testimonials/placeholder-3.jpg

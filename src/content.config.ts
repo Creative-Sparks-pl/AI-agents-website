@@ -297,6 +297,24 @@ const author = defineCollection({
   }),
 });
 
+const testimonials = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/testimonials' }),
+  schema: ({ image }) =>
+    z.object({
+      heading: z.string(),
+      subheading: z.string(),
+      items: z.array(
+        z.object({
+          pullQuote: z.string(),
+          body: z.string(),
+          name: z.string(),
+          company: z.string(),
+          photo: image(),
+        }),
+      ),
+    }),
+});
+
 const changelog = defineCollection({
   loader: glob({ pattern: '**/*.mdx', base: './src/content/changelog' }),
   schema: z.object({
@@ -345,6 +363,7 @@ export const collections = {
   'proof-gallery': proofGallery,
   'value-props': valueProps,
   author,
+  testimonials,
   changelog,
   nav,
   footer,
