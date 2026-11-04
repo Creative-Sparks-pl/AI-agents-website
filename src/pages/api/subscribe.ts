@@ -104,9 +104,6 @@ export const POST: APIRoute = async ({ request }) => {
     if (grant.status !== 201) {
       const errorText = await grant.text();
 
-      // TODO(returning visitor): what Easytools answers when this email already has the
-      // product is checked with a real repeat signup; treat that answer as success here.
-
       if (grant.status === 422 && hasEmailError(errorText)) {
         return json({ ok: false, reason: 'invalid_email' }, 422);
       }
