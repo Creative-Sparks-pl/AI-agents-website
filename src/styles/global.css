@@ -18,9 +18,11 @@
 /* Lock Material Symbols spans to 1em × 1em so the ligature-text fallback
    (the literal word "download", "play_arrow", etc.) doesn't shift layout
    when the icon font loads. Without this, the fallback renders ~5 chars
-   wide, then swaps to a 24px glyph and triggers CLS. */
+   wide, then swaps to a 24px glyph and triggers CLS. flex-shrink stops long
+   text beside an icon in a flex row from squeezing the icon and cropping it. */
 .material-symbols-outlined {
   display: inline-block;
+  flex-shrink: 0;
   width: 1em;
   height: 1em;
   overflow: hidden;
