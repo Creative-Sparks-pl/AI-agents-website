@@ -45,7 +45,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
 ---
 
 <section
-  class:list={['relative overflow-hidden bg-accent py-12 lg:pt-20 lg:pb-36 lg:min-h-216 xl:min-h-290', className]}
+  class:list={['relative overflow-hidden bg-accent py-12 lg:pt-20 lg:pb-36 lg:min-h-184 xl:min-h-230', className]}
   aria-labelledby={labelledBy}
   {...rest}
 >
@@ -62,7 +62,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
         <div class="grid">
           {items.map((item, index) => (
             <figure
-              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col transition-[opacity,visibility] duration-300 motion-reduce:transition-none lg:pr-84 xl:pr-128', index !== 0 && 'invisible opacity-0']}
+              class:list={['col-start-1 row-start-1 flex min-w-0 flex-col transition-[opacity,visibility] duration-300 motion-reduce:transition-none lg:pr-84 xl:pr-112', index !== 0 && 'invisible opacity-0']}
               data-slide
             >
               <blockquote class="mb-4 lg:mb-0">
@@ -72,7 +72,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
                 <p class="mt-4 text-3xl lg:text-2xl 2xl:text-3xl leading-normal italic text-foreground">{item.body}</p>
               </blockquote>
 
-              <div class="relative mt-auto h-149 max-w-89.5 lg:absolute lg:right-6 lg:max-w-none lg:top-44 lg:mt-0 lg:h-128 lg:w-64 xl:top-55.5 xl:h-180 xl:w-90">
+              <div class="relative mt-auto h-115.5 max-w-89.5 lg:absolute lg:right-6 lg:max-w-none lg:top-44 lg:mt-0 lg:h-96 lg:w-64 xl:top-55.5 xl:h-120 xl:w-80">
                 <img
                   src={speckles.src}
                   width={speckles.width}
@@ -80,16 +80,16 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
                   alt=""
                   aria-hidden="true"
                   loading="lazy"
-                  class="absolute left-0.5 top-64.5 w-61.25 h-auto max-w-none lg:-left-12 lg:top-60 lg:w-60 xl:-left-26.5 xl:top-84.75 xl:w-80"
+                  class="absolute left-0.5 top-46.5 w-50 h-auto max-w-none lg:-left-10 lg:top-40 lg:w-48 xl:-left-21 xl:top-44 xl:w-64"
                 />
                 <Image
                   src={item.photo}
                   alt={item.name}
-                  width={360}
-                  height={720}
+                  width={320}
+                  height={480}
                   densities={[1, 2]}
                   loading={index === 0 ? 'eager' : 'lazy'}
-                  class="absolute right-0 top-0 h-135 w-67.5 object-cover lg:h-full lg:w-full"
+                  class="absolute right-0 top-0 h-101.25 w-67.5 object-cover lg:h-full lg:w-full"
                 />
               </div>
 
