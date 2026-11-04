@@ -96,7 +96,16 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
               {/* Slides share one grid cell sized to the longest quote. The auto margins (photo on mobile, name on desktop) put the spare room above them, so the name stays right above the arrows. */}
               <figcaption class="pt-16 lg:mt-auto lg:max-w-md xl:max-w-lg 2xl:max-w-xl">
                 <p class="font-headline text-3xl font-bold text-foreground">{item.name}</p>
-                <p class="mt-4 font-headline text-2xl text-primary">{item.company}</p>
+                {item.company && (
+                  <p class="mt-4 font-headline text-2xl text-primary">
+                    <a
+                      href={item.company.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="underline underline-offset-4 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                    >{item.company.label}</a>
+                  </p>
+                )}
               </figcaption>
             </figure>
           ))}

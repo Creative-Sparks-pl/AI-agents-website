@@ -308,7 +308,7 @@ const testimonials = defineCollection({
           pullQuote: z.string(),
           body: z.string(),
           name: z.string(),
-          company: z.string(),
+          company: linkSchema.optional(),
           photo: image(),
         }),
       ),
