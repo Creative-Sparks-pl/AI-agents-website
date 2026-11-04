@@ -44,12 +44,12 @@ const { badge, heading, lead, columns, rows } = entry.data;
         )}
       </Fragment>
 
-      <div class="overflow-x-auto">
+      <div class="overflow-x-auto" tabindex="0" role="group" aria-labelledby="comparison-heading">
         <div class="min-w-[900px]">
           <table class="w-full text-left border-collapse">
             <thead>
               <tr>
-                <th class="p-6 text-xs font-label text-muted"></th>
+                <td class="p-6 text-xs font-label text-muted"></td>
                 {columns.map((col) => (
                   <th class:list={[
                     'p-5 font-headline font-bold text-base align-top',

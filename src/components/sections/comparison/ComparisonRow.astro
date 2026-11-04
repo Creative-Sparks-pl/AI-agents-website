@@ -39,7 +39,7 @@ const statusIcon = (status: string) => {
             {cell.text}
           </span>
         ) : (
-          <div class:list={['flex items-start gap-2', !col.highlight && cell.status !== 'yes' ? 'opacity-50' : '']}>
+          <div class:list={['flex items-start gap-2', !col.highlight && cell.status !== 'yes' ? 'opacity-80' : '']}>
             {si && <span class:list={['material-symbols-outlined text-lg', si.class]} data-icon={si.icon} aria-hidden="true">{si.icon}</span>}
             <span class:list={['text-sm', col.highlight ? 'font-medium text-foreground' : 'text-muted']}>{cell.text}</span>
           </div>
