@@ -19,8 +19,8 @@ export async function openPage(page: Page, path: string) {
   await blockThirdParty(page);
   const response = await page.goto(path, { waitUntil: 'load' });
   expect(response?.status()).toBe(200);
+  await page.addStyleTag({ content: 'astro-dev-toolbar { display: none !important; }' });
   await page.evaluate(async () => {
-    document.querySelector('astro-dev-toolbar')?.remove();
     for (let y = 0; y < document.documentElement.scrollHeight; y += 500) {
       window.scrollTo(0, y);
       await new Promise((resolve) => setTimeout(resolve, 50));
@@ -33,6 +33,8 @@ export async function openPage(page: Page, path: string) {
 
 export async function shoot(page: Page, target: Locator, name: string) {
   mkdirSync(OUT_DIR, { recursive: true });
+  // Leaving the mouse on a button just clicked would capture its hover colour instead of its normal one.
+  await page.mouse.move(0, 0);
   await page.evaluate(() => window.scrollTo(0, 0));
   const box = await target.boundingBox();
   if (!box) throw new Error(`${name}: element is not visible`);
@@ -42,6 +44,7 @@ export async function shoot(page: Page, target: Locator, name: string) {
       path: `${OUT_DIR}/${name}${parts > 1 ? `-part${part + 1}` : ''}.png`,
       fullPage: true,
       scale: 'css',
+      animations: 'disabled',
       clip: {
         x: box.x,
         y: box.y + part * MAX_TILE_HEIGHT,

@@ -16,6 +16,9 @@ const FORMS = [
 /** Answers the form's request and records what it sent. */
 async function mockSubscribe(page: Page, reply: () => { status: number; body: object }) {
   const requests: Array<Record<string, string>> = [];
+  // Every other API call is refused, so a form pointed at a new URL fails here instead of sending a real signup.
+  // Playwright tries the newest route first, so this one only catches what the mock below does not.
+  await page.route(/^https?:\/\/[^/]+\/api\//, (route) => route.abort());
   await page.route('**/api/subscribe', async (route) => {
     requests.push(route.request().postDataJSON());
     const { status, body } = reply();
