@@ -15,7 +15,7 @@ cards:
       label: Otwórz Mapę strony
       href: /examples/website-planning-skill_project_plan.html#strategy
   - title: Wytyczne zawartości
-    description: Sekcje każdej podstrony. Na jakie pytanie odwiedzającego odpowiada każda z nich, jaki ma cel i co ma się w niej znaleźć.
+    description: "Sekcje każdej podstrony: na jakie pytanie odwiedzającego odpowiada każda z nich, jaki ma cel i co ma się w niej znaleźć."
     shape: bars
     link:
       label: Otwórz Wytyczne zawartości

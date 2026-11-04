@@ -15,7 +15,7 @@ cards:
       label: Open the Site map
       href: /examples/website-planning-skill_project_plan_en.html#strategy
   - title: Content guidelines
-    description: The sections of every page. Which visitor question each one answers, what it is for and what has to go in it.
+    description: "The sections of every page: which visitor question each one answers, what it is for and what has to go in it."
     shape: bars
     link:
       label: Open the Content guidelines
