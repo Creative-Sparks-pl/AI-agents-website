@@ -14,11 +14,8 @@ import proofIcon from '../../../assets/icons/shape-2.svg';
 import stepsIcon from '../../../assets/icons/shape-7.svg';
 import boundariesIcon from '../../../assets/icons/shape-8.svg';
 import finalCtaIcon from '../../../assets/icons/shape-9.svg';
-import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
+import { requireEntry } from '../../../lib/i18n';
 
-const locale = localeFromPathname(Astro.url.pathname);
-
-const installEntry = await requireLocalizedEntry('install', locale);
 const boundariesEntry = await requireEntry('boundaries', 'free-planning-skill-en');
 const finalCtaEntry = await requireEntry('final-cta', 'free-planning-skill-en');
 const proofEntry = await requireEntry('proof-gallery', 'free-planning-skill-en');
@@ -206,7 +203,6 @@ const navLinks: { label: string; href: string }[] = [];
       intro="Install it once, then start every new project with a conversation."
       items={stepItems}
       columns={3}
-      footerLink={installEntry.data.footerLink}
       icon={stepsIcon}
     />
     <ProblemsSection

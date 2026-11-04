@@ -14,11 +14,8 @@ import proofIcon from '../../assets/icons/shape-2.svg';
 import stepsIcon from '../../assets/icons/shape-7.svg';
 import boundariesIcon from '../../assets/icons/shape-8.svg';
 import finalCtaIcon from '../../assets/icons/shape-9.svg';
-import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../lib/i18n';
+import { requireEntry } from '../../lib/i18n';
 
-const locale = localeFromPathname(Astro.url.pathname);
-
-const installEntry = await requireLocalizedEntry('install', locale);
 const boundariesEntry = await requireEntry('boundaries', 'free-planning-skill');
 const finalCtaEntry = await requireEntry('final-cta', 'free-planning-skill');
 const proofEntry = await requireEntry('proof-gallery', 'free-planning-skill');
@@ -130,7 +127,7 @@ const navLinks: { label: string; href: string }[] = [];
         skill="planning"
         size="lg"
         surface="free_planning_skill_hero"
-        submitLabel="Pobierz"
+        submitLabel="Pobierz za darmo"
         block
       />
     </HeroSection>
@@ -206,7 +203,6 @@ const navLinks: { label: string; href: string }[] = [];
       intro="Instalujesz raz, a każdy kolejny projekt zaczynasz od rozmowy."
       items={stepItems}
       columns={3}
-      footerLink={installEntry.data.footerLink}
       icon={stepsIcon}
     />
     <ProblemsSection
