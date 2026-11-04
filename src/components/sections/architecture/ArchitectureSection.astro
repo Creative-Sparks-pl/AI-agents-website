@@ -22,7 +22,7 @@ interface Props extends HTMLAttributes<'section'> {
   lead?: string;
   link?: { href: string; label: string } | null;
   decisions?: DecisionItem[];
-  cta?: { heading: string; description: string; button: { label: string; href: string; variant?: 'primary' | 'secondary' } };
+  cta?: { heading: string; description: string; button: { label: string; href: string } };
 }
 
 const locale = localeFromPathname(Astro.url.pathname);
@@ -160,7 +160,7 @@ if (decisionsProp) {
             <p class="text-base text-foreground/80 leading-relaxed font-body">{cta.description}</p>
           </div>
           <div class="shrink-0">
-            <Button href={cta.button.href} variant={cta.button.variant} size="lg" trailingIcon="trending_flat" onclick="setTimeout(function(){window.umami&&window.umami.track('Architecture CTA')},0)">
+            <Button href={cta.button.href} size="lg" trailingIcon="trending_flat" onclick="setTimeout(function(){window.umami&&window.umami.track('Architecture CTA')},0)">
               {cta.button.label}
             </Button>
           </div>
