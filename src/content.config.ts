@@ -24,7 +24,7 @@ const hero = defineCollection({
     ctaSecondary: linkSchema.optional(),
     videoLabel: z.string().optional(),
     countdownTarget: z.literal('presale').optional(),
-    rating: z.object({ value: z.number(), text: z.string(), label: z.string() }).optional(),
+    rating: z.object({ value: z.number(), text: z.string(), label: z.string(), href: z.string().optional() }).optional(),
   }),
 });
 

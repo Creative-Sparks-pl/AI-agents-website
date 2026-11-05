@@ -4,29 +4,41 @@ interface Props {
   value: number;
   /** Visible text, e.g. "4,52 (23 oceny)". */
   text: string;
-  /** Full sentence for screen readers, which skip the stars and the visible text. */
+  /** Full sentence for screen readers. Starts with the visible text, so voice control can find it. */
   label: string;
+  /** Where the rating leads, usually the reviews section. */
+  href?: string;
   class?: string;
 }
 
-const { value, text, label, class: className } = Astro.props;
+const { value, text, label, href, class: className } = Astro.props;
 const stars = [1, 2, 3, 4, 5];
 const STAR_PATH = 'M12 2.5l2.9 6.2 6.6.9-4.8 4.7 1.2 6.7-5.9-3.2-5.9 3.2 1.2-6.7-4.8-4.7 6.6-.9z';
+const Tag = href ? 'a' : 'div';
 ---
 
-<div class:list={['flex flex-wrap items-center gap-x-3 gap-y-1', className]} role="img" aria-label={label}>
+<Tag
+  href={href}
+  class:list={[
+    'group inline-flex flex-wrap items-center gap-x-3 gap-y-1',
+    href && 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+    className,
+  ]}
+  role={href ? undefined : 'img'}
+  aria-label={label}
+>
   <span class="relative inline-flex shrink-0">
     <span class="flex text-border">
       {stars.map(() => (
-        <svg class="h-7 w-7 shrink-0 fill-current" viewBox="0 0 24 24"><path d={STAR_PATH} /></svg>
+        <svg class="h-7 w-7 shrink-0 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d={STAR_PATH} /></svg>
       ))}
     </span>
     {/* The same stars in blue on top, cut to the share of the rating. */}
     <span class="absolute inset-y-0 left-0 flex overflow-hidden text-primary" style={`width: ${(value / 5) * 100}%`}>
       {stars.map(() => (
-        <svg class="h-7 w-7 shrink-0 fill-current" viewBox="0 0 24 24"><path d={STAR_PATH} /></svg>
+        <svg class="h-7 w-7 shrink-0 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d={STAR_PATH} /></svg>
       ))}
     </span>
   </span>
-  <span class="font-label text-sm text-muted">{text}</span>
-</div>
+  <span class:list={['font-label text-sm text-muted', href && 'transition-colors group-hover:text-primary']}>{text}</span>
+</Tag>

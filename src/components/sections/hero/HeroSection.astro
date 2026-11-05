@@ -68,6 +68,8 @@ const showPreSaleCountdown = countdownTarget === 'presale';
           </span>
         </div>
 
+        {rating && <div class="mb-6"><RatingStars value={rating.value} text={rating.text} label={rating.label} href={rating.href} /></div>}
+
         <h1 id="hero-heading" class="font-headline text-5xl md:text-7xl font-extrabold tracking-tighter leading-[1.05] mb-6 text-foreground">
           {headlineLead} <span class="text-primary">{headlineEm}</span> {headlineTail}
         </h1>
@@ -128,8 +130,6 @@ const showPreSaleCountdown = countdownTarget === 'presale';
             )}
           </div>
         )}
-
-        {rating && <RatingStars class="mt-6" value={rating.value} text={rating.text} label={rating.label} />}
       </div>
 
       <div class="lg:col-span-5 relative">
