@@ -52,8 +52,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
   <div class="relative max-w-screen-2xl mx-auto px-4 lg:px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <h2 id={headingId} class="max-w-3xl font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
-          {heading}
+        <h2 id={headingId} class="max-w-3xl font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight" set:html={heading}>
         </h2>
         <p class="mt-6 text-2xl text-foreground">{subheading}</p>
       </Fragment>
