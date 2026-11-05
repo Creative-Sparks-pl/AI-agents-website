@@ -26,6 +26,35 @@ const rawSections = [
     group: null,
   },
   {
+    number: 'Setup',
+    label: 'Konfiguracja',
+    title: 'Jak wgrać skill',
+    description: 'Wybierz platformę i postępuj zgodnie z instrukcjami. Zajmuje to 2-3 minuty. Nie wiesz, którą wybrać? Zobacz „Jak wybrać platformę” poniżej.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Platformy webowe',
+        bullets: [
+          'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
+          'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
+          'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
+          'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). <strong>Włącz narzędzie Canvas w trakcie rozmowy</strong> — bez tego pliki HTML nie wyświetlą się jako podgląd, tylko jako kod do pobrania.',
+        ],
+      },
+      {
+        heading: 'IDE (desktop)',
+        bullets: [
+          '<strong>Najprościej:</strong> w Claude Code, Codex lub Cursorze wskaż agentowi plik <code>INSTALL.md</code> z głównego folderu paczki. Agent pokaże plan i zapyta, zanim cokolwiek skopiuje. Na przykład: <em>„Zainstaluj ten skill zgodnie z plikiem INSTALL.md.”</em>',
+          '<strong>Wolisz ręcznie?</strong> Przeczytaj <code>README.md</code> w tym samym folderze.',
+          '<strong>Po instalacji:</strong> pełnego agenta uruchomisz w Claude Code komendą <code>/expert ux-designer</code>. Skill wywołasz przez <code>/ux-designer</code> w Claude Code i Cursorze albo <code>$ux-designer</code> w Codexie.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
     number: 'Wideo',
     label: 'Wstęp',
     title: 'Instrukcja wideo',
@@ -42,10 +71,11 @@ const rawSections = [
     title: 'Zawartość paczki',
     description: 'Otrzymujesz zestaw plików asystenta AI w wariantach na różne platformy.',
     bullets: [
-      'ux-designer-claude/ — Claude Projects (system prompt + pliki wiedzy)',
-      'ux-designer-chatgpt/ — ChatGPT Custom GPT (Instructions + pliki wiedzy)',
-      'ux-designer-gemini-gem/ — Gemini Gems (system prompt + pliki wiedzy, max 10 plików)',
-      'ux-designer-ide/ — Claude Code, VS Code, Cursor, Antigravity oraz inne IDE zgodne ze specyfikacją AGENTS.md',
+      'use-as-agent/ — pełny agent uruchamiany komendą /expert (Claude Code, także w VS Code, Cursorze i Antigravity)',
+      'use-as-skill/ — ten sam agent jako skill (Claude Code, Codex, Cursor)',
+      'use-in-web-claude/ — Claude Projects (system prompt + pliki wiedzy)',
+      'use-in-web-chatgpt/ — ChatGPT Custom GPT (Instructions + pliki wiedzy)',
+      'use-in-web-gemini-gem/ — Gemini Gems (system prompt + pliki wiedzy, max 10 plików)',
     ],
     links: [],
     quote: '',
@@ -61,36 +91,6 @@ const rawSections = [
       '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Solidna alternatywa: VS Code z pluginem do LLM</strong> (Claude Code, OpenAI Codex, Google Antigravity, Cursor). Pełna kontrola nad plikami, agent stabilnie trzyma się procesu, łatwy powrót do projektu między sesjami.',
       '<span class="material-symbols-outlined text-muted text-xl align-middle mr-2">info</span><strong>OK: wersje webowe</strong> — Claude Projects, ChatGPT Custom GPT, ChatGPT Projects. Prosty start, ale ograniczenia w pracy z plikami. Czat gorzej obsługuje długie dokumenty, częściej trzeba wgrywać pliki na nowo.',
       '<span class="material-symbols-outlined text-foreground text-xl align-middle mr-2">block</span><strong>Odradzam: Gemini Gems (web).</strong> Ma tendencję do chodzenia swoją ścieżką — pomija instrukcje, robi rzeczy po swojemu, częściej rozjeżdża się z procesem. Jeśli już musisz, włączaj Canvas (inaczej HTML wyświetli się jako kod).',
-    ],
-    links: [],
-    quote: '',
-    group: 'Pierwsze uruchomienie',
-  },
-  {
-    number: 'Setup',
-    label: 'Konfiguracja',
-    title: 'Jak wgrać skill',
-    description: 'Wybierz platformę i postępuj zgodnie z instrukcjami. Zajmuje to 2-3 minuty.',
-    bullets: [],
-    groups: [
-      {
-        heading: 'Platformy webowe',
-        bullets: [
-          'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
-          'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
-          'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
-          'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). <strong>Włącz narzędzie Canvas w trakcie rozmowy</strong> — bez tego pliki HTML nie wyświetlą się jako podgląd, tylko jako kod do pobrania.',
-        ],
-      },
-      {
-        heading: 'IDE (desktop)',
-        bullets: [
-          'Folder <code>ux-designer-ide/</code> zawiera trzy podfoldery: <code>agents/</code>, <code>commands/</code>, <code>skills/</code>. Skopiuj zawartość tego folderu do katalogu konfiguracji swojego narzędzia AI — wszystkie trzy podfoldery muszą trafić na miejsce.',
-          'Claude Code — skopiuj zawartość <code>ux-designer-ide/</code> do <code>~/.claude/</code>. W dowolnym projekcie wywołaj komendą <code>/expert ux-designer</code> (pełna wersja) lub <code>/expert ux-audit</code> (darmowy skill).',
-          'VS Code, Cursor, Antigravity — analogicznie, do katalogu konfiguracyjnego Twojego IDE. Sposób wywołania zależy od narzędzia.',
-          '<strong>Nie wiesz jak?</strong> Wklej ten prompt do AI w swoim narzędziu — poprowadzi Cię krok po kroku: <em>„Mam folder ux-designer-ide/ z trzema podfolderami: agents/, commands/, skills/. Pomóż mi skopiować jego zawartość do katalogu konfiguracji tego narzędzia, żeby wszystkie pliki trafiły w odpowiednie miejsca. Sprawdź dokumentację, znajdź właściwe lokalizacje i poprowadź mnie krok po kroku przez instalację oraz pierwsze wywołanie."</em>',
-        ],
-      },
     ],
     links: [],
     quote: '',

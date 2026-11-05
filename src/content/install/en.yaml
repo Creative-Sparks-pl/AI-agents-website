@@ -9,7 +9,7 @@ items:
   - icon: drive_folder_upload
     label: Step 2
     title: Drop it into your environment
-    description: The folder goes into your project directory (e.g. .claude/agents/ for Claude Code), following the per-platform instructions.
+    description: Point your agent at INSTALL.md and it installs the skill for you. On web platforms, you upload the files following the instructions.
   - icon: play_arrow
     label: Step 3
     title: Use it in your next session

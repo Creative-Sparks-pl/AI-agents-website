@@ -9,7 +9,7 @@ items:
   - icon: drive_folder_upload
     label: Krok 2
     title: Wrzuć do swojego środowiska
-    description: Folder ląduje w katalogu projektu (np. .claude/agents/ dla Claude Code), zgodnie z instrukcją per środowisko.
+    description: Wskaż agentowi plik INSTALL.md, a zainstaluje skill za Ciebie. Na platformach webowych wgrywasz pliki według instrukcji.
   - icon: play_arrow
     label: Krok 3
     title: Uruchom przy kolejnej rozmowie

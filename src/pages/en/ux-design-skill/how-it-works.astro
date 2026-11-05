@@ -26,6 +26,35 @@ const rawSections = [
     group: null,
   },
   {
+    number: 'Setup',
+    label: 'Configuration',
+    title: 'How to install the skill',
+    description: 'Pick a platform and follow the instructions. Takes 2-3 minutes. Not sure which one? See "How to pick a platform" below.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Web platforms',
+        bullets: [
+          'Claude Projects: paste INSTRUCTIONS.md as Project Instructions, upload the rest of the files as Knowledge',
+          'ChatGPT Custom GPT: paste INSTRUCTIONS.md into Instructions (max 8K characters), upload files via Upload files',
+          'ChatGPT Projects: paste INSTRUCTIONS.md into project settings, upload files as Sources',
+          'Gemini Gems: paste INSTRUCTIONS.md as instructions, upload .md files (max 10). <strong>Turn on the Canvas tool during the conversation.</strong> Without it, HTML files will not render as a preview, only as a downloadable code file.',
+        ],
+      },
+      {
+        heading: 'IDE (desktop)',
+        bullets: [
+          '<strong>Easiest way:</strong> in Claude Code, Codex or Cursor, point your agent at the <code>INSTALL.md</code> file in the package\'s main folder. It shows you the plan and asks before copying anything. For example: <em>"Install this skill by following INSTALL.md."</em>',
+          '<strong>Prefer to do it by hand?</strong> Read <code>README.md</code> in the same folder.',
+          '<strong>Once installed:</strong> start the full agent in Claude Code with <code>/expert ux-designer</code>. Call the skill with <code>/ux-designer</code> in Claude Code and Cursor, or <code>$ux-designer</code> in Codex.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Getting started',
+  },
+  {
     number: 'Video',
     label: 'Intro',
     title: 'Video walkthrough',
@@ -42,10 +71,11 @@ const rawSections = [
     title: "What's in the package",
     description: 'You get a set of AI assistant files in variants for different platforms.',
     bullets: [
-      'ux-designer-claude/ - Claude Projects (system prompt + knowledge files)',
-      'ux-designer-chatgpt/ - ChatGPT Custom GPT (Instructions + knowledge files)',
-      'ux-designer-gemini-gem/ - Gemini Gems (system prompt + knowledge files, max 10 files)',
-      'ux-designer-ide/ - Claude Code, VS Code, Cursor, Antigravity and other IDEs compatible with the AGENTS.md spec',
+      'use-as-agent/ - the full agent, started with /expert (Claude Code, including inside VS Code, Cursor and Antigravity)',
+      'use-as-skill/ - the same agent as a skill (Claude Code, Codex, Cursor)',
+      'use-in-web-claude/ - Claude Projects (system prompt + knowledge files)',
+      'use-in-web-chatgpt/ - ChatGPT Custom GPT (Instructions + knowledge files)',
+      'use-in-web-gemini-gem/ - Gemini Gems (system prompt + knowledge files, max 10 files)',
     ],
     links: [],
     quote: '',
@@ -61,36 +91,6 @@ const rawSections = [
       '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Solid alternative: VS Code with an LLM plugin</strong> (Claude Code, OpenAI Codex, Google Antigravity, Cursor). Full control over files, the skill sticks to the process reliably, easy to come back to the project between sessions.',
       '<span class="material-symbols-outlined text-muted text-xl align-middle mr-2">info</span><strong>OK: web versions</strong> (Claude Projects, ChatGPT Custom GPT, ChatGPT Projects). Simple to start with, but limited when working with files. Chat handles long documents less well, and you have to re-upload files more often.',
       '<span class="material-symbols-outlined text-foreground text-xl align-middle mr-2">block</span><strong>Avoid: Gemini Gems (web).</strong> It tends to go off-script. It skips instructions, does things its own way, and drifts from the process more often. If you must use it, turn on Canvas (otherwise HTML will render as code).',
-    ],
-    links: [],
-    quote: '',
-    group: 'Getting started',
-  },
-  {
-    number: 'Setup',
-    label: 'Configuration',
-    title: 'How to install the skill',
-    description: 'Pick a platform and follow the instructions. Takes 2-3 minutes.',
-    bullets: [],
-    groups: [
-      {
-        heading: 'Web platforms',
-        bullets: [
-          'Claude Projects: paste INSTRUCTIONS.md as Project Instructions, upload the rest of the files as Knowledge',
-          'ChatGPT Custom GPT: paste INSTRUCTIONS.md into Instructions (max 8K characters), upload files via Upload files',
-          'ChatGPT Projects: paste INSTRUCTIONS.md into project settings, upload files as Sources',
-          'Gemini Gems: paste INSTRUCTIONS.md as instructions, upload .md files (max 10). <strong>Turn on the Canvas tool during the conversation.</strong> Without it, HTML files will not render as a preview, only as a downloadable code file.',
-        ],
-      },
-      {
-        heading: 'IDE (desktop)',
-        bullets: [
-          'The <code>ux-designer-ide/</code> folder contains three subfolders: <code>agents/</code>, <code>commands/</code>, <code>skills/</code>. Copy the contents of that folder into your AI tool\'s configuration directory. All three subfolders need to end up in the right place.',
-          'Claude Code: copy the contents of <code>ux-designer-ide/</code> into <code>~/.claude/</code>. In any project, run <code>/expert ux-designer</code> (full version) or <code>/expert ux-audit</code> (free skill).',
-          'VS Code, Cursor, Antigravity: same idea, into the configuration directory for your IDE. How you invoke it depends on the tool.',
-          '<strong>Not sure how?</strong> Paste this prompt into the AI in your tool and it will walk you through it step by step: <em>"I have a ux-designer-ide/ folder with three subfolders: agents/, commands/, skills/. Help me copy its contents into this tool\'s configuration directory so that all the files end up in the right places. Check the documentation, find the correct locations, and walk me through installation and the first invocation step by step."</em>',
-        ],
-      },
     ],
     links: [],
     quote: '',
