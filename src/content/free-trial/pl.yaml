@@ -1,10 +1,10 @@
 badge: Darmowy audyt
-heading: Pobierz pakiet darmowego audytu i uruchom na własnej stronie
-intro: Dostajesz konkret, zanim podejmiesz decyzję o zakupie pełnej wersji. Wystarczy, że podasz adres URL, a narzędzie zrobi wszystko samo dalej.
+heading: Pobierz darmowy skill audytu UX i uruchom na swojej stronie głównej
+intro: Dostajesz konkret, zanim podejmiesz decyzję o zakupie pełnej wersji. Wystarczy, że podasz adres strony głównej, a narzędzie zrobi wszystko samo dalej.
 stages:
   - label: Etap 1
-    title: Skan strony i makieta obecnego stanu
-    description: Makieta Twojej obecnej strony jako HTML do podglądu.
+    title: Skan strony głównej i makieta obecnego stanu
+    description: Makieta Twojej strony głównej jako HTML do podglądu.
     shape: cube
   - label: Etap 2
     title: Audyt z diagnozą i anotacjami
@@ -14,7 +14,7 @@ stages:
     title: Benchmark vs standardy branżowe
     description: Każdy wniosek prezentuje stan obecny, standard branżowy dla tego typu strony z oznaczonym poziomem pewności.
     shape: grid
-note: Pojedynczy workflow audytowy z pełnego skilla. Robi audyt dowolnego z 16 typów stron.
+note: Pojedynczy workflow audytowy z pełnego skilla. Sprawdza stronę główną każdego z 16 typów stron, do 5 witryn dziennie.
 cta:
   label: Pobierz darmowy audyt
   href: https://cart.creativesparks.pl/checkout/ux-darmowy-audyt

@@ -5,8 +5,8 @@ import { expectAxeClean, openPage, shoot, widthOf } from './helpers';
 const FAKE_DOWNLOAD = 'https://downloads.test/skill.zip';
 
 const FORMS = [
-  { name: 'audit-pl', path: '/free-ux-audit-skill/', locale: 'pl', skill: 'audit', surfaces: ['free_audit_skill_hero', 'free_audit_skill_final'] },
-  { name: 'audit-en', path: '/en/free-ux-audit-skill/', locale: 'en', skill: 'audit', surfaces: ['free_audit_skill_hero', 'free_audit_skill_final'] },
+  { name: 'audit-pl', path: '/free-homepage-ux-audit-skill/', locale: 'pl', skill: 'audit', surfaces: ['free_audit_skill_hero', 'free_audit_skill_final'] },
+  { name: 'audit-en', path: '/en/free-homepage-ux-audit-skill/', locale: 'en', skill: 'audit', surfaces: ['free_audit_skill_hero', 'free_audit_skill_final'] },
   { name: 'uxd-pl', path: '/ux-design-skill/', locale: 'pl', skill: 'audit', surfaces: ['ux_design_skill_audyt'] },
   { name: 'uxd-en', path: '/en/ux-design-skill/', locale: 'en', skill: 'audit', surfaces: ['ux_design_skill_audyt'] },
   { name: 'planning-pl', path: '/free-website-planning-skill/', locale: 'pl', skill: 'planning', surfaces: ['free_planning_skill_hero', 'free_planning_skill_final'] },

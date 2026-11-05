@@ -34,6 +34,26 @@
       "source": "/ux-designer/polityka-prywatnosci",
       "destination": "/ux-design-skill/polityka-prywatnosci",
       "permanent": true
+    },
+    {
+      "source": "/free-ux-audit-skill",
+      "destination": "/free-homepage-ux-audit-skill",
+      "permanent": true
+    },
+    {
+      "source": "/free-ux-audit-skill/",
+      "destination": "/free-homepage-ux-audit-skill/",
+      "permanent": true
+    },
+    {
+      "source": "/en/free-ux-audit-skill",
+      "destination": "/en/free-homepage-ux-audit-skill",
+      "permanent": true
+    },
+    {
+      "source": "/en/free-ux-audit-skill/",
+      "destination": "/en/free-homepage-ux-audit-skill/",
+      "permanent": true
     }
   ],
   "headers": [

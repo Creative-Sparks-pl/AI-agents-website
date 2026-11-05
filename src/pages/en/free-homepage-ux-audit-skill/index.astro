@@ -28,19 +28,23 @@ const finalCtaEntry = await requireEntry('final-cta', localizedId('free-audit-sk
 const faqEntries = [
   {
     q: 'What do I get exactly?',
-    body: 'An HTML file you open in the browser. Inside: a wireframe rebuilt from your site as a lo-fi sketch, findings as annotations pinned to sections and elements, each finding comparing the current state to the standard for your site type, with a confidence level (high, medium, low). Plus a short list of changes that follow from the audit.',
+    body: 'An HTML file you open in the browser. Inside: a wireframe rebuilt from your homepage as a lo-fi sketch, findings as annotations pinned to sections and elements, each finding comparing the current state to the standard for your site type, with a confidence level (high, medium, low). Plus a short list of changes that follow from the audit.',
+  },
+  {
+    q: 'How many pages can I check?',
+    body: 'Homepages only, up to 5 sites a day.',
   },
   {
     q: 'What does the skill do with my site? What data does it send?',
-    body: 'The skill fetches the publicly available version of your site (the same one every visitor sees) and analyzes the structure inside your AI model. Nothing comes back to our server (we don\'t have a server). The skill lives locally in your Claude Code, Cursor, or ChatGPT. Your AI model API key stays with you.',
+    body: 'To read the page, the skill sends its address to our page-reading service. The service opens the publicly available version of your homepage (the same one every visitor sees) and returns its layout, and the analysis runs inside your AI model. The service sees the page address and your IP address, which it uses to count the daily limit. The skill lives locally in your Claude Code, Codex, or Cursor. Your AI model API key stays with you.',
   },
   {
     q: 'What if the skill can\'t handle my site type?',
-    body: "The skill audits four site types: designer portfolio, studio site (or small agency), your own digital product, your own SaaS landing page. If your site sits between two types, the skill says it plainly: 'recognized as X with medium confidence' and runs the audit with that flagged on every finding.",
+    body: "The skill knows 16 page types, from portfolios to SaaS and marketplaces. If your site sits between two types, the skill says it plainly: 'recognized as X with medium confidence' and runs the audit with that flagged on every finding.",
   },
   {
-    q: 'How is this different from the full UX Design Skill package?',
-    body: 'This skill diagnoses an existing site: shows what\'s there, where it deviates from the standard, with what confidence. The full UX Design Skill package runs the whole design process from brief to a finished wireframe with copy: discovery, strategy, section plan, copy, wireframes. If the audit shows your site needs a redesign, the full version designs it.',
+    q: 'How is this different from the full version of UX Design Skill?',
+    body: 'This skill diagnoses an existing homepage: shows what\'s there, where it deviates from the standard, with what confidence. The full version of UX Design Skill runs the whole design process from brief to a finished wireframe with copy: discovery, strategy, section plan, copy, wireframes. If the audit shows your site needs a redesign, the full version designs it.',
     link: { label: 'See the full UX Design Skill', href: '/en/ux-design-skill/' },
   },
 ];
@@ -88,16 +92,16 @@ const architectureDecisions = [
 // The hero's primary CTA (checkout) and secondary CTA (instrukcja) carry the only off-page actions.
 const navLinks: { label: string; href: string }[] = [
   { label: 'UX Design Skill', href: '/en/ux-design-skill/' },
-  { label: 'Reviews', href: '/en/free-ux-audit-skill/#reviews' },
+  { label: 'Reviews', href: '/en/free-homepage-ux-audit-skill/#reviews' },
   { label: 'How it works', href: '/en/ux-design-skill/how-it-works' },
 ];
 ---
 
 <BaseLayout
-  title="Free UX Audit Skill: UX audit of your site, run in Claude Code | Creative Sparks"
-  description="A free UX audit skill that runs in Claude Code on your own site. Returns a wireframe with findings pinned to each section. 4 site types, 3 confidence levels, one HTML file."
-  ogTitle="Audit your site with the free UX skill in Claude Code"
-  ogDescription="Give it a URL. The skill returns an HTML file with your site as a wireframe and per-section findings."
+  title="Homepage UX Audit Skill: a free audit of your homepage in Claude Code | Creative Sparks"
+  description="A free UX audit skill that runs in Claude Code on your homepage. Returns a wireframe with findings pinned to each section. 16 page types, 3 confidence levels, one HTML file."
+  ogTitle="Audit your homepage with the free UX skill in Claude Code"
+  ogDescription="Give it your homepage URL. The skill returns an HTML file with the page as a wireframe and per-section findings."
   ogImage="/uxd-share.jpg"
 >
   <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
@@ -123,12 +127,12 @@ const navLinks: { label: string; href: string }[] = [
     <ArchitectureSection
       badge="Under the hood"
       heading="Not just a prompt.<br />A slice of the UX Design Skill system."
-      lead="The audit uses the same mature architecture as the full UX Design Skill package: AGENTS.md as the operating playbook, domain knowledge packs loaded after the site type is detected. The architecture took months to get right in the full version. The audit is the slice that loads four of the sixteen site-type knowledge packs."
+      lead="The audit uses the same mature architecture as the full version of UX Design Skill: AGENTS.md as the operating playbook, domain knowledge packs loaded after the site type is detected. The architecture took months to get right in the full version. The audit is the slice that loads four of the sixteen site-type knowledge packs."
       link={null}
       decisions={architectureDecisions}
       cta={{
         heading: 'What you get in the full UX Design Skill',
-        description: 'The audit shows the diagnosis of an existing site. The full skill runs the whole design process: discovery, strategy, section plan, copy, and wireframes, every decision with its reasoning.',
+        description: 'The audit shows the diagnosis of an existing homepage. The full skill runs the whole design process: discovery, strategy, section plan, copy, and wireframes, every decision with its reasoning.',
         button: { label: 'See UX Design Skill', href: '/en/ux-design-skill/' },
       }}
     />

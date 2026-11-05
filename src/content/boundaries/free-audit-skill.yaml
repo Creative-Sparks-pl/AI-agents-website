@@ -1,6 +1,9 @@
 badge: Granice audytu
 heading: Czego ten Skill nie robi
 items:
+  - icon: article
+    title: Nie audytuje podstron.
+    description: Sprawdza tylko stronę główną, do 5 witryn dziennie.
   - icon: block
     title: Nie projektuje rozwiązań.
     description: Diagnozuje stan i wskazuje, gdzie standard dla Twojego typu strony mówi inaczej. Projekt zmian to osobny krok, robisz go sam albo z pełną wersją UX Design Skill.

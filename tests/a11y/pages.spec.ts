@@ -7,8 +7,8 @@ import { blockThirdParty, summarize } from '../screenshots/helpers';
 const PAGES = [
   '/free-website-planning-skill/',
   '/en/free-website-planning-skill/',
-  '/free-ux-audit-skill/',
-  '/en/free-ux-audit-skill/',
+  '/free-homepage-ux-audit-skill/',
+  '/en/free-homepage-ux-audit-skill/',
   '/ux-design-skill/',
   '/en/ux-design-skill/',
   '/ux-design-skill/polityka-prywatnosci/',

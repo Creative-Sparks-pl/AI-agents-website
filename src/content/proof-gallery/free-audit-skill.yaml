@@ -1,6 +1,6 @@
 badge: Co dostajesz
-heading: Makieta strony z wnioskami w jednym pliku HTML
-lead: Audyt nie kończy się raportem PDF do przeklejania. Oddaje plik HTML, który otwierasz w przeglądarce. Twoja strona jako makieta z wnioskami dopiętymi do sekcji i elementów.
+heading: Makieta strony głównej z wnioskami w jednym pliku HTML
+lead: Audyt nie kończy się raportem PDF do przeklejania. Oddaje plik HTML, który otwierasz w przeglądarce. Twoja strona główna jako makieta z wnioskami dopiętymi do sekcji i elementów.
 cards:
   - title: Wniosek wpięty w miejsce, którego dotyczy
     description: Bez listy zewnętrznej, do której trzeba przeskakiwać. Otwierasz HTML, widzisz odtworzony układ strony, każda sekcja i element ma podpięty komentarz audytora przy sobie.
@@ -9,7 +9,7 @@ cards:
       label: Zobacz przykład audytu
       href: /examples/creativesparks-ux-designer_audit.html
   - title: Porównanie do standardu dla Twojego typu strony
-    description: "Każdy wniosek mówi 'stan obecny vs standard dla portfolio' (albo studia/małej agencji, digital productu, SaaS-a; cztery typy stron, które Skill audytuje). Każdy z oznaczonym poziomem pewności: wysoki, średni, niski."
+    description: "Każdy wniosek mówi 'stan obecny vs standard dla Twojego typu strony'. Skill rozumie 16 typów stron, od portfolio po SaaS i marketplace. Każdy wniosek ma oznaczony poziom pewności: wysoki, średni, niski."
     shape: grid
     link:
       label: Zobacz przykład audytu

@@ -28,19 +28,23 @@ const finalCtaEntry = await requireEntry('final-cta', 'free-audit-skill');
 const faqEntries = [
   {
     q: 'Co dostaję dokładnie?',
-    body: 'Plik HTML, który otwierasz w przeglądarce. Wewnątrz: makieta odtworzonej Twojej strony jako lo-fi wireframe, wnioski w formie adnotacji dopiętych do sekcji i elementów, każdy wniosek porównuje stan obecny do standardu dla Twojego typu strony, z oznaczonym poziomem pewności (wysoki, średni, niski). Plus krótka lista zmian, które wynikają z audytu.',
+    body: 'Plik HTML, który otwierasz w przeglądarce. Wewnątrz: makieta Twojej strony głównej jako lo-fi wireframe, wnioski w formie adnotacji dopiętych do sekcji i elementów, każdy wniosek porównuje stan obecny do standardu dla Twojego typu strony, z oznaczonym poziomem pewności (wysoki, średni, niski). Plus krótka lista zmian, które wynikają z audytu.',
+  },
+  {
+    q: 'Ile stron mogę sprawdzić?',
+    body: 'Tylko stronę główną, do 5 witryn dziennie.',
   },
   {
     q: 'Co Skill robi z moją stroną? Jakie dane wysyła?',
-    body: 'Skill pobiera publicznie dostępną wersję Twojej strony (tę samą, którą widzi każdy odwiedzający) i analizuje strukturę w Twoim modelu AI. Nic nie wraca na nasz serwer (nie mamy serwera). Skill żyje lokalnie w Twoim Claude Code, Cursorze albo ChatGPT. Klucz API do modelu jest po Twojej stronie.',
+    body: 'Żeby odczytać stronę, Skill wysyła jej adres do naszej usługi odczytu stron. Usługa otwiera publicznie dostępną wersję Twojej strony głównej (tę samą, którą widzi każdy odwiedzający) i zwraca jej układ, a analiza odbywa się w Twoim modelu AI. Usługa widzi adres strony i Twój adres IP, bo po nim liczy dzienny limit. Skill żyje lokalnie w Twoim Claude Code, Codex albo Cursorze. Klucz API do modelu jest po Twojej stronie.',
   },
   {
     q: 'Co jeśli Skill nie ogarnie mojego typu strony?',
-    body: "Skill audytuje cztery typy stron: portfolio designera, stronę studia (albo małej agencji), własny digital product, własny landing produktu SaaS. Jeśli Twoja strona jest na styku dwóch typów, Skill mówi wprost 'rozpoznałem jako X z poziomem pewności średnim' i prowadzi audyt z odpowiednim oznaczeniem wniosków.",
+    body: "Skill rozumie 16 typów stron, od portfolio po SaaS i marketplace. Jeśli Twoja strona jest na styku dwóch typów, Skill mówi wprost 'rozpoznałem jako X z poziomem pewności średnim' i prowadzi audyt z odpowiednim oznaczeniem wniosków.",
   },
   {
     q: 'Czym to się różni od pełnej wersji UX Design Skill?',
-    body: 'Ten Skill diagnozuje istniejącą stronę: pokazuje co jest, gdzie odbiega od standardu, z jakim poziomem pewności. Pełna wersja UX Design Skill prowadzi cały proces projektowy od briefu do gotowej makiety z tekstami: discovery, strategia, plan sekcji, copy, wireframe. Jeśli audyt pokaże, że strona wymaga redesignu, pełna wersja go projektuje.',
+    body: 'Ten Skill diagnozuje istniejącą stronę główną: pokazuje co jest, gdzie odbiega od standardu, z jakim poziomem pewności. Pełna wersja UX Design Skill prowadzi cały proces projektowy od briefu do gotowej makiety z tekstami: discovery, strategia, plan sekcji, copy, wireframe. Jeśli audyt pokaże, że strona wymaga redesignu, pełna wersja go projektuje.',
     link: { label: 'Zobacz pełną wersję UX Design Skill', href: '/ux-design-skill/' },
   },
 ];
@@ -88,16 +92,16 @@ const architectureDecisions = [
 // The hero's primary CTA (checkout) and secondary CTA (instrukcja) carry the only off-page actions.
 const navLinks: { label: string; href: string }[] = [
   { label: 'UX Design Skill', href: '/ux-design-skill/' },
-  { label: 'Opinie', href: '/free-ux-audit-skill/#reviews' },
+  { label: 'Opinie', href: '/free-homepage-ux-audit-skill/#reviews' },
   { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
 ];
 ---
 
 <BaseLayout
-  title="Asystent UX — proces UX od briefu do wireframe'u | Creative Sparks"
-  description="Narzędzie do planowania stron z ekspertyzą specjalisty UX, wspierane przez AI. Sprawdzony proces od briefu do wireframe'u. 92 pliki wiedzy, 16 typów stron, 14 obszarów. Jednorazowy zakup."
-  ogTitle="Zaplanuj strukturę i treści strony, zanim ruszysz w Figmę"
-  ogDescription="Asystent UX, który prowadzi od briefu do gotowej makiety z prawdziwym copy. Pakiety od 599 zł."
+  title="Skill do audytu UX strony głównej: darmowy audyt w Claude Code | Creative Sparks"
+  description="Darmowy skill do Claude Code: sprawdza stronę główną i oddaje makietę z wnioskami przy sekcjach. 16 typów stron, 3 poziomy pewności, jeden plik HTML."
+  ogTitle="Sprawdź stronę główną darmowym skillem UX w Claude Code"
+  ogDescription="Podajesz URL strony głównej. Skill zwraca plik HTML z makietą i wnioskami przy sekcjach."
   ogImage="/uxd-share.jpg"
 >
   <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
@@ -129,7 +133,7 @@ const navLinks: { label: string; href: string }[] = [
       decisions={architectureDecisions}
       cta={{
         heading: 'Co dostajesz w pełnej wersji UX Design Skill',
-        description: 'Audyt pokazuje diagnozę istniejącej strony. Pełny skill prowadzi cały proces projektowy: discovery, strategia, plan sekcji, copy i wireframe, każda decyzja z uzasadnieniem.',
+        description: 'Audyt pokazuje diagnozę istniejącej strony głównej. Pełny skill prowadzi cały proces projektowy: discovery, strategia, plan sekcji, copy i wireframe, każda decyzja z uzasadnieniem.',
         button: { label: 'Sprawdź UX Design Skill', href: '/ux-design-skill/' },
       }}
     />
