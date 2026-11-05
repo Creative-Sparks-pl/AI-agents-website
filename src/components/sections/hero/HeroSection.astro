@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 import Button from '../../ui/Button.astro';
 import ChecklistItem from '../../ui/ChecklistItem.astro';
 import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
+import RatingStars from '../../ui/RatingStars.astro';
 import { localeFromPathname, requireEntry } from '../../../lib/i18n';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -32,7 +33,7 @@ if (!entryId) {
 const entry = await requireEntry('hero', resolvedId, fallbackId);
 
 const defaultVideoLabel = locale === 'en' ? 'UX Design Skill — demo' : 'Demo możliwości asystenta UX';
-const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel, countdownTarget } = entry.data;
+const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel, countdownTarget, rating } = entry.data;
 const showPreSaleCountdown = countdownTarget === 'presale';
 ---
 
@@ -127,6 +128,8 @@ const showPreSaleCountdown = countdownTarget === 'presale';
             )}
           </div>
         )}
+
+        {rating && <RatingStars class="mt-6" value={rating.value} text={rating.text} label={rating.label} />}
       </div>
 
       <div class="lg:col-span-5 relative">
