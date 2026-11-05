@@ -130,82 +130,76 @@ const showPreSaleCountdown = countdownTarget === 'presale';
       </div>
 
       <div class="lg:col-span-5 relative">
-        <wistia-player
-          media-id="1siqhsesz9"
-          popover-content="link"
-          wistia-popover="true"
-          aspect="1.7777777777777777"
-          style="display: block;"
-        >
-          <a href="#" class="block group cursor-pointer" data-wistia-trigger>
-            <div class="relative shadow-[24px_24px_0px_var(--color-accent)] overflow-hidden border-t-4 border-primary">
-              <div class="bg-zinc-900 p-6 font-label text-sm text-zinc-300 leading-relaxed">
-                <div class="flex gap-2 mb-4 border-b border-zinc-800 pb-2">
-                  <div class="w-3 h-3 rounded-full bg-accent/30"></div>
-                  <div class="w-3 h-3 rounded-full bg-accent/30"></div>
-                  <div class="w-3 h-3 rounded-full bg-accent/30"></div>
-                </div>
-                {locale === 'en' ? (
-                  <Fragment>
-                    <p class="text-accent">{'// UX DESIGN SKILL: DISCOVERY'}</p>
-
-                    <p class="mt-4"><span class="text-accent font-bold">[INPUT]</span></p>
-                    <p class="mt-2 text-zinc-400 italic">"Building a site for a law firm</p>
-                    <p class="text-zinc-400 italic">specializing in employment law."</p>
-
-                    <p class="mt-4"><span class="text-accent font-bold">[SKILL RESPONSE]</span></p>
-                    <p class="mt-2">• Site type: Local business (<span class="text-emerald-400">🟢</span> from context)</p>
-                    <p class="mt-1">• Industry: Law firm, employment law (<span class="text-emerald-400">🟢</span> from context)</p>
-                    <p class="mt-1">• Goal: lead capture, B2B and B2C (<span class="text-amber-400">🟡</span> verify)</p>
-                    <p class="mt-1">• Persona: HR manager, 50–200 employees (<span class="text-amber-400">🟡</span> verify)</p>
-                    <p class="mt-1">• Awareness: problem-aware, not solution-aware</p>
-                    <p class="pl-4">(<span class="text-amber-400">🟡</span> verify: they search "firing an employee," not "law firm")</p>
-                    <p class="mt-1">• Differentiator: employment-law specialty (<span class="text-emerald-400">🟢</span> from context)</p>
-
-                    <p class="mt-4 text-white font-bold">QUESTIONS:</p>
-                    <p class="mt-2">1. Target client: companies, individuals, or both?</p>
-                    <p class="mt-1">2. Primary conversion: phone call,</p>
-                    <p class="pl-4">contact form, or online intake?</p>
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <p class="text-accent">{'// ASYSTENT UX: DISCOVERY'}</p>
-
-                    <p class="mt-4"><span class="text-accent font-bold">[INPUT]</span></p>
-                    <p class="mt-2 text-zinc-400 italic">"Tworzę stronę dla kancelarii prawnej</p>
-                    <p class="text-zinc-400 italic">z Wrocławia, specjalizacja prawo pracy"</p>
-
-                    <p class="mt-4"><span class="text-accent font-bold">[ODPOWIEDŹ AGENTA]</span></p>
-                    <p class="mt-2">• Typ strony: Local business (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
-                    <p class="mt-1">• Branża: Kancelaria prawna, prawo pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
-                    <p class="mt-1">• Cel: pozyskiwanie klientów B2B i B2C (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
-                    <p class="mt-1">• Persona: HR manager, 50-200 pracowników (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
-                    <p class="mt-1">• Świadomość: szukają po objawach</p>
-                    <p class="pl-4">(<span class="text-amber-400">🟡</span> zweryfikuj — "zwolnienie pracownika" nie "kancelaria")</p>
-                    <p class="mt-1">• Wyróżnik: specjalizacja w prawie pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
-
-                    <p class="mt-4 text-white font-bold">PYTANIA:</p>
-                    <p class="mt-2">1. Klient docelowy — firmy, osoby prywatne, czy oba?</p>
-                    <p class="mt-1">2. Główna akcja na stronie — kontakt,</p>
-                    <p class="pl-4">formularz, konsultacja online?</p>
-                  </Fragment>
-                )}
+        {/* Stays outside the player, which hides anything inside it for a moment while it starts. */}
+        <a href="#" class="block group cursor-pointer" data-wistia-trigger>
+          <div class="relative shadow-[24px_24px_0px_var(--color-accent)] overflow-hidden border-t-4 border-primary">
+            <div class="bg-zinc-900 p-6 font-label text-sm text-zinc-300 leading-relaxed">
+              <div class="flex gap-2 mb-4 border-b border-zinc-800 pb-2">
+                <div class="w-3 h-3 rounded-full bg-accent/30"></div>
+                <div class="w-3 h-3 rounded-full bg-accent/30"></div>
+                <div class="w-3 h-3 rounded-full bg-accent/30"></div>
               </div>
-              <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
-                <svg class="w-48 h-auto" viewBox="0 0 150 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path opacity="0.8" d="M125 0H25C11.1929 0 0 11.1929 0 25V75C0 88.8071 11.1929 100 25 100H125C138.807 100 150 88.8071 150 75V25C150 11.1929 138.807 0 125 0Z" class="fill-primary"/>
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M97 49.5L77.5 36.25L58 23C58 55.86 58 43.14 58 76L77.5 62.75L97 49.5Z" fill="white"/>
-                </svg>
-              </div>
+              {locale === 'en' ? (
+                <Fragment>
+                  <p class="text-accent">{'// UX DESIGN SKILL: DISCOVERY'}</p>
+
+                  <p class="mt-4"><span class="text-accent font-bold">[INPUT]</span></p>
+                  <p class="mt-2 text-zinc-400 italic">"Building a site for a law firm</p>
+                  <p class="text-zinc-400 italic">specializing in employment law."</p>
+
+                  <p class="mt-4"><span class="text-accent font-bold">[SKILL RESPONSE]</span></p>
+                  <p class="mt-2">• Site type: Local business (<span class="text-emerald-400">🟢</span> from context)</p>
+                  <p class="mt-1">• Industry: Law firm, employment law (<span class="text-emerald-400">🟢</span> from context)</p>
+                  <p class="mt-1">• Goal: lead capture, B2B and B2C (<span class="text-amber-400">🟡</span> verify)</p>
+                  <p class="mt-1">• Persona: HR manager, 50–200 employees (<span class="text-amber-400">🟡</span> verify)</p>
+                  <p class="mt-1">• Awareness: problem-aware, not solution-aware</p>
+                  <p class="pl-4">(<span class="text-amber-400">🟡</span> verify: they search "firing an employee," not "law firm")</p>
+                  <p class="mt-1">• Differentiator: employment-law specialty (<span class="text-emerald-400">🟢</span> from context)</p>
+
+                  <p class="mt-4 text-white font-bold">QUESTIONS:</p>
+                  <p class="mt-2">1. Target client: companies, individuals, or both?</p>
+                  <p class="mt-1">2. Primary conversion: phone call,</p>
+                  <p class="pl-4">contact form, or online intake?</p>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <p class="text-accent">{'// ASYSTENT UX: DISCOVERY'}</p>
+
+                  <p class="mt-4"><span class="text-accent font-bold">[INPUT]</span></p>
+                  <p class="mt-2 text-zinc-400 italic">"Tworzę stronę dla kancelarii prawnej</p>
+                  <p class="text-zinc-400 italic">z Wrocławia, specjalizacja prawo pracy"</p>
+
+                  <p class="mt-4"><span class="text-accent font-bold">[ODPOWIEDŹ AGENTA]</span></p>
+                  <p class="mt-2">• Typ strony: Local business (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+                  <p class="mt-1">• Branża: Kancelaria prawna, prawo pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+                  <p class="mt-1">• Cel: pozyskiwanie klientów B2B i B2C (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
+                  <p class="mt-1">• Persona: HR manager, 50-200 pracowników (<span class="text-amber-400">🟡</span> zweryfikuj)</p>
+                  <p class="mt-1">• Świadomość: szukają po objawach</p>
+                  <p class="pl-4">(<span class="text-amber-400">🟡</span> zweryfikuj — "zwolnienie pracownika" nie "kancelaria")</p>
+                  <p class="mt-1">• Wyróżnik: specjalizacja w prawie pracy (<span class="text-emerald-400">🟢</span> wynika z kontekstu)</p>
+
+                  <p class="mt-4 text-white font-bold">PYTANIA:</p>
+                  <p class="mt-2">1. Klient docelowy — firmy, osoby prywatne, czy oba?</p>
+                  <p class="mt-1">2. Główna akcja na stronie — kontakt,</p>
+                  <p class="pl-4">formularz, konsultacja online?</p>
+                </Fragment>
+              )}
             </div>
-            <div class="flex justify-center mt-12">
-              <span class="inline-flex items-center gap-2 text-primary font-label font-bold text-base tracking-tight">
-                <span class="material-symbols-outlined text-xl" aria-hidden="true">play_arrow</span>
-                {videoLabel}
-              </span>
+            <div class="absolute inset-0 bg-primary/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
+              <svg class="w-48 h-auto" viewBox="0 0 150 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path opacity="0.8" d="M125 0H25C11.1929 0 0 11.1929 0 25V75C0 88.8071 11.1929 100 25 100H125C138.807 100 150 88.8071 150 75V25C150 11.1929 138.807 0 125 0Z" class="fill-primary"/>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M97 49.5L77.5 36.25L58 23C58 55.86 58 43.14 58 76L77.5 62.75L97 49.5Z" fill="white"/>
+              </svg>
             </div>
-          </a>
-        </wistia-player>
+          </div>
+          <div class="flex justify-center mt-12">
+            <span class="inline-flex items-center gap-2 text-primary font-label font-bold text-base tracking-tight">
+              <span class="material-symbols-outlined text-xl" aria-hidden="true">play_arrow</span>
+              {videoLabel}
+            </span>
+          </div>
+        </a>
+        <wistia-player data-hero-video media-id="1siqhsesz9" wistia-popover="true" popover-content="html"></wistia-player>
       </div>
     </div>
   </div>
@@ -214,12 +208,30 @@ const showPreSaleCountdown = countdownTarget === 'presale';
 <script is:inline>
   (function () {
     var trigger = document.querySelector('[data-wistia-trigger]');
-    if (!trigger) return;
-    var loaded = false;
+    var player = document.querySelector('[data-hero-video]');
+    if (!trigger || !player) return;
+    var ready = false;
+    var wanted = false;
     var loading = false;
+    function open() {
+      player.showPopover();
+      // A popup opened from code does not start the video by itself.
+      player.play();
+    }
+    player.addEventListener('api-ready', function () {
+      ready = true;
+      if (wanted) {
+        wanted = false;
+        open();
+      }
+    });
     trigger.addEventListener('click', function (e) {
-      if (loaded) return;
       e.preventDefault();
+      if (ready) {
+        open();
+        return;
+      }
+      wanted = true;
       if (loading) return;
       loading = true;
       var s1 = document.createElement('script');
@@ -231,15 +243,7 @@ const showPreSaleCountdown = countdownTarget === 'presale';
       s2.type = 'module';
       s2.src = 'https://fast.wistia.com/embed/1siqhsesz9.js';
       document.head.appendChild(s2);
-      if (window.customElements && customElements.whenDefined) {
-        customElements.whenDefined('wistia-player').then(function () {
-          requestAnimationFrame(function () {
-            loaded = true;
-            trigger.click();
-          });
-        });
-      }
-    }, true);
+    });
   })();
 </script>
 
