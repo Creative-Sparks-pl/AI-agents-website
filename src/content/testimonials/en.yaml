@@ -23,3 +23,10 @@ items:
     body: I'm not a web designer by trade, so pretty much everything is easier with this skill. I use it mainly at the stage of building assumptions and the interview.
     name: Karol Janus
     photo: ../../assets/testimonials/karol-janus.jpg
+  - pullQuote: In short, respect for the work and hats off!
+    body: After testing UX Audit, I bought the full package the next day, and it's an awesome tool that will be my first step in setting a site's structure and strategy.
+    name: Natan Domnik
+    company:
+      label: Pozioma
+      href: https://www.pozioma.pl/
+    photo: ../../assets/testimonials/natan-domnik.jpg

@@ -23,3 +23,10 @@ items:
     body: Nie jestem web designerem by trade, więc właściwie wszystko jest łatwiejsze z tym skillem. Wykorzystuję głównie na etapie budowania założeń i wywiadu.
     name: Karol Janus
     photo: ../../assets/testimonials/karol-janus.jpg
+  - pullQuote: Mówiąc krótko szacun za robotę i czapka z głowy!
+    body: Po przetestowaniu UX Audit kupiłem następnego dnia pełen pakiet i jest to mega narzędzie, które będzie moim pierwszym krokiem do ustalenia struktury i strategii strony.
+    name: Natan Domnik
+    company:
+      label: Pozioma
+      href: https://www.pozioma.pl/
+    photo: ../../assets/testimonials/natan-domnik.jpg
