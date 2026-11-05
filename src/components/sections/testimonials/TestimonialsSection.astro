@@ -30,7 +30,7 @@ const {
 
 const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireLocalizedEntry('testimonials', locale);
-const { heading, subheading, items } = entry.data;
+const { badge, heading, subheading, items } = entry.data;
 
 const copy = locale === 'en'
   ? { group: 'Customer reviews', counter: 'Review', prev: 'Previous review', next: 'Next review' }
@@ -52,6 +52,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
   <div class="relative max-w-screen-2xl mx-auto px-4 lg:px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
+        <span class="text-sm font-label text-primary mb-4">{badge}</span>
         <h2 id={headingId} class="max-w-3xl font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight" set:html={heading}>
         </h2>
         <p class="mt-6 text-2xl text-foreground">{subheading}</p>

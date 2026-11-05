@@ -194,7 +194,7 @@ All collections are defined and Zod-validated in `src/content.config.ts`. The lo
 | `architecture` | MDX per item per locale | Order, icon name, label, title, desc |
 | `faqs` | MDX per item per locale | Order, question string, optional link; answer prose in MDX slot |
 | `author` | MDX singleton per locale | Badge, heading, nameFirst, nameLast, role, bio (frontmatter), email, contactNote, experienceLabel, experienceValue |
-| `testimonials` | YAML singleton per locale | Heading, subheading, items array (pullQuote, body, name, optional company as label + optional href, photo as an `image()` path into `src/assets/testimonials/`) |
+| `testimonials` | YAML singleton per locale | Badge, heading, subheading, items array (pullQuote, body, name, optional company as label + optional href, photo as an `image()` path into `src/assets/testimonials/`) |
 | `changelog` | MDX per version per locale | Version string, date string (range allowed), title, description, changes array |
 | `nav` | YAML singleton per locale | Links array, CTA link |
 | `footer` | YAML singleton per locale | Flat links array, optional legal string |

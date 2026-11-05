@@ -301,6 +301,7 @@ const testimonials = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/testimonials' }),
   schema: ({ image }) =>
     z.object({
+      badge: z.string(),
       heading: z.string(),
       subheading: z.string(),
       items: z.array(
