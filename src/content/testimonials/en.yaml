@@ -1,21 +1,25 @@
 heading: The package is earning great reviews from agencies and freelancers
 subheading: And there's nothing like it on the market!
 items:
-  - pullQuote: Placeholder 1, short quote
-    body: Placeholder 1. Stand-in text for testing the section, not for publishing. A real review goes here before release.
-    name: Placeholder Pierwszy
+  - pullQuote: It's a great tool for prototyping.
+    body: It's a nice addition to the process. It gives quick results based on the strategy you provide. It acts as a bridge between the strategy document and the work in Figma.
+    name: Jan Kanty Janiszewski
     company:
-      label: Firma Placeholder 1
-      href: https://example.com/
-    photo: ../../assets/testimonials/placeholder-1.jpg
-  - pullQuote: Placeholder 2, short quote
-    body: Placeholder 2. Stand-in text for testing the section, not for publishing. This one runs longer, to check that the layout copes with reviews of different lengths without the elements below it jumping around.
-    name: Placeholder Druga
+      label: The Sunray Studio
+      href: https://www.thesunraystudio.com/
+    photo: ../../assets/testimonials/jan-kanty-janiszewski.jpg
+  - pullQuote: Very useful.
+    body: It brought order to my design process, which has always been hard for me.
+    name: Magda G.
+    photo: ../../assets/testimonials/magda-g.jpg
+  - pullQuote: A very good and useful tool, it streamlines and speeds up the work
+    body: It helps most at the early stage, and works very well as a starting point and for checking different versions.
+    name: Karol Bednarczyk
     company:
-      label: Firma Placeholder 2
-      href: https://example.com/
-    photo: ../../assets/testimonials/placeholder-2.jpg
-  - pullQuote: Placeholder 3, short quote
-    body: Placeholder 3. Stand-in text for testing the section, not for publishing.
-    name: Placeholder Trzeci
-    photo: ../../assets/testimonials/placeholder-3.jpg
+      label: Modela Studio
+      href: https://www.modelastudio.com/
+    photo: ../../assets/testimonials/karol-bednarczyk.jpg
+  - pullQuote: Guides you through the process really well 👍
+    body: I'm not a web designer by trade, so pretty much everything is easier with this skill. I use it mainly at the stage of building assumptions and the interview.
+    name: Karol Janus
+    photo: ../../assets/testimonials/karol-janus.jpg

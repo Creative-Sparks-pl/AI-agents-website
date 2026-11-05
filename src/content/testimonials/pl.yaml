@@ -1,21 +1,25 @@
 heading: Paczka zbiera świetne opinie wśród agencji i freelancerów
 subheading: A podobnego produktu nie ma na rynku!
 items:
-  - pullQuote: Placeholder 1, krótki cytat
-    body: Placeholder 1. Tekst zastępczy do testów sekcji, nie do publikacji. Prawdziwa opinia pojawi się tu przed wydaniem.
-    name: Placeholder Pierwszy
+  - pullQuote: Jest świetnym narzędziem do prototypowania.
+    body: Jest fajnym uzupełnieniem procesu. Daje szybkie rezultaty w oparciu o dostarczoną strategię. Występuje jako pomost między dokumentem strategicznym a pracą w figmie.
+    name: Jan Kanty Janiszewski
     company:
-      label: Firma Placeholder 1
-      href: https://example.com/
-    photo: ../../assets/testimonials/placeholder-1.jpg
-  - pullQuote: Placeholder 2, krótki cytat
-    body: Placeholder 2. Tekst zastępczy do testów sekcji, nie do publikacji. Ta wersja jest dłuższa, żeby sprawdzić, czy układ znosi różną długość opinii bez przeskakiwania elementów pod spodem.
-    name: Placeholder Druga
+      label: The Sunray Studio
+      href: https://www.thesunraystudio.com/
+    photo: ../../assets/testimonials/jan-kanty-janiszewski.jpg
+  - pullQuote: Bardzo przydatny.
+    body: Uporządkował proces projektowy, to było zawsze trudne u mnie.
+    name: Magda G.
+    photo: ../../assets/testimonials/magda-g.jpg
+  - pullQuote: Bardzo dobre i przydatne narzędzie, usprawnia i przyspiesza prace
+    body: Pomaga najbardziej na wstępnym etapie, sprawdza się bardzo dobrze jako punkt początkowy oraz sprawdzanie różnych wersji.
+    name: Karol Bednarczyk
     company:
-      label: Firma Placeholder 2
-      href: https://example.com/
-    photo: ../../assets/testimonials/placeholder-2.jpg
-  - pullQuote: Placeholder 3, krótki cytat
-    body: Placeholder 3. Tekst zastępczy do testów sekcji, nie do publikacji.
-    name: Placeholder Trzeci
-    photo: ../../assets/testimonials/placeholder-3.jpg
+      label: Modela Studio
+      href: https://www.modelastudio.com/
+    photo: ../../assets/testimonials/karol-bednarczyk.jpg
+  - pullQuote: Świetnie prowadzi przez proces 👍
+    body: Nie jestem web designerem by trade, więc właściwie wszystko jest łatwiejsze z tym skillem. Wykorzystuję głównie na etapie budowania założeń i wywiadu.
+    name: Karol Janus
+    photo: ../../assets/testimonials/karol-janus.jpg
