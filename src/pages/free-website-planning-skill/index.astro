@@ -109,7 +109,11 @@ const treeFolders = ['shared/', 'project-plan/', 'templates/', 'scripts/'];
 const treeDomains = ['b2b-saas/', 'b2b-services/', 'portfolio/', 'ecommerce/', 'marketplace/', '+ więcej'];
 
 // Single-funnel LP: logo-only header (non-sticky, no nav, no CTA).
-const navLinks: { label: string; href: string }[] = [];
+const navLinks: { label: string; href: string }[] = [
+  { label: 'UX Design Skill', href: '/ux-design-skill/' },
+  { label: 'Opinie', href: '/free-website-planning-skill/#reviews' },
+  { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
+];
 ---
 
 <BaseLayout
@@ -195,7 +199,7 @@ const navLinks: { label: string; href: string }[] = [];
         </div>
       </Fragment>
     </ArchitectureSection>
-    <TestimonialsSection />
+    <TestimonialsSection id="reviews" />
     <ProblemsSection
       id="jak-to-dziala"
       headingId="steps-heading"

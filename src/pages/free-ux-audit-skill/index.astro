@@ -86,7 +86,11 @@ const architectureDecisions = [
 
 // Single-funnel LP: logo-only header (non-sticky, no nav, no CTA).
 // The hero's primary CTA (checkout) and secondary CTA (instrukcja) carry the only off-page actions.
-const navLinks: { label: string; href: string }[] = [];
+const navLinks: { label: string; href: string }[] = [
+  { label: 'UX Design Skill', href: '/ux-design-skill/' },
+  { label: 'Opinie', href: '/free-ux-audit-skill/#reviews' },
+  { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
+];
 ---
 
 <BaseLayout
@@ -129,7 +133,7 @@ const navLinks: { label: string; href: string }[] = [];
         button: { label: 'Sprawdź UX Design Skill', href: '/ux-design-skill/' },
       }}
     />
-    <TestimonialsSection />
+    <TestimonialsSection id="reviews" />
     <ProblemsSection
       id="granice"
       headingId="boundaries-heading"
