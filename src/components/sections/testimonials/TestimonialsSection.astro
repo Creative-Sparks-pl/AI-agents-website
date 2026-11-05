@@ -45,7 +45,7 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
 ---
 
 <section
-  class:list={['relative overflow-hidden bg-accent py-12 lg:pt-20 lg:pb-36 lg:min-h-184 xl:min-h-230', className]}
+  class:list={['relative overflow-hidden bg-accent py-20 md:py-28 lg:min-h-184 xl:min-h-230', className]}
   aria-labelledby={labelledBy}
   {...rest}
 >
@@ -98,15 +98,19 @@ const hasButtons = Boolean(buttons?.primary || buttons?.secondary);
                 <p class="font-headline text-3xl font-bold text-foreground">{item.name}</p>
                 {item.company && (
                   <p class="mt-4">
-                    <a
-                      href={item.company.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="group inline-flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
-                    >
-                      <span class="font-headline font-bold text-xl md:text-2xl text-primary group-hover:text-foreground transition-colors">{item.company.label}</span>
-                      <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward" aria-hidden="true">arrow_forward</span>
-                    </a>
+                    {item.company.href ? (
+                      <a
+                        href={item.company.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="group inline-flex items-center gap-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+                      >
+                        <span class="font-headline font-bold text-xl md:text-2xl text-primary group-hover:text-foreground transition-colors">{item.company.label}</span>
+                        <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform" data-icon="arrow_forward" aria-hidden="true">arrow_forward</span>
+                      </a>
+                    ) : (
+                      <span class="font-headline font-bold text-xl md:text-2xl text-foreground">{item.company.label}</span>
+                    )}
                   </p>
                 )}
               </figcaption>

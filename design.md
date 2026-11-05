@@ -129,7 +129,7 @@ Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<
 | `architecture/ArchitectureSection.astro` | `architecture` | `DecisionCard` | File tree visual + 8 architecture decision cards. |
 | `faqs/FAQSection.astro` | `faqs` | `FAQItem` | 8 accordion FAQ items. |
 | `author/AuthorSection.astro` | `author` | — | Author bio card with photo, experience badge, contact block. |
-| `testimonials/TestimonialsSection.astro` | `testimonials` | — | One-at-a-time slider on the accent background: quote, name, optional company link, photo with speckle texture, previous/next buttons and a polite counter. No autoplay, no swipe; 300 ms fade, instant with reduced motion. Optional `buttons` prop, default none. |
+| `testimonials/TestimonialsSection.astro` | `testimonials` | — | One-at-a-time slider on the accent background: quote, name, optional company (a link when it has an address), photo with speckle texture, previous/next buttons and a polite counter. No autoplay, no swipe; 300 ms fade, instant with reduced motion. Optional `buttons` prop, default none. |
 | `changelog/ChangelogSection.astro` | `changelog` | `ChangelogEntry` | 12 versioned changelog accordion entries. |
 | `top-app-bar/TopAppBar.astro` | `nav` | — | Sticky header with logo, nav links, CTA. Accepts overrides via props for sub-pages. |
 | `footer/Footer.astro` | `footer` | — | Logo + flat link list. |
@@ -194,7 +194,7 @@ All collections are defined and Zod-validated in `src/content.config.ts`. The lo
 | `architecture` | MDX per item per locale | Order, icon name, label, title, desc |
 | `faqs` | MDX per item per locale | Order, question string, optional link; answer prose in MDX slot |
 | `author` | MDX singleton per locale | Badge, heading, nameFirst, nameLast, role, bio (frontmatter), email, contactNote, experienceLabel, experienceValue |
-| `testimonials` | YAML singleton per locale | Heading, subheading, items array (pullQuote, body, name, optional company as label + href, photo as an `image()` path into `src/assets/testimonials/`) |
+| `testimonials` | YAML singleton per locale | Heading, subheading, items array (pullQuote, body, name, optional company as label + optional href, photo as an `image()` path into `src/assets/testimonials/`) |
 | `changelog` | MDX per version per locale | Version string, date string (range allowed), title, description, changes array |
 | `nav` | YAML singleton per locale | Links array, CTA link |
 | `footer` | YAML singleton per locale | Flat links array, optional legal string |
