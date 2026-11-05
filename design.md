@@ -134,7 +134,7 @@ Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<
 | `top-app-bar/TopAppBar.astro` | `nav` | — | Sticky header with logo, nav links, CTA. Accepts overrides via props for sub-pages. |
 | `footer/Footer.astro` | `footer` | — | Logo + flat link list. |
 
-**Colocated subcomponents (12 total)** all sit at exactly 1 importer — none have been promoted to `ui/` per D-004 (strict T2). The decomposition is honest: zero preemptive abstraction.
+**Colocated subcomponents (12 total)** all sit at exactly 1 importer — none have been promoted to `ui/` per strict T2. The decomposition is honest: zero preemptive abstraction.
 
 ---
 
@@ -164,13 +164,13 @@ sections/use-cases/
 
 **This project's adherence.** The two sections most likely to trigger T3 (repeated items ≥3) are `UseCasesSection` (use case cards), `ProblemsSection` (problem items), `ProcessSection` (step items), `ArchitectureSection` (layer items), `FAQSection` (FAQ items), and `PricingSection` (pricing tier cards). T9 fires on any section whose shell exceeds ~120 lines. In both cases, the extracted item subcomponent is colocated with the parent section.
 
-Promotion to `ui/` is governed by **D-004 (strict T2)**: a colocated subcomponent is promoted to `src/components/ui/` only when it is actually imported from a second section or page. No preemptive promotion. The two existing `ui/` primitives (`ChecklistItem` and `SectionWithIcon`) both satisfy T2 — they are used across multiple sections.
+Promotion to `ui/` is governed by **strict T2**: a colocated subcomponent is promoted to `src/components/ui/` only when it is actually imported from a second section or page. No preemptive promotion. The two existing `ui/` primitives (`ChecklistItem` and `SectionWithIcon`) both satisfy T2 — they are used across multiple sections.
 
 ---
 
 ## 6. i18n strategy
 
-The project prepares for internationalisation at the content layer only. Every content collection entry uses a locale code as its entry ID (e.g., `pl.mdx`, `pl.yaml`). Every section loads content through a single `getCurrentLocale()` call (`src/lib/i18n.ts`), which is currently a stub returning the hardcoded default `'pl'`. No `/en/` routes, no language switcher, and no middleware are shipped in this project (D-006). When an English locale lands in a future project, the follow-up work is: add EN content entries, extend `getCurrentLocale()` to read from the request context, add routing, and add a switcher — the section code and content schemas require no changes.
+The project prepares for internationalisation at the content layer only. Every content collection entry uses a locale code as its entry ID (e.g., `pl.mdx`, `pl.yaml`). Every section loads content through a single `getCurrentLocale()` call (`src/lib/i18n.ts`), which is currently a stub returning the hardcoded default `'pl'`. No `/en/` routes, no language switcher, and no middleware are shipped in this project. When an English locale lands in a future project, the follow-up work is: add EN content entries, extend `getCurrentLocale()` to read from the request context, add routing, and add a switcher — the section code and content schemas require no changes.
 
 ---
 

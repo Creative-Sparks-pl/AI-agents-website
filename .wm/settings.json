@@ -6,5 +6,10 @@
   },
   "discovery": {
     "contract_files": ["design.md", "src/content.config.ts"]
+  },
+  "label_scan": {
+    "allow": [
+      {"path": "public/examples/"}
+    ]
   }
 }
