@@ -1,6 +1,6 @@
 badge: Platforms
 heading: The skill runs on the platforms you already use.
-contentsHeading: The package is the full toolkit.
+contentsHeading: What's in the package
 contentsNote: No extra dependencies. Drop in the folder, open your platform, start your first project.
 platforms:
   - icon: terminal
@@ -18,14 +18,16 @@ platforms:
     desc: Compatible as a knowledge plus instruction set
     note: Runs in the browser. Not all Claude Code features are available here.
 contents:
-  - label: SKILL.md
-    desc: Full skill definition with 6 workflows
-  - label: references/
-    desc: 92 domain knowledge files (16 page types, 14 areas)
-  - label: scripts/
-    desc: Python script for Excel generation
-  - label: Documentation
-    desc: Installation and setup
+  - label: Skill
+    desc: The SKILL.md file with the full working process
+  - label: UX knowledge base
+    desc: "92 files: 16 page types, 14 areas"
+  - label: Versions for different tools
+    desc: Claude Code, Codex, Cursor, Claude Projects, ChatGPT, Gemini
+  - label: Document templates
+    desc: Project plan, messaging canvas, wireframes, audit report
+  - label: Install guide
+    desc: INSTALL.md
 requirements:
   - "Account on Claude, ChatGPT, or Gemini"
   - The skill folder downloaded
