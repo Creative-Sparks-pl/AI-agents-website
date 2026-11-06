@@ -3,7 +3,7 @@ heading: Try it for free before you buy the full version.
 intro: Two free skills taken from the full version. Pick the one that fits where you are.
 submitLabel: Download for free
 pageLabel: Learn more
-videoLabel: Watch the video
+videoLabel: Watch the full skill demo
 cards:
   - skill: audit
     surface: ux_design_skill_audyt
@@ -11,11 +11,11 @@ cards:
     name: Homepage UX Audit Skill
     text: Analyzes your homepage and prepares a wireframe with audit findings pinned to specific elements of the page (up to 5 pages per day).
     pageHref: /en/free-homepage-ux-audit-skill/
-    videoId: 95i42fdxo8
+    videoId: q0uvnjyc60
   - skill: planning
     surface: ux_design_skill_planning
     question: Planning a site?
     name: Website Planning Skill
     text: It asks about your project, plans the sitemap and lays out the sections of every page.
-    note: Saves the result in one HTML file you open in your browser.
     pageHref: /en/free-website-planning-skill/
+    videoId: q0uvnjyc60

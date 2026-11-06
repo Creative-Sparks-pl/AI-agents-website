@@ -8,7 +8,6 @@ interface Props {
   question: string;
   name: string;
   text: string;
-  note?: string;
   pageHref: string;
   pageLabel: string;
   submitLabel: string;
@@ -16,16 +15,13 @@ interface Props {
   videoLabel: string;
 }
 
-const { skill, surface, question, name, text, note, pageHref, pageLabel, submitLabel, videoId, videoLabel } = Astro.props;
+const { skill, surface, question, name, text, pageHref, pageLabel, submitLabel, videoId, videoLabel } = Astro.props;
 ---
 
 <div class="flex flex-col bg-white p-8 lg:p-10" data-try-free-card={skill}>
   <p class="text-sm font-label text-primary mb-2">{question}</p>
   <h3 class="font-headline font-bold text-2xl tracking-tight leading-tight text-foreground mb-4">{name}</h3>
-  <div class="space-y-3 mb-8">
-    <p class="text-lg text-muted leading-relaxed">{text}</p>
-    {note && <p class="text-sm text-muted leading-relaxed">{note}</p>}
-  </div>
+  <p class="text-lg text-muted leading-relaxed mb-8">{text}</p>
 
   <div class="mt-auto">
     <FreeSkillForm skill={skill} surface={surface} submitLabel={submitLabel} fitContainer block />

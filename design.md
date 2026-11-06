@@ -190,7 +190,7 @@ All collections are defined and Zod-validated in `src/content.config.ts`. The lo
 | `process` | MDX per item per locale | Order, title, output label, output link, output icon, quote, shape identifier |
 | `pricing` | MDX per tier per locale | Order, name, sub-label, old price, price, highlight flag, optional bg class, features array |
 | `demo` | YAML singleton per locale | Badge, heading, intro, stages array (label + title + description), optional CTA link |
-| `try-free` | YAML singleton per locale | Badge, heading, intro, button labels, cards array (skill, analytics surface, question, name, text, optional note, page link, optional Wistia video id) |
+| `try-free` | YAML singleton per locale | Badge, heading, intro, button labels, cards array (skill, analytics surface, question, name, text, page link, optional Wistia video id) |
 | `platform` | YAML singleton per locale | Badge, heading, optional intro, platforms array (icon + name + desc), contents array (label + desc), requirements array |
 | `knowledge-base` | YAML singleton per locale | Badge, heading, optional intro, pageTypes / frameworks / patterns arrays (name + sub) |
 | `architecture` | MDX per item per locale | Order, icon name, label, title, desc |

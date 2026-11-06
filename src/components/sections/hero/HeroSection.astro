@@ -32,6 +32,7 @@ if (!entryId) {
 }
 const entry = await requireEntry('hero', resolvedId, fallbackId);
 
+const demoVideoId = locale === 'en' ? 'q0uvnjyc60' : 'efnuj1zoqx';
 const defaultVideoLabel = locale === 'en' ? 'UX Design Skill — demo' : 'Demo możliwości asystenta UX';
 const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel, countdownTarget, rating } = entry.data;
 const showPreSaleCountdown = countdownTarget === 'presale';
@@ -202,7 +203,7 @@ const showPreSaleCountdown = countdownTarget === 'presale';
             </span>
           </div>
         </a>
-        <wistia-player data-hero-video media-id="1siqhsesz9" wistia-popover="true" popover-content="html"></wistia-player>
+        <wistia-player data-hero-video media-id={demoVideoId} wistia-popover="true" popover-content="html"></wistia-player>
       </div>
     </div>
   </div>
@@ -244,7 +245,7 @@ const showPreSaleCountdown = countdownTarget === 'presale';
       var s2 = document.createElement('script');
       s2.async = true;
       s2.type = 'module';
-      s2.src = 'https://fast.wistia.com/embed/1siqhsesz9.js';
+      s2.src = 'https://fast.wistia.com/embed/' + player.getAttribute('media-id') + '.js';
       document.head.appendChild(s2);
     });
   })();

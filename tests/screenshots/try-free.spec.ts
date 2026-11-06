@@ -13,18 +13,37 @@ const PAGES = [
     path: '/ux-design-skill/',
     heroLabel: 'Wypróbuj za darmo',
     finalLabel: 'Albo wypróbuj za darmo',
-    audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', videoLabel: 'Zobacz wideo', submitLabel: 'Pobierz za darmo' },
-    planning: { page: '/free-website-planning-skill/', pageLabel: 'Poznaj szczegóły', videoLabel: 'Zobacz wideo', submitLabel: 'Pobierz za darmo' },
+    audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', videoLabel: 'Zobacz demo pełnego skilla', submitLabel: 'Pobierz za darmo' },
+    planning: { page: '/free-website-planning-skill/', pageLabel: 'Poznaj szczegóły', videoLabel: 'Zobacz demo pełnego skilla', submitLabel: 'Pobierz za darmo' },
   },
   {
     locale: 'en',
     path: '/en/ux-design-skill/',
     heroLabel: 'Try it for free',
     finalLabel: 'Or try it for free',
-    audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', videoLabel: 'Watch the video', submitLabel: 'Download for free' },
-    planning: { page: '/en/free-website-planning-skill/', pageLabel: 'Learn more', videoLabel: 'Watch the video', submitLabel: 'Download for free' },
+    audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', videoLabel: 'Watch the full skill demo', submitLabel: 'Download for free' },
+    planning: { page: '/en/free-website-planning-skill/', pageLabel: 'Learn more', videoLabel: 'Watch the full skill demo', submitLabel: 'Download for free' },
   },
 ];
+
+// Every video player on these pages shows the full skill's demo in the page's language.
+const DEMO_VIDEOS = [
+  ['/ux-design-skill/', 'efnuj1zoqx'],
+  ['/free-homepage-ux-audit-skill/', 'efnuj1zoqx'],
+  ['/free-website-planning-skill/', 'efnuj1zoqx'],
+  ['/en/ux-design-skill/', 'q0uvnjyc60'],
+  ['/en/free-homepage-ux-audit-skill/', 'q0uvnjyc60'],
+  ['/en/free-website-planning-skill/', 'q0uvnjyc60'],
+];
+
+for (const [path, videoId] of DEMO_VIDEOS) {
+  test(`demo video ${path}: right language everywhere`, async ({ page }) => {
+    await page.goto(path);
+    const ids = await page.locator('wistia-player').evaluateAll((players) => players.map((player) => player.getAttribute('media-id')));
+    expect(ids.length).toBeGreaterThan(0);
+    expect(new Set(ids)).toEqual(new Set([videoId]));
+  });
+}
 
 /** FAQ answers count as visible wording, so every accordion item is opened before reading the text. */
 async function fullPageText(page: Page) {
@@ -51,8 +70,7 @@ for (const { locale, path, heroLabel, finalLabel, audit, planning } of PAGES) {
       await expect(pageLink).toHaveAttribute('href', card.page);
       expect((await page.request.get(card.page)).status()).toBe(200);
 
-      // The planning video is not recorded yet, so its card has no video button.
-      await expect(root.getByRole('link', { name: card.videoLabel })).toHaveCount(skill === 'audit' ? 1 : 0);
+      await expect(root.getByRole('link', { name: card.videoLabel })).toHaveCount(1);
 
       // Email and button share a line when the card is wide enough, and stack on a phone.
       const email = await root.locator('input[name="email"]').boundingBox();
