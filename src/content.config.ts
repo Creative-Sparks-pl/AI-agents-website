@@ -122,7 +122,7 @@ const tryFree = defineCollection({
       question: z.string(),
       name: z.string(),
       text: z.string(),
-      note: z.string(),
+      note: z.string().optional(),
       pageHref: z.string(),
       videoId: z.string().optional(),
     })),

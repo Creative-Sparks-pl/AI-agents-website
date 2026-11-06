@@ -54,6 +54,12 @@ for (const { locale, path, heroLabel, finalLabel, audit, planning } of PAGES) {
       // The planning video is not recorded yet, so its card has no video button.
       await expect(root.getByRole('link', { name: card.videoLabel })).toHaveCount(skill === 'audit' ? 1 : 0);
 
+      // Email and button share a line when the card is wide enough, and stack on a phone.
+      const email = await root.locator('input[name="email"]').boundingBox();
+      const submit = await root.locator('button[type="submit"]').boundingBox();
+      if (widthOf(testInfo) >= 1280) expect(submit!.y).toBe(email!.y);
+      else expect(submit!.y).toBeGreaterThan(email!.y);
+
       const overflow = await root.evaluate((el) => el.scrollWidth - el.clientWidth);
       expect(overflow, `${skill} card overflows sideways`).toBeLessThanOrEqual(0);
     }

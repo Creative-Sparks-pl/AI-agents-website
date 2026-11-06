@@ -9,8 +9,7 @@ cards:
     surface: ux_design_skill_audyt
     question: Masz już stronę?
     name: Skill do audytu UX strony głównej
-    text: Analizuje stronę główną i przygotowuje makietę z wnioskami audytu przypiętymi do konkretnych elementów strony.
-    note: Tylko strona główna, do 5 witryn dziennie.
+    text: Analizuje stronę główną i przygotowuje makietę z wnioskami audytu przypiętymi do konkretnych elementów strony (do 5 stron dziennie).
     pageHref: /free-homepage-ux-audit-skill/
     videoId: 95i42fdxo8
   - skill: planning

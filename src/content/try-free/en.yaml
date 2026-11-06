@@ -9,8 +9,7 @@ cards:
     surface: ux_design_skill_audyt
     question: Already have a site?
     name: Homepage UX Audit Skill
-    text: Analyzes your homepage and prepares a wireframe with audit findings pinned to specific elements of the page.
-    note: Homepage only, up to 5 sites a day.
+    text: Analyzes your homepage and prepares a wireframe with audit findings pinned to specific elements of the page (up to 5 pages per day).
     pageHref: /en/free-homepage-ux-audit-skill/
     videoId: 95i42fdxo8
   - skill: planning
