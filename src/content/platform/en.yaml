@@ -19,7 +19,7 @@ platforms:
     note: Runs in the browser. Not all Claude Code features are available here.
 contents:
   - label: Skill
-    desc: The SKILL.md file with the full working process
+    desc: Rules (SKILL.md), plus the orchestrator and workflows that steer the work
   - label: UX knowledge base
     desc: "92 files: 16 page types, 14 areas"
   - label: Versions for different tools
