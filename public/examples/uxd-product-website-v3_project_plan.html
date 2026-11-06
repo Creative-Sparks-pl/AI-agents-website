@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{project-language}">
+<html lang="pl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,9 +51,15 @@
     h4 { font-size: 1.25rem;  font-weight: 600; line-height: 1.35; margin: 16px 0 calc(var(--wf-gap) * 0.4); }
     p, ul, ol { color: var(--wf-text); }
 
-    @media (max-width: 768px) {
+    @container pp-main (width <= 900px) {
       h1 { font-size: 1.75rem; }
       h2 { font-size: 1.5rem; }
+    }
+    @container pp-main (width < 600px) {
+      h1 { font-size: 1.5rem;    line-height: 1.2;  letter-spacing: -0.02em; }
+      h2 { font-size: 1.25rem;   line-height: 1.25; }
+      h3 { font-size: 1.0625rem; line-height: 1.3;  }
+      h4 { font-size: 0.9375rem; line-height: 1.35; }
     }
 
     /* ui-badge — universal pill. Compose modifiers for variants:
@@ -124,7 +130,7 @@
        variant-panel, value-chain) are NOT ported — they stay as messaging
        canvas domain classes. ---- */
     .ui-card-grid {
-      max-width: min(1560px, calc(100vw - 64px));
+      max-width: min(1560px, 100%);
       margin: 0 auto;
     }
     .ui-card-row {
@@ -193,9 +199,10 @@
     }
 
     /* Baseline styling for plain content tags inside cells — no class needed.
-       Covers the common key-value list shape: <ul><li><strong>Pole:</strong>
-       {value}</li>...</ul>. Named classes (.pp-ranked, .pp-stack-list,
-       .pp-sitemap) override when specific layout is required. */
+       Covers the common key-value list shape: a list item holding a bold
+       field label (strong) followed by plain value text. Named classes
+       (.pp-ranked, .pp-stack-list, .pp-sitemap) override when specific
+       layout is required. */
     .ui-card p {
       font-size: 0.8125rem;
       color: var(--wf-text);
@@ -234,11 +241,6 @@
       transition: margin-left 220ms ease;
     }
     body.shell-leftpanel-open { margin-left: min(30vw, 500px); }
-    /* Cap main max-width to the reduced viewport so content keeps symmetric
-       left/right gutters inside the remaining working area when panel is open. */
-    body.shell-leftpanel-open .pp-main {
-      max-width: calc(100vw - min(30vw, 500px) - 64px);
-    }
 
     /* ---------- Left panel ---------- */
     .shell-leftpanel {
@@ -591,11 +593,47 @@
       gap: 10px;
       padding: 0 12px;
       height: 100%;
+      flex-shrink: 0;
     }
     .shell-bottombar__group + .shell-bottombar__group {
       border-left: 1px solid #e5e5e5;
     }
     .shell-bottombar__spacer { flex: 1; }
+    /* ===== SHELL-NARROW-CSS-START — character-identical across the wireframing, audit, project-plan and messaging templates (__tests__/test_shell_narrow_sync.py) ===== */
+    /* Windows narrower than 1024px: the panel opens as a drawer over the page
+       instead of pushing the page narrower (both stay readable). */
+    @media (max-width: 1023.98px) {
+      body.shell-leftpanel-open { margin-left: 0; }
+      .shell-leftpanel { width: min(85vw, 360px); }
+    }
+    /* Labels stay on one line; when the controls don't fit the window the
+       bar scrolls sideways so every control stays reachable. */
+    .shell-bottombar {
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+    }
+    /* Download menu — one button; the format buttons open upward. The list is
+       fixed-positioned so the bar's sideways scroll does not clip it. */
+    .shell-bottombar__menu > summary {
+      list-style: none;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .shell-bottombar__menu > summary::-webkit-details-marker { display: none; }
+    .shell-bottombar__menu-list {
+      position: fixed;
+      right: 12px;
+      bottom: 56px;
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+      z-index: 9600;
+    }
+    /* ===== SHELL-NARROW-CSS-END ===== */
     .shell-bottombar__btn {
       background: transparent;
       border: 1px solid var(--wf-line);
@@ -691,13 +729,17 @@
     /* === pills. Composes with UNIVERSAL shell chrome above.    === */
     /* ============================================================ */
 
-    /* Sub-page containers — one active at a time via page switcher. */
+    /* Sub-page containers — one active at a time via page switcher.
+       .pp-main is the page-width container: it fills the space beside the
+       side panel, and the layout steps below follow its width. The side
+       gutters sit on the pages so the narrow step can shrink them. */
     .pp-main {
-      max-width: min(var(--wf-max-w), calc(100vw - 64px));
+      container: pp-main / inline-size;
+      max-width: calc(var(--wf-max-w) + 64px);
       margin: 0 auto;
-      padding: 24px 32px 48px;
+      padding: 24px 0 48px;
     }
-    .pp-page { display: none; }
+    .pp-page { display: none; padding: 0 64px; }
     .pp-page.pp-page--active { display: block; }
     .pp-header {
       padding: 16px 0 24px;
@@ -1046,6 +1088,20 @@
     }
     /* Bottom-bar sub-page tabs — 4 buttons replacing the legacy <select>. */
     .shell-bottombar__tabs { gap: 4px; }
+    /* Windows narrower than 1024px show the pages as a dropdown instead of the
+       tab buttons (same cut-off as the side-panel drawer). */
+    .shell-bottombar__page-select { display: none; }
+    .shell-bottombar__page-select .shell-bottombar__select { min-width: 0; }
+    @media (max-width: 1023.98px) {
+      .shell-bottombar__tabs { display: none; }
+      .shell-bottombar__page-select { display: flex; }
+    }
+    /* Phone-width windows show the panel button as its icon only, so the bar
+       fits without scrolling. The label is hidden from sight only, so it stays
+       the button's spoken name even before the labels script runs. */
+    @media (max-width: 599.98px) {
+      #shellPanelToggle [data-label-key="bar_panel"] { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    }
 
     /* ---- Design plan sub-page primitives (formerly "Inventory") ---- */
 
@@ -1211,23 +1267,22 @@
       border: 1px solid var(--wf-line);
     }
 
-    /* === Mobile (max-width: 768px) — hide audit chrome, collapse card rows === */
-    @media (max-width: 768px) {
-      .shell-bottombar,
-      .shell-leftpanel { display: none !important; }
-      body.shell-leftpanel-open { margin-left: 0 !important; }
-      body { padding-bottom: 0 !important; }
-
-      .pp-main,
-      body.shell-leftpanel-open .pp-main {
-        max-width: min(var(--wf-max-w), calc(100vw - 32px));
-        padding: 16px;
-      }
-
-      .ui-card-grid { max-width: min(1560px, calc(100vw - 32px)); }
+    /* === Responsive — page-width steps (container set on .pp-main) === */
+    @container pp-main (width <= 900px) {
+      .ui-card-row--three { grid-template-columns: 1fr 1fr; }
+      .pp-summary { grid-template-columns: 1fr 1fr; }
+      .pp-header h1 { font-size: 1.75rem; }
+    }
+    @container pp-main (width < 600px) {
+      .pp-page { padding-left: 16px; padding-right: 16px; }
       .ui-card-row--three,
       .ui-card-row--two { grid-template-columns: 1fr; }
-      .pp-summary { grid-template-columns: 1fr; }
+      .pp-summary { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+      .pp-pool-gallery { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+      .ui-card,
+      .pp-tree-card { padding-left: 16px; padding-right: 16px; }
+      .pp-tree-children { padding-left: 12px; }
+      .pp-header h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -1236,7 +1291,7 @@
 <!-- ============================================================
      SHELL — leftpanel (cloned verbatim from shared shell chrome).
      Houses list/detail for the active sub-page. Filter chips and
-     groupings are added in Waves 2–4 per sub-page.
+     groupings are added per sub-page.
      ============================================================ -->
 <aside aria-hidden="false" class="shell-leftpanel is-open" id="shellLeftpanel" role="dialog">
   <div class="shell-leftpanel__header" id="shellHeader" style="display:none;">
@@ -1265,8 +1320,8 @@
        substrate. Body contains chrome only (header + empty grid). -->
   <section class="pp-page pp-page--active" id="pp-page-context">
     <header class="pp-header">
-      <h1 data-label-key="pp_context_title">Kontekst projektu</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_context_subtitle">Discovery — kto, co, dlaczego</p>
+      <h1 data-label-key="pp_context_title">{Project context}</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_context_subtitle">{Project context subtitle}</p>
     </header>
     <div class="ui-card-grid"></div>
   </section>
@@ -1277,8 +1332,8 @@
        Section map sub-page per the v4.0 split. -->
   <section class="pp-page" id="pp-page-strategy">
     <header class="pp-header">
-      <h1 data-label-key="pp_strategy_title">Strategia</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_strategy_subtitle">Format, archetyp, mapa stron, messaging, głos</p>
+      <h1 data-label-key="pp_strategy_title">{Project strategy}</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_strategy_subtitle">{Project strategy subtitle}</p>
     </header>
     <div class="ui-card-grid"></div>
   </section>
@@ -1289,8 +1344,8 @@
        section cards (six fields). -->
   <section class="pp-page" id="pp-page-section-map">
     <header class="pp-header">
-      <h1 data-label-key="pp_section_map_title">Mapa sekcji</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_section_map_subtitle">Mapa sekcji per strona, łącznie z wirtualnym Globalnym</p>
+      <h1 data-label-key="pp_section_map_title">{Section map}</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_section_map_subtitle">{Section map subtitle}</p>
     </header>
     <!-- Per-page button list. Populated by renderSectionMapPageSwitcher()
          from #section-map-data.page_sections. One page-map visible at a time. -->
@@ -1304,8 +1359,8 @@
        (Standard / Corporate Pool / Modular). -->
   <section class="pp-page" id="pp-page-inventory">
     <header class="pp-header">
-      <h1 data-label-key="pp_inventory_title">Inwentarz szablonów</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_inventory_subtitle">Szablony, sekcje, mapa reużywania</p>
+      <h1 data-label-key="pp_inventory_title">{Design plan}</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_inventory_subtitle">{Design plan subtitle}</p>
     </header>
     <div class="ui-card-grid"></div>
   </section>
@@ -1315,12 +1370,12 @@
 <!-- ============================================================
      BOTTOM BAR — panel toggle, sub-page switcher, download buttons.
      Audit-specific controls (#auditToggle, #wfNotesToggle) dropped.
-     Download buttons are contract-only in Phase 1
+     Download buttons are contract-only
      (wiring specced in project-plan-schema.md).
      ============================================================ -->
 <div class="shell-bottombar" id="shellBottombar">
   <div class="shell-bottombar__group">
-    <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button">
+    <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button" data-label-aria-key="bar_panel">
       <span data-label-key="bar_panel">Rationale</span>
       <span class="shell-bottombar__chevron">◧</span>
     </button>
@@ -1340,24 +1395,36 @@
       <span data-label-key="bar_page_inventory">Design plan</span>
     </button>
   </div>
+  <div class="shell-bottombar__group shell-bottombar__page-select" id="shellPageSelectGroup">
+    <select class="shell-bottombar__select" id="shellPageSelect" aria-label="Sub-page" data-label-aria-key="bar_page">
+      <option value="context" data-label-key="bar_page_context">Project context</option>
+      <option value="strategy" data-label-key="bar_page_strategy">Project strategy</option>
+      <option value="section-map" data-label-key="bar_page_section_map">Section map</option>
+      <option value="inventory" data-label-key="bar_page_inventory">Design plan</option>
+    </select>
+  </div>
   <div class="shell-bottombar__spacer"></div>
   <div class="shell-bottombar__group" id="shellDownloadGroup">
-    <label style="color:#666;" data-label-key="bar_download">Download:</label>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadHtml" title="Download the full Project Plan as HTML" data-label-title-key="bar_download_html_title" type="button">
-      <span data-label-key="bar_download_html">Project Plan HTML</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadContextMd" title="Download Project context as Markdown" data-label-title-key="bar_download_context_md_title" type="button">
-      <span data-label-key="bar_download_context_md">Project Context MD</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadStrategyMd" title="Download Project strategy as Markdown" data-label-title-key="bar_download_strategy_md_title" type="button">
-      <span data-label-key="bar_download_strategy_md">Project Strategy MD</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadSectionMapMd" title="Download Section map as Markdown" data-label-title-key="bar_download_section_map_md_title" type="button">
-      <span data-label-key="bar_download_section_map_md">Section Map MD</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadInventoryMd" title="Download Design plan as Markdown" data-label-title-key="bar_download_inventory_md_title" type="button">
-      <span data-label-key="bar_download_inventory_md">Design Plan MD</span>
-    </button>
+    <details class="shell-bottombar__menu" id="shellDownloadMenu">
+      <summary class="shell-bottombar__btn is-active"><span data-label-key="bar_download">Download</span> <span class="shell-bottombar__chevron">▾</span></summary>
+      <div class="shell-bottombar__menu-list">
+        <button class="shell-bottombar__btn is-active" id="shellDownloadHtml" title="Download the full Project Plan as HTML" data-label-title-key="bar_download_html_title" type="button">
+          <span data-label-key="bar_download_html">Project Plan HTML</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadContextMd" title="Download Project context as Markdown" data-label-title-key="bar_download_context_md_title" type="button">
+          <span data-label-key="bar_download_context_md">Project Context MD</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadStrategyMd" title="Download Project strategy as Markdown" data-label-title-key="bar_download_strategy_md_title" type="button">
+          <span data-label-key="bar_download_strategy_md">Project Strategy MD</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadSectionMapMd" title="Download Section map as Markdown" data-label-title-key="bar_download_section_map_md_title" type="button">
+          <span data-label-key="bar_download_section_map_md">Section Map MD</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadInventoryMd" title="Download Design plan as Markdown" data-label-title-key="bar_download_inventory_md_title" type="button">
+          <span data-label-key="bar_download_inventory_md">Design Plan MD</span>
+        </button>
+      </div>
+    </details>
   </div>
 </div>
 
@@ -1366,18 +1433,177 @@
      mirrors its own workflow's fields; schema lives in
      references/project-plan/project-plan-schema.md. Placeholder
      entries use unique bracketed ids ({context-id-N}, {strategy-id-N},
-     {inventory-id-N}) so Waves 2–4 can replace them without id clash.
+     {inventory-id-N}) so later writes can replace them without id clash.
      ============================================================ -->
 <script type="application/json" id="context-data">
 {
   "namespace": "ux-designer-project-plan-uxd-product-website-v3-2026-04-26",
-  "labels": {},
+  "labels": {
+    "confidence_confirmed": "Potwierdzone",
+    "confidence_likely": "Prawdopodobne",
+    "confidence_tentative": "Wstępne",
+    "axis_group": "Grupa",
+    "axis_confidence": "Pewność",
+    "group_universal": "Uniwersalne",
+    "group_project_specific": "Dla tego projektu",
+    "axis_scope": "Zakres",
+    "scope_page": "Strona",
+    "scope_section": "Sekcja",
+    "scope_ia": "Decyzja IA",
+    "axis_page": "Strona",
+    "axis_priority": "Priorytet",
+    "priority_critical": "Krytyczne",
+    "priority_significant": "Istotne",
+    "priority_minor": "Drobne",
+    "axis_template_type": "Typ szablonu",
+    "template_standard": "Standardowy",
+    "template_corporate_pool": "Pool korporacyjny",
+    "template_modular": "Modułowy",
+    "filter_all": "Wszystkie",
+    "filter_label": "Filtry",
+    "filter_label_active": "Filtry · aktywne: {n}",
+    "filter_clear": "Wyczyść",
+    "back": "Wróć",
+    "nav_prev": "Poprzedni",
+    "nav_next": "Następny",
+    "nav_counter": "{i} z {total}",
+    "nav_counter_empty": "–",
+    "group_empty": "(puste)",
+    "pp_context_title": "Kontekst projektu",
+    "pp_context_subtitle": "Discovery — kto, co, dlaczego",
+    "pp_strategy_title": "Strategia",
+    "pp_strategy_subtitle": "Format, archetyp, mapa stron, messaging, głos",
+    "pp_section_map_title": "Mapa sekcji",
+    "pp_section_map_subtitle": "Mapa sekcji per strona (łącznie z wirtualnym Globalnym)",
+    "pp_inventory_title": "Inwentarz szablonów",
+    "pp_inventory_subtitle": "Szablony, sekcje, mapa reużywania",
+    "pp_context_row_universal": "Uniwersalne",
+    "pp_context_row_project_specific": "Dla tego projektu",
+    "pp_scope_included": "W zakresie",
+    "pp_scope_excluded": "Poza zakresem",
+    "pp_strategy_site_format": "Format strony",
+    "pp_strategy_archetype": "Archetyp",
+    "pp_strategy_sitemap": "Mapa stron",
+    "pp_strategy_page_maps": "Mapy sekcji na stronach",
+    "pp_strategy_messaging_voice": "Messaging i głos",
+    "pp_strategy_messaging": "Hierarchia komunikatów",
+    "pp_strategy_voice": "Brief głosu",
+    "pp_content_ready": "Gotowa treść",
+    "pp_needs_content": "Brakuje treści",
+    "pp_tbd_status": "Do uzupełnienia",
+    "pp_section_card_goal": "Cel:",
+    "pp_section_card_message": "Komunikat:",
+    "pp_section_card_content": "Treść:",
+    "pp_section_card_readiness": "Gotowość:",
+    "detail_rationale": "Uzasadnienie",
+    "detail_alternatives": "Rozważone alternatywy",
+    "detail_element": "Element",
+    "detail_decision_status": "Status decyzji",
+    "detail_page": "Strona",
+    "detail_narrative": "Funkcja narracyjna",
+    "detail_goal": "Cel",
+    "detail_question": "Pytanie",
+    "detail_content": "Opis treści",
+    "detail_content_status": "Gotowość treści",
+    "group_scope_page": "Poziom strony",
+    "group_scope_section": "Sekcje",
+    "group_scope_ia": "Decyzje IA",
+    "page_global_label": "Globalne",
+    "pp_inventory_total_templates": "Unikalne szablony",
+    "pp_inventory_unique_sections": "Unikalne sekcje",
+    "pp_inventory_sections_needing_content": "Sekcje wymagające treści",
+    "pp_inventory_field_narrative": "Funkcja narracyjna",
+    "pp_inventory_field_goal": "Cel",
+    "pp_inventory_field_question": "Pytanie",
+    "pp_inventory_field_key_message": "Kluczowy komunikat",
+    "pp_inventory_field_used_in": "Używane w",
+    "pp_inventory_field_atoms": "Atomy",
+    "pp_inventory_field_variants": "Warianty",
+    "pp_inventory_field_readiness": "Gotowość",
+    "pp_inventory_field_usage": "Zastosowanie",
+    "pp_inventory_template_map": "Unikalne szablony",
+    "pp_inventory_usage_single": "Jedna strona",
+    "pp_inventory_usage_reusable": "Reużywalne",
+    "pp_inventory_section_index": "Spis sekcji",
+    "pp_inventory_template_arch": "Architektura per szablon",
+    "pp_inventory_atoms": "Atomy",
+    "pp_inventory_variants": "Warianty",
+    "pp_inventory_shared_sections": "Wspólne sekcje",
+    "pp_inventory_pool_variants": "Warianty z puli",
+    "group_kind_section": "Sekcje",
+    "group_kind_template": "Szablony",
+    "detail_used_in": "Używane w",
+    "detail_key_message": "Kluczowy komunikat",
+    "detail_atoms": "Atomy",
+    "detail_variants": "Warianty",
+    "detail_pages_using": "Strony używające",
+    "detail_template_type": "Typ szablonu",
+    "bar_panel": "Uzasadnienie",
+    "bar_page": "Podstrona:",
+    "bar_change_view": "Zmień widok:",
+    "bar_page_context": "Kontekst projektu",
+    "bar_page_strategy": "Strategia",
+    "bar_page_section_map": "Mapa sekcji",
+    "bar_page_inventory": "Inwentarz szablonów",
+    "bar_download": "Pobierz:",
+    "bar_download_html": "Plan projektu (HTML)",
+    "bar_download_context_md": "Kontekst projektu (MD)",
+    "bar_download_strategy_md": "Strategia (MD)",
+    "bar_download_section_map_md": "Mapa sekcji (MD)",
+    "bar_download_inventory_md": "Inwentarz szablonów (MD)",
+    "bar_download_context_md_title": "Pobierz Kontekst projektu jako Markdown",
+    "bar_download_strategy_md_title": "Pobierz Strategię jako Markdown",
+    "bar_download_section_map_md_title": "Pobierz Mapę sekcji jako Markdown",
+    "bar_download_inventory_md_title": "Pobierz Inwentarz szablonów jako Markdown",
+    "bar_download_html_title": "Pobierz cały Plan projektu jako HTML",
+    "md_confidence_confirmed": "🟢 Potwierdzone",
+    "md_confidence_likely": "🟡 Prawdopodobne",
+    "md_confidence_tentative": "🔴 Wstępne",
+    "md_confidence": "Pewność",
+    "md_rationale": "Uzasadnienie",
+    "md_alternatives": "Rozważone alternatywy",
+    "md_value": "Wartość",
+    "md_included": "W zakresie",
+    "md_excluded": "Poza zakresem",
+    "md_priority": "Priorytet",
+    "md_meta_pills": "Tagi",
+    "md_atoms": "Atomy",
+    "md_variants": "Warianty",
+    "md_used_in": "Używane w",
+    "md_pages_using": "Strony używające",
+    "md_template_type": "Typ szablonu",
+    "md_goal": "Cel",
+    "md_question": "Pytanie",
+    "md_content_description": "Treść",
+    "md_key_message": "Kluczowy komunikat",
+    "md_narrative": "Funkcja narracyjna",
+    "md_content_status": "Gotowość treści",
+    "md_top_tasks_served": "Realizowane zadania",
+    "md_element": "Element",
+    "md_decision_status": "Status decyzji",
+    "md_page": "Strona",
+    "md_pp_context_title": "Kontekst projektu",
+    "md_pp_strategy_title": "Strategia",
+    "md_strategy_section_ia": "Decyzje IA",
+    "md_pp_section_map_title": "Mapa sekcji",
+    "md_pp_inventory_title": "Inwentarz szablonów",
+    "md_inventory_section_summary": "Podsumowanie",
+    "md_inventory_section_template_map": "Mapa szablonów",
+    "md_inventory_section_section_index": "Spis sekcji",
+    "md_inventory_section_template_arch": "Architektura per szablon",
+    "md_inventory_summary_total_templates": "Szablony",
+    "md_inventory_summary_unique_sections": "Unikalne sekcje",
+    "md_inventory_summary_sections_needing_content": "Sekcje wymagające treści",
+    "md_inventory_template_arch_corp_pool_shared": "Wspólne sekcje",
+    "md_inventory_template_arch_corp_pool_variants": "Warianty z puli",
+    "md_inventory_template_arch_modular_atoms": "Paleta atomów"
+  },
   "canvas": {
     "rows": [
       {
         "type": "cards",
         "title": "Uniwersalne",
-        "variant": "three",
+        "variant": "two",
         "card_ids": [
           "context-id-overview",
           "context-id-goal",
@@ -1391,7 +1617,7 @@
       {
         "type": "cards",
         "title": "Dla tego projektu",
-        "variant": "three",
+        "variant": "two",
         "card_ids": [
           "context-id-sales-motion",
           "context-id-pricing-tier",
@@ -1476,11 +1702,23 @@
       "confidence": "high",
       "title": "Alternatywy",
       "layout": "simple-meta",
-      "bullets": [
-        "{Status quo (robię sam, bez procesu): intuicja prosto z briefu w Figmę, audyt „na czuja\" bez kryteriów, kartka i długopis. Klaster pojawia się u wszystkich trzech person jako uniwersalny punkt wyjścia.}",
-        "{Internal DIY (sklejam z narzędzi): ChatGPT lub Claude w trybie ad hoc, kolekcje promptów UX, UI kity Figma Community, motywy WordPress albo Shopify, generatory stron (Bolt, v0, Lovable, Cursor) z akceptacją domyślnej struktury.}",
-        "{Narzędzia ogólne: Figma, FigJam, Miro — narzędzia projektowe bez warstwy strukturalnej. Produkt obsadza etap przed pierwszym frame'em, nie konkuruje z Figmą, tylko karmi ją kontekstem.}",
-        "{Bezpośrednia konkurencja: freelancer UX, konsultant, agencja, design sprint (rozpoznawane, ale odrzucane z powodu kosztu 500–8000 zł i ~3 dni). Kursy (Udemy, Interaction Design Foundation, NNGroup, Baymard, Smashing Magazine) i peer feedback od kolegów-designerów oraz w społecznościach (Discord, IndieHackers).}"
+      "kv": [
+        {
+          "label": "Status quo (robię sam, bez procesu)",
+          "value": "intuicja prosto z briefu w Figmę, audyt „na czuja\" bez kryteriów, kartka i długopis. Klaster pojawia się u wszystkich trzech person jako uniwersalny punkt wyjścia."
+        },
+        {
+          "label": "Internal DIY (sklejam z narzędzi)",
+          "value": "ChatGPT lub Claude w trybie ad hoc, kolekcje promptów UX, UI kity Figma Community, motywy WordPress albo Shopify, generatory stron (Bolt, v0, Lovable, Cursor) z akceptacją domyślnej struktury."
+        },
+        {
+          "label": "Narzędzia ogólne",
+          "value": "Figma, FigJam, Miro — narzędzia projektowe bez warstwy strukturalnej. Produkt obsadza etap przed pierwszym frame'em, nie konkuruje z Figmą, tylko karmi ją kontekstem."
+        },
+        {
+          "label": "Bezpośrednia konkurencja",
+          "value": "freelancer UX, konsultant, agencja, design sprint (rozpoznawane, ale odrzucane z powodu kosztu 500–8000 zł i ~3 dni). Kursy (Udemy, Interaction Design Foundation, NNGroup, Baymard, Smashing Magazine) i peer feedback od kolegów-designerów oraz w społecznościach (Discord, IndieHackers)."
+        }
       ],
       "rationale": "Cztery klastry pokrywają wszystkie alternatywy nazwane w wywiadach symulowanych z trzema personami i są opisane od strony zachowania klienta (inside-out), nie od strony oferty produktu. Każda nazwana w briefie alternatywa (chatboty, prompty, szablony, konsultant) trafia do jednego z czterech klastrów.",
       "alternatives": "Google Analytics, Hotjar, Mixpanel jako oddzielny klaster (odrzucone — to narzędzia diagnostyczne na wcześniejszym etapie, nie alternatywa dla produkcji dokumentacji UX); „Odpuszczam UX, idę od razu do wdrożenia\" jako oddzielny klaster (mieści się w klastrze 1 — brak procesu)."
@@ -2258,21 +2496,29 @@
       "id": "template-home",
       "name": "{Home}",
       "template_type": "standard",
-      "pages_using": ["{Home}"],
+      "pages_using": [
+        "{Home}"
+      ],
       "goal": "{What this template accomplishes — one-liner on the card.}"
     },
     {
       "id": "template-product",
       "name": "{Product / Feature}",
       "template_type": "corporate-pool",
-      "pages_using": ["{Product A}", "{Product B}", "{Product C}"],
+      "pages_using": [
+        "{Product A}",
+        "{Product B}",
+        "{Product C}"
+      ],
       "goal": "{Template goal — shared shell with pool variants per page.}"
     },
     {
       "id": "template-landing",
       "name": "{Campaign Landing}",
       "template_type": "modular",
-      "pages_using": ["{Summer campaign}"],
+      "pages_using": [
+        "{Summer campaign}"
+      ],
       "goal": "{Template goal — atom palette for one-off campaign composition.}"
     }
   ],
@@ -2281,11 +2527,21 @@
       "id": "section-main-menu",
       "name": "Menu główne",
       "priority_tier": "critical",
-      "used_in": ["Wszystkie strony"],
+      "used_in": [
+        "Wszystkie strony"
+      ],
       "goal": "{Global nav goal — what the main menu has to surface on every page.}",
       "key_message": "{Core message the nav must land across the site.}",
-      "atoms": ["{logo}", "{nav-items}", "{cta}", "{mega-menu}"],
-      "variants": ["{default}", "{sticky}"],
+      "atoms": [
+        "{logo}",
+        "{nav-items}",
+        "{cta}",
+        "{mega-menu}"
+      ],
+      "variants": [
+        "{default}",
+        "{sticky}"
+      ],
       "question": "{User question the nav answers at a glance.}",
       "narrative": "{hook}",
       "content_status": "content-ready",
@@ -2297,11 +2553,22 @@
       "name": "{Hero}",
       "priority_tier": "critical",
       "template_type": "standard",
-      "used_in": ["{Home}", "{Product A}"],
+      "used_in": [
+        "{Home}",
+        "{Product A}"
+      ],
       "goal": "{Section goal — what this section accomplishes on the page.}",
       "key_message": "{Core message the section must land.}",
-      "atoms": ["{heading}", "{subhead}", "{cta}", "{bg-image}"],
-      "variants": ["{default}", "{video}"],
+      "atoms": [
+        "{heading}",
+        "{subhead}",
+        "{cta}",
+        "{bg-image}"
+      ],
+      "variants": [
+        "{default}",
+        "{video}"
+      ],
       "question": "{User question this section answers.}",
       "narrative": "{hook}",
       "content_status": "content-ready",
@@ -2313,11 +2580,20 @@
       "name": "{Features}",
       "priority_tier": "significant",
       "template_type": "standard",
-      "used_in": ["{Home}"],
+      "used_in": [
+        "{Home}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{heading}", "{grid}", "{icon}", "{copy-block}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{heading}",
+        "{grid}",
+        "{icon}",
+        "{copy-block}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{evidence}",
       "content_status": "needs-content",
@@ -2329,11 +2605,24 @@
       "name": "{CTA band}",
       "priority_tier": "critical",
       "template_type": "standard",
-      "used_in": ["{Home}", "{Product A}", "{Product B}", "{Product C}"],
+      "used_in": [
+        "{Home}",
+        "{Product A}",
+        "{Product B}",
+        "{Product C}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{heading}", "{subhead}", "{primary-cta}", "{secondary-cta}"],
-      "variants": ["{default}", "{inverse}"],
+      "atoms": [
+        "{heading}",
+        "{subhead}",
+        "{primary-cta}",
+        "{secondary-cta}"
+      ],
+      "variants": [
+        "{default}",
+        "{inverse}"
+      ],
       "question": "{User question.}",
       "narrative": "{resolution}",
       "content_status": "tbd",
@@ -2345,11 +2634,19 @@
       "name": "{Specs}",
       "priority_tier": "significant",
       "template_type": "corporate-pool",
-      "used_in": ["{Product A}", "{Product B}"],
+      "used_in": [
+        "{Product A}",
+        "{Product B}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{table}", "{note}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{table}",
+        "{note}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{evidence}",
       "content_status": "needs-content",
@@ -2361,11 +2658,20 @@
       "name": "{Reviews}",
       "priority_tier": "minor",
       "template_type": "corporate-pool",
-      "used_in": ["{Product B}", "{Product C}"],
+      "used_in": [
+        "{Product B}",
+        "{Product C}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{quote}", "{avatar}", "{star-rating}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{quote}",
+        "{avatar}",
+        "{star-rating}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{evidence}",
       "content_status": "tbd",
@@ -2377,11 +2683,23 @@
       "name": "Stopka",
       "priority_tier": "minor",
       "template_type": "standard",
-      "used_in": ["{Home}", "{Product A}", "{Product B}", "{Product C}", "{Summer campaign}"],
+      "used_in": [
+        "{Home}",
+        "{Product A}",
+        "{Product B}",
+        "{Product C}",
+        "{Summer campaign}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{columns}", "{legal}", "{social}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{columns}",
+        "{legal}",
+        "{social}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{resolution}",
       "content_status": "content-ready",
@@ -2394,39 +2712,82 @@
       "id": "template-home",
       "name": "{Home}",
       "template_type": "standard",
-      "sections": ["section-hero", "section-features", "section-cta", "section-footer"]
+      "sections": [
+        "section-hero",
+        "section-features",
+        "section-cta",
+        "section-footer"
+      ]
     },
     {
       "id": "template-product",
       "name": "{Product / Feature}",
       "template_type": "corporate-pool",
-      "shared_sections": ["section-hero", "section-cta", "section-footer"],
+      "shared_sections": [
+        "section-hero",
+        "section-cta",
+        "section-footer"
+      ],
       "pool_sections": [
-        { "id": "section-specs",   "name": "{Specs}",   "used_by": ["{Product A}", "{Product B}"] },
-        { "id": "section-reviews", "name": "{Reviews}", "used_by": ["{Product B}", "{Product C}"] }
+        {
+          "id": "section-specs",
+          "name": "{Specs}",
+          "used_by": [
+            "{Product A}",
+            "{Product B}"
+          ]
+        },
+        {
+          "id": "section-reviews",
+          "name": "{Reviews}",
+          "used_by": [
+            "{Product B}",
+            "{Product C}"
+          ]
+        }
       ]
     },
     {
       "id": "template-landing",
       "name": "{Campaign Landing}",
       "template_type": "modular",
-      "atoms": ["{hero}", "{testimonial}", "{feature-grid}", "{cta-band}", "{faq}"]
+      "atoms": [
+        "{hero}",
+        "{testimonial}",
+        "{feature-grid}",
+        "{cta-band}",
+        "{faq}"
+      ]
     }
   ],
   "canvas": {
     "rows": [
-      { "type": "summary" },
+      {
+        "type": "summary"
+      },
       {
         "type": "cards",
         "title": "Unikalne szablony",
-        "variant": "three",
-        "card_ids": ["template-home", "template-product", "template-landing"]
+        "variant": "two",
+        "card_ids": [
+          "template-home",
+          "template-product",
+          "template-landing"
+        ]
       },
       {
         "type": "cards",
         "title": "Spis sekcji",
-        "variant": "three",
-        "card_ids": ["section-main-menu", "section-hero", "section-features", "section-cta", "section-specs", "section-reviews", "section-footer"]
+        "variant": "two",
+        "card_ids": [
+          "section-main-menu",
+          "section-hero",
+          "section-features",
+          "section-cta",
+          "section-specs",
+          "section-reviews",
+          "section-footer"
+        ]
       }
     ]
   }
@@ -2481,187 +2842,187 @@
   // from context-data take precedence, then strategy, then inventory.
   const DEFAULT_LABELS = {
     // Confidence values
-    confidence_confirmed: 'Potwierdzone',
-    confidence_likely:    'Prawdopodobne',
-    confidence_tentative: 'Wstępne',
+    confidence_confirmed: '{Confirmed}',
+    confidence_likely:    '{Likely}',
+    confidence_tentative: '{Tentative}',
     // Project context axes
-    axis_group:              'Grupa',
-    axis_confidence:         'Pewność',
-    group_universal:         'Uniwersalne',
-    group_project_specific:  'Dla tego projektu',
+    axis_group:              '{Group}',
+    axis_confidence:         '{Confidence}',
+    group_universal:         '{Universal}',
+    group_project_specific:  '{Project-specific}',
     // Project strategy axes
-    axis_scope:    'Zakres',
-    scope_page:    'Strona',
+    axis_scope:    '{Scope}',
+    scope_page:    '{Page}',
     scope_section: '{Section}',
-    scope_ia:      'Decyzja IA',
+    scope_ia:      '{IA decision}',
     // Section map axes
-    axis_page:     'Strona',
+    axis_page:     '{Page}',
     // Design plan axes
-    axis_priority:           'Priorytet',
-    priority_critical:       'Krytyczne',
-    priority_significant:    'Istotne',
-    priority_minor:          'Drobne',
-    axis_template_type:      'Typ szablonu',
-    template_standard:       'Standardowy',
-    template_corporate_pool: 'Pool korporacyjny',
-    template_modular:        'Modułowy',
+    axis_priority:           '{Priority}',
+    priority_critical:       '{Critical}',
+    priority_significant:    '{Significant}',
+    priority_minor:          '{Minor}',
+    axis_template_type:      '{Template type}',
+    template_standard:       '{Standard}',
+    template_corporate_pool: '{Corporate pool}',
+    template_modular:        '{Modular}',
     // Filters (built-in chrome)
-    filter_all:          'Wszystkie',
-    filter_label:        'Filtry',
+    filter_all:          '{All}',
+    filter_label:        '{Filters}',
     filter_label_active: '{Filters · active: {n}}',
-    filter_clear:        'Wyczyść',
+    filter_clear:        '{Clear}',
     // Panel header / nav
-    back:              'Wróć',
-    nav_prev:          'Poprzedni',
-    nav_next:          'Następny',
+    back:              '{Back}',
+    nav_prev:          '{Previous}',
+    nav_next:          '{Next}',
     nav_counter:       '{{i} of {total}}',
     nav_counter_empty: '{—}',
     group_empty:       '{(empty)}',
     // Sub-page titles
-    pp_context_title:      'Kontekst projektu',
-    pp_context_subtitle:   'Discovery — kto, co, dlaczego',
-    pp_strategy_title:        'Strategia',
-    pp_strategy_subtitle:     'Format, archetyp, mapa stron, messaging, głos',
-    pp_section_map_title:     'Mapa sekcji',
-    pp_section_map_subtitle:  'Mapa sekcji per strona (łącznie z wirtualnym Globalnym)',
-    pp_inventory_title:       'Inwentarz szablonów',
-    pp_inventory_subtitle:    'Szablony, sekcje, mapa reużywania',
+    pp_context_title:      '{Project context}',
+    pp_context_subtitle:   '{Discovery outputs — who, what, why}',
+    pp_strategy_title:        '{Project strategy}',
+    pp_strategy_subtitle:     '{Site format, archetype, sitemap, messaging, voice}',
+    pp_section_map_title:     '{Section map}',
+    pp_section_map_subtitle:  '{Per-page section maps (including virtual Global)}',
+    pp_inventory_title:       '{Design plan}',
+    pp_inventory_subtitle:    '{Templates, sections, reuse map}',
     // Project context row titles + scope split
-    pp_context_row_universal:        'Uniwersalne',
-    pp_context_row_project_specific: 'Dla tego projektu',
-    pp_scope_included: 'W zakresie',
-    pp_scope_excluded: 'Poza zakresem',
+    pp_context_row_universal:        '{Universal}',
+    pp_context_row_project_specific: '{Project specific}',
+    pp_scope_included: '{Included}',
+    pp_scope_excluded: '{Excluded}',
     // Project plan section headings
-    pp_strategy_site_format:     'Format strony',
-    pp_strategy_archetype:       'Archetyp',
-    pp_strategy_sitemap:         'Mapa stron',
+    pp_strategy_site_format:     '{Site Format}',
+    pp_strategy_archetype:       '{Archetype}',
+    pp_strategy_sitemap:         '{Sitemap}',
     pp_strategy_page_maps:       '{Per-page section maps}',
-    pp_strategy_messaging_voice: 'Messaging i głos',
-    pp_strategy_messaging:       'Hierarchia komunikatów',
-    pp_strategy_voice:           'Brief głosu',
+    pp_strategy_messaging_voice: '{Messaging & Voice}',
+    pp_strategy_messaging:       '{Messaging Hierarchy}',
+    pp_strategy_voice:           '{Voice Brief}',
     // Content-readiness pill short labels
-    pp_content_ready: 'Gotowa treść',
-    pp_needs_content: 'Brakuje treści',
-    pp_tbd_status:    'Do uzupełnienia',
-    pp_section_card_goal:       'Cel:',
-    pp_section_card_message:    'Komunikat:',
-    pp_section_card_content:    'Treść:',
-    pp_section_card_readiness:  'Gotowość:',
+    pp_content_ready: '{Content ready}',
+    pp_needs_content: '{Needs content}',
+    pp_tbd_status:    '{TBD}',
+    pp_section_card_goal:       '{Goal:}',
+    pp_section_card_message:    '{Message:}',
+    pp_section_card_content:    '{Content:}',
+    pp_section_card_readiness:  '{Readiness:}',
     // Detail block headings
-    detail_rationale:      'Uzasadnienie',
-    detail_alternatives:   'Rozważone alternatywy',
-    detail_element:        'Element',
-    detail_decision_status:'Status decyzji',
-    detail_page:           'Strona',
-    detail_narrative:      'Funkcja narracyjna',
-    detail_goal:           'Cel',
-    detail_question:       'Pytanie',
-    detail_content:        'Opis treści',
-    detail_content_status: 'Gotowość treści',
+    detail_rationale:      '{Rationale}',
+    detail_alternatives:   '{Alternatives considered}',
+    detail_element:        '{Element}',
+    detail_decision_status:'{Decision status}',
+    detail_page:           '{Page}',
+    detail_narrative:      '{Narrative}',
+    detail_goal:           '{Goal}',
+    detail_question:       '{Question}',
+    detail_content:        '{Content description}',
+    detail_content_status: '{Content readiness}',
     // Scope group headers
-    group_scope_page:    'Poziom strony',
-    group_scope_section: 'Sekcje',
-    group_scope_ia:      'Decyzje IA',
+    group_scope_page:    '{Page-level}',
+    group_scope_section: '{Sections}',
+    group_scope_ia:      '{IA decisions}',
     // Page labels for grouping sections by page in the left-panel list
     page_global_label:   '{Global}',
     // Design plan canvas labels
-    pp_inventory_total_templates:          'Unikalne szablony',
-    pp_inventory_unique_sections:          'Unikalne sekcje',
-    pp_inventory_sections_needing_content: 'Sekcje wymagające treści',
+    pp_inventory_total_templates:          '{Unique templates}',
+    pp_inventory_unique_sections:          '{Unique sections}',
+    pp_inventory_sections_needing_content: '{Sections needing content}',
     // Section Index card field labels (Design plan) — translatable overrides.
-    pp_inventory_field_narrative:    'Funkcja narracyjna',
-    pp_inventory_field_goal:         'Cel',
-    pp_inventory_field_question:     'Pytanie',
-    pp_inventory_field_key_message:  'Kluczowy komunikat',
-    pp_inventory_field_used_in:      'Używane w',
-    pp_inventory_field_atoms:        'Atomy',
-    pp_inventory_field_variants:     'Warianty',
-    pp_inventory_field_readiness:    'Gotowość',
-    pp_inventory_field_usage:        'Zastosowanie',
-    pp_inventory_template_map:    'Unikalne szablony',
+    pp_inventory_field_narrative:    '{Narrative}',
+    pp_inventory_field_goal:         '{Goal}',
+    pp_inventory_field_question:     '{Question}',
+    pp_inventory_field_key_message:  '{Key message}',
+    pp_inventory_field_used_in:      '{Used in}',
+    pp_inventory_field_atoms:        '{Atoms}',
+    pp_inventory_field_variants:     '{Variants}',
+    pp_inventory_field_readiness:    '{Readiness}',
+    pp_inventory_field_usage:        '{Usage}',
+    pp_inventory_template_map:    '{Unique templates}',
     pp_inventory_usage_single:    '{Single page}',
-    pp_inventory_usage_reusable:  'Reużywalne',
-    pp_inventory_section_index:   'Spis sekcji',
-    pp_inventory_template_arch:   'Architektura per szablon',
-    pp_inventory_atoms:           'Atomy',
-    pp_inventory_variants:        'Warianty',
-    pp_inventory_shared_sections: 'Wspólne sekcje',
-    pp_inventory_pool_variants:   'Warianty z puli',
+    pp_inventory_usage_reusable:  '{Reusable}',
+    pp_inventory_section_index:   '{Section Index}',
+    pp_inventory_template_arch:   '{Per-template architecture}',
+    pp_inventory_atoms:           '{Atoms}',
+    pp_inventory_variants:        '{Variants}',
+    pp_inventory_shared_sections: '{Shared sections}',
+    pp_inventory_pool_variants:   '{Pool variants}',
     // Design plan left-panel group headers + detail blocks
-    group_kind_section:  'Sekcje',
-    group_kind_template: 'Szablony',
-    detail_used_in:      'Używane w',
-    detail_key_message:  'Kluczowy komunikat',
-    detail_atoms:        'Atomy',
-    detail_variants:     'Warianty',
-    detail_pages_using:  'Strony używające',
-    detail_template_type:'Typ szablonu',
+    group_kind_section:  '{Sections}',
+    group_kind_template: '{Templates}',
+    detail_used_in:      '{Used in}',
+    detail_key_message:  '{Key message}',
+    detail_atoms:        '{Atoms}',
+    detail_variants:     '{Variants}',
+    detail_pages_using:  '{Pages using}',
+    detail_template_type:'{Template type}',
     // Bottom bar
-    bar_panel:                'Uzasadnienie',
-    bar_page:                 'Podstrona:',
-    bar_change_view:               'Zmień widok:',
-    bar_page_context:              'Kontekst projektu',
-    bar_page_strategy:             'Strategia',
-    bar_page_section_map:          'Mapa sekcji',
-    bar_page_inventory:            'Inwentarz szablonów',
-    bar_download:                  'Pobierz:',
-    bar_download_html:             'Plan projektu (HTML)',
-    bar_download_context_md:       'Kontekst projektu (MD)',
-    bar_download_strategy_md:      'Strategia (MD)',
-    bar_download_section_map_md:   'Mapa sekcji (MD)',
-    bar_download_inventory_md:     'Inwentarz szablonów (MD)',
-    bar_download_context_md_title:     'Pobierz Kontekst projektu jako Markdown',
-    bar_download_strategy_md_title:    'Pobierz Strategię jako Markdown',
-    bar_download_section_map_md_title: 'Pobierz Mapę sekcji jako Markdown',
-    bar_download_inventory_md_title:   'Pobierz Inwentarz szablonów jako Markdown',
-    bar_download_html_title:           'Pobierz cały Plan projektu jako HTML',
+    bar_panel:                '{Rationale}',
+    bar_page:                 '{Sub-page:}',
+    bar_change_view:               '{Change view:}',
+    bar_page_context:              '{Project context}',
+    bar_page_strategy:             '{Project strategy}',
+    bar_page_section_map:          '{Section map}',
+    bar_page_inventory:            '{Design plan}',
+    bar_download:                  '{Download}',
+    bar_download_html:             '{Project Plan HTML}',
+    bar_download_context_md:       '{Project Context MD}',
+    bar_download_strategy_md:      '{Project Strategy MD}',
+    bar_download_section_map_md:   '{Section Map MD}',
+    bar_download_inventory_md:     '{Design Plan MD}',
+    bar_download_context_md_title:     '{Download Project context sub-page as Markdown}',
+    bar_download_strategy_md_title:    '{Download Project strategy sub-page as Markdown}',
+    bar_download_section_map_md_title: '{Download Section map sub-page as Markdown}',
+    bar_download_inventory_md_title:   '{Download Design plan sub-page as Markdown}',
+    bar_download_html_title:           '{Download the full Project Plan as HTML}',
     // MD export — confidence pill labels (separate from canvas confidence_*; emoji-prefixed for MD readability).
     md_confidence_confirmed: '{🟢 Confirmed}',
     md_confidence_likely:    '{🟡 Likely}',
     md_confidence_tentative: '{🔴 Tentative}',
     // MD export — common field labels.
-    md_confidence:           'Pewność',
-    md_rationale:            'Uzasadnienie',
-    md_alternatives:         'Rozważone alternatywy',
-    md_value:                'Wartość',
-    md_included:             'W zakresie',
-    md_excluded:             'Poza zakresem',
-    md_priority:             'Priorytet',
-    md_meta_pills:           'Tagi',
-    md_atoms:                'Atomy',
-    md_variants:             'Warianty',
-    md_used_in:              'Używane w',
-    md_pages_using:          'Strony używające',
-    md_template_type:        'Typ szablonu',
-    md_goal:                 'Cel',
-    md_question:             'Pytanie',
-    md_content_description:  'Treść',
-    md_key_message:          'Kluczowy komunikat',
-    md_narrative:            'Funkcja narracyjna',
-    md_content_status:       'Gotowość treści',
-    md_top_tasks_served:     'Realizowane zadania',
-    md_element:              'Element',
-    md_decision_status:      'Status decyzji',
-    md_page:                 'Strona',
+    md_confidence:           '{Confidence}',
+    md_rationale:            '{Rationale}',
+    md_alternatives:         '{Alternatives considered}',
+    md_value:                '{Value}',
+    md_included:             '{Included}',
+    md_excluded:             '{Excluded}',
+    md_priority:             '{Priority}',
+    md_meta_pills:           '{Tags}',
+    md_atoms:                '{Atoms}',
+    md_variants:             '{Variants}',
+    md_used_in:              '{Used in}',
+    md_pages_using:          '{Pages using}',
+    md_template_type:        '{Template type}',
+    md_goal:                 '{Goal}',
+    md_question:             '{Question}',
+    md_content_description:  '{Content}',
+    md_key_message:          '{Key message}',
+    md_narrative:            '{Narrative}',
+    md_content_status:       '{Content readiness}',
+    md_top_tasks_served:     '{Top tasks served}',
+    md_element:              '{Element}',
+    md_decision_status:      '{Decision status}',
+    md_page:                 '{Page}',
     // MD export — Project context document.
-    md_pp_context_title:     'Kontekst projektu',
+    md_pp_context_title:     '{Project context}',
     // MD export — Project strategy document + section headings (canvas row titles flow through where set).
-    md_pp_strategy_title:    'Strategia',
-    md_strategy_section_ia:  'Decyzje IA',
+    md_pp_strategy_title:    '{Project strategy}',
+    md_strategy_section_ia:  '{IA decisions}',
     // MD export — Section map document.
-    md_pp_section_map_title: 'Mapa sekcji',
+    md_pp_section_map_title: '{Section map}',
     // MD export — Design plan document + section headings.
-    md_pp_inventory_title:                          'Inwentarz szablonów',
-    md_inventory_section_summary:                   'Podsumowanie',
-    md_inventory_section_template_map:              'Mapa szablonów',
-    md_inventory_section_section_index:             'Spis sekcji',
-    md_inventory_section_template_arch:             'Architektura per szablon',
-    md_inventory_summary_total_templates:           'Szablony',
-    md_inventory_summary_unique_sections:           'Unikalne sekcje',
-    md_inventory_summary_sections_needing_content:  'Sekcje wymagające treści',
-    md_inventory_template_arch_corp_pool_shared:    'Wspólne sekcje',
-    md_inventory_template_arch_corp_pool_variants:  'Warianty z puli',
-    md_inventory_template_arch_modular_atoms:       'Paleta atomów'
+    md_pp_inventory_title:                          '{Design plan}',
+    md_inventory_section_summary:                   '{Summary}',
+    md_inventory_section_template_map:              '{Template map}',
+    md_inventory_section_section_index:             '{Section index}',
+    md_inventory_section_template_arch:             '{Per-template architecture}',
+    md_inventory_summary_total_templates:           '{Templates}',
+    md_inventory_summary_unique_sections:           '{Unique sections}',
+    md_inventory_summary_sections_needing_content:  '{Sections needing content}',
+    md_inventory_template_arch_corp_pool_shared:    '{Shared sections}',
+    md_inventory_template_arch_corp_pool_variants:  '{Pool variants}',
+    md_inventory_template_arch_modular_atoms:       '{Atom palette}'
   };
   const LABELS = Object.assign(
     {},
@@ -2774,25 +3135,20 @@
   function plainChip(text) {
     return '<span class="ui-badge ui-badge--gray ui-badge--plain">' + text + '</span>';
   }
-  // Unified-brace label/value segment — wireframing convention (see
-  // references/wireframing/wireframing-template.html metaSeg). When value is
-  // a placeholder (starts+ends with braces), renders as
-  //   <tag>{<strong>Label:</strong> description}</tag>
-  // so the whole line reads as a single placeholder the agent replaces wholesale.
-  // When value is filled (no outer braces), renders as
+  // Label/value segment. Always renders as
   //   <tag><strong>Label:</strong> value</tag>
-  // with no braces.
+  // The label is chrome (real text post clone-strip) and is never brace-
+  // wrapped; a value that is itself still a braced placeholder passes
+  // through unchanged, so braces mark exactly the unresolved token — never
+  // the label or the whole line.
   function metaSeg(label, value, tag) {
     const t = tag || 'div';
     const v = value == null ? '' : String(value);
-    if (v.startsWith('{') && v.endsWith('}')) {
-      return '<' + t + '>{<strong>' + label + ':</strong> ' + v.slice(1, -1) + '}</' + t + '>';
-    }
     return '<' + t + '><strong>' + label + ':</strong> ' + v + '</' + t + '>';
   }
-  // Multi-item list collapsed into one unified metaSeg — e.g. atoms / used_in /
-  // top_tasks_served. Strips outer braces from placeholder items so the whole
-  // list reads as one placeholder `{Label: item1, item2, item3}`.
+  // Multi-item list collapsed into one metaSeg-style row — e.g. atoms /
+  // used_in / top_tasks_served. Items pass through unchanged (a placeholder
+  // item keeps its own braces); the line is never brace-wrapped.
   // Render each list item as a gray chip (ui-badge--gray ui-badge--plain)
   // prefixed by a bold label — used where visual scannability of individual
   // items matters more than the comma-joined listSeg treatment.
@@ -2812,19 +3168,7 @@
     const t = tag || 'div';
     const arr = items || [];
     if (!arr.length) return '';
-    const stripped = arr.map(function(i) {
-      const s = String(i == null ? '' : i);
-      return s.startsWith('{') && s.endsWith('}') ? s.slice(1, -1) : s;
-    });
-    const joined = stripped.join(', ');
-    // If every source item was a placeholder, wrap the whole line in a unified brace.
-    const allPlaceholders = arr.every(function(i) {
-      const s = String(i == null ? '' : i);
-      return s.startsWith('{') && s.endsWith('}');
-    });
-    if (allPlaceholders) {
-      return '<' + t + '>{<strong>' + label + ':</strong> ' + joined + '}</' + t + '>';
-    }
+    const joined = arr.map(function(i) { return String(i == null ? '' : i); }).join(', ');
     return '<' + t + '><strong>' + label + ':</strong> ' + joined + '</' + t + '>';
   }
   // kv entries in simple-meta cards render as <li> via metaSeg.
@@ -3225,8 +3569,9 @@
   // architecture distinction (Standard / Corporate Pool / Modular) used to
   // drive the per-template arch blocks at the bottom of Design plan; those
   // blocks were dropped, so template_type is no longer surfaced on cards.
-  // Returns a unified `{…}` placeholder so metaSeg wraps the whole line
-  // as `{Usage: …}` on placeholder data.
+  // The derived label is real data, never brace-wrapped;
+  // stripBraces keeps the text clean when LABELS still carry pristine
+  // braced values (non-en clones before translation).
   function templateUsageLabel(pagesUsing) {
     const arr = pagesUsing || [];
     if (!arr.length) return '';
@@ -3234,9 +3579,9 @@
       const v = String(s || '');
       return v.startsWith('{') && v.endsWith('}') ? v.slice(1, -1) : v;
     };
-    if (arr.length === 1) return '{' + stripBraces(LABELS.pp_inventory_usage_single || 'Single page') + '}';
+    if (arr.length === 1) return stripBraces(LABELS.pp_inventory_usage_single || 'Single page');
     const base = stripBraces(LABELS.pp_inventory_usage_reusable || 'Reusable');
-    return '{' + base + ' (' + arr.length + ' pages)}';
+    return base + ' (' + arr.length + ' pages)';
   }
 
   function sectionIndexCardHtml(item) {
@@ -3415,6 +3760,7 @@
   const panelFilterArea = document.getElementById('shellFilterArea');
   const backBtn = document.getElementById('shellBack');
   const pageTabs = document.getElementById('shellPageTabs');
+  const pageSelect = document.getElementById('shellPageSelect');
   const navEl = document.getElementById('shellNav');
   const navPrevBtn = document.getElementById('shellNavPrev');
   const navNextBtn = document.getElementById('shellNavNext');
@@ -3969,6 +4315,7 @@
         btn.classList.toggle('is-active', btn.getAttribute('data-page') === slug);
       });
     }
+    if (pageSelect) pageSelect.value = slug;
     // Always return to list view on sub-page change so users start from overview.
     renderList();
   }
@@ -3987,6 +4334,13 @@
     window.addEventListener('hashchange', function() {
       const slug = (location.hash || '').slice(1);
       if (VISIBLE_PAGES.indexOf(slug) !== -1) activatePage(slug);
+    });
+  }
+  if (pageSelect) {
+    pageSelect.addEventListener('change', function() {
+      const slug = pageSelect.value;
+      activatePage(slug);
+      location.hash = '#' + slug;
     });
   }
 
@@ -4271,7 +4625,7 @@
       var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
       pageSections.forEach(function(s) {
         // Heading shape per schema's MD export contract:
-        // ### Tytuł — {narrative} ({confidence}, {content_status})
+        // ### {Title} — {narrative} ({confidence}, {content_status})
         var heading = '### ' + _md_stripBraces(s.title || s.id || '');
         if (s.narrative) heading += ' — ' + _md_stripBraces(s.narrative);
         var pillBits = [];
@@ -4419,6 +4773,9 @@
   // messaging-canvas-template.html `_downloadHtml` pattern.
   function _downloadHtml() {
     var docClone = document.documentElement.cloneNode(true);
+    // The saved copy opens with the Download menu closed.
+    var menuClone = docClone.querySelector('#shellDownloadMenu');
+    if (menuClone) menuClone.removeAttribute('open');
     var content = '<!DOCTYPE html>\n' + docClone.outerHTML;
     triggerDownload(NS + '-project-plan.html', content, 'text/html');
   }
@@ -4446,6 +4803,19 @@
   });
   var dlHtmlBtn = document.getElementById('shellDownloadHtml');
   if (dlHtmlBtn) dlHtmlBtn.addEventListener('click', _downloadHtml);
+  /* ===== SHELL-NARROW-JS-START — character-identical across the wireframing, audit, project-plan and messaging templates (__tests__/test_shell_narrow_sync.py) ===== */
+  // Download menu — closes when a format is picked (capture phase: before the
+  // HTML download clones the page) or on a click anywhere else.
+  const dlMenu = document.getElementById('shellDownloadMenu');
+  if (dlMenu) {
+    dlMenu.addEventListener('click', (e) => {
+      if (e.target.closest('.shell-bottombar__menu-list button')) dlMenu.open = false;
+    }, true);
+    document.addEventListener('click', (e) => {
+      if (dlMenu.open && !dlMenu.contains(e.target)) dlMenu.open = false;
+    });
+  }
+  /* ===== SHELL-NARROW-JS-END ===== */
 
   // ---- Initial state ----
   applyStaticLabels();
@@ -4468,6 +4838,10 @@
       if (pageTabs) {
         var btn = pageTabs.querySelector('.shell-bottombar__btn[data-page="' + slug + '"]');
         if (btn) btn.style.display = 'none';
+      }
+      if (pageSelect) {
+        var opt = pageSelect.querySelector('option[value="' + slug + '"]');
+        if (opt) opt.remove();
       }
       var pageEl = document.getElementById('pp-page-' + slug);
       if (pageEl) pageEl.style.display = 'none';
@@ -4503,7 +4877,19 @@
 
   let initialOpen = null;
   try { initialOpen = localStorage.getItem(NS + '-panel-open'); } catch (e) {}
-  if (initialOpen === '1') openPanel();
+  // Windows narrower than 1024px open with the panel closed: there it is a
+  // drawer over the page, and the reader opens it with the panel button. On
+  // wider windows the remembered choice applies, closed as well as open (the
+  // markup starts with the panel open).
+  if (window.matchMedia('(max-width: 1023.98px)').matches || initialOpen === '0') {
+    panel.style.transition = 'none';
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('shell-leftpanel-open');
+    if (panelToggle) panelToggle.classList.remove('is-active');
+    void panel.offsetWidth;
+    panel.style.transition = '';
+  } else if (initialOpen === '1') openPanel();
 })();
 </script>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uxd-product-website: Messaging canvas</title>
+  <title>uxd-product-website — Messaging Canvas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -48,9 +48,15 @@
     h4 { font-size: 1.25rem;  font-weight: 600; line-height: 1.35; margin: 16px 0 calc(var(--wf-gap) * 0.4); }
     p, ul, ol { color: var(--wf-text); }
 
-    @media (max-width: 768px) {
+    @container mc-canvas (width <= 900px) {
       h1 { font-size: 1.75rem; }
       h2 { font-size: 1.5rem; }
+    }
+    @container mc-canvas (width < 600px) {
+      h1 { font-size: 1.5rem;    line-height: 1.2;  letter-spacing: -0.02em; }
+      h2 { font-size: 1.25rem;   line-height: 1.25; }
+      h3 { font-size: 1.0625rem; line-height: 1.3;  }
+      h4 { font-size: 0.9375rem; line-height: 1.35; }
     }
 
     /* mc-badge — universal pill. Compose modifiers for variants:
@@ -652,11 +658,63 @@
       gap: 10px;
       padding: 0 12px;
       height: 100%;
+      flex-shrink: 0;
     }
     .shell-bottombar__group + .shell-bottombar__group {
       border-left: 1px solid #e5e5e5;
     }
     .shell-bottombar__spacer { flex: 1; }
+    /* Windows narrower than 1024px show the two views as a dropdown instead of
+       the label and buttons (same cut-off as the side-panel drawer); phone-width
+       windows show the panel button as its icon only, so the bar fits without
+       scrolling (the button keeps its label as its spoken name). */
+    #mcViewSelectGroup { display: none; }
+    #mcViewSelectGroup .shell-bottombar__select { min-width: 0; }
+    @media (max-width: 1023.98px) {
+      #mcViewToggleGroup { display: none; }
+      #mcViewSelectGroup { display: flex; }
+    }
+    /* Phone-width windows show the panel button as its icon only; the label is
+       hidden from sight only, so it stays the button's spoken name even before
+       the labels script runs. */
+    @media (max-width: 599.98px) {
+      #shellPanelToggle [data-label-key="bar_panel"] { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    }
+    /* ===== SHELL-NARROW-CSS-START — character-identical across the wireframing, audit, project-plan and messaging templates (__tests__/test_shell_narrow_sync.py) ===== */
+    /* Windows narrower than 1024px: the panel opens as a drawer over the page
+       instead of pushing the page narrower (both stay readable). */
+    @media (max-width: 1023.98px) {
+      body.shell-leftpanel-open { margin-left: 0; }
+      .shell-leftpanel { width: min(85vw, 360px); }
+    }
+    /* Labels stay on one line; when the controls don't fit the window the
+       bar scrolls sideways so every control stays reachable. */
+    .shell-bottombar {
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+    }
+    /* Download menu — one button; the format buttons open upward. The list is
+       fixed-positioned so the bar's sideways scroll does not clip it. */
+    .shell-bottombar__menu > summary {
+      list-style: none;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .shell-bottombar__menu > summary::-webkit-details-marker { display: none; }
+    .shell-bottombar__menu-list {
+      position: fixed;
+      right: 12px;
+      bottom: 56px;
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+      z-index: 9600;
+    }
+    /* ===== SHELL-NARROW-CSS-END ===== */
     .shell-bottombar__btn {
       background: transparent;
       border: 1px solid var(--wf-line);
@@ -744,32 +802,24 @@
       color: #888;
       font-size: 11px;
     }
-
-    /* === Mobile (max-width: 768px) — hide audit chrome === */
-    @media (max-width: 768px) {
-      .shell-bottombar,
-      .shell-leftpanel { display: none !important; }
-      body.shell-leftpanel-open { margin-left: 0 !important; }
-      body { padding-bottom: 0 !important; }
-
-      body.shell-leftpanel-open .wf-nav,
-      body.shell-leftpanel-open .wf-section,
-      body.shell-leftpanel-open .wf-footer {
-        max-width: min(var(--wf-max-w), calc(100vw - 32px));
-      }
-    }
     /* UNIVERSAL-END */
 
     /* ============================================================ */
     /* === MESSAGING-SPECIFIC — canvas layout only               === */
     /* ============================================================ */
 
-    /* === Canvas container === */
+    /* === Canvas container ===
+       .mc-canvas is the page-width container for both the canvas and the
+       copy page: it fills the space beside the side panel, and the layout
+       steps below follow its width. The side gutters sit on the two page
+       roots so the narrow step can shrink them. */
     .mc-canvas {
-      max-width: min(1560px, calc(100vw - 64px));
+      container: mc-canvas / inline-size;
+      max-width: calc(1560px + 64px);
       margin: 0 auto;
-      padding: 32px;
+      padding: 32px 0;
     }
+    #canvasRoot, #copyRoot { padding-left: 64px; padding-right: 64px; }
 
     /* === Row base === */
     .mc-row {
@@ -957,15 +1007,6 @@
     .mc-outcome-name { font-weight: 600; margin-bottom: 4px; }
     .mc-outcome-text { color: var(--wf-text); font-size: 0.8125rem; line-height: 1.5; }
 
-    @media (max-width: 768px) {
-      .mc-row--context, .mc-row--problem, .mc-row--pillars, .mc-row--messaging {
-        grid-template-columns: 1fr;
-      }
-      .mc-canvas {
-        max-width: min(1560px, calc(100vw - 32px));
-        padding: 16px;
-      }
-    }
 
     /* Page header — shared convention with project-plan's .pp-header.
        Used at the top of every sub-page (canvas, copy). Outer padding is
@@ -1154,58 +1195,6 @@
       font-weight: 700;
       font-size: 0.8125rem;
     }
-    .mc-copy-urgency-bar {
-      background: #fff3cd;
-      border: 1px solid #ffc107;
-      border-radius: 6px;
-      padding: 14px 22px;
-      margin-bottom: 24px;
-      text-align: center;
-      font-size: 0.9375rem;
-      font-weight: 600;
-      color: #856404;
-    }
-    .mc-copy-comparison-opener {
-      font-size: 0.9375rem;
-      color: var(--wf-muted);
-      font-style: italic;
-      line-height: 1.55;
-      margin: 0 0 18px;
-      padding-left: 12px;
-      border-left: 2px solid var(--wf-line);
-    }
-    .mc-copy-comparisons {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 16px;
-    }
-    .mc-copy-comparison-card {
-      padding: 16px 18px;
-      background: var(--wf-fill);
-      border-radius: 6px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .mc-copy-comparison-takeaway {
-      font-size: 1.0625rem;
-      font-weight: 700;
-      color: var(--wf-text);
-      line-height: 1.35;
-      margin: 0;
-    }
-    .mc-copy-comparison-subline {
-      font-size: 0.875rem;
-      color: var(--wf-muted);
-      line-height: 1.45;
-      margin: 4px 0 0;
-    }
-    .mc-copy-comparison-body {
-      font-size: 0.9375rem;
-      color: var(--wf-text);
-      line-height: 1.55;
-      margin: 8px 0 0;
-    }
     .mc-copy-faq-item {
       border-bottom: 1px solid var(--wf-line);
       padding: 16px 0;
@@ -1221,8 +1210,19 @@
       color: var(--wf-text);
       line-height: 1.6;
     }
-    @media (max-width: 768px) {
+
+    /* === Responsive — page-width steps (container set on .mc-canvas) === */
+    @container mc-canvas (width <= 900px) {
+      .mc-row--context, .mc-row--problem, .mc-row--pillars, .mc-row--messaging,
+      .mc-copy-pillars { grid-template-columns: 1fr 1fr; }
+      .ui-page-header h1 { font-size: 1.75rem; }
+    }
+    @container mc-canvas (width < 600px) {
+      #canvasRoot, #copyRoot { padding-left: 16px; padding-right: 16px; }
+      .mc-row--context, .mc-row--problem, .mc-row--pillars, .mc-row--messaging,
       .mc-copy-pillars { grid-template-columns: 1fr; }
+      .ui-card { padding-left: 16px; padding-right: 16px; }
+      .ui-page-header h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -1255,19 +1255,25 @@
   <!-- Shell bottom bar -->
   <nav id="shellBottombar" class="shell-bottombar">
     <div class="shell-bottombar__group">
-      <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button">
+      <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button" data-label-aria-key="bar_panel">
         <span data-label-key="bar_panel">Rationale</span>
         <span class="shell-bottombar__chevron">◧</span>
       </button>
     </div>
     <div class="shell-bottombar__group" id="mcViewToggleGroup">
-      <label style="color:#666;" data-label-key="bar_view">Switch view:</label>
+      <label style="color:#666;" data-label-key="bar_change_view">Change view:</label>
       <button class="shell-bottombar__btn is-active" id="mcViewCanvasBtn" type="button" data-view="canvas">
         <span data-label-key="bar_view_canvas">Messaging canvas</span>
       </button>
       <button class="shell-bottombar__btn" id="mcViewCopyBtn" type="button" data-view="copy">
         <span data-label-key="bar_view_copy">Copy draft</span>
       </button>
+    </div>
+    <div class="shell-bottombar__group" id="mcViewSelectGroup">
+      <select class="shell-bottombar__select" id="mcViewSelect" data-label-aria-key="bar_change_view">
+        <option value="canvas" data-label-key="bar_view_canvas">Messaging canvas</option>
+        <option value="copy" data-label-key="bar_view_copy">Copy draft</option>
+      </select>
     </div>
     <div class="shell-bottombar__group" id="shellPageSelectGroup" style="display:none;">
       <label for="shellPageSelect" style="color:#666;" data-label-key="bar_variant">Variant:</label>
@@ -1276,17 +1282,21 @@
       </select>
     </div>
     <div class="shell-bottombar__spacer"></div>
-    <div class="shell-bottombar__group">
-      <label style="color:#666;" data-label-key="bar_download">Download:</label>
-      <button class="shell-bottombar__btn is-active" id="mcDownloadHtmlBtn" type="button">
-        <span data-label-key="bar_download_html">HTML file</span>
-      </button>
-      <button class="shell-bottombar__btn is-active" id="mcDownloadCanvasBtn" type="button">
-        <span data-label-key="bar_download_canvas">Messaging canvas (MD)</span>
-      </button>
-      <button class="shell-bottombar__btn is-active" id="mcDownloadCopyBtn" type="button">
-        <span data-label-key="bar_download_copy">Key messages draft (MD)</span>
-      </button>
+    <div class="shell-bottombar__group" id="mcDownloadGroup">
+      <details class="shell-bottombar__menu" id="shellDownloadMenu">
+        <summary class="shell-bottombar__btn is-active"><span data-label-key="bar_download">Download</span> <span class="shell-bottombar__chevron">▾</span></summary>
+        <div class="shell-bottombar__menu-list">
+          <button class="shell-bottombar__btn is-active" id="mcDownloadHtmlBtn" type="button">
+            <span data-label-key="bar_download_html">Messaging HTML</span>
+          </button>
+          <button class="shell-bottombar__btn is-active" id="mcDownloadCanvasBtn" type="button">
+            <span data-label-key="bar_download_canvas">Canvas MD</span>
+          </button>
+          <button class="shell-bottombar__btn is-active" id="mcDownloadCopyBtn" type="button">
+            <span data-label-key="bar_download_copy">Copy MD</span>
+          </button>
+        </div>
+      </details>
     </div>
   </nav>
 
@@ -2726,113 +2736,114 @@
     // ---- UI labels ----
     const DEFAULT_LABELS = {
       // Decision values
-      decision_label:    '{Status}',
-      decision_pending:  '{No decision}',
-      decision_accepted: '{Accepted}',
-      decision_rejected: '{Rejected}',
+      decision_label:    'Status',
+      decision_pending:  'No decision',
+      decision_accepted: 'Accepted',
+      decision_rejected: 'Rejected',
       // Filter controls
-      filter_label:        '{Filters}',
-      filter_label_active: '{Filters · active: {n}}',
-      filter_clear:        '{Clear}',
+      filter_label:        'Filters',
+      filter_label_active: 'Filters · active: {n}',
+      filter_clear:        'Clear',
       // Panel nav
-      back:              '{Back}',
-      nav_prev:          '{Previous}',
-      nav_next:          '{Next}',
-      nav_counter:       '{{i} of {total}}',
-      nav_counter_empty: '{—}',
+      back:              'Back',
+      nav_prev:          'Previous',
+      nav_next:          'Next',
+      nav_counter:       '{i} of {total}',
+      nav_counter_empty: '—',
       // Bottom bar
-      bar_canvas:         '{Canvas}',
-      bar_download_html:  '{Download HTML}',
-      bar_download_md:    '{Download MD}',
-      bar_panel:          '{Rationale}',
-      bar_view_canvas:    '{Messaging canvas}',
-      bar_view_copy:      '{Copy draft}',
-      bar_variant:        '{Variant:}',
-      bar_download:       '{Download:}',
-      bar_download_canvas:'{Canvas MD}',
-      bar_download_copy:  '{Copy MD}',
+      bar_canvas:         'Canvas',
+      bar_download_html:  'Messaging HTML',
+      bar_download_md:    'Messaging MD',
+      bar_panel:          'Rationale',
+      bar_change_view:    'Change view:',
+      bar_view_canvas:    'Messaging canvas',
+      bar_view_copy:      'Copy draft',
+      bar_variant:        'Variant:',
+      bar_download:       'Download',
+      bar_download_canvas:'Canvas MD',
+      bar_download_copy:  'Copy MD',
       // Row headers
-      row_context:      '{Context}',
-      row_problem_fit:  '{Problem & Fit}',
-      row_pillars:      '{Pillars}',
-      row_messaging:    '{Messaging}',
-      row_narrative:    '{Narrative}',
+      row_context:      'Context',
+      row_problem_fit:  'Problem & Fit',
+      row_pillars:      'Pillars',
+      row_messaging:    'Messaging',
+      row_narrative:    'Narrative',
       // Confidence badges
-      conf_high:        '{Confident}',
-      conf_medium:      '{Likely}',
-      conf_low:         '{Speculative}',
+      conf_high:        'Confident',
+      conf_medium:      'Likely',
+      conf_low:         'Speculative',
       // Classification badges
-      class_differentiator: '{Differentiator}',
-      class_table_stake:    '{Table Stake}',
-      class_delighter:      '{Delighter}',
+      class_differentiator: 'Differentiator',
+      class_table_stake:    'Table Stake',
+      class_delighter:      'Delighter',
       // Weighting badges
-      weight_must_have:         '{Must-have}',
-      weight_deciding:          '{Deciding factor}',
-      weight_pleasant_surprise: '{Pleasant surprise}',
+      weight_must_have:         'Must-have',
+      weight_deciding:          'Deciding factor',
+      weight_pleasant_surprise: 'Pleasant surprise',
       // Page headers / empty states
-      page_canvas_title:    '{Messaging canvas}',
-      page_canvas_subtitle: '{Strategy board — 13 cells across Context, Problem & Fit, Pillars, Messaging, and Narrative.}',
-      page_copy_title:      '{Copy draft}',
-      page_copy_subtitle:   '{Page copy translated from the Messaging canvas — hero, social proof, value props, how it works, why us, FAQ.}',
-      page_copy_empty:      '{No copy data for this variant yet — run workflow Step 12 (Copy Draft) to populate.}',
+      page_canvas_title:    'Messaging canvas',
+      page_canvas_subtitle: 'Strategy board — 13 cells across Context, Problem & Fit, Pillars, Messaging, and Narrative.',
+      page_copy_title:      'Copy draft',
+      page_copy_subtitle:   'Page copy translated from the Messaging canvas — hero, social proof, value props, how it works, why us, FAQ.',
+      page_copy_empty:      'No copy data for this variant yet — run workflow Step 12 (Copy Draft) to populate.',
       // Copy block section labels
-      copy_block_hero:         '{Hero}',
-      copy_block_social_proof: '{Social proof}',
-      copy_block_value_props:  '{Value propositions}',
-      copy_block_how_it_works: '{How it works}',
-      copy_block_why_us:       '{Why us / Comparison}',
-      copy_block_faq:          '{FAQ}',
-      copy_blocks_header:      '{Copy blocks}',
+      copy_block_hero:         'Hero',
+      copy_block_social_proof: 'Social proof',
+      copy_block_value_props:  'Value propositions',
+      copy_block_how_it_works: 'How it works',
+      copy_block_why_us:       'Why us / Comparison',
+      copy_block_faq:          'FAQ',
+      copy_blocks_header:      'Copy blocks',
       // Reasoning / variant panels
-      reasoning_header:            '{Reasoning}',
-      why_we_recommend:            '{Why we recommend}',
-      when_to_choose_differently:  '{When to choose differently}',
-      why_this:                    '{Why this}',
-      when_this_might_be_fine:     '{When this might be fine}',
-      included_header:             '{Included}',
-      left_out_header:             '{Left out}',
-      variants_header:             '{Variants}',
-      variant_recommended:         '{Recommended}',
-      variant_alternative:         '{Alternative}',
-      no_reasoning_placeholder:    '{No reasoning recorded for this block yet.}',
+      reasoning_header:            'Reasoning',
+      why_we_recommend:            'Why we recommend',
+      when_to_choose_differently:  'When to choose differently',
+      why_this:                    'Why this',
+      when_this_might_be_fine:     'When this might be fine',
+      included_header:             'Included',
+      left_out_header:             'Left out',
+      variants_header:             'Variants',
+      variant_recommended:         'Recommended',
+      variant_alternative:         'Alternative',
+      no_reasoning_placeholder:    'No reasoning recorded for this block yet.',
       // Value chain
-      value_chain_header:  '{Value chain}',
-      value_chain_feature: '{Feature:}',
-      value_chain_benefit: '{Benefit:}',
-      value_chain_outcome: '{Outcome:}',
+      value_chain_header:  'Value chain',
+      value_chain_feature: 'Feature:',
+      value_chain_benefit: 'Benefit:',
+      value_chain_outcome: 'Outcome:',
       // Confidence label used in evidence bullets
-      confidence_label: '{Confidence:}',
+      confidence_label: 'Confidence:',
       // Filter UI
-      filter_row_header:             '{Row}',
-      filter_row_all:                '{All rows}',
-      filter_conf_header:            '{Confidence}',
-      filter_conf_all:               '{All}',
-      filter_flag_header:            '{Flag}',
-      filter_flag_all:               '{All}',
-      filter_flag_missing_evidence:  '{Missing evidence}',
-      filter_flag_no_flags:          '{No flags}',
+      filter_row_header:             'Row',
+      filter_row_all:                'All rows',
+      filter_conf_header:            'Confidence',
+      filter_conf_all:               'All',
+      filter_flag_header:            'Flag',
+      filter_flag_all:               'All',
+      filter_flag_missing_evidence:  'Missing evidence',
+      filter_flag_no_flags:          'No flags',
       // Empty-state descriptions
-      empty_dim_description: '{propose a validation experiment}',
+      empty_dim_description: 'propose a validation experiment',
       // MD export — section headings + inline labels (used by formatCanvasVariantMd / formatCopyVariantMd)
-      md_canvas_title:                 '{Messaging canvas}',
-      md_copy_title:                   '{Copy draft}',
-      md_validation_dimensions_header: '{Validation dimensions}',
-      md_alternatives_considered:      '{Alternatives considered}',
-      md_items_header:                 '{Items}',
-      md_pillar:                       '{Pillar}',
-      md_source_label:                 '{source:}',
-      md_headline_label:               '{Headline:}',
-      md_subhead_label:                '{Subhead:}',
-      md_primary_cta_label:            '{Primary CTA:}',
-      md_secondary_cta_label:          '{Secondary CTA:}',
-      md_visual_hint_label:            '{Visual hint:}',
-      md_metric_label:                 '{Metric:}',
-      md_logos_label:                  '{Logos:}',
-      md_quote_label:                  '{Quote:}',
-      md_hypothesis_prefix:            '{Hypothesis:}',
-      md_reasoning_inline:             '{Reasoning:}',
-      md_tbd_marker:                   '{_TBD_}',
-      md_validation_proposal_label:    '{Validation proposal:}',
+      md_canvas_title:                 'Messaging canvas',
+      md_copy_title:                   'Copy draft',
+      md_validation_dimensions_header: 'Validation dimensions',
+      md_alternatives_considered:      'Alternatives considered',
+      md_items_header:                 'Items',
+      md_pillar:                       'Pillar',
+      md_source_label:                 'source:',
+      md_headline_label:               'Headline:',
+      md_subhead_label:                'Subhead:',
+      md_primary_cta_label:            'Primary CTA:',
+      md_secondary_cta_label:          'Secondary CTA:',
+      md_visual_hint_label:            'Visual hint:',
+      md_metric_label:                 'Metric:',
+      md_logos_label:                  'Logos:',
+      md_quote_label:                  'Quote:',
+      md_hypothesis_prefix:            'Hypothesis:',
+      md_reasoning_inline:             'Reasoning:',
+      md_tbd_marker:                   '_TBD_',
+      md_validation_proposal_label:    'Validation proposal:',
     };
     const LABELS = Object.assign({}, DEFAULT_LABELS, _data.labels || {});
 
@@ -3150,7 +3161,18 @@
     applyStaticLabels();
     var initialOpen = null;
     try { initialOpen = localStorage.getItem(NS + '-panel-open'); } catch (e) {}
-    if (initialOpen === '1') openPanel();
+    // Windows narrower than 1024px open with the panel closed: there it is a
+    // drawer over the page, and the reader opens it with the panel button. The
+    // remembered choice still applies on wider windows.
+    if (window.matchMedia('(max-width: 1023.98px)').matches) {
+      panel.style.transition = 'none';
+      panel.classList.remove('is-open');
+      panel.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('shell-leftpanel-open');
+      if (panelToggle) panelToggle.classList.remove('is-active');
+      void panel.offsetWidth;
+      panel.style.transition = '';
+    } else if (initialOpen === '1') openPanel();
 
     // ---- Public API ----
     window.__shell = {
@@ -3196,6 +3218,44 @@
     var _data     = window.__shell.getData();
     var LABELS    = window.__shell.getLabels();
     var VARIANTS  = _data.variants || [];
+
+    // Copy-view visibility — detection uses signals that are guaranteed
+    // to be transformed by the existing workflow contract, not template
+    // sentinels (the messaging clone procedure mutates fields in place,
+    // so a `_template_stock: true` sentinel would survive forever and
+    // never get stripped — see commits ede01d3 / 0e90e94 / this commit
+    // for the iteration history).
+    //
+    // DEMO_MODE: raw template view, before any agent write. Detected by
+    // the namespace still carrying the `{CLIENT-SLUG}` placeholder —
+    // messaging-canvas.md §Clone procedure step 3 mandates substituting
+    // that token at clone time, so a populated canvas always has a real
+    // namespace (no `{`).
+    var DEMO_MODE = !!(_data && typeof _data.namespace === 'string' && _data.namespace.indexOf('{') !== -1);
+
+    // COPY_POPULATED: any variant has at least one copy field whose
+    // string value isn't an all-bracketed placeholder. Step 12 fills
+    // copy fields with real text (no surrounding `{}`); template stock
+    // values look like `"{Headline text}"`. Walk copy.{block}.{field}
+    // strings; first non-placeholder wins.
+    function _copyHasNonPlaceholderField(copy) {
+      if (!copy || typeof copy !== 'object') return false;
+      for (var blockKey in copy) {
+        if (!Object.prototype.hasOwnProperty.call(copy, blockKey)) continue;
+        var block = copy[blockKey];
+        if (!block || typeof block !== 'object') continue;
+        for (var fieldKey in block) {
+          if (!Object.prototype.hasOwnProperty.call(block, fieldKey)) continue;
+          var v = block[fieldKey];
+          if (typeof v !== 'string' || v.length < 1) continue;
+          if (v.charAt(0) !== '{' || v.charAt(v.length - 1) !== '}') return true;
+        }
+      }
+      return false;
+    }
+    var COPY_POPULATED = DEMO_MODE || VARIANTS.some(function(v) {
+      return v && _copyHasNonPlaceholderField(v.copy);
+    });
 
     // Portfolio mode: when the workflow runs in portfolio branching
     // (multi-product / umbrella + line), Step 12 populates VARIANTS with
@@ -3432,10 +3492,6 @@
       { key: 'valueProps',   label: LABELS.copy_block_value_props },
       { key: 'howItWorks',   label: LABELS.copy_block_how_it_works },
       { key: 'whyUs',        label: LABELS.copy_block_why_us },
-      { key: 'artifacts',    label: LABELS.copy_block_artifacts },
-      { key: 'packages',     label: LABELS.copy_block_packages },
-      { key: 'auditPitch',   label: LABELS.copy_block_audit_pitch },
-      { key: 'installPitch', label: LABELS.copy_block_install_pitch },
       { key: 'faq',          label: LABELS.copy_block_faq }
     ];
     function _copyBlockLabel(key) {
@@ -3461,10 +3517,6 @@
         '</header>' +
         '<div class="mc-copy-doc">';
 
-      // Urgency bar (optional)
-      if (copy.urgencyBar && copy.urgencyBar.text) {
-        html += '<div class="mc-copy-urgency-bar" data-copy-block="urgencyBar">' + h(copy.urgencyBar.text) + '</div>';
-      }
       // Hero
       var hero = copy.hero || {};
       html += '<section class="ui-card ui-card--copy" data-copy-block="hero">' +
@@ -3507,25 +3559,6 @@
         html += '</div></section>';
       }
 
-      // Artifacts gallery
-      var art = copy.artifacts || {};
-      var artItems = Array.isArray(art.items) ? art.items : [];
-      if (artItems.length || art.intro) {
-        html += '<section class="ui-card ui-card--copy" data-copy-block="artifacts"><h2>' + LABELS.copy_block_artifacts + '</h2>';
-        if (art.intro) html += '<p class="mc-copy-block-intro">' + h(art.intro) + '</p>';
-        if (artItems.length) {
-          html += '<div class="mc-copy-cards">';
-          artItems.forEach(function(item) {
-            html += '<div class="mc-copy-card">' +
-              '<p class="mc-copy-card-name">' + h(item.name || '') + '</p>' +
-              (item.contains ? '<p class="mc-copy-card-desc">' + h(item.contains) + '</p>' : '') +
-              '</div>';
-          });
-          html += '</div>';
-        }
-        if (art.ctaPrimary) html += '<a class="mc-copy-block-cta">' + h(art.ctaPrimary) + '</a>';
-        html += '</section>';
-      }
       // How it works (steps)
       var hiw = copy.howItWorks || {};
       var steps = Array.isArray(hiw.items) ? hiw.items : [];
@@ -3539,94 +3572,13 @@
 
       // Why us
       var wu = copy.whyUs || {};
-      var comparisons = Array.isArray(wu.comparisons) ? wu.comparisons : [];
-      if (comparisons.length || wu.opener) {
-        html += '<section class="ui-card ui-card--copy" data-copy-block="whyUs">' +
-          '<h2>' + LABELS.copy_block_why_us + '</h2>';
-        if (wu.opener) {
-          html += '<p class="mc-copy-comparison-opener">' + h(wu.opener) + '</p>';
-        }
-        html += '<div class="mc-copy-comparisons">';
-        comparisons.forEach(function(c) {
-          var takeaway = c.takeaway || '';
-          var subline = c.subline || '';
-          var vs = c.vs || c.alternative || '';
-          var body = c.body || c.contrast || '';
-          html += '<div class="mc-copy-comparison-card">';
-          if (takeaway) {
-            html += '<p class="mc-copy-comparison-takeaway">' + h(takeaway) + '</p>';
-          }
-          if (subline) {
-            html += '<p class="mc-copy-comparison-subline">' + h(subline) + '</p>';
-          } else if (vs) {
-            html += '<p class="mc-copy-comparison-subline">Vs. ' + h(vs) + '</p>';
-          }
-          if (body) {
-            html += '<p class="mc-copy-comparison-body">' + h(body) + '</p>';
-          }
-          html += '</div>';
-        });
-        html += '</div></section>';
-      } else if (wu.body) {
+      if (wu.body) {
         html += '<section class="ui-card ui-card--copy" data-copy-block="whyUs">' +
           '<h2>' + LABELS.copy_block_why_us + '</h2>' +
           '<p style="color:var(--wf-text);line-height:1.6;margin:0;">' + h(wu.body) + '</p>' +
           '</section>';
       }
 
-      // Packages
-      var pkg = copy.packages || {};
-      var pkgItems = Array.isArray(pkg.items) ? pkg.items : [];
-      if (pkgItems.length || pkg.intro) {
-        html += '<section class="ui-card ui-card--copy" data-copy-block="packages"><h2>' + LABELS.copy_block_packages + '</h2>';
-        if (pkg.intro) html += '<p class="mc-copy-block-intro">' + h(pkg.intro) + '</p>';
-        if (pkgItems.length) {
-          html += '<div class="mc-copy-cards">';
-          pkgItems.forEach(function(item) {
-            html += '<div class="mc-copy-card">' +
-              '<p class="mc-copy-card-name">' + h(item.name || '') + '</p>' +
-              (item.price ? '<p class="mc-copy-card-price">' + h(item.price) + '</p>' : '') +
-              (item.forWhom ? '<p class="mc-copy-card-desc">' + h(item.forWhom) + '</p>' : '') +
-              '</div>';
-          });
-          html += '</div>';
-        }
-        if (pkg.ctaPrimary) html += '<a class="mc-copy-block-cta">' + h(pkg.ctaPrimary) + '</a>';
-        html += '</section>';
-      }
-      // Audit pitch
-      var ap = copy.auditPitch || {};
-      if (ap.headline || ap.intro) {
-        html += '<section class="ui-card ui-card--copy" data-copy-block="auditPitch"><h2>' + LABELS.copy_block_audit_pitch + '</h2>';
-        if (ap.headline) html += '<p class="mc-copy-pitch-headline">' + h(ap.headline) + '</p>';
-        if (ap.intro) html += '<p class="mc-copy-block-intro">' + h(ap.intro) + '</p>';
-        if (Array.isArray(ap.youGet) && ap.youGet.length) {
-          html += '<ul class="mc-copy-pitch-list">';
-          ap.youGet.forEach(function(line) { html += '<li>' + h(line) + '</li>'; });
-          html += '</ul>';
-        }
-        if (ap.noStrings) html += '<p class="mc-copy-pitch-no-strings">' + h(ap.noStrings) + '</p>';
-        if (ap.ctaPrimary) html += '<a class="mc-copy-block-cta">' + h(ap.ctaPrimary) + '</a>';
-        html += '</section>';
-      }
-      // Install pitch
-      var ip = copy.installPitch || {};
-      var ipSteps = Array.isArray(ip.steps) ? ip.steps : [];
-      if (ip.headline || ip.intro || ipSteps.length) {
-        html += '<section class="ui-card ui-card--copy" data-copy-block="installPitch"><h2>' + LABELS.copy_block_install_pitch + '</h2>';
-        if (ip.headline) html += '<p class="mc-copy-pitch-headline">' + h(ip.headline) + '</p>';
-        if (ip.intro) html += '<p class="mc-copy-block-intro">' + h(ip.intro) + '</p>';
-        if (ipSteps.length) {
-          html += '<div class="mc-copy-steps">';
-          ipSteps.forEach(function(s) {
-            html += '<div class="mc-copy-step"><div><strong>' + h(s.name || '') + '</strong>' + (s.description ? ' — ' + h(s.description) : '') + '</div></div>';
-          });
-          html += '</div>';
-        }
-        if (ip.envs) html += '<p class="mc-copy-pitch-envs">' + h(ip.envs) + '</p>';
-        if (ip.ctaPrimary) html += '<a class="mc-copy-block-cta">' + h(ip.ctaPrimary) + '</a>';
-        html += '</section>';
-      }
       // FAQ
       var fq = copy.faq || {};
       var faq = Array.isArray(fq.items) ? fq.items : [];
@@ -3721,6 +3673,8 @@
       var copyBtn = document.getElementById('mcViewCopyBtn');
       if (canvasBtn) canvasBtn.classList.toggle('is-active', _activeView === 'canvas');
       if (copyBtn) copyBtn.classList.toggle('is-active', _activeView === 'copy');
+      var viewSelect = document.getElementById('mcViewSelect');
+      if (viewSelect) viewSelect.value = _activeView;
       if (_activeView === 'copy') {
         renderCopy();
         renderCopyList();
@@ -3884,7 +3838,7 @@
       var evidenceHtml = _renderEvidenceBullets(rec.evidence, rec, { skipConfidence: true });
       var confidenceRowHtml = _renderConfidenceRow(rec.evidence, rec);
 
-      // Alternatives cluster blocks (A1) — rendered after evidence bullets
+      // Alternatives cluster blocks — rendered after evidence bullets
       var clustersHtml = '';
       if (cell.clusters && cell.clusters.length) {
         clustersHtml = cell.clusters.map(function(cluster) {
@@ -4173,7 +4127,7 @@
       });
     }
 
-    // ---- Build the panel-only Confidence section ----
+    // ---- Build the panel-only Pewność / Confidence section ----
     // Card shows label + pill only (via _renderConfidenceRow); panel repeats
     // label + pill AND carries the full basis text. Section renders only when
     // cell/variant has an evidence entry with role === 'confidence'.
@@ -4270,7 +4224,7 @@
           }
           html += '</div>'; // .shell-detail__blocks (reasoning)
         }
-        // Confidence section at end of REC variant panel
+        // Pewność section at end of REC variant panel
         html += _renderConfidenceDetailBlock(cell.rec, cell.rec && cell.rec.evidence);
         html += '</div>'; // .shell-variant-panel (REC)
 
@@ -4300,7 +4254,7 @@
             }
             html += '</div>'; // .shell-detail__blocks (reasoning)
           }
-          // Confidence section at end of alternative variant panel
+          // Pewność section at end of alternative variant panel
           html += _renderConfidenceDetailBlock(alt, alt && alt.evidence);
           html += '</div>'; // .shell-variant-panel (alt)
         });
@@ -4371,7 +4325,7 @@
         html += '</div>'; // .shell-detail__blocks
       }
 
-      // Confidence section at end of non-decision cell panel
+      // Pewność section at end of non-decision cell panel
       if (!isDecisionCell) {
         html += _renderConfidenceDetailBlock(cell.rec, cell.rec && cell.rec.evidence);
       }
@@ -4576,10 +4530,6 @@
     function formatCopyVariantMd(variant) {
       var copy = variant.copy || {};
       var md = '# ' + LABELS.md_copy_title + ' — ' + (variant.label || variant.slug) + '\n\n';
-      // Urgency bar (optional)
-      if (copy.urgencyBar && copy.urgencyBar.text) {
-        md += '> ' + copy.urgencyBar.text + '\n\n';
-      }
       // Hero
       if (copy.hero) {
         var h = copy.hero;
@@ -4613,18 +4563,6 @@
         });
         if (vp.reasoning) md += '_' + LABELS.md_reasoning_inline + ' ' + vp.reasoning + '_\n\n';
       }
-      // Artifacts gallery
-      if (copy.artifacts) {
-        var art = copy.artifacts;
-        md += '## ' + LABELS.copy_block_artifacts + '\n\n';
-        if (art.intro) md += art.intro + '\n\n';
-        (art.items || []).forEach(function(item) {
-          md += '- **' + (item.name || '') + '** — ' + (item.contains || '') + '\n';
-        });
-        md += '\n';
-        if (art.ctaPrimary) md += '_CTA: ' + art.ctaPrimary + '_\n\n';
-        if (art.reasoning) md += '_' + LABELS.md_reasoning_inline + ' ' + art.reasoning + '_\n\n';
-      }
       // How it works
       if (copy.howItWorks) {
         var hiw = copy.howItWorks;
@@ -4639,69 +4577,8 @@
       if (copy.whyUs) {
         var wu = copy.whyUs;
         md += '## ' + LABELS.copy_block_why_us + '\n\n';
-        if (wu.opener) {
-          md += '_' + wu.opener + '_\n\n';
-        }
-        var wuComparisons = Array.isArray(wu.comparisons) ? wu.comparisons : [];
-        if (wuComparisons.length) {
-          wuComparisons.forEach(function(c) {
-            var mdTakeaway = c.takeaway || '';
-            var mdSubline = c.subline || '';
-            var mdVs = c.vs || c.alternative || '';
-            var mdBody = c.body || c.contrast || '';
-            if (mdTakeaway) md += '**' + mdTakeaway + '**\n\n';
-            if (mdSubline) {
-              md += '_' + mdSubline + '_\n\n';
-            } else if (mdVs) {
-              md += '_Vs. ' + mdVs + '._\n\n';
-            }
-            if (mdBody) md += mdBody + '\n\n';
-          });
-        } else if (wu.body) {
-          md += wu.body + '\n\n';
-        }
+        if (wu.body) md += wu.body + '\n\n';
         if (wu.reasoning) md += '_' + LABELS.md_reasoning_inline + ' ' + wu.reasoning + '_\n\n';
-      }
-      // Packages
-      if (copy.packages) {
-        var pkg = copy.packages;
-        md += '## ' + LABELS.copy_block_packages + '\n\n';
-        if (pkg.intro) md += pkg.intro + '\n\n';
-        (pkg.items || []).forEach(function(item) {
-          md += '- **' + (item.name || '') + '**';
-          if (item.price) md += ' (' + item.price + ')';
-          if (item.forWhom) md += ' — ' + item.forWhom;
-          md += '\n';
-        });
-        md += '\n';
-        if (pkg.ctaPrimary) md += '_CTA: ' + pkg.ctaPrimary + '_\n\n';
-        if (pkg.reasoning) md += '_' + LABELS.md_reasoning_inline + ' ' + pkg.reasoning + '_\n\n';
-      }
-      // Audit pitch
-      if (copy.auditPitch) {
-        var ap = copy.auditPitch;
-        md += '## ' + LABELS.copy_block_audit_pitch + '\n\n';
-        if (ap.headline) md += '**' + ap.headline + '**\n\n';
-        if (ap.intro) md += ap.intro + '\n\n';
-        (ap.youGet || []).forEach(function(line) { md += '- ' + line + '\n'; });
-        md += '\n';
-        if (ap.noStrings) md += '**' + ap.noStrings + '**\n\n';
-        if (ap.ctaPrimary) md += '_CTA: ' + ap.ctaPrimary + '_\n\n';
-        if (ap.reasoning) md += '_' + LABELS.md_reasoning_inline + ' ' + ap.reasoning + '_\n\n';
-      }
-      // Install pitch
-      if (copy.installPitch) {
-        var ip = copy.installPitch;
-        md += '## ' + LABELS.copy_block_install_pitch + '\n\n';
-        if (ip.headline) md += '**' + ip.headline + '**\n\n';
-        if (ip.intro) md += ip.intro + '\n\n';
-        (ip.steps || []).forEach(function(s, i) {
-          md += (i+1) + '. **' + (s.name || '') + '** — ' + (s.description || '') + '\n';
-        });
-        md += '\n';
-        if (ip.envs) md += '_Environments: ' + ip.envs + '_\n\n';
-        if (ip.ctaPrimary) md += '_CTA: ' + ip.ctaPrimary + '_\n\n';
-        if (ip.reasoning) md += '_' + LABELS.md_reasoning_inline + ' ' + ip.reasoning + '_\n\n';
       }
       // FAQ
       if (copy.faq) {
@@ -4754,6 +4631,9 @@
       // LocalStorage state reflected in-place. Users can re-open the file
       // standalone and see the same canvas + copy view.
       var docClone = document.documentElement.cloneNode(true);
+      // The saved copy opens with the Download menu closed.
+      var menuClone = docClone.querySelector('#shellDownloadMenu');
+      if (menuClone) menuClone.removeAttribute('open');
       var content = '<!DOCTYPE html>\n' + docClone.outerHTML;
       var ns = window.__shell.getNamespace() || 'messaging';
       triggerDownload(ns + '-messaging-canvas.html', content, 'text/html');
@@ -4778,6 +4658,19 @@
         triggerDownload(r.filename, r.md, 'text/markdown');
       });
     }
+  /* ===== SHELL-NARROW-JS-START — character-identical across the wireframing, audit, project-plan and messaging templates (__tests__/test_shell_narrow_sync.py) ===== */
+  // Download menu — closes when a format is picked (capture phase: before the
+  // HTML download clones the page) or on a click anywhere else.
+  const dlMenu = document.getElementById('shellDownloadMenu');
+  if (dlMenu) {
+    dlMenu.addEventListener('click', (e) => {
+      if (e.target.closest('.shell-bottombar__menu-list button')) dlMenu.open = false;
+    }, true);
+    document.addEventListener('click', (e) => {
+      if (dlMenu.open && !dlMenu.contains(e.target)) dlMenu.open = false;
+    });
+  }
+  /* ===== SHELL-NARROW-JS-END ===== */
 
     // ---- Init sequence ----
     // renderCanvas() must run before renderList() — panel uses canvas cell IDs for scroll-into-view binding.
@@ -4791,6 +4684,35 @@
       var viewCopyBtn = document.getElementById('mcViewCopyBtn');
       if (viewCanvasBtn) viewCanvasBtn.addEventListener('click', function() { setActiveView('canvas'); });
       if (viewCopyBtn) viewCopyBtn.addEventListener('click', function() { setActiveView('copy'); });
+      var viewSelect = document.getElementById('mcViewSelect');
+      if (viewSelect) viewSelect.addEventListener('change', function() { setActiveView(viewSelect.value); });
+      // Hide Copy-view toggle + Copy-MD download until copy{} is populated
+      // (Step 12 strips the _template_stock sentinel by replacing the
+      // whole copy block with the agent's payload).
+      if (!COPY_POPULATED) {
+        if (viewCopyBtn) viewCopyBtn.style.display = 'none';
+        var viewSelectGroup = document.getElementById('mcViewSelectGroup');
+        if (viewSelectGroup) viewSelectGroup.style.display = 'none';
+        var dlCopyBtn = document.getElementById('mcDownloadCopyBtn');
+        if (dlCopyBtn) dlCopyBtn.style.display = 'none';
+      }
+      // Download visibility — per shared convention (interactive-deliverable-shell.md
+      // §Download button convention). HTML + Canvas MD always visible in messaging
+      // (canvas IS the deliverable; if the page rendered, both have content).
+      // Copy MD already gated above on COPY_POPULATED.
+      var HAS_VARIANTS = VARIANTS.length > 0;
+      var dlHtmlBtn2 = document.getElementById('mcDownloadHtmlBtn');
+      var dlCanvasBtn2 = document.getElementById('mcDownloadCanvasBtn');
+      var dlCopyBtn2 = document.getElementById('mcDownloadCopyBtn');
+      if (dlHtmlBtn2 && !HAS_VARIANTS) dlHtmlBtn2.style.display = 'none';
+      if (dlCanvasBtn2 && !HAS_VARIANTS) dlCanvasBtn2.style.display = 'none';
+      var dlGroup = document.getElementById('mcDownloadGroup');
+      if (dlGroup) {
+        var anyVisible = (dlHtmlBtn2 && dlHtmlBtn2.style.display !== 'none') ||
+                         (dlCanvasBtn2 && dlCanvasBtn2.style.display !== 'none') ||
+                         (dlCopyBtn2 && dlCopyBtn2.style.display !== 'none');
+        if (!anyVisible) dlGroup.style.display = 'none';
+      }
     }
 
     document.addEventListener('DOMContentLoaded', _init);

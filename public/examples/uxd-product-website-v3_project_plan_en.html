@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uxd-product-website-v3 Project Plan</title>
+  <title>uxd-product-website-v3 — Project Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -51,11 +51,21 @@
     h4 { font-size: 1.25rem;  font-weight: 600; line-height: 1.35; margin: 16px 0 calc(var(--wf-gap) * 0.4); }
     p, ul, ol { color: var(--wf-text); }
 
-    @media (max-width: 768px) {
+    @container pp-main (width <= 900px) {
       h1 { font-size: 1.75rem; }
       h2 { font-size: 1.5rem; }
     }
+    @container pp-main (width < 600px) {
+      h1 { font-size: 1.5rem;    line-height: 1.2;  letter-spacing: -0.02em; }
+      h2 { font-size: 1.25rem;   line-height: 1.25; }
+      h3 { font-size: 1.0625rem; line-height: 1.3;  }
+      h4 { font-size: 0.9375rem; line-height: 1.35; }
+    }
 
+    /* ui-badge — universal pill. Compose modifiers for variants:
+       color only (--green/--yellow/--red), decision state (--accepted/--rejected),
+       or interactive (--button). Same size, padding, font everywhere.
+       font/line-height set explicitly so <button>-based pills don't fall back to UA defaults. */
     .ui-badge {
       display: inline-flex;
       align-items: center;
@@ -69,8 +79,13 @@
       padding: 1px 6px;
       border-radius: 3px;
     }
+    /* Constrain icon glyphs so they don't stretch the pill beyond the text line. */
     .ui-badge::before { line-height: 1; }
 
+    /* Button variant — transparent with a real 1px border. Declared FIRST so state
+       modifiers (color or decision) override its background/color when composed.
+       Padding is reduced by 1px on each side to compensate for the border so the
+       button matches the size of non-bordered pills. */
     .ui-badge--button {
       background: transparent;
       color: #555;
@@ -86,10 +101,15 @@
     .ui-badge--red    { background: #f8d7da; color: #721c24; }
     .ui-badge--gray   { background: #e9ecef; color: #495057; }
 
+    /* Content-readiness pill variants — compose with .ui-badge. */
     .ui-badge--content-ready  { background: #d4edda; color: #155724; }
     .ui-badge--needs-content  { background: #fff3cd; color: #856404; }
     .ui-badge--tbd-status     { background: #e9ecef; color: #495057; }
 
+    /* ---- Content-label modifiers on .ui-badge ----
+       `--plain` neutralizes the status-pill styling (uppercase / bold / 9px) so
+       the base class can carry mixed-case prose labels like "Trial signup".
+       `--muted` is the strikethrough variant for excluded / rejected items. */
     .ui-badge--plain {
       text-transform: none;
       letter-spacing: 0;
@@ -99,8 +119,18 @@
     }
     .ui-badge--muted { opacity: 0.55; text-decoration: line-through; text-decoration-color: #aaa; }
 
+    /* ---- Card-grid primitives — universal. Selective port from
+       references/messaging/messaging-canvas-template.html (origin of the
+       `.mc-*` patterns; `shared/templates.html` retired in v4.2). Only the 5
+       families every workflow needs: the grid container, its row (with
+       generic --three / --two column variants), the row title, the card
+       itself, and the --tbd placeholder state. Messaging-specific row
+       variants (--context / --problem / --pillars / --messaging) and other
+       `.mc-*` families (pillar, decision, evidence, chip*, reasoning*,
+       variant-panel, value-chain) are NOT ported — they stay as messaging
+       canvas domain classes. ---- */
     .ui-card-grid {
-      max-width: min(1560px, calc(100vw - 64px));
+      max-width: min(1560px, 100%);
       margin: 0 auto;
     }
     .ui-card-row {
@@ -153,8 +183,12 @@
       font-weight: 500;
       color: var(--wf-text);
     }
+    /* Cards whose panel detail would be empty (no rationale + no alternatives)
+       render with this class and are non-interactive — no hover, no click. */
     .ui-card.ui-card--no-detail { cursor: default; }
     .ui-card.ui-card--no-detail:hover { box-shadow: none; transform: none; }
+    /* Unfilled cell — faded outline; heading remains visible. Agent removes
+       --tbd when the cell is fully populated. */
     .ui-card.ui-card--tbd {
       background: transparent;
       border: 1px solid var(--wf-line);
@@ -164,6 +198,11 @@
       display: none;
     }
 
+    /* Baseline styling for plain content tags inside cells — no class needed.
+       Covers the common key-value list shape: a list item holding a bold
+       field label (strong) followed by plain value text. Named classes
+       (.pp-ranked, .pp-stack-list, .pp-sitemap) override when specific
+       layout is required. */
     .ui-card p {
       font-size: 0.8125rem;
       color: var(--wf-text);
@@ -177,6 +216,11 @@
     }
     .ui-card ul li { padding: 2px 0; }
     .ui-card strong { color: var(--wf-text); font-weight: 600; }
+    /* Unified field-row vertical rhythm — paragraphs, bullet lists, ordered
+       lists, and metaSeg / listSeg <div>s stack at a consistent pace inside
+       every card. .ui-card__meta is excluded so its margin-top: auto keeps
+       it pinned to the bottom. Last child drops its bottom margin so the
+       final row doesn't push against the card's bottom padding. */
     .ui-card > p,
     .ui-card > ul,
     .ui-card > ol,
@@ -189,15 +233,16 @@
     }
     .ui-card > *:last-child { margin-bottom: 0; }
 
+    /* === Shell chrome — shared across all workflow templates (class prefix: .shell-*) === */
+
+    /* Reserve space for the bottom bar + shift content when left panel opens */
     body {
       padding-bottom: 48px;
       transition: margin-left 220ms ease;
     }
     body.shell-leftpanel-open { margin-left: min(30vw, 500px); }
-    body.shell-leftpanel-open .pp-main {
-      max-width: calc(100vw - min(30vw, 500px) - 64px);
-    }
 
+    /* ---------- Left panel ---------- */
     .shell-leftpanel {
       position: fixed;
       top: 0;
@@ -291,6 +336,7 @@
       background: #f2f2f2;
     }
 
+    /* List mode — filter toggle + chip row */
     .shell-filter-row {
       display: flex;
       gap: 8px;
@@ -453,6 +499,7 @@
       color: #555;
     }
 
+    /* Detail mode */
     .shell-detail__meta {
       display: grid;
       grid-template-columns: auto 1fr;
@@ -521,6 +568,7 @@
       body { padding-bottom: 0 !important; margin-left: 0 !important; }
     }
 
+    /* ---------- Bottom bar (verbatim from Fuse index2.html) ---------- */
     .shell-bottombar {
       position: fixed;
       bottom: 0;
@@ -545,11 +593,47 @@
       gap: 10px;
       padding: 0 12px;
       height: 100%;
+      flex-shrink: 0;
     }
     .shell-bottombar__group + .shell-bottombar__group {
       border-left: 1px solid #e5e5e5;
     }
     .shell-bottombar__spacer { flex: 1; }
+    /* ===== SHELL-NARROW-CSS-START — character-identical across the wireframing, audit, project-plan and messaging templates (__tests__/test_shell_narrow_sync.py) ===== */
+    /* Windows narrower than 1024px: the panel opens as a drawer over the page
+       instead of pushing the page narrower (both stay readable). */
+    @media (max-width: 1023.98px) {
+      body.shell-leftpanel-open { margin-left: 0; }
+      .shell-leftpanel { width: min(85vw, 360px); }
+    }
+    /* Labels stay on one line; when the controls don't fit the window the
+       bar scrolls sideways so every control stays reachable. */
+    .shell-bottombar {
+      white-space: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: thin;
+    }
+    /* Download menu — one button; the format buttons open upward. The list is
+       fixed-positioned so the bar's sideways scroll does not clip it. */
+    .shell-bottombar__menu > summary {
+      list-style: none;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .shell-bottombar__menu > summary::-webkit-details-marker { display: none; }
+    .shell-bottombar__menu-list {
+      position: fixed;
+      right: 12px;
+      bottom: 56px;
+      display: flex; flex-direction: column; align-items: stretch; gap: 6px;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.12);
+      z-index: 9600;
+    }
+    /* ===== SHELL-NARROW-CSS-END ===== */
     .shell-bottombar__btn {
       background: transparent;
       border: 1px solid var(--wf-line);
@@ -640,14 +724,22 @@
 
     /* ============================================================ */
     /* === PROJECT-PLAN-SPECIFIC — class prefix .pp-*            === */
+    /* === Sub-page containers, canvas rows (selective port from === */
+    /* === messaging-canvas-template.html), content-readiness    === */
+    /* === pills. Composes with UNIVERSAL shell chrome above.    === */
     /* ============================================================ */
 
+    /* Sub-page containers — one active at a time via page switcher.
+       .pp-main is the page-width container: it fills the space beside the
+       side panel, and the layout steps below follow its width. The side
+       gutters sit on the pages so the narrow step can shrink them. */
     .pp-main {
-      max-width: min(var(--wf-max-w), calc(100vw - 64px));
+      container: pp-main / inline-size;
+      max-width: calc(var(--wf-max-w) + 64px);
       margin: 0 auto;
-      padding: 24px 32px 48px;
+      padding: 24px 0 48px;
     }
-    .pp-page { display: none; }
+    .pp-page { display: none; padding: 0 64px; }
     .pp-page.pp-page--active { display: block; }
     .pp-header {
       padding: 16px 0 24px;
@@ -664,8 +756,12 @@
       margin: 0;
     }
 
+    /* .ui-* card-grid + badge primitives moved to UNIVERSAL (cross-workflow
+       shared). This section holds only Project Plan-specific `.pp-*`. */
+
     .pp-chips { display: flex; flex-wrap: wrap; gap: 4px; }
 
+    /* Ranked list inside a cell (e.g. top tasks). */
     .pp-ranked { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
     .pp-ranked li {
       display: flex;
@@ -690,6 +786,8 @@
       margin-right: 10px;
     }
 
+    /* Scope split (included vs. excluded chip pair). Stacked rows: included
+       on top, excluded below. */
     .pp-scope { display: grid; grid-template-columns: 1fr; gap: 16px; }
     .pp-scope-list { list-style: disc; padding-left: 18px; margin: 4px 0 0; font-size: 0.8125rem; }
     .pp-scope-list li { padding: 2px 0; }
@@ -705,6 +803,7 @@
       letter-spacing: 0.06em;
     }
 
+    /* Cards on canvas are clickable surfaces — hover to signal affordance. */
     .ui-card[data-id] { cursor: pointer; transition: box-shadow 120ms; }
     .ui-card[data-id]:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
     .ui-card[data-id].is-active {
@@ -716,6 +815,15 @@
       transition: filter 180ms ease;
     }
 
+    /* ---- Project plan sub-page primitives (formerly "Strategy") ---- */
+
+    /* IA frame trees — collapsible tree component for Main menu / Sitemap / Footer
+       on Project strategy sub-page. Each tree lives in its own .pp-tree-card
+       container (soft shadow, rounded corners, padding) — container/content
+       separation matches the rest of the template (.ui-card-grid / .ui-card).
+       Lvl 1 row is the card header (bigger type, no border). +/- toggle rendered
+       via CSS ::before on .pp-tree-toggle (no SVG). Row-click expands/collapses
+       via bindTreeToggles in the IIFE. */
     .pp-tree-card {
       background: var(--wf-bg);
       padding: 12px 24px 16px;
@@ -726,6 +834,9 @@
     .pp-tree-card + .pp-tree-card {
       margin-top: 12px;
     }
+    /* Lift the whole card when any row inside it is selected — matches the
+       drop-shadow used on .ui-card[data-id].is-active so clicked tree cards
+       visually join the same "active" vocabulary as the rest of the canvas. */
     .pp-tree-card:has(.pp-tree-row.is-selected) {
       box-shadow: none;
       filter:
@@ -786,6 +897,7 @@
       border-color: #b8c9dc;
     }
 
+    /* Top-level row reads as the card header — no box, just bigger type. */
     .pp-tree-node--lvl1 > .pp-tree-row {
       background: transparent;
       border: none;
@@ -827,6 +939,9 @@
     .pp-tree-node[data-expanded="true"] > .pp-tree-row > .pp-tree-toggle::before {
       content: "−";
     }
+    /* Hide toggle when expanded AND none of the direct children are themselves expandable
+       (children are all leaves — nothing further to collapse at this level).
+       Row remains clickable to toggle. */
     .pp-tree-node[data-expanded="true"]:not(:has(> .pp-tree-children > .pp-tree-node[data-expanded])) > .pp-tree-row > .pp-tree-toggle {
       visibility: hidden;
     }
@@ -835,6 +950,7 @@
       pointer-events: none;
     }
 
+    /* Typographic depth rhythm. */
     .pp-tree-name { font-weight: 500; color: var(--wf-text); }
     .pp-tree-node--lvl1 > .pp-tree-row > .pp-tree-name { font-size: 1.0625rem; font-weight: 700; letter-spacing: -0.005em; }
     .pp-tree-node--lvl2 > .pp-tree-row > .pp-tree-name { font-size: 0.9375rem; font-weight: 600; }
@@ -855,6 +971,7 @@
     }
     .pp-tree-node[data-expanded="true"] > .pp-tree-row > .pp-tree-meta > .pp-tree-hint { display: none; }
 
+    /* Per-page section map — page-level header block + grid of section cards. */
     .pp-page-map { margin: 24px auto 0; max-width: 600px; }
     .pp-page-map__header {
       padding: 14px 16px;
@@ -873,6 +990,9 @@
       margin-top: 4px;
     }
     .pp-page-map__tasks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    /* Goal + Top tasks on the page-header block are rendered by metaSeg /
+       listSeg as classless <div>s. Match card content-text sizing so the
+       header reads in the same key as the section cards below. */
     .pp-page-map__header > div:not(.pp-page-map__title) {
       font-size: 0.8125rem;
       color: var(--wf-secondary);
@@ -884,6 +1004,8 @@
       color: var(--wf-text);
     }
 
+    /* Section card supplemental primitives. Base class is .ui-card;
+       these children hold the narrative tag + question line + readiness pill. */
     .pp-cell-tags {
       display: flex;
       flex-wrap: wrap;
@@ -907,6 +1029,9 @@
       font-size: 0.8125rem;
       margin: 0;
     }
+    /* Section card — labeled field row. One pattern reused for Goal /
+       Message / Content rows. Content bullets render inside
+       .pp-section-card__field (label on first line, <ul> below). */
     .pp-section-card__field {
       font-size: 0.8125rem;
       color: var(--wf-secondary);
@@ -924,6 +1049,10 @@
     }
     .pp-section-card__field ul li,
     .pp-section-card__content-list li { padding: 2px 0; }
+    /* Section map — per-page button list. Sits below the page header; one
+       button per page (Home / Product / Global...). Active button shows
+       which page-map is visible below. Shares the 600px centered column
+       with .pp-page-map so header / switcher / maps all line up. */
     .pp-sm-switch {
       display: flex;
       flex-wrap: wrap;
@@ -931,6 +1060,7 @@
       margin: 8px auto 20px;
       max-width: 600px;
     }
+    /* Section map sub-page: narrow the page header to the same 600px column. */
     #pp-page-section-map .pp-header {
       max-width: 600px;
       margin-left: auto;
@@ -956,8 +1086,26 @@
       border-color: var(--wf-accent);
       color: #fff;
     }
+    /* Bottom-bar sub-page tabs — 4 buttons replacing the legacy <select>. */
     .shell-bottombar__tabs { gap: 4px; }
+    /* Windows narrower than 1024px show the pages as a dropdown instead of the
+       tab buttons (same cut-off as the side-panel drawer). */
+    .shell-bottombar__page-select { display: none; }
+    .shell-bottombar__page-select .shell-bottombar__select { min-width: 0; }
+    @media (max-width: 1023.98px) {
+      .shell-bottombar__tabs { display: none; }
+      .shell-bottombar__page-select { display: flex; }
+    }
+    /* Phone-width windows show the panel button as its icon only, so the bar
+       fits without scrolling. The label is hidden from sight only, so it stays
+       the button's spoken name even before the labels script runs. */
+    @media (max-width: 599.98px) {
+      #shellPanelToggle [data-label-key="bar_panel"] { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    }
 
+    /* ---- Design plan sub-page primitives (formerly "Inventory") ---- */
+
+    /* Summary stat block — three big numbers, their labels underneath. */
     .pp-summary {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -984,8 +1132,21 @@
       margin-top: 6px;
     }
 
+    /* Section Index — vertical stack of section cards. One card per unique
+       section, with priority badge + used-in chips + goal + key message +
+       atoms/variants + Question + Narrative. Rationale lives in the left
+       panel. */
     .pp-section-index { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 24px; }
     .pp-section-index .ui-card { padding: 14px 20px 16px; }
+    /* Design plan cards — match Section map's .pp-section-card__field treatment
+       (0.875rem secondary text + bold 600 label) so Section Index / Template
+       Map rows read the same way section cards do. Targets direct-child divs
+       of .ui-card to hit metaSeg / listSeg output without touching nested
+       primitives (.pp-used-in, .pp-atoms, .pp-stack-list, etc.). */
+    /* metaSeg / listSeg / kvSeg <div> rows — card-wide font rhythm. Applies
+       across all sub-pages so Context kv rows, Section map page-header
+       goal/tasks, Design plan Section Index + Template Map fields all read
+       at the same size with the same bold-label treatment. */
     .ui-card > div:not(.ui-card__meta) {
       font-size: 0.8125rem;
       color: var(--wf-secondary);
@@ -1007,6 +1168,8 @@
       margin-bottom: 4px;
     }
 
+    /* Per-template architecture views — one block per template. The inner
+       shape depends on template_type (Standard / Corporate Pool / Modular). */
     .pp-template-arch {
       margin-top: 20px;
       padding: 20px 24px;
@@ -1035,6 +1198,7 @@
     }
     .pp-template-arch__goal { color: var(--wf-secondary); margin-bottom: 14px; font-size: 0.9375rem; }
 
+    /* Standard template — ordered vertical stack of section references. */
     .pp-stack-list {
       list-style: none;
       padding: 0;
@@ -1066,6 +1230,7 @@
       margin-right: 10px;
     }
 
+    /* Corporate Pool — shared section stack + pool-variants gallery. */
     .pp-pool-subhead {
       font-size: 0.75rem;
       font-weight: 700;
@@ -1089,6 +1254,7 @@
     .pp-used-by { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
     .pp-used-by .ui-badge { font-size: 0.6875rem; }
 
+    /* Modular — atom palette (chip / tile grid, no order implied). */
     .pp-atom-palette {
       display: flex;
       flex-wrap: wrap;
@@ -1101,27 +1267,32 @@
       border: 1px solid var(--wf-line);
     }
 
-    @media (max-width: 768px) {
-      .shell-bottombar,
-      .shell-leftpanel { display: none !important; }
-      body.shell-leftpanel-open { margin-left: 0 !important; }
-      body { padding-bottom: 0 !important; }
-
-      .pp-main,
-      body.shell-leftpanel-open .pp-main {
-        max-width: min(var(--wf-max-w), calc(100vw - 32px));
-        padding: 16px;
-      }
-
-      .ui-card-grid { max-width: min(1560px, calc(100vw - 32px)); }
+    /* === Responsive — page-width steps (container set on .pp-main) === */
+    @container pp-main (width <= 900px) {
+      .ui-card-row--three { grid-template-columns: 1fr 1fr; }
+      .pp-summary { grid-template-columns: 1fr 1fr; }
+      .pp-header h1 { font-size: 1.75rem; }
+    }
+    @container pp-main (width < 600px) {
+      .pp-page { padding-left: 16px; padding-right: 16px; }
       .ui-card-row--three,
       .ui-card-row--two { grid-template-columns: 1fr; }
-      .pp-summary { grid-template-columns: 1fr; }
+      .pp-summary { grid-template-columns: 1fr; gap: 12px; padding: 16px; }
+      .pp-pool-gallery { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+      .ui-card,
+      .pp-tree-card { padding-left: 16px; padding-right: 16px; }
+      .pp-tree-children { padding-left: 12px; }
+      .pp-header h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body class="shell-leftpanel-open">
 
+<!-- ============================================================
+     SHELL — leftpanel (cloned verbatim from shared shell chrome).
+     Houses list/detail for the active sub-page. Filter chips and
+     groupings are added per sub-page.
+     ============================================================ -->
 <aside aria-hidden="false" class="shell-leftpanel is-open" id="shellLeftpanel" role="dialog">
   <div class="shell-leftpanel__header" id="shellHeader" style="display:none;">
     <button class="shell-leftpanel__back" id="shellBack" type="button" data-label-key="back" data-label-prefix="← ">← Back</button>
@@ -1135,46 +1306,76 @@
   <div class="shell-leftpanel__scroll" id="shellLeftpanelBody"></div>
 </aside>
 
+<!-- ============================================================
+     MAIN — four sub-page substrates. One is active at a time
+     via the bottom-bar page switcher. Each sub-page renders its
+     canvas from a co-located <script type="application/json">
+     data block at init (see §Canvas substrate in the shell spec).
+     ============================================================ -->
 <main class="pp-main">
 
+  <!-- Project context — Internal slug: context. Canvas content rendered
+       from #context-data JSON block at init per the canonical pattern
+       in references/shared/interactive-deliverable-shell.md §Canvas
+       substrate. Body contains chrome only (header + empty grid). -->
   <section class="pp-page pp-page--active" id="pp-page-context">
     <header class="pp-header">
       <h1 data-label-key="pp_context_title">Project context</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_context_subtitle">Discovery: who, what, why</p>
+      <p class="pp-header__subtitle" data-label-key="pp_context_subtitle">Project context subtitle</p>
     </header>
     <div class="ui-card-grid"></div>
   </section>
 
+  <!-- Project strategy (internal slug: strategy) — rendered from #strategy-data
+       JSON block. Row sequence: site-format + archetype cards → sitemap
+       tree → Messaging + Voice cards. Per-page section maps moved to the
+       Section map sub-page per the v4.0 split. -->
   <section class="pp-page" id="pp-page-strategy">
     <header class="pp-header">
-      <h1 data-label-key="pp_strategy_title">Strategy</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_strategy_subtitle">Format, archetype, sitemap, messaging, voice</p>
+      <h1 data-label-key="pp_strategy_title">Project strategy</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_strategy_subtitle">Project strategy subtitle</p>
     </header>
     <div class="ui-card-grid"></div>
   </section>
 
+  <!-- Section map (internal slug: section-map) — rendered from #section-map-data
+       JSON block. Row sequence: heading → page-map rows (one per sitemap page
+       + virtual Global). Each page-map block carries the per-page
+       section cards (six fields). -->
   <section class="pp-page" id="pp-page-section-map">
     <header class="pp-header">
       <h1 data-label-key="pp_section_map_title">Section map</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_section_map_subtitle">Section map per page, including the virtual Global page</p>
+      <p class="pp-header__subtitle" data-label-key="pp_section_map_subtitle">Section map subtitle</p>
     </header>
+    <!-- Per-page button list. Populated by renderSectionMapPageSwitcher()
+         from #section-map-data.page_sections. One page-map visible at a time. -->
     <div class="pp-sm-switch" id="sectionMapPageSwitch" role="tablist"></div>
     <div class="ui-card-grid"></div>
   </section>
 
+  <!-- Design plan (internal slug: inventory) — rendered from #inventory-data
+       JSON block. Row sequence: summary stat block → Template Map card
+       grid → Section Index card stack → per-template architecture views
+       (Standard / Corporate Pool / Modular). -->
   <section class="pp-page" id="pp-page-inventory">
     <header class="pp-header">
-      <h1 data-label-key="pp_inventory_title">Template inventory</h1>
-      <p class="pp-header__subtitle" data-label-key="pp_inventory_subtitle">Templates, sections, reuse map</p>
+      <h1 data-label-key="pp_inventory_title">Design plan</h1>
+      <p class="pp-header__subtitle" data-label-key="pp_inventory_subtitle">Design plan subtitle</p>
     </header>
     <div class="ui-card-grid"></div>
   </section>
 
 </main>
 
+<!-- ============================================================
+     BOTTOM BAR — panel toggle, sub-page switcher, download buttons.
+     Audit-specific controls (#auditToggle, #wfNotesToggle) dropped.
+     Download buttons are contract-only
+     (wiring specced in project-plan-schema.md).
+     ============================================================ -->
 <div class="shell-bottombar" id="shellBottombar">
   <div class="shell-bottombar__group">
-    <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button">
+    <button class="shell-bottombar__btn is-active" id="shellPanelToggle" type="button" data-label-aria-key="bar_panel">
       <span data-label-key="bar_panel">Rationale</span>
       <span class="shell-bottombar__chevron">◧</span>
     </button>
@@ -1185,46 +1386,100 @@
       <span data-label-key="bar_page_context">Project context</span>
     </button>
     <button class="shell-bottombar__btn" data-page="strategy" type="button" role="tab">
-      <span data-label-key="bar_page_strategy">Strategy</span>
+      <span data-label-key="bar_page_strategy">Project strategy</span>
     </button>
     <button class="shell-bottombar__btn" data-page="section-map" type="button" role="tab">
       <span data-label-key="bar_page_section_map">Section map</span>
     </button>
     <button class="shell-bottombar__btn" data-page="inventory" type="button" role="tab">
-      <span data-label-key="bar_page_inventory">Template inventory</span>
+      <span data-label-key="bar_page_inventory">Design plan</span>
     </button>
+  </div>
+  <div class="shell-bottombar__group shell-bottombar__page-select" id="shellPageSelectGroup">
+    <select class="shell-bottombar__select" id="shellPageSelect" aria-label="Sub-page" data-label-aria-key="bar_page">
+      <option value="context" data-label-key="bar_page_context">Project context</option>
+      <option value="strategy" data-label-key="bar_page_strategy">Project strategy</option>
+      <option value="section-map" data-label-key="bar_page_section_map">Section map</option>
+      <option value="inventory" data-label-key="bar_page_inventory">Design plan</option>
+    </select>
   </div>
   <div class="shell-bottombar__spacer"></div>
   <div class="shell-bottombar__group" id="shellDownloadGroup">
-    <label style="color:#666;" data-label-key="bar_download">Download:</label>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadHtml" title="Download the full Project Plan as HTML" data-label-title-key="bar_download_html_title" type="button">
-      <span data-label-key="bar_download_html">Project Plan HTML</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadContextMd" title="Download Project context as Markdown" data-label-title-key="bar_download_context_md_title" type="button">
-      <span data-label-key="bar_download_context_md">Project Context MD</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadStrategyMd" title="Download Strategy as Markdown" data-label-title-key="bar_download_strategy_md_title" type="button">
-      <span data-label-key="bar_download_strategy_md">Strategy MD</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadSectionMapMd" title="Download Section map as Markdown" data-label-title-key="bar_download_section_map_md_title" type="button">
-      <span data-label-key="bar_download_section_map_md">Section Map MD</span>
-    </button>
-    <button class="shell-bottombar__btn is-active" id="shellDownloadInventoryMd" title="Download Template inventory as Markdown" data-label-title-key="bar_download_inventory_md_title" type="button">
-      <span data-label-key="bar_download_inventory_md">Template Inventory MD</span>
-    </button>
+    <details class="shell-bottombar__menu" id="shellDownloadMenu">
+      <summary class="shell-bottombar__btn is-active"><span data-label-key="bar_download">Download</span> <span class="shell-bottombar__chevron">▾</span></summary>
+      <div class="shell-bottombar__menu-list">
+        <button class="shell-bottombar__btn is-active" id="shellDownloadHtml" title="Download the full Project Plan as HTML" data-label-title-key="bar_download_html_title" type="button">
+          <span data-label-key="bar_download_html">Project Plan HTML</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadContextMd" title="Download Project context as Markdown" data-label-title-key="bar_download_context_md_title" type="button">
+          <span data-label-key="bar_download_context_md">Project Context MD</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadStrategyMd" title="Download Project strategy as Markdown" data-label-title-key="bar_download_strategy_md_title" type="button">
+          <span data-label-key="bar_download_strategy_md">Project Strategy MD</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadSectionMapMd" title="Download Section map as Markdown" data-label-title-key="bar_download_section_map_md_title" type="button">
+          <span data-label-key="bar_download_section_map_md">Section Map MD</span>
+        </button>
+        <button class="shell-bottombar__btn is-active" id="shellDownloadInventoryMd" title="Download Design plan as Markdown" data-label-title-key="bar_download_inventory_md_title" type="button">
+          <span data-label-key="bar_download_inventory_md">Design Plan MD</span>
+        </button>
+      </div>
+    </details>
   </div>
 </div>
 
+<!-- ============================================================
+     DATA BLOCKS — three co-located per sub-page. Each
+     mirrors its own workflow's fields; schema lives in
+     references/project-plan/project-plan-schema.md. Placeholder
+     entries use unique bracketed ids ({context-id-N}, {strategy-id-N},
+     {inventory-id-N}) so later writes can replace them without id clash.
+     ============================================================ -->
 <script type="application/json" id="context-data">
 {
   "namespace": "ux-designer-project-plan-uxd-product-website-v3-2026-04-26",
-  "labels": {},
+  "labels": {
+    "group_project_specific": "For this project",
+    "pp_context_subtitle": "Discovery: who, what, why",
+    "pp_strategy_title": "Strategy",
+    "pp_strategy_subtitle": "Format, archetype, sitemap, messaging, voice",
+    "pp_section_map_subtitle": "Section map per page (including the virtual Global page)",
+    "pp_inventory_title": "Template inventory",
+    "pp_context_row_project_specific": "For this project",
+    "pp_scope_included": "In scope",
+    "pp_scope_excluded": "Out of scope",
+    "pp_strategy_site_format": "Site format",
+    "pp_strategy_messaging_voice": "Messaging and voice",
+    "pp_strategy_messaging": "Messaging hierarchy",
+    "pp_strategy_voice": "Voice brief",
+    "detail_narrative": "Narrative function",
+    "group_scope_page": "Page level",
+    "pp_inventory_field_narrative": "Narrative function",
+    "pp_inventory_section_index": "Section index",
+    "bar_page_strategy": "Strategy",
+    "bar_page_inventory": "Template inventory",
+    "bar_download": "Download:",
+    "bar_download_html": "Project Plan (HTML)",
+    "bar_download_context_md": "Project Context (MD)",
+    "bar_download_strategy_md": "Strategy (MD)",
+    "bar_download_section_map_md": "Section Map (MD)",
+    "bar_download_inventory_md": "Template Inventory (MD)",
+    "bar_download_context_md_title": "Download Project Context as Markdown",
+    "bar_download_strategy_md_title": "Download Strategy as Markdown",
+    "bar_download_section_map_md_title": "Download Section Map as Markdown",
+    "bar_download_inventory_md_title": "Download Template Inventory as Markdown",
+    "md_included": "In scope",
+    "md_excluded": "Out of scope",
+    "md_narrative": "Narrative function",
+    "md_pp_strategy_title": "Strategy",
+    "md_pp_inventory_title": "Template inventory"
+  },
   "canvas": {
     "rows": [
       {
         "type": "cards",
         "title": "Universal",
-        "variant": "three",
+        "variant": "two",
         "card_ids": [
           "context-id-overview",
           "context-id-goal",
@@ -1238,7 +1493,7 @@
       {
         "type": "cards",
         "title": "For this project",
-        "variant": "three",
+        "variant": "two",
         "card_ids": [
           "context-id-sales-motion",
           "context-id-pricing-tier",
@@ -1324,11 +1579,23 @@
       "confidence": "high",
       "title": "Alternatives",
       "layout": "simple-meta",
-      "bullets": [
-        "Status quo (I figure it out myself, no process): intuition straight from the brief into Figma, audits by gut feel with no criteria, pen and paper. This cluster shows up across all three personas as a universal baseline.",
-        "Internal DIY (I cobble it together): ChatGPT or Claude used ad hoc, prompt collections for UX, Figma Community UI kits, WordPress or Shopify themes, site generators (Bolt, v0, Lovable, Cursor) with default structures accepted as-is.",
-        "General-purpose tools: Figma, FigJam, Miro, design tools without a structural layer. The skill owns the stage before the first frame, it doesn't compete with Figma, it feeds Figma context.",
-        "Direct competition: freelance UX, consultant, agency, design sprint (recognized but rejected because of the $500 to $8000 cost and the multi-day timeline). Courses (Udemy, Interaction Design Foundation, NN/g, Baymard, Smashing Magazine) and peer feedback from fellow designers or in communities (Discord, IndieHackers)."
+      "kv": [
+        {
+          "label": "Status quo (I figure it out myself, no process)",
+          "value": "intuition straight from the brief into Figma, audits by gut feel with no criteria, pen and paper. This cluster shows up across all three personas as a universal baseline."
+        },
+        {
+          "label": "Internal DIY (I cobble it together)",
+          "value": "ChatGPT or Claude used ad hoc, prompt collections for UX, Figma Community UI kits, WordPress or Shopify themes, site generators (Bolt, v0, Lovable, Cursor) with default structures accepted as-is."
+        },
+        {
+          "label": "General-purpose tools",
+          "value": "Figma, FigJam, Miro, design tools without a structural layer. The skill owns the stage before the first frame, it doesn't compete with Figma, it feeds Figma context."
+        },
+        {
+          "label": "Direct competition",
+          "value": "freelance UX, consultant, agency, design sprint (recognized but rejected because of the $500 to $8000 cost and the multi-day timeline). Courses (Udemy, Interaction Design Foundation, NN/g, Baymard, Smashing Magazine) and peer feedback from fellow designers or in communities (Discord, IndieHackers)."
+        }
       ],
       "rationale": "Four clusters cover every alternative named in the simulated interviews with the three personas, described from the buyer's behavior (inside-out) rather than from the product offer. Every alternative named in the brief (chatbots, prompts, templates, consultants) lands in one of the four clusters.",
       "alternatives": "Google Analytics, Hotjar, Mixpanel as a separate cluster (rejected, these are diagnostic tools at an earlier stage, not an alternative for producing UX documentation). 'I skip UX entirely, ship straight to dev' as a separate cluster (rejected, fits inside cluster 1 already as no-process)."
@@ -1541,12 +1808,36 @@
     "alternatives": "Expanded menu linking to every home section (rejected: duplicates the scroll). Hamburger on desktop (rejected: four items fit in the bar, hamburger adds friction). 'Resources' dropdown (rejected: only two resources, grouping adds no value)."
   },
   "main_menu": [
-    { "id": "menu-logo", "name": "Logo (→ Home)", "children": [] },
-    { "id": "menu-pricing", "name": "Pricing (#pricing)", "children": [] },
-    { "id": "menu-audit", "name": "Audit (#audit)", "children": [] },
-    { "id": "menu-knowledge-base", "name": "Knowledge base (/knowledge-base)", "children": [] },
-    { "id": "menu-how-it-works", "name": "How it works (/how-it-works)", "children": [] },
-    { "id": "menu-cta", "name": "See pricing (CTA)", "children": [] }
+    {
+      "id": "menu-logo",
+      "name": "Logo (→ Home)",
+      "children": []
+    },
+    {
+      "id": "menu-pricing",
+      "name": "Pricing (#pricing)",
+      "children": []
+    },
+    {
+      "id": "menu-audit",
+      "name": "Audit (#audit)",
+      "children": []
+    },
+    {
+      "id": "menu-knowledge-base",
+      "name": "Knowledge base (/knowledge-base)",
+      "children": []
+    },
+    {
+      "id": "menu-how-it-works",
+      "name": "How it works (/how-it-works)",
+      "children": []
+    },
+    {
+      "id": "menu-cta",
+      "name": "See pricing (CTA)",
+      "children": []
+    }
   ],
   "sitemap_meta": {
     "rationale": "Flat hierarchy: Home plus two subpages. All three main CTAs (purchase, audit, NGO) are reachable in one click. Top tasks (persona qualification, file inspection, tier comparison, installation) all live on home as sections or direct links into the subpages.",
@@ -1557,8 +1848,16 @@
       "id": "page-home",
       "name": "Home",
       "children": [
-        { "id": "page-knowledge-base", "name": "Knowledge base", "children": [] },
-        { "id": "page-how-it-works", "name": "How it works", "children": [] }
+        {
+          "id": "page-knowledge-base",
+          "name": "Knowledge base",
+          "children": []
+        },
+        {
+          "id": "page-how-it-works",
+          "name": "How it works",
+          "children": []
+        }
       ]
     }
   ],
@@ -1571,25 +1870,53 @@
       "id": "footer-product",
       "name": "Product",
       "children": [
-        { "id": "footer-pricing", "name": "Pricing", "children": [] },
-        { "id": "footer-audit", "name": "Free audit", "children": [] },
-        { "id": "footer-knowledge-base", "name": "Knowledge base", "children": [] },
-        { "id": "footer-how-it-works", "name": "How it works", "children": [] }
+        {
+          "id": "footer-pricing",
+          "name": "Pricing",
+          "children": []
+        },
+        {
+          "id": "footer-audit",
+          "name": "Free audit",
+          "children": []
+        },
+        {
+          "id": "footer-knowledge-base",
+          "name": "Knowledge base",
+          "children": []
+        },
+        {
+          "id": "footer-how-it-works",
+          "name": "How it works",
+          "children": []
+        }
       ]
     },
     {
       "id": "footer-company",
       "name": "Company",
       "children": [
-        { "id": "footer-contact", "name": "Contact", "children": [] }
+        {
+          "id": "footer-contact",
+          "name": "Contact",
+          "children": []
+        }
       ]
     },
     {
       "id": "footer-legal",
       "name": "Legal",
       "children": [
-        { "id": "footer-privacy", "name": "Privacy policy", "children": [] },
-        { "id": "footer-terms", "name": "Terms", "children": [] }
+        {
+          "id": "footer-privacy",
+          "name": "Privacy policy",
+          "children": []
+        },
+        {
+          "id": "footer-terms",
+          "name": "Terms",
+          "children": []
+        }
       ]
     }
   ],
@@ -1627,9 +1954,15 @@
       "layout": "ranked-list",
       "lead": "A site plan with rationale next to every decision, before you open Figma or kick off vibe coding. UX expertise built in, the decision stays with you.",
       "ranked": [
-        { "text": "P1: A site plan with rationale next to every decision" },
-        { "text": "P2: Files ready for you and your client" },
-        { "text": "P3: UX expertise built in, the decision is yours" }
+        {
+          "text": "P1: A site plan with rationale next to every decision"
+        },
+        {
+          "text": "P2: Files ready for you and your client"
+        },
+        {
+          "text": "P3: UX expertise built in, the decision is yours"
+        }
       ],
       "rationale": "Hierarchy is taken directly from the approved messaging canvas. The pillars are ordered trigger → mechanism → control: first 'there's a plan' (P1), then 'the files keep working downstream' (P2), then 'you stay in control' (P3). That covers the Designer's most common questions in that order.",
       "alternatives": "Different ordering (P3 → P1 → P2 as 'expertise first, then mechanism, then distribution') (rejected: the canvas hierarchy was already tested in messaging and works under the proof-first archetype)."
@@ -1725,12 +2058,46 @@
   ],
   "canvas": {
     "rows": [
-      { "type": "cards", "title": "Format and archetype", "variant": "two", "card_ids": ["strategy-id-site-format", "strategy-id-archetype"] },
-      { "type": "cards", "title": "Messaging and voice", "variant": "two", "card_ids": ["strategy-id-messaging-hierarchy", "strategy-id-voice-brief"] },
-      { "type": "heading", "title": "Site structure" },
-      { "type": "tree", "kind": "main-menu", "title": "Main menu", "nodes_ref": "main_menu" },
-      { "type": "tree", "kind": "sitemap", "title": "Sitemap", "nodes_ref": "sitemap" },
-      { "type": "tree", "kind": "footer", "title": "Footer", "nodes_ref": "footer" }
+      {
+        "type": "cards",
+        "title": "Format and archetype",
+        "variant": "two",
+        "card_ids": [
+          "strategy-id-site-format",
+          "strategy-id-archetype"
+        ]
+      },
+      {
+        "type": "cards",
+        "title": "Messaging and voice",
+        "variant": "two",
+        "card_ids": [
+          "strategy-id-messaging-hierarchy",
+          "strategy-id-voice-brief"
+        ]
+      },
+      {
+        "type": "heading",
+        "title": "Site structure"
+      },
+      {
+        "type": "tree",
+        "kind": "main-menu",
+        "title": "Main menu",
+        "nodes_ref": "main_menu"
+      },
+      {
+        "type": "tree",
+        "kind": "sitemap",
+        "title": "Sitemap",
+        "nodes_ref": "sitemap"
+      },
+      {
+        "type": "tree",
+        "kind": "footer",
+        "title": "Footer",
+        "nodes_ref": "footer"
+      }
     ]
   }
 }
@@ -1778,10 +2145,22 @@
   ],
   "canvas": {
     "rows": [
-      { "type": "page-map", "page_id": "page-home" },
-      { "type": "page-map", "page_id": "page-knowledge-base" },
-      { "type": "page-map", "page_id": "page-how-it-works" },
-      { "type": "page-map", "page_id": "global" }
+      {
+        "type": "page-map",
+        "page_id": "page-home"
+      },
+      {
+        "type": "page-map",
+        "page_id": "page-knowledge-base"
+      },
+      {
+        "type": "page-map",
+        "page_id": "page-how-it-works"
+      },
+      {
+        "type": "page-map",
+        "page_id": "global"
+      }
     ]
   },
   "items": [
@@ -1994,21 +2373,29 @@
       "id": "template-home",
       "name": "{Home}",
       "template_type": "standard",
-      "pages_using": ["{Home}"],
+      "pages_using": [
+        "{Home}"
+      ],
       "goal": "{What this template accomplishes — one-liner on the card.}"
     },
     {
       "id": "template-product",
       "name": "{Product / Feature}",
       "template_type": "corporate-pool",
-      "pages_using": ["{Product A}", "{Product B}", "{Product C}"],
+      "pages_using": [
+        "{Product A}",
+        "{Product B}",
+        "{Product C}"
+      ],
       "goal": "{Template goal — shared shell with pool variants per page.}"
     },
     {
       "id": "template-landing",
       "name": "{Campaign Landing}",
       "template_type": "modular",
-      "pages_using": ["{Summer campaign}"],
+      "pages_using": [
+        "{Summer campaign}"
+      ],
       "goal": "{Template goal — atom palette for one-off campaign composition.}"
     }
   ],
@@ -2017,11 +2404,21 @@
       "id": "section-main-menu",
       "name": "Main menu",
       "priority_tier": "critical",
-      "used_in": ["All pages"],
+      "used_in": [
+        "All pages"
+      ],
       "goal": "{Global nav goal — what the main menu has to surface on every page.}",
       "key_message": "{Core message the nav must land across the site.}",
-      "atoms": ["{logo}", "{nav-items}", "{cta}", "{mega-menu}"],
-      "variants": ["{default}", "{sticky}"],
+      "atoms": [
+        "{logo}",
+        "{nav-items}",
+        "{cta}",
+        "{mega-menu}"
+      ],
+      "variants": [
+        "{default}",
+        "{sticky}"
+      ],
       "question": "{User question the nav answers at a glance.}",
       "narrative": "{hook}",
       "content_status": "content-ready",
@@ -2033,11 +2430,22 @@
       "name": "{Hero}",
       "priority_tier": "critical",
       "template_type": "standard",
-      "used_in": ["{Home}", "{Product A}"],
+      "used_in": [
+        "{Home}",
+        "{Product A}"
+      ],
       "goal": "{Section goal — what this section accomplishes on the page.}",
       "key_message": "{Core message the section must land.}",
-      "atoms": ["{heading}", "{subhead}", "{cta}", "{bg-image}"],
-      "variants": ["{default}", "{video}"],
+      "atoms": [
+        "{heading}",
+        "{subhead}",
+        "{cta}",
+        "{bg-image}"
+      ],
+      "variants": [
+        "{default}",
+        "{video}"
+      ],
       "question": "{User question this section answers.}",
       "narrative": "{hook}",
       "content_status": "content-ready",
@@ -2049,11 +2457,20 @@
       "name": "{Features}",
       "priority_tier": "significant",
       "template_type": "standard",
-      "used_in": ["{Home}"],
+      "used_in": [
+        "{Home}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{heading}", "{grid}", "{icon}", "{copy-block}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{heading}",
+        "{grid}",
+        "{icon}",
+        "{copy-block}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{evidence}",
       "content_status": "needs-content",
@@ -2065,11 +2482,24 @@
       "name": "{CTA band}",
       "priority_tier": "critical",
       "template_type": "standard",
-      "used_in": ["{Home}", "{Product A}", "{Product B}", "{Product C}"],
+      "used_in": [
+        "{Home}",
+        "{Product A}",
+        "{Product B}",
+        "{Product C}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{heading}", "{subhead}", "{primary-cta}", "{secondary-cta}"],
-      "variants": ["{default}", "{inverse}"],
+      "atoms": [
+        "{heading}",
+        "{subhead}",
+        "{primary-cta}",
+        "{secondary-cta}"
+      ],
+      "variants": [
+        "{default}",
+        "{inverse}"
+      ],
       "question": "{User question.}",
       "narrative": "{resolution}",
       "content_status": "tbd",
@@ -2081,11 +2511,19 @@
       "name": "{Specs}",
       "priority_tier": "significant",
       "template_type": "corporate-pool",
-      "used_in": ["{Product A}", "{Product B}"],
+      "used_in": [
+        "{Product A}",
+        "{Product B}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{table}", "{note}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{table}",
+        "{note}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{evidence}",
       "content_status": "needs-content",
@@ -2097,11 +2535,20 @@
       "name": "{Reviews}",
       "priority_tier": "minor",
       "template_type": "corporate-pool",
-      "used_in": ["{Product B}", "{Product C}"],
+      "used_in": [
+        "{Product B}",
+        "{Product C}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{quote}", "{avatar}", "{star-rating}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{quote}",
+        "{avatar}",
+        "{star-rating}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{evidence}",
       "content_status": "tbd",
@@ -2113,11 +2560,23 @@
       "name": "Footer",
       "priority_tier": "minor",
       "template_type": "standard",
-      "used_in": ["{Home}", "{Product A}", "{Product B}", "{Product C}", "{Summer campaign}"],
+      "used_in": [
+        "{Home}",
+        "{Product A}",
+        "{Product B}",
+        "{Product C}",
+        "{Summer campaign}"
+      ],
       "goal": "{Section goal.}",
       "key_message": "{Core message.}",
-      "atoms": ["{columns}", "{legal}", "{social}"],
-      "variants": ["{default}"],
+      "atoms": [
+        "{columns}",
+        "{legal}",
+        "{social}"
+      ],
+      "variants": [
+        "{default}"
+      ],
       "question": "{User question.}",
       "narrative": "{resolution}",
       "content_status": "content-ready",
@@ -2130,45 +2589,95 @@
       "id": "template-home",
       "name": "{Home}",
       "template_type": "standard",
-      "sections": ["section-hero", "section-features", "section-cta", "section-footer"]
+      "sections": [
+        "section-hero",
+        "section-features",
+        "section-cta",
+        "section-footer"
+      ]
     },
     {
       "id": "template-product",
       "name": "{Product / Feature}",
       "template_type": "corporate-pool",
-      "shared_sections": ["section-hero", "section-cta", "section-footer"],
+      "shared_sections": [
+        "section-hero",
+        "section-cta",
+        "section-footer"
+      ],
       "pool_sections": [
-        { "id": "section-specs",   "name": "{Specs}",   "used_by": ["{Product A}", "{Product B}"] },
-        { "id": "section-reviews", "name": "{Reviews}", "used_by": ["{Product B}", "{Product C}"] }
+        {
+          "id": "section-specs",
+          "name": "{Specs}",
+          "used_by": [
+            "{Product A}",
+            "{Product B}"
+          ]
+        },
+        {
+          "id": "section-reviews",
+          "name": "{Reviews}",
+          "used_by": [
+            "{Product B}",
+            "{Product C}"
+          ]
+        }
       ]
     },
     {
       "id": "template-landing",
       "name": "{Campaign Landing}",
       "template_type": "modular",
-      "atoms": ["{hero}", "{testimonial}", "{feature-grid}", "{cta-band}", "{faq}"]
+      "atoms": [
+        "{hero}",
+        "{testimonial}",
+        "{feature-grid}",
+        "{cta-band}",
+        "{faq}"
+      ]
     }
   ],
   "canvas": {
     "rows": [
-      { "type": "summary" },
+      {
+        "type": "summary"
+      },
       {
         "type": "cards",
         "title": "Unique templates",
-        "variant": "three",
-        "card_ids": ["template-home", "template-product", "template-landing"]
+        "variant": "two",
+        "card_ids": [
+          "template-home",
+          "template-product",
+          "template-landing"
+        ]
       },
       {
         "type": "cards",
         "title": "Section index",
-        "variant": "three",
-        "card_ids": ["section-main-menu", "section-hero", "section-features", "section-cta", "section-specs", "section-reviews", "section-footer"]
+        "variant": "two",
+        "card_ids": [
+          "section-main-menu",
+          "section-hero",
+          "section-features",
+          "section-cta",
+          "section-specs",
+          "section-reviews",
+          "section-footer"
+        ]
       }
     ]
   }
 }
 </script>
 
+<!-- ============================================================
+     SHELL JS — IIFE. Loads four per-sub-page data blocks, renders
+     list/detail for the active sub-page, wires page switcher + panel
+     toggle + per-sub-page MD downloaders + single-file HTML download.
+     Audit-specific decision toggles and wireframe navigation are
+     intentionally absent (Project Plan has no decision-state chrome).
+     ============================================================ -->
 <script>
 (function() {
   const ctxEl = document.getElementById('context-data');
@@ -2182,6 +2691,15 @@
   const SECTION_MAP = JSON.parse(secMapEl.textContent);
   const INVENTORY   = JSON.parse(invEl.textContent);
 
+  // Template-stock detection. Each data block in the raw template carries
+  // `"_template_stock": true`; `write_project_plan_block` (ux_utils.py) replaces
+  // the entire block body with the agent's payload, so the sentinel is dropped
+  // automatically on a real write. A block is "populated" iff the sentinel is
+  // absent. When zero blocks are populated (raw template preview), render all
+  // four sub-pages so the template still demos. When at least one block is
+  // populated (live deliverable), hide tabs + sub-page divs for blocks that
+  // still carry the sentinel — keeps half-finished project plans free of the
+  // template's demo content on the unpopulated tabs.
   const SUB_PAGE_DATA = { 'context': CONTEXT, 'strategy': STRATEGY, 'section-map': SECTION_MAP, 'inventory': INVENTORY };
   const ALL_PAGES = ['context', 'strategy', 'section-map', 'inventory'];
   const POPULATED_PAGES = ALL_PAGES.filter(function(slug) {
@@ -2191,21 +2709,32 @@
   const DEMO_MODE = POPULATED_PAGES.length === 0;
   const VISIBLE_PAGES = DEMO_MODE ? ALL_PAGES.slice() : POPULATED_PAGES;
 
+  // Use the first data block that declares a namespace as the LocalStorage
+  // key prefix. Fall back to a generic slug if none is declared.
   const NS = CONTEXT.namespace || STRATEGY.namespace || SECTION_MAP.namespace || INVENTORY.namespace || 'ux-designer-project-plan';
 
+  // ---- UI labels ----
+  // Source-of-truth defaults are English. A deliverable may override any key
+  // via `labels: { <key>: '<localized>' }` inside any data block; overrides
+  // from context-data take precedence, then strategy, then inventory.
   const DEFAULT_LABELS = {
+    // Confidence values
     confidence_confirmed: 'Confirmed',
     confidence_likely:    'Likely',
     confidence_tentative: 'Tentative',
+    // Project context axes
     axis_group:              'Group',
     axis_confidence:         'Confidence',
     group_universal:         'Universal',
-    group_project_specific:  'For this project',
+    group_project_specific:  'Project-specific',
+    // Project strategy axes
     axis_scope:    'Scope',
     scope_page:    'Page',
     scope_section: 'Section',
     scope_ia:      'IA decision',
+    // Section map axes
     axis_page:     'Page',
+    // Design plan axes
     axis_priority:           'Priority',
     priority_critical:       'Critical',
     priority_significant:    'Significant',
@@ -2214,35 +2743,41 @@
     template_standard:       'Standard',
     template_corporate_pool: 'Corporate pool',
     template_modular:        'Modular',
+    // Filters (built-in chrome)
     filter_all:          'All',
     filter_label:        'Filters',
     filter_label_active: 'Filters · active: {n}',
     filter_clear:        'Clear',
+    // Panel header / nav
     back:              'Back',
     nav_prev:          'Previous',
     nav_next:          'Next',
     nav_counter:       '{i} of {total}',
     nav_counter_empty: '—',
     group_empty:       '(empty)',
+    // Sub-page titles
     pp_context_title:      'Project context',
-    pp_context_subtitle:   'Discovery: who, what, why',
-    pp_strategy_title:        'Strategy',
-    pp_strategy_subtitle:     'Format, archetype, sitemap, messaging, voice',
+    pp_context_subtitle:   'Discovery outputs — who, what, why',
+    pp_strategy_title:        'Project strategy',
+    pp_strategy_subtitle:     'Site format, archetype, sitemap, messaging, voice',
     pp_section_map_title:     'Section map',
-    pp_section_map_subtitle:  'Section map per page (including the virtual Global page)',
-    pp_inventory_title:       'Template inventory',
+    pp_section_map_subtitle:  'Per-page section maps (including virtual Global)',
+    pp_inventory_title:       'Design plan',
     pp_inventory_subtitle:    'Templates, sections, reuse map',
+    // Project context row titles + scope split
     pp_context_row_universal:        'Universal',
-    pp_context_row_project_specific: 'For this project',
-    pp_scope_included: 'In scope',
-    pp_scope_excluded: 'Out of scope',
-    pp_strategy_site_format:     'Site format',
+    pp_context_row_project_specific: 'Project specific',
+    pp_scope_included: 'Included',
+    pp_scope_excluded: 'Excluded',
+    // Project plan section headings
+    pp_strategy_site_format:     'Site Format',
     pp_strategy_archetype:       'Archetype',
     pp_strategy_sitemap:         'Sitemap',
     pp_strategy_page_maps:       'Per-page section maps',
-    pp_strategy_messaging_voice: 'Messaging and voice',
-    pp_strategy_messaging:       'Messaging hierarchy',
-    pp_strategy_voice:           'Voice brief',
+    pp_strategy_messaging_voice: 'Messaging & Voice',
+    pp_strategy_messaging:       'Messaging Hierarchy',
+    pp_strategy_voice:           'Voice Brief',
+    // Content-readiness pill short labels
     pp_content_ready: 'Content ready',
     pp_needs_content: 'Needs content',
     pp_tbd_status:    'TBD',
@@ -2250,24 +2785,29 @@
     pp_section_card_message:    'Message:',
     pp_section_card_content:    'Content:',
     pp_section_card_readiness:  'Readiness:',
+    // Detail block headings
     detail_rationale:      'Rationale',
     detail_alternatives:   'Alternatives considered',
     detail_element:        'Element',
     detail_decision_status:'Decision status',
     detail_page:           'Page',
-    detail_narrative:      'Narrative function',
+    detail_narrative:      'Narrative',
     detail_goal:           'Goal',
     detail_question:       'Question',
     detail_content:        'Content description',
     detail_content_status: 'Content readiness',
-    group_scope_page:    'Page level',
+    // Scope group headers
+    group_scope_page:    'Page-level',
     group_scope_section: 'Sections',
     group_scope_ia:      'IA decisions',
+    // Page labels for grouping sections by page in the left-panel list
     page_global_label:   'Global',
+    // Design plan canvas labels
     pp_inventory_total_templates:          'Unique templates',
     pp_inventory_unique_sections:          'Unique sections',
     pp_inventory_sections_needing_content: 'Sections needing content',
-    pp_inventory_field_narrative:    'Narrative function',
+    // Section Index card field labels (Design plan) — translatable overrides.
+    pp_inventory_field_narrative:    'Narrative',
     pp_inventory_field_goal:         'Goal',
     pp_inventory_field_question:     'Question',
     pp_inventory_field_key_message:  'Key message',
@@ -2279,12 +2819,13 @@
     pp_inventory_template_map:    'Unique templates',
     pp_inventory_usage_single:    'Single page',
     pp_inventory_usage_reusable:  'Reusable',
-    pp_inventory_section_index:   'Section index',
+    pp_inventory_section_index:   'Section Index',
     pp_inventory_template_arch:   'Per-template architecture',
     pp_inventory_atoms:           'Atoms',
     pp_inventory_variants:        'Variants',
     pp_inventory_shared_sections: 'Shared sections',
     pp_inventory_pool_variants:   'Pool variants',
+    // Design plan left-panel group headers + detail blocks
     group_kind_section:  'Sections',
     group_kind_template: 'Templates',
     detail_used_in:      'Used in',
@@ -2293,33 +2834,36 @@
     detail_variants:     'Variants',
     detail_pages_using:  'Pages using',
     detail_template_type:'Template type',
+    // Bottom bar
     bar_panel:                'Rationale',
     bar_page:                 'Sub-page:',
     bar_change_view:               'Change view:',
     bar_page_context:              'Project context',
-    bar_page_strategy:             'Strategy',
+    bar_page_strategy:             'Project strategy',
     bar_page_section_map:          'Section map',
-    bar_page_inventory:            'Template inventory',
-    bar_download:                  'Download:',
-    bar_download_html:             'Project Plan (HTML)',
-    bar_download_context_md:       'Project Context (MD)',
-    bar_download_strategy_md:      'Strategy (MD)',
-    bar_download_section_map_md:   'Section Map (MD)',
-    bar_download_inventory_md:     'Template Inventory (MD)',
-    bar_download_context_md_title:     'Download Project Context as Markdown',
-    bar_download_strategy_md_title:    'Download Strategy as Markdown',
-    bar_download_section_map_md_title: 'Download Section Map as Markdown',
-    bar_download_inventory_md_title:   'Download Template Inventory as Markdown',
+    bar_page_inventory:            'Design plan',
+    bar_download:                  'Download',
+    bar_download_html:             'Project Plan HTML',
+    bar_download_context_md:       'Project Context MD',
+    bar_download_strategy_md:      'Project Strategy MD',
+    bar_download_section_map_md:   'Section Map MD',
+    bar_download_inventory_md:     'Design Plan MD',
+    bar_download_context_md_title:     'Download Project context sub-page as Markdown',
+    bar_download_strategy_md_title:    'Download Project strategy sub-page as Markdown',
+    bar_download_section_map_md_title: 'Download Section map sub-page as Markdown',
+    bar_download_inventory_md_title:   'Download Design plan sub-page as Markdown',
     bar_download_html_title:           'Download the full Project Plan as HTML',
+    // MD export — confidence pill labels (separate from canvas confidence_*; emoji-prefixed for MD readability).
     md_confidence_confirmed: '🟢 Confirmed',
     md_confidence_likely:    '🟡 Likely',
     md_confidence_tentative: '🔴 Tentative',
+    // MD export — common field labels.
     md_confidence:           'Confidence',
     md_rationale:            'Rationale',
     md_alternatives:         'Alternatives considered',
     md_value:                'Value',
-    md_included:             'In scope',
-    md_excluded:             'Out of scope',
+    md_included:             'Included',
+    md_excluded:             'Excluded',
     md_priority:             'Priority',
     md_meta_pills:           'Tags',
     md_atoms:                'Atoms',
@@ -2331,17 +2875,21 @@
     md_question:             'Question',
     md_content_description:  'Content',
     md_key_message:          'Key message',
-    md_narrative:            'Narrative function',
+    md_narrative:            'Narrative',
     md_content_status:       'Content readiness',
     md_top_tasks_served:     'Top tasks served',
     md_element:              'Element',
     md_decision_status:      'Decision status',
     md_page:                 'Page',
+    // MD export — Project context document.
     md_pp_context_title:     'Project context',
-    md_pp_strategy_title:    'Strategy',
+    // MD export — Project strategy document + section headings (canvas row titles flow through where set).
+    md_pp_strategy_title:    'Project strategy',
     md_strategy_section_ia:  'IA decisions',
+    // MD export — Section map document.
     md_pp_section_map_title: 'Section map',
-    md_pp_inventory_title:                          'Template inventory',
+    // MD export — Design plan document + section headings.
+    md_pp_inventory_title:                          'Design plan',
     md_inventory_section_summary:                   'Summary',
     md_inventory_section_template_map:              'Template map',
     md_inventory_section_section_index:             'Section index',
@@ -2383,6 +2931,7 @@
     });
   }
 
+  // ---- Pill maps (one per filter axis, keyed by enum value) ----
   const CONF_MAP = {
     'high':   { label: LABELS.confidence_confirmed, cls: 'ui-badge--green' },
     'medium': { label: LABELS.confidence_likely,    cls: 'ui-badge--yellow' },
@@ -2413,6 +2962,17 @@
     return '<span class="ui-badge ' + m.cls + '">' + m.label + '</span>';
   }
 
+  // ============================================================
+  // Canvas renderers — drive each .pp-page canvas from its JSON
+  // data block at init. Each sub-page has a thin entry point
+  // (renderContextSubPage / renderStrategySubPage /
+  // renderInventorySubPage) that delegates to renderCanvasFromRows,
+  // which walks data.canvas.rows[] and dispatches on row.type.
+  // Cards dispatch on item.layout; Design plan inventory items
+  // (template_map / section_index) use inferred layouts via a
+  // synthesized `_kind` marker.
+  // ============================================================
+
   const CONTENT_STATUS_MAP = {
     'content-ready': { cls: 'ui-badge--content-ready', labelKey: 'pp_content_ready' },
     'needs-content': { cls: 'ui-badge--needs-content', labelKey: 'pp_needs_content' },
@@ -2426,6 +2986,9 @@
   }
   function narrativeTag(narrative) {
     if (!narrative) return '';
+    // Strip placeholder braces so `{hook}` renders as `hook` in the pill
+    // while still letting metaSeg / listSeg treat the value as a placeholder
+    // elsewhere on the card.
     const v = String(narrative);
     const inner = v.startsWith('{') && v.endsWith('}') ? v.slice(1, -1) : v;
     return '<span class="pp-narrative-tag">' + inner + '</span>';
@@ -2433,23 +2996,39 @@
   function confidenceBadge(confidence) {
     return confidence ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_confidence + ':</span>' + pill(CONF_MAP, confidence) + '</div>' : '';
   }
+  // Class hook for cards whose panel detail would be empty — no rationale
+  // AND no alternatives means the card has nothing to offer on click, so
+  // we mark it --no-detail (CSS drops cursor/hover; click handler filters).
   function cardNoDetailClass(item) {
     return (item && !item.rationale && !item.alternatives) ? ' ui-card--no-detail' : '';
   }
+  // Inverse of cardNoDetailClass — used to filter left-panel lists so that
+  // items with nothing to show (no rationale + no alternatives) don't appear
+  // as dead links. The canvas still renders them (they're the deliverable),
+  // just marked non-interactive via cardNoDetailClass.
   function hasDetail(item) {
     return !!(item && (item.rationale || item.alternatives));
   }
   function plainChip(text) {
     return '<span class="ui-badge ui-badge--gray ui-badge--plain">' + text + '</span>';
   }
+  // Label/value segment. Always renders as
+  //   <tag><strong>Label:</strong> value</tag>
+  // The label is chrome (real text post clone-strip) and is never brace-
+  // wrapped; a value that is itself still a braced placeholder passes
+  // through unchanged, so braces mark exactly the unresolved token — never
+  // the label or the whole line.
   function metaSeg(label, value, tag) {
     const t = tag || 'div';
     const v = value == null ? '' : String(value);
-    if (v.startsWith('{') && v.endsWith('}')) {
-      return '<' + t + '>{<strong>' + label + ':</strong> ' + v.slice(1, -1) + '}</' + t + '>';
-    }
     return '<' + t + '><strong>' + label + ':</strong> ' + v + '</' + t + '>';
   }
+  // Multi-item list collapsed into one metaSeg-style row — e.g. atoms /
+  // used_in / top_tasks_served. Items pass through unchanged (a placeholder
+  // item keeps its own braces); the line is never brace-wrapped.
+  // Render each list item as a gray chip (ui-badge--gray ui-badge--plain)
+  // prefixed by a bold label — used where visual scannability of individual
+  // items matters more than the comma-joined listSeg treatment.
   function listChipsSeg(label, items, tag) {
     const t = tag || 'div';
     const arr = items || [];
@@ -2466,21 +3045,14 @@
     const t = tag || 'div';
     const arr = items || [];
     if (!arr.length) return '';
-    const stripped = arr.map(function(i) {
-      const s = String(i == null ? '' : i);
-      return s.startsWith('{') && s.endsWith('}') ? s.slice(1, -1) : s;
-    });
-    const joined = stripped.join(', ');
-    const allPlaceholders = arr.every(function(i) {
-      const s = String(i == null ? '' : i);
-      return s.startsWith('{') && s.endsWith('}');
-    });
-    if (allPlaceholders) {
-      return '<' + t + '>{<strong>' + label + ':</strong> ' + joined + '}</' + t + '>';
-    }
+    const joined = arr.map(function(i) { return String(i == null ? '' : i); }).join(', ');
     return '<' + t + '><strong>' + label + ':</strong> ' + joined + '</' + t + '>';
   }
+  // kv entries in simple-meta cards render as <li> via metaSeg.
   function kvSeg(pair) {
+    // Render a key-value row as a stacked <div> (same primitive as other
+    // labeled card rows) — unified with sectionIndexCardHtml / templateMapCardHtml
+    // instead of rendering as a <li> bullet inside a <ul>.
     return metaSeg(pair && pair.label ? pair.label : '', pair && pair.value != null ? pair.value : '');
   }
 
@@ -2493,7 +3065,10 @@
     if (firstPageId) showSectionMapPage(firstPageId);
   }
 
+  // ---- Section map in-canvas page switcher ----
+  // One page-map visible at a time. <select> driven by page_sections.
   function sectionMapFirstPageId() {
+    // Prefer canvas row order; fall back to page_sections order.
     const rows = (SECTION_MAP.canvas && SECTION_MAP.canvas.rows) || [];
     const firstMap = rows.find(function(r) { return r.type === 'page-map'; });
     if (firstMap && firstMap.page_id) return firstMap.page_id;
@@ -2545,6 +3120,15 @@
     bindTreeToggles(host);
   }
 
+  // Row-click routing for pp-tree nodes. Called after every canvas render
+  // because innerHTML replacement wipes any prior listeners.
+  //
+  // Click routing:
+  //   - Click on .pp-tree-toggle (the +/- button) → toggle expand/collapse only.
+  //   - Click on row body (anywhere else) → (1) toggle if parent; (2) if node
+  //     has an id (lvl 2+), also select the node and open the left panel with
+  //     its detail. Lvl-1 root rows (Main menu / Sitemap / Footer) carry no
+  //     node id — body click just toggles the whole card.
   function bindTreeToggles(hostEl) {
     hostEl.querySelectorAll('.pp-tree-card').forEach(function(card) {
       const kind = card.dataset.treeKind;
@@ -2556,6 +3140,7 @@
           const nodeId = node.dataset.pageId || node.dataset.nodeId;
           const hasChildren = node.hasAttribute('data-expanded');
 
+          // Toggle button click → toggle only, no panel.
           if (clickedToggle) {
             if (hasChildren) {
               const expanded = node.getAttribute('data-expanded') === 'true';
@@ -2564,6 +3149,7 @@
             return;
           }
 
+          // Inner nodes (lvl 2+): just toggle, no panel interaction.
           if (nodeId) {
             if (hasChildren) {
               const expanded = node.getAttribute('data-expanded') === 'true';
@@ -2571,6 +3157,9 @@
             }
             return;
           }
+          // Lvl-1 root: expand state ↔ panel open ↔ row selected are tightly
+          // coupled. Clicking an open zone closes everything; clicking a
+          // closed zone closes any other open zone first, then opens this one.
           const isOpen = node.getAttribute('data-expanded') === 'true';
           if (isOpen) {
             collapseAllTreeZones();
@@ -2587,6 +3176,8 @@
     });
   }
 
+  // Walk the three IA-frame trees to find a node by id + its ancestor path.
+  // Returns [] if not found. Path includes the node itself as the last entry.
   function findTreeNodePath(kind, nodeId) {
     const trees = {
       'main-menu': (STRATEGY && STRATEGY.main_menu) || [],
@@ -2609,6 +3200,11 @@
     return walk(roots, []) || [];
   }
 
+  // Detail renderer for a tree ZONE (lvl-1 root click — Main menu / Sitemap /
+  // Footer). Shows zone name + rationale/alternatives from the matching
+  // top-level meta object (`main_menu_meta`, `sitemap_meta`, `footer_meta`).
+  // The meta objects are optional — panel renders with just the zone title
+  // when the agent hasn't populated reasoning yet.
   function renderTreeZoneDetail(kind) {
     view = 'detail';
     panelHeader.style.display = '';
@@ -2632,6 +3228,9 @@
       + blocksHTML;
   }
 
+  // Detail renderer for an IA-frame tree node. Renders name + zone (kind) +
+  // ancestor path (if any) + optional rationale/alternatives (schema-open —
+  // node carries these fields when the agent has populated them).
   function renderTreeNodeDetail(kind, nodeId) {
     view = 'detail';
     panelHeader.style.display = '';
@@ -2675,6 +3274,9 @@
     return cardsRowHtml(row, byId);
   }
 
+  // Resolve nodes_ref (string key into data) to concrete nodes[]. If row already
+  // carries inline nodes[], pass through. Reviewer fix 1 — resolution happens at
+  // the dispatcher level so treeRowHtml receives a fully-resolved row.
   function resolveTreeRow(row, data) {
     if (row.nodes && row.nodes.length) return row;
     if (row.nodes_ref && data && data[row.nodes_ref]) {
@@ -2713,6 +3315,9 @@
     const kvHtml = (item.kv && item.kv.length)
       ? item.kv.map(kvSeg).join('')
       : '';
+    // bullets[] — free-form placeholder list (each entry is a unified `{...}` string
+    // rendered verbatim inside <li>). Used by the Alternatives card for behavior
+    // clusters — agent keeps/drops/renames clusters per project.
     const bulletsHtml = (item.bullets && item.bullets.length)
       ? '<ul class="pp-bullets">' + item.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul>'
       : '';
@@ -2776,6 +3381,10 @@
       + '</article>';
   }
 
+  // Six-field section card — Name + narrative tag (inline in h4);
+  // then labeled rows for Goal / Message / Content; readiness pill labeled
+  // in .ui-card__meta. Confidence is NOT rendered on the card —
+  // rationale + confidence live in the left panel.
   function sectionCardHtml(item) {
     const heading = item.name || item.title || '';
     const narrInline = item.narrative ? ' ' + narrativeTag(item.narrative) : '';
@@ -2793,11 +3402,18 @@
       + '</article>';
   }
 
+  // One labeled row inside a section card. Value can be a string (inline
+  // after the label) or HTML already wrapped (e.g. <ul>…</ul>) — the row
+  // container handles both cases.
   function sectionFieldRow(label, value) {
     if (!value) return '';
     return '<p class="pp-section-card__field"><span class="pp-section-card__field-label">' + label + '</span>' + value + '</p>';
   }
 
+  // Content description always renders as a bullet list for visual
+  // consistency across cards. Single string → one <li>; array → one <li>
+  // each. Uniform list treatment means Content rows have the same vertical
+  // rhythm as Atoms / Variants chip rows or paragraph-shaped fields.
   function sectionContentValue(content) {
     if (!content) return '';
     const items = Array.isArray(content) ? content : [content];
@@ -2825,6 +3441,14 @@
       + '</article>';
   }
 
+  // Derive "Single page" vs. "Reusable (N pages)" from pages_using.length.
+  // Replaces the old `template_type` card meta per simplification — the
+  // architecture distinction (Standard / Corporate Pool / Modular) used to
+  // drive the per-template arch blocks at the bottom of Design plan; those
+  // blocks were dropped, so template_type is no longer surfaced on cards.
+  // The derived label is real data, never brace-wrapped;
+  // stripBraces keeps the text clean when LABELS still carry pristine
+  // braced values (non-en clones before translation).
   function templateUsageLabel(pagesUsing) {
     const arr = pagesUsing || [];
     if (!arr.length) return '';
@@ -2832,12 +3456,18 @@
       const v = String(s || '');
       return v.startsWith('{') && v.endsWith('}') ? v.slice(1, -1) : v;
     };
-    if (arr.length === 1) return '{' + stripBraces(LABELS.pp_inventory_usage_single || 'Single page') + '}';
+    if (arr.length === 1) return stripBraces(LABELS.pp_inventory_usage_single || 'Single page');
     const base = stripBraces(LABELS.pp_inventory_usage_reusable || 'Reusable');
-    return '{' + base + ' (' + arr.length + ' pages)}';
+    return base + ' (' + arr.length + ' pages)';
   }
 
   function sectionIndexCardHtml(item) {
+    // template_type dropped from card meta — per-template arch blocks no
+    // longer render on Design plan, so the field is dead signal on the card.
+    // Priority moves to .ui-card__meta at the bottom as a labeled colored
+    // pill (red/amber/green via PRIORITY_MAP) with top separator.
+    // Readiness uses the colored pill (matches Section map's labeled-row
+    // treatment) instead of plain text.
     const L = function(key, fallback) {
       const v = LABELS[key];
       if (v == null) return fallback;
@@ -2865,6 +3495,12 @@
       + '</article>';
   }
 
+  // Render one IA frame tree (Main menu / Sitemap / Footer) as a single collapsible
+  // card. The row's `title` becomes the lvl-1 root node label; row.nodes[] becomes
+  // the lvl-2+ content. `kind` is informational — `data-tree-kind` attribute is
+  // emitted so downstream JS (filters, analytics) can discriminate.
+  // Sitemap nodes carry `data-page-id` (joins to section-map page_sections);
+  // main-menu/footer nodes carry `data-node-id` (avoids polluting page-id enumerators).
   function treeRowHtml(row) {
     const kind = row.kind || 'tree';
     const idAttr = kind === 'sitemap' ? 'data-page-id' : 'data-node-id';
@@ -2919,6 +3555,8 @@
     const sectionItems = (data.items || []).filter(function(it) {
       return it.scope === 'section' && it.page_id === row.page_id;
     });
+    // Section cards stack vertically on Section map — one column, section cards
+    // carry multi-line content (Goal + Message + bullets + readiness pill).
     const variant = 'one';
     const cardsHtml = sectionItems.map(cardHtml).join('');
     return ''
@@ -2933,6 +3571,9 @@
     function stat(n, labelKey, fallback) {
       return '<div class="pp-summary__stat"><div class="pp-summary__n">' + (n != null ? n : '') + '</div><div class="pp-summary__label">' + (LABELS[labelKey] || fallback) + '</div></div>';
     }
+    // Sections needing content = count of section_index entries whose
+    // content_status is NOT content-ready. Derived (not persisted) because
+    // it's a view over data the agent already wrote.
     const sections = (data && data.section_index) || [];
     const needingContent = summary.sections_needing_content != null
       ? summary.sections_needing_content
@@ -2988,6 +3629,7 @@
     return '<div class="pp-template-arch" data-template-id="' + template.id + '">' + head + goalHtml + body + '</div>';
   }
 
+  // ---- DOM refs ----
   const panel = document.getElementById('shellLeftpanel');
   const panelToggle = document.getElementById('shellPanelToggle');
   const panelBody = document.getElementById('shellLeftpanelBody');
@@ -2995,18 +3637,24 @@
   const panelFilterArea = document.getElementById('shellFilterArea');
   const backBtn = document.getElementById('shellBack');
   const pageTabs = document.getElementById('shellPageTabs');
+  const pageSelect = document.getElementById('shellPageSelect');
   const navEl = document.getElementById('shellNav');
   const navPrevBtn = document.getElementById('shellNavPrev');
   const navNextBtn = document.getElementById('shellNavNext');
   const navCounter = document.getElementById('shellNavCounter');
 
-  let currentPage = 'context';
-  let view = 'list';
+  // ---- State ----
+  let currentPage = 'context'; // 'context' | 'strategy' | 'inventory'
+  let view = 'list';           // 'list' | 'detail'
   let navList = [];
   let navIndex = -1;
-  let activeFilter = {};
+  let activeFilter = {};       // per-axis; reset on page change via resetFilter
   let filterExpanded = false;
 
+  // ---- Per sub-page descriptors ----
+  // Design plan (internal slug: 'inventory') derives its flat item list from section_index + template_map
+  // (data is structural, not flat). Each derived item carries a `kind` so the
+  // left panel can group by Sections vs. Templates.
   const _INVENTORY_ITEMS = (function() {
     const fromSections = (INVENTORY.section_index || []).map(function(s) {
       return Object.assign({}, s, { kind: 'section', title: s.name });
@@ -3017,6 +3665,9 @@
     return fromSections.concat(fromTemplates);
   })();
 
+  // Build a dynamic page_id → label map from the Section map's page_sections.
+  // Used by the `page_id` filter axis on the Section map sub-page. Rebuilt
+  // once at module init since page_sections is static per deliverable.
   const PAGE_ID_MAP = (function() {
     const m = {};
     (SECTION_MAP.page_sections || []).forEach(function(p) {
@@ -3087,6 +3738,9 @@
   function metaRowsForItem(item) {
     const rows = [];
     if (currentPage === 'context') {
+      // Context cards drop Group + Confidence meta rows — the group already
+      // establishes the tier (universal / project-specific) via the list
+      // grouping, and confidence already shows as a pill on the canvas card.
     } else if (currentPage === 'strategy') {
       if (item.scope)      rows.push('<dt>' + LABELS.axis_scope + '</dt><dd>' + pill(SCOPE_MAP, item.scope) + '</dd>');
       if (item.confidence) rows.push('<dt>' + LABELS.axis_confidence + '</dt><dd>' + pill(CONF_MAP, item.confidence) + '</dd>');
@@ -3100,6 +3754,7 @@
     return rows.join('');
   }
 
+  // ---- Panel open/close ----
   function openPanel() {
     panel.classList.add('is-open');
     panel.setAttribute('aria-hidden', 'false');
@@ -3116,6 +3771,11 @@
     collapseAllTreeZones();
   }
 
+  // Collapse every lvl-1 tree-card (Main menu / Sitemap / Footer) and clear
+  // any tree-row selection. Used to keep tree-card state in lockstep with
+  // the panel — opening one zone closes the rest; closing the panel
+  // collapses all zones; switching the active canvas card collapses them
+  // too (setActiveCanvasCard below).
   function collapseAllTreeZones() {
     document.querySelectorAll('.pp-tree-card .pp-tree-node--lvl1[data-expanded="true"]').forEach(function(n) {
       n.setAttribute('data-expanded', 'false');
@@ -3128,6 +3788,10 @@
     if (panel.classList.contains('is-open')) closePanel(); else openPanel();
   }
 
+  // ---- Filter chips — shared across sub-pages. Each sub-page's axes come
+  // from axesForPage(); values from axisOptionsForPage(); pill label/color
+  // from mapForAxis(). OR-logic within an axis, AND across axes (same as
+  // audit-template). ----
   function renderFilterChips() {
     const axes = axesForPage(currentPage);
     if (!axes.length) { panelFilterArea.innerHTML = ''; return; }
@@ -3173,6 +3837,7 @@
       + '<div class="shell-leftpanel__filter' + (filterExpanded ? '' : ' is-collapsed') + '" id="shellFilter">' + sectionsHTML + '</div>';
   }
 
+  // ---- Project context list — grouped by tier (Universal / Project-specific). ----
   function renderContextList() {
     view = 'list';
     panelHeader.style.display = 'none';
@@ -3208,6 +3873,7 @@
     panelBody.innerHTML = groupsHTML || emptyHTML;
   }
 
+  // ---- Project context detail — rationale + alternatives (both live in the panel). ----
   function renderContextDetail(id) {
     view = 'detail';
     panelHeader.style.display = '';
@@ -3238,10 +3904,16 @@
     updateNavCounter();
   }
 
+  // Highlight the canvas card matching the currently-open detail item. Pass
+  // null to clear. Scoped to the active sub-page so cross-sub-page state
+  // never lingers after a page switch.
   function setActiveCanvasCard(id) {
     document.querySelectorAll('.pp-page .ui-card.is-active').forEach(function(el) {
       el.classList.remove('is-active');
     });
+    // Any shift in canvas-card focus (to list, or to a different card) also
+    // collapses the IA-frame tree zones — selection/expand state stays in
+    // lockstep with the panel target.
     collapseAllTreeZones();
     if (id == null) return;
     const activePage = document.querySelector('.pp-page--active');
@@ -3250,6 +3922,9 @@
     if (card) card.classList.add('is-active');
   }
 
+  // ---- Project plan list — groups by scope (page / section / ia). IA decisions
+  // live only in the panel list (no canvas card); section items
+  // show their page label so users can see which page each section belongs to. ----
   function renderStrategyList() {
     view = 'list';
     panelHeader.style.display = 'none';
@@ -3261,6 +3936,8 @@
 
     const items = itemsForPage('strategy').filter(matchesFilter).filter(hasDetail);
 
+    // Project strategy only carries page + ia scope items after the v4.0 split —
+    // section-scope items moved to the Section map sub-page (#section-map-data).
     const scopeGroups = [
       { key: 'page', label: LABELS.group_scope_page },
       { key: 'ia',   label: LABELS.group_scope_ia }
@@ -3290,6 +3967,9 @@
     panelBody.innerHTML = groupsHTML || emptyHTML;
   }
 
+  // ---- Section map list — groups sections by page (Home / Product / Global).
+  // The virtual Global page appears as its own group. Page order
+  // follows page_sections[] declaration order. ----
   function renderSectionMapList() {
     view = 'list';
     panelHeader.style.display = 'none';
@@ -3325,6 +4005,10 @@
     panelBody.innerHTML = groupsHTML || emptyHTML;
   }
 
+  // ---- Project strategy detail — rationale + alternatives only. IA-scope
+  // items add element + decision_status since IA decisions never render on
+  // the canvas (panel-only). All other fields already live on the
+  // card; repeating them here is redundant. ----
   function renderStrategyDetail(id) {
     view = 'detail';
     panelHeader.style.display = '';
@@ -3355,6 +4039,9 @@
     updateNavCounter();
   }
 
+  // ---- Section map detail — rationale + alternatives only. Section card
+  // fields (Goal / Message / Readiness / Content) are already on the canvas
+  // card; repeating them in the panel is redundant. ----
   function renderSectionMapDetail(id) {
     view = 'detail';
     panelHeader.style.display = '';
@@ -3383,6 +4070,9 @@
     return '<div class="shell-detail__block"><h4 class="shell-detail__label">' + label + '</h4><p class="shell-detail__text">' + text + '</p></div>';
   }
 
+  // ---- Design plan list — groups by kind (Sections / Templates). Templates
+  // don't have a priority_tier, so the priority_tier filter naturally narrows
+  // to sections when active; template_type filter applies to both. ----
   function renderInventoryList() {
     view = 'list';
     panelHeader.style.display = 'none';
@@ -3419,6 +4109,9 @@
     panelBody.innerHTML = groupsHTML || emptyHTML;
   }
 
+  // ---- Design plan detail — rationale + alternatives only. Priority /
+  // usage / used-in / atoms / variants / goal / key_message / narrative
+  // all live on the canvas card already. Panel surfaces only the "why". ----
   function renderInventoryDetail(id) {
     view = 'detail';
     panelHeader.style.display = '';
@@ -3443,6 +4136,8 @@
     updateNavCounter();
   }
 
+  // ---- Generic list/detail router — dispatches to sub-page-specific
+  // implementations. Every sub-page now has a dedicated implementation. ----
   function renderList() {
     if (currentPage === 'context')     return renderContextList();
     if (currentPage === 'strategy')    return renderStrategyList();
@@ -3457,6 +4152,10 @@
     if (currentPage === 'inventory')   return renderInventoryDetail(id);
   }
 
+  // ---- Nav counter (prev/next within current sub-page list) ----
+  // Capture from DATA (filtered by activeFilter), not DOM — so detail-view
+  // navigation works even when the panel body is showing detail markup and
+  // card-click-to-detail captures a fresh list regardless of panel state.
   function captureNavList() {
     navList = itemsForPage(currentPage).filter(matchesFilter).filter(hasDetail).map(function(it) { return { id: it.id }; });
   }
@@ -3478,6 +4177,7 @@
     if (navIndex < navList.length - 1) { navIndex++; renderDetail(navList[navIndex].id); }
   }
 
+  // ---- Page switcher ----
   function activatePage(slug) {
     if (VISIBLE_PAGES.indexOf(slug) === -1) return;
     currentPage = slug;
@@ -3492,9 +4192,12 @@
         btn.classList.toggle('is-active', btn.getAttribute('data-page') === slug);
       });
     }
+    if (pageSelect) pageSelect.value = slug;
+    // Always return to list view on sub-page change so users start from overview.
     renderList();
   }
 
+  // ---- Event wiring ----
   if (panelToggle) panelToggle.addEventListener('click', togglePanel);
 
   if (pageTabs) {
@@ -3510,6 +4213,13 @@
       if (VISIBLE_PAGES.indexOf(slug) !== -1) activatePage(slug);
     });
   }
+  if (pageSelect) {
+    pageSelect.addEventListener('change', function() {
+      const slug = pageSelect.value;
+      activatePage(slug);
+      location.hash = '#' + slug;
+    });
+  }
 
   panelBody.addEventListener('click', function(e) {
     const item = e.target.closest('.shell-item');
@@ -3520,6 +4230,9 @@
     }
   });
 
+  // Filter chip delegation — clear / toggle expand / axis chips. Separate from
+  // panelBody handler because filter chrome lives in panelFilterArea (above the
+  // scrollable list body).
   panelFilterArea.addEventListener('click', function(e) {
     const clearBtn = e.target.closest('#shellFilterClear');
     if (clearBtn) {
@@ -3550,12 +4263,16 @@
     }
   });
 
+  // Canvas card clicks → open panel + render detail for the matching data
+  // item. Delegated on .pp-main so cards across all three sub-pages (Project
+  // context / Project plan / Design plan) participate automatically.
   const ppMain = document.querySelector('.pp-main');
   if (ppMain) {
     ppMain.addEventListener('click', function(e) {
       const card = e.target.closest('.ui-card[data-id]:not(.ui-card--no-detail)');
       if (!card) return;
       const id = card.dataset.id;
+      // Second click on the same (currently-open) card closes the detail view.
       if (view === 'detail' && card.classList.contains('is-active')) {
         renderList();
         return;
@@ -3579,6 +4296,15 @@
       else closePanel();
     }
   });
+
+  // ============================================================
+  // MD export — four sub-page formatters + HTML downloader.
+  // Each formatter follows the shared convention from
+  // references/shared/interactive-deliverable-shell.md §MD export
+  // convention: format{Doc}Md(data) → { md, filename }. Filenames
+  // derive from NS inside the formatter so there is one place to
+  // change them.
+  // ============================================================
 
   function _md_stripBraces(v) {
     var s = (v == null) ? '' : String(v);
@@ -3612,6 +4338,8 @@
     if (!arr || !arr.length) return '';
     return arr.map(_md_stripBraces).join(', ');
   }
+  // Render the body of one card (layout-specific fields + confidence + meta_pills + rationale + alternatives).
+  // Title / heading is emitted by the caller so context- and strategy-card sections can share this body.
   function _md_renderCardBody(item) {
     var lines = [];
     if (item.lead) lines.push(_md_stripBraces(item.lead), '');
@@ -3661,6 +4389,7 @@
     }
     return lines.join('\n').replace(/\n+$/, '');
   }
+  // Walk a tree of `{ id?, name, children[] }` nodes into a Markdown bullet list.
   function _md_renderTree(nodes, depth) {
     if (!nodes || !nodes.length) return '';
     var indent = new Array((depth || 0) + 1).join('  ');
@@ -3673,6 +4402,9 @@
     });
     return out.join('\n');
   }
+
+  // ---- Document-level formatters (per shared convention).
+  // Contract: format{Doc}Md(data) → { md: string, filename: string }.
 
   function formatContextMd(data) {
     data = data || CONTEXT;
@@ -3762,15 +4494,17 @@
     var sections = (data.items || []).filter(function(it) { return it.scope === 'section'; });
     pages.forEach(function(page) {
       var name = _md_stripBraces(page.name || page.page_id || '');
-      var goal = page.goal ? ': ' + _md_stripBraces(page.goal) : '';
+      var goal = page.goal ? ' — ' + _md_stripBraces(page.goal) : '';
       parts.push('## ' + name + goal, '');
       if (page.top_tasks_served && page.top_tasks_served.length) {
         parts.push('*' + LABELS.md_top_tasks_served + ':* ' + _md_joinChips(page.top_tasks_served), '');
       }
       var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
       pageSections.forEach(function(s) {
+        // Heading shape per schema's MD export contract:
+        // ### {Title} — {narrative} ({confidence}, {content_status})
         var heading = '### ' + _md_stripBraces(s.title || s.id || '');
-        if (s.narrative) heading += ': ' + _md_stripBraces(s.narrative);
+        if (s.narrative) heading += ' — ' + _md_stripBraces(s.narrative);
         var pillBits = [];
         if (s.confidence)     pillBits.push(_md_confidenceLabel(s.confidence));
         if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
@@ -3857,7 +4591,7 @@
       parts.push('## ' + LABELS.md_inventory_section_template_arch, '');
       templates.forEach(function(t) {
         var heading = '### ' + _md_stripBraces(t.name || t.id || '');
-        if (t.template_type) heading += ': ' + _md_templateTypeLabel(t.template_type);
+        if (t.template_type) heading += ' — ' + _md_templateTypeLabel(t.template_type);
         parts.push(heading, '');
         if (t.template_type === 'standard') {
           (t.sections || []).forEach(function(secId, i) {
@@ -3881,7 +4615,7 @@
             parts.push('**' + LABELS.md_inventory_template_arch_corp_pool_variants + ':**');
             pool.forEach(function(v) {
               var name = _md_stripBraces(v.name || v.id || '');
-              var usedBy = (v.used_by && v.used_by.length) ? ': ' + _md_joinChips(v.used_by) : '';
+              var usedBy = (v.used_by && v.used_by.length) ? ' — ' + _md_joinChips(v.used_by) : '';
               parts.push('- ' + name + usedBy);
             });
           }
@@ -3899,6 +4633,7 @@
     return { md: parts.join('\n').replace(/\n+$/, '\n'), filename: NS + '-design-plan.md' };
   }
 
+  // ---- Universal download helper (matches audit + wireframing + messaging convention).
   function triggerDownload(filename, content, mime) {
     var blob = new Blob([content], { type: (mime || 'text/plain') + ';charset=utf-8' });
     var url = URL.createObjectURL(blob);
@@ -3910,12 +4645,19 @@
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   }
+  // Single-file HTML serialisation of all four sub-pages — clients re-open
+  // standalone and see the populated canvas + panel views. Mirrors
+  // messaging-canvas-template.html `_downloadHtml` pattern.
   function _downloadHtml() {
     var docClone = document.documentElement.cloneNode(true);
+    // The saved copy opens with the Download menu closed.
+    var menuClone = docClone.querySelector('#shellDownloadMenu');
+    if (menuClone) menuClone.removeAttribute('open');
     var content = '<!DOCTYPE html>\n' + docClone.outerHTML;
     triggerDownload(NS + '-project-plan.html', content, 'text/html');
   }
 
+  // ---- Wire each download button to its matching formatter / handler ----
   var dlContextBtn = document.getElementById('shellDownloadContextMd');
   if (dlContextBtn) dlContextBtn.addEventListener('click', function() {
     var r = formatContextMd(CONTEXT);
@@ -3938,8 +4680,28 @@
   });
   var dlHtmlBtn = document.getElementById('shellDownloadHtml');
   if (dlHtmlBtn) dlHtmlBtn.addEventListener('click', _downloadHtml);
+  /* ===== SHELL-NARROW-JS-START — character-identical across the wireframing, audit, project-plan and messaging templates (__tests__/test_shell_narrow_sync.py) ===== */
+  // Download menu — closes when a format is picked (capture phase: before the
+  // HTML download clones the page) or on a click anywhere else.
+  const dlMenu = document.getElementById('shellDownloadMenu');
+  if (dlMenu) {
+    dlMenu.addEventListener('click', (e) => {
+      if (e.target.closest('.shell-bottombar__menu-list button')) dlMenu.open = false;
+    }, true);
+    document.addEventListener('click', (e) => {
+      if (dlMenu.open && !dlMenu.contains(e.target)) dlMenu.open = false;
+    });
+  }
+  /* ===== SHELL-NARROW-JS-END ===== */
 
+  // ---- Initial state ----
   applyStaticLabels();
+  // Hide tab buttons + sub-page divs for blocks that still carry the
+  // _template_stock sentinel (live mode only — demo mode shows all four).
+  // Also hide each MD download button when its sub-page isn't populated, and
+  // hide the entire download group when nothing is downloadable. HTML button
+  // stays visible whenever any sub-page is populated. Per shared convention
+  // (interactive-deliverable-shell.md §Download button convention).
   function applyTemplateStockVisibility() {
     if (DEMO_MODE) return;
     var MD_BUTTON_BY_SLUG = {
@@ -3954,6 +4716,10 @@
         var btn = pageTabs.querySelector('.shell-bottombar__btn[data-page="' + slug + '"]');
         if (btn) btn.style.display = 'none';
       }
+      if (pageSelect) {
+        var opt = pageSelect.querySelector('option[value="' + slug + '"]');
+        if (opt) opt.remove();
+      }
       var pageEl = document.getElementById('pp-page-' + slug);
       if (pageEl) pageEl.style.display = 'none';
       var dlBtn = document.getElementById(MD_BUTTON_BY_SLUG[slug]);
@@ -3965,11 +4731,17 @@
     if (dlGroup && VISIBLE_PAGES.length === 0) dlGroup.style.display = 'none';
   }
   applyTemplateStockVisibility();
+  // Populate sub-page canvases from their JSON data blocks. Skip rendering
+  // for unpopulated blocks — their .pp-page is hidden, but skipping avoids
+  // wasted work + any edge-case errors on the template's stock placeholder
+  // shapes.
   if (VISIBLE_PAGES.indexOf('context') !== -1)     renderContextSubPage();
   if (VISIBLE_PAGES.indexOf('strategy') !== -1)    renderStrategySubPage();
   if (VISIBLE_PAGES.indexOf('section-map') !== -1) renderSectionMapSubPage();
   if (VISIBLE_PAGES.indexOf('inventory') !== -1)   renderInventorySubPage();
   const initialHash = (location.hash || '').slice(1);
+  // Prefer hash if it points at a visible page; else prefer 'context'; else
+  // fall back to the first visible page (e.g. only strategy is populated).
   let initialPage;
   if (VISIBLE_PAGES.indexOf(initialHash) !== -1) {
     initialPage = initialHash;
@@ -3982,7 +4754,19 @@
 
   let initialOpen = null;
   try { initialOpen = localStorage.getItem(NS + '-panel-open'); } catch (e) {}
-  if (initialOpen === '1') openPanel();
+  // Windows narrower than 1024px open with the panel closed: there it is a
+  // drawer over the page, and the reader opens it with the panel button. On
+  // wider windows the remembered choice applies, closed as well as open (the
+  // markup starts with the panel open).
+  if (window.matchMedia('(max-width: 1023.98px)').matches || initialOpen === '0') {
+    panel.style.transition = 'none';
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('shell-leftpanel-open');
+    if (panelToggle) panelToggle.classList.remove('is-active');
+    void panel.offsetWidth;
+    panel.style.transition = '';
+  } else if (initialOpen === '1') openPanel();
 })();
 </script>
 
