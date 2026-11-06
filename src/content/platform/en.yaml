@@ -1,5 +1,5 @@
 badge: Platforms
-heading: One folder.<br />Runs on the platforms you already use.
+heading: The skill runs on the platforms you already use.
 contentsHeading: The package is the full toolkit.
 contentsNote: No extra dependencies. Drop in the folder, open your platform, start your first project.
 platforms:
@@ -18,7 +18,7 @@ platforms:
     desc: Compatible as a knowledge plus instruction set
     note: Runs in the browser. Not all Claude Code features are available here.
 contents:
-  - label: AGENTS.md
+  - label: skill.md
     desc: Full skill definition with 6 workflows
   - label: references/
     desc: 92 domain knowledge files (16 page types, 14 areas)
