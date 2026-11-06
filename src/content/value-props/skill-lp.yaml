@@ -9,7 +9,7 @@ cards:
 
   - title: Gotowe pliki, które pracują dalej w Figma AI, Cursor i Claude.
     description: |
-      Markdown, HTML i Excel. Każdy artefakt wchodzi do kolejnego narzędzia w workflow bez konwersji. Plan żyje w plikach projektu, nie w historii czatu.
+      Markdown i HTML. Każdy artefakt wchodzi do kolejnego narzędzia w workflow bez konwersji. Plan żyje w plikach projektu, nie w historii czatu.
     links:
       - label: Zobacz przykłady plików
         href: "#dowod"

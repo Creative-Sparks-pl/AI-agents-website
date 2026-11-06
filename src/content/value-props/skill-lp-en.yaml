@@ -9,7 +9,7 @@ cards:
 
   - title: Files that move straight into Figma AI, Cursor, and Claude.
     description: |
-      Markdown, HTML, and Excel. Each artifact drops into the next tool in your workflow without conversion. The plan lives in your project files, not in a chat history.
+      Markdown and HTML. Each artifact drops into the next tool in your workflow without conversion. The plan lives in your project files, not in a chat history.
     links:
       - label: See example files
         href: "#dowod"
