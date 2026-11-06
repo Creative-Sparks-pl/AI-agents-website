@@ -25,27 +25,27 @@ const EASYCART_API = 'https://cart.easy.tools/api/v1';
 // Cloudflare in front of cart.easy.tools answers 403 (error 1010) to default client signatures.
 const USER_AGENT = 'creativesparks-site/1.0';
 
-// One free Easytools product per skill and language. Each variable is read by name
-// so Astro resolves it from the environment.
-const PRODUCTS: Record<Skill, Record<Locale, { productId?: string; variantId?: string }>> = {
+// One free Easytools product per skill and language. These IDs are not secret:
+// they do nothing without the API key, which stays in the environment.
+const PRODUCTS: Record<Skill, Record<Locale, { productId: string; variantId: string }>> = {
   audit: {
     pl: {
-      productId: import.meta.env.EASYTOOLS_FREE_AUDIT_PRODUCT_ID,
-      variantId: import.meta.env.EASYTOOLS_FREE_AUDIT_VARIANT_ID,
+      productId: '42c65e31-97e9-4cac-b849-44158246652f',
+      variantId: '3bec0d71-bb11-403b-a378-d2bde0b7eda6',
     },
     en: {
-      productId: import.meta.env.EASYTOOLS_FREE_AUDIT_PRODUCT_ID_EN,
-      variantId: import.meta.env.EASYTOOLS_FREE_AUDIT_VARIANT_ID_EN,
+      productId: '868c5223-4b3e-4248-a3fd-01a029032a66',
+      variantId: 'adde7d17-5ef4-412b-962d-ff5f21d452db',
     },
   },
   planning: {
     pl: {
-      productId: import.meta.env.EASYTOOLS_FREE_PLANNING_PRODUCT_ID,
-      variantId: import.meta.env.EASYTOOLS_FREE_PLANNING_VARIANT_ID,
+      productId: 'ecd365f9-e302-4926-9209-8813d3e3e7e2',
+      variantId: 'bc99ad4d-b7bb-4789-a605-0ba9062595ff',
     },
     en: {
-      productId: import.meta.env.EASYTOOLS_FREE_PLANNING_PRODUCT_ID_EN,
-      variantId: import.meta.env.EASYTOOLS_FREE_PLANNING_VARIANT_ID_EN,
+      productId: 'd7e27b87-ac65-4f6b-8973-01076e9f197f',
+      variantId: '9b5b1e6b-caa5-4e3c-9d19-381802be2869',
     },
   },
 };
@@ -76,10 +76,11 @@ export const POST: APIRoute = async ({ request }) => {
   const locale: Locale = ALLOWED_LOCALES.has(body.locale ?? '') ? (body.locale as Locale) : 'pl';
 
   const apiKey = import.meta.env.EASYCART_API_KEY;
-  const { productId, variantId } = PRODUCTS[skill][locale];
-  if (!apiKey || !productId || !variantId) {
+  if (!apiKey) {
     return json({ ok: false, reason: 'not_configured' }, 503);
   }
+
+  const { productId, variantId } = PRODUCTS[skill][locale];
 
   const headers = {
     Authorization: `Bearer ${apiKey}`,
