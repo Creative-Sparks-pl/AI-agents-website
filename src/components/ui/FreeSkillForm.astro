@@ -14,6 +14,7 @@ interface Props {
   successNote?: string;
   downloadLabel?: string;
   block?: boolean;
+  stacked?: boolean;
   class?: string;
 }
 
@@ -67,6 +68,7 @@ const {
   successNote = COPY.successNote,
   downloadLabel = COPY.downloadLabel,
   block = false,
+  stacked = false,
   class: className,
 } = Astro.props;
 
@@ -101,7 +103,7 @@ const iconSize: Record<Size, string> = {
   data-i18n-err-offline={COPY.errOffline}
 >
   <form
-    class="free-skill-form__form flex flex-col sm:flex-row items-stretch gap-0 sm:gap-0"
+    class:list={['free-skill-form__form flex flex-col items-stretch gap-0 sm:gap-0', !stacked && 'sm:flex-row']}
     novalidate
   >
     <label class="sr-only" for={`free-skill-email-${surface}`}>{COPY.emailLabel}</label>
@@ -116,7 +118,8 @@ const iconSize: Record<Size, string> = {
       class:list={[
         'free-skill-form__input',
         'flex-1 min-w-0 bg-white text-foreground border-2 border-primary',
-        'sm:border-r-0 placeholder:text-muted/70 outline-none',
+        !stacked && 'sm:border-r-0',
+        'placeholder:text-muted/70 outline-none',
         'focus:bg-primary/5 transition-colors duration-200',
         inputSizeClasses[size],
       ]}
@@ -133,7 +136,8 @@ const iconSize: Record<Size, string> = {
       type="submit"
       class:list={[
         'free-skill-form__submit',
-        'inline-flex sm:flex-1 sm:basis-0 items-center justify-center gap-2 tracking-tight cursor-pointer',
+        'inline-flex items-center justify-center gap-2 tracking-tight cursor-pointer',
+        !stacked && 'sm:flex-1 sm:basis-0',
         'transition-all duration-300',
         'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
         'disabled:opacity-60 disabled:cursor-not-allowed',
@@ -162,7 +166,7 @@ const iconSize: Record<Size, string> = {
     </p>
     <p class="text-muted mt-2 mb-4 free-skill-form__success-note">{successNote}</p>
     <a
-      class="free-skill-form__download inline-flex items-center gap-2 tracking-tight transition-all duration-300 bg-primary text-white border-2 border-primary hover:bg-black hover:border-black px-10 py-4 text-base font-extrabold"
+      class:list={['free-skill-form__download inline-flex items-center gap-2 tracking-tight transition-all duration-300 bg-primary text-white border-2 border-primary hover:bg-black hover:border-black py-4 text-base font-extrabold', stacked ? 'w-full justify-center px-6' : 'px-10']}
       href="#"
       target="_blank"
       rel="noopener noreferrer"

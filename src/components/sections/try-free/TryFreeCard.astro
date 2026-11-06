@@ -1,0 +1,55 @@
+---
+import Button from '../../ui/Button.astro';
+import FreeSkillForm from '../../ui/FreeSkillForm.astro';
+
+interface Props {
+  skill: 'audit' | 'planning';
+  surface: string;
+  question: string;
+  name: string;
+  text: string;
+  note: string;
+  pageHref: string;
+  pageLabel: string;
+  submitLabel: string;
+  videoId?: string;
+  videoLabel: string;
+}
+
+const { skill, surface, question, name, text, note, pageHref, pageLabel, submitLabel, videoId, videoLabel } = Astro.props;
+---
+
+<div class="flex flex-col bg-white p-8 lg:p-10" data-try-free-card={skill}>
+  <p class="text-sm font-label text-primary mb-2">{question}</p>
+  <h3 class="font-headline font-bold text-2xl tracking-tight leading-tight text-foreground mb-4">{name}</h3>
+  <p class="text-lg text-muted leading-relaxed mb-3">{text}</p>
+  <p class="text-sm text-muted leading-relaxed mb-8">{note}</p>
+
+  <div class="mt-auto">
+    <FreeSkillForm skill={skill} surface={surface} submitLabel={submitLabel} stacked block />
+
+    <div class:list={['grid grid-cols-1 gap-3 mt-6', videoId && 'xl:grid-cols-2']}>
+      <Button href={pageHref} variant="secondary" size="sm" block trailingIcon="arrow_forward" class="whitespace-nowrap">
+        {pageLabel}
+      </Button>
+      {videoId && (
+        <Fragment>
+          <script is:inline async src="https://fast.wistia.com/player.js"></script>
+          <script is:inline async type="module" src={`https://fast.wistia.com/embed/${videoId}.js`}></script>
+          <wistia-player
+            media-id={videoId}
+            popover-content="link"
+            wistia-popover="true"
+            aspect="1.7777777777777777"
+            style="display: block;"
+            class="w-full"
+          >
+            <Button href="#" variant="secondary" size="sm" block trailingIcon="play_arrow" class="whitespace-nowrap">
+              {videoLabel}
+            </Button>
+          </wistia-player>
+        </Fragment>
+      )}
+    </div>
+  </div>
+</div>

@@ -9,6 +9,8 @@ const FORMS = [
   { name: 'audit-en', path: '/en/free-homepage-ux-audit-skill/', locale: 'en', skill: 'audit', surfaces: ['free_audit_skill_hero', 'free_audit_skill_final'] },
   { name: 'uxd-pl', path: '/ux-design-skill/', locale: 'pl', skill: 'audit', surfaces: ['ux_design_skill_audyt'] },
   { name: 'uxd-en', path: '/en/ux-design-skill/', locale: 'en', skill: 'audit', surfaces: ['ux_design_skill_audyt'] },
+  { name: 'uxd-planning-pl', path: '/ux-design-skill/', locale: 'pl', skill: 'planning', surfaces: ['ux_design_skill_planning'] },
+  { name: 'uxd-planning-en', path: '/en/ux-design-skill/', locale: 'en', skill: 'planning', surfaces: ['ux_design_skill_planning'] },
   { name: 'planning-pl', path: '/free-website-planning-skill/', locale: 'pl', skill: 'planning', surfaces: ['free_planning_skill_hero', 'free_planning_skill_final'] },
   { name: 'planning-en', path: '/en/free-website-planning-skill/', locale: 'en', skill: 'planning', surfaces: ['free_planning_skill_hero', 'free_planning_skill_final'] },
 ];

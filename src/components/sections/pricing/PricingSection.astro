@@ -7,6 +7,7 @@ import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import PricingTier from './PricingTier.astro';
 import LinkArrow from '../../ui/LinkArrow.astro';
 import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
+import { isPresaleActive } from '../../../lib/presale';
 
 interface Props extends HTMLAttributes<'section'> {
   class?: string;
@@ -41,6 +42,7 @@ const copy = locale === 'en'
         <div
           class="inline-flex items-center gap-2 bg-accent border border-accent text-foreground px-4 py-1.5 mb-6"
           data-presale-badge
+          style={isPresaleActive(Date.now()) ? undefined : 'display:none'}
         >
           <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
           <span class="text-sm font-bold text-foreground font-label">
@@ -51,17 +53,12 @@ const copy = locale === 'en'
           {copy.heading}
         </h2>
         {locale === 'pl' && (
-          <Fragment>
-            <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
-              Sześć miesięcy darmowych aktualizacji w cenie i aż dwanaście w przedsprzedaży.
-              <LinkArrow href="/ux-design-skill/changelog" class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
-                Zobacz changelog
-              </LinkArrow>
-            </p>
-            <p class="text-base md:text-lg text-primary font-medium leading-relaxed mt-3">
-              1 czerwca 2026 startuje globalna sprzedaż i wchodzą wyższe ceny w euro.
-            </p>
-          </Fragment>
+          <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
+            Sześć miesięcy darmowych aktualizacji w cenie.
+            <LinkArrow href="/ux-design-skill/changelog" class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
+              Zobacz changelog
+            </LinkArrow>
+          </p>
         )}
       </Fragment>
 

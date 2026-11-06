@@ -82,6 +82,7 @@ import ArchitectureSection from '../../components/sections/architecture/Architec
 import FAQSection from '../../components/sections/faqs/FAQSection.astro';
 import AuthorSection from '../../components/sections/author/AuthorSection.astro';
 import TestimonialsSection from '../../components/sections/testimonials/TestimonialsSection.astro';
+import TryFreeSection from '../../components/sections/try-free/TryFreeSection.astro';
 import ChangelogSection from '../../components/sections/changelog/ChangelogSection.astro';
 import TopAppBar from '../../components/sections/top-app-bar/TopAppBar.astro';
 import Footer from '../../components/sections/footer/Footer.astro';
@@ -99,6 +100,7 @@ const sections = [
   { id: 'pricing', name: 'PricingSection', collection: 'pricing', anchor: 'PricingSection' },
   { id: 'demo', name: 'DemoSection (demo data)', collection: 'demo', anchor: 'DemoSection' },
   { id: 'free-trial', name: 'DemoSection (free-trial data)', collection: 'free-trial', anchor: 'FreeTrialSection' },
+  { id: 'try-free', name: 'TryFreeSection', collection: 'try-free', anchor: 'TryFreeSection' },
   { id: 'platform', name: 'PlatformSection', collection: 'platform', anchor: 'PlatformSection' },
   { id: 'knowledge-base', name: 'KnowledgeBaseSection', collection: 'knowledge-base', anchor: 'KnowledgeBaseSection' },
   { id: 'architecture', name: 'ArchitectureSection', collection: 'architecture', anchor: 'ArchitectureSection' },
@@ -251,6 +253,14 @@ const sections = [
         cta={freeTrialEntryDS.data.cta}
         icon={freeTrialIconDS}
       />
+    </article>
+
+    <article id="TryFreeSection" class="bg-background">
+      <header class="bg-foreground text-background px-6 py-4 max-w-screen-2xl mx-auto flex items-baseline justify-between gap-4">
+        <h2 class="font-headline font-bold">TryFreeSection</h2>
+        <span class="font-label text-xs text-background/60">collection: try-free</span>
+      </header>
+      <TryFreeSection />
     </article>
 
     <article id="PlatformSection" class="bg-background">

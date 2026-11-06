@@ -1,8 +1,8 @@
 heading: "Wejdź w Figmę z gotowym planem,<br/>copy i decyzjami."
-intro: Przedsprzedaż polska do 1 czerwca 2026. Potem rusza globalna sprzedaż i wchodzą wyższe ceny w euro.
+intro: Płacisz raz. Bez abonamentu.
 cta:
   label: Zobacz pakiety
   href: "#cennik"
 secondaryLinks:
-  - label: Albo zacznij od darmowego audytu
-    href: "#audyt"
+  - label: Albo wypróbuj za darmo
+    href: "#try-for-free"

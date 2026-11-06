@@ -107,6 +107,28 @@ const freeTrial = defineCollection({
   }),
 });
 
+const tryFree = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/try-free' }),
+  schema: z.object({
+    badge: z.string(),
+    heading: z.string(),
+    intro: z.string(),
+    submitLabel: z.string(),
+    pageLabel: z.string(),
+    videoLabel: z.string(),
+    cards: z.array(z.object({
+      skill: z.enum(['audit', 'planning']),
+      surface: z.string(),
+      question: z.string(),
+      name: z.string(),
+      text: z.string(),
+      note: z.string(),
+      pageHref: z.string(),
+      videoId: z.string().optional(),
+    })),
+  }),
+});
+
 const finalCta = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/final-cta' }),
   schema: z.object({
@@ -352,6 +374,7 @@ export const collections = {
   pricing,
   demo,
   'free-trial': freeTrial,
+  'try-free': tryFree,
   'final-cta': finalCta,
   platform,
   problems,

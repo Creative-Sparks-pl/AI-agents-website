@@ -9,7 +9,7 @@ import ComparisonSection from '../../components/sections/comparison/ComparisonSe
 import ProcessSection from '../../components/sections/process/ProcessSection.astro';
 import PricingSection from '../../components/sections/pricing/PricingSection.astro';
 import DemoSection from '../../components/sections/demo/DemoSection.astro';
-import FreeSkillForm from '../../components/ui/FreeSkillForm.astro';
+import TryFreeSection from '../../components/sections/try-free/TryFreeSection.astro';
 import ArchitectureSection from '../../components/sections/architecture/ArchitectureSection.astro';
 import TestimonialsSection from '../../components/sections/testimonials/TestimonialsSection.astro';
 import PlatformSection from '../../components/sections/platform/PlatformSection.astro';
@@ -21,7 +21,6 @@ import Footer from '../../components/sections/footer/Footer.astro';
 import processIcon from '../../assets/icons/shape-3.svg';
 import proofIcon from '../../assets/icons/shape-2.svg';
 import valuePropsIcon from '../../assets/icons/shape-4.svg';
-import freeTrialIcon from '../../assets/icons/shape-6.svg';
 import installIcon from '../../assets/icons/shape-7.svg';
 import boundariesIcon from '../../assets/icons/shape-8.svg';
 import finalCtaIcon from '../../assets/icons/shape-9.svg';
@@ -41,8 +40,6 @@ const processCards = stages.map((s) => ({
   quote: s.data.quote,
   shape: s.data.shape,
 }));
-
-const freeTrialEntry = await requireLocalizedEntry('free-trial', locale);
 
 const installEntry = await requireLocalizedEntry('install', locale);
 
@@ -74,7 +71,7 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
 const navLinks = [
   { label: 'Pakiety', href: '/ux-design-skill/#cennik' },
   { label: 'Opinie', href: '/ux-design-skill/#reviews' },
-  { label: 'Homepage UX Audit Skill', href: '/ux-design-skill/#audyt' },
+  { label: 'Darmowe skille', href: '/ux-design-skill/#try-for-free' },
   { label: 'Baza wiedzy', href: '/ux-design-skill/#baza-wiedzy' },
   { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
 ];
@@ -154,18 +151,10 @@ const navCtaHref = '/ux-design-skill/#cennik';
     />
     <TestimonialsSection id="reviews" />
     <PricingSection />
-    <DemoSection
-      id="audyt"
-      badge={freeTrialEntry.data.badge}
-      heading="Pobierz darmowy skill audytu UX i uruchom na swojej stronie głównej"
-      intro={freeTrialEntry.data.intro}
-      stages={freeTrialEntry.data.stages}
-      note={freeTrialEntry.data.note}
-      videoPopover={{ mediaId: '95i42fdxo8', label: 'Zobacz wideo' }}
-      icon={freeTrialIcon}
-    >
-      <FreeSkillForm slot="cta" skill="audit" surface="ux_design_skill_audyt" submitLabel="Pobierz darmowy skill" />
-    </DemoSection>
+    {/* The wrapper keeps old links to #audyt working. */}
+    <div id="audyt">
+      <TryFreeSection id="try-for-free" />
+    </div>
     <ArchitectureSection />
     <PlatformSection />
     <ProblemsSection
