@@ -18,7 +18,7 @@ platforms:
     desc: Compatible as a knowledge plus instruction set
     note: Runs in the browser. Not all Claude Code features are available here.
 contents:
-  - label: skill.md
+  - label: SKILL.md
     desc: Full skill definition with 6 workflows
   - label: references/
     desc: 92 domain knowledge files (16 page types, 14 areas)
