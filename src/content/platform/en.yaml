@@ -21,7 +21,7 @@ contents:
   - label: Skill
     desc: Rules (SKILL.md), plus the orchestrator and workflows that steer the work
   - label: UX knowledge base
-    desc: "92 files: 16 page types, 14 areas"
+    desc: "110 files: 16 page types, 19 general topics"
   - label: Versions for different tools
     desc: Claude Code, Codex, Cursor, Claude Projects, ChatGPT, Gemini
   - label: Document templates

@@ -1,6 +1,6 @@
 badge: Knowledge base
 heading: "Under the hood: 16 page types, 13 UX frameworks, and 50+ section patterns."
-intro: "92 knowledge files covering methodology, patterns, and worked examples. From design psychology to conversion patterns."
+intro: "110 knowledge files covering methodology, patterns, and worked examples. From design psychology to conversion patterns."
 pageTypes:
   - name: B2B SaaS
     sub: Subscription products

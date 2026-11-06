@@ -21,7 +21,7 @@ contents:
   - label: Skill
     desc: Reguły (SKILL.md) oraz orkiestrator i workflowy, które sterują pracą
   - label: Baza wiedzy UX
-    desc: "92 pliki: 16 typów stron, 14 obszarów"
+    desc: "110 plików: 16 typów stron, 19 tematów ogólnych"
   - label: Wersje na różne narzędzia
     desc: Claude Code, Codex, Cursor, Claude Projects, ChatGPT, Gemini
   - label: Szablony dokumentów
