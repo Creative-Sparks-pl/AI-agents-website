@@ -11,11 +11,9 @@ interface Props {
   pageHref: string;
   pageLabel: string;
   submitLabel: string;
-  videoId?: string;
-  videoLabel: string;
 }
 
-const { skill, surface, question, name, text, pageHref, pageLabel, submitLabel, videoId, videoLabel } = Astro.props;
+const { skill, surface, question, name, text, pageHref, pageLabel, submitLabel } = Astro.props;
 ---
 
 <div class="flex flex-col bg-white p-8 lg:p-10" data-try-free-card={skill}>
@@ -26,28 +24,10 @@ const { skill, surface, question, name, text, pageHref, pageLabel, submitLabel, 
   <div class="mt-auto">
     <FreeSkillForm skill={skill} surface={surface} submitLabel={submitLabel} fitContainer block />
 
-    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-6">
+    <div class="mt-6">
       <LinkArrow href={pageHref} icon="description" trailingIcon="trending_flat">
         {pageLabel}
       </LinkArrow>
-      {videoId && (
-        <Fragment>
-          <script is:inline async src="https://fast.wistia.com/player.js"></script>
-          <script is:inline async type="module" src={`https://fast.wistia.com/embed/${videoId}.js`}></script>
-          <wistia-player
-            media-id={videoId}
-            popover-content="link"
-            wistia-popover="true"
-            aspect="1.7777777777777777"
-            class="w-fit"
-          >
-            {/* Block-level, so the player adds no line height and both links stay level. */}
-            <LinkArrow href="#" icon="play_arrow" trailingIcon="trending_flat" class="!flex">
-              {videoLabel}
-            </LinkArrow>
-          </wistia-player>
-        </Fragment>
-      )}
     </div>
   </div>
 </div>

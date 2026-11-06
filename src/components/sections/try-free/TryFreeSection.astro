@@ -14,7 +14,7 @@ const { headingId = 'try-free-heading', class: className, ...rest } = Astro.prop
 
 const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireLocalizedEntry('try-free', locale);
-const { badge, heading, intro, submitLabel, pageLabel, videoLabel, cards } = entry.data;
+const { badge, heading, intro, submitLabel, pageLabel, cards } = entry.data;
 ---
 
 <section
@@ -27,13 +27,12 @@ const { badge, heading, intro, submitLabel, pageLabel, videoLabel, cards } = ent
       <Fragment slot="header">
         <span class="text-sm font-label text-primary mb-4">{badge}</span>
         <h2 id={headingId} class="font-headline text-4xl md:text-5xl font-bold text-foreground tracking-tight leading-[1.1]">{heading}</h2>
+        <p class="text-lg md:text-xl text-muted leading-relaxed mt-6 max-w-3xl">{intro}</p>
       </Fragment>
-
-      <p class="text-lg md:text-xl text-muted leading-relaxed mb-10 max-w-3xl">{intro}</p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {cards.map((card) => (
-          <TryFreeCard {...card} submitLabel={submitLabel} pageLabel={pageLabel} videoLabel={videoLabel} />
+          <TryFreeCard {...card} submitLabel={submitLabel} pageLabel={pageLabel} />
         ))}
       </div>
     </SectionWithIcon>

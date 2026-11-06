@@ -115,7 +115,6 @@ const tryFree = defineCollection({
     intro: z.string(),
     submitLabel: z.string(),
     pageLabel: z.string(),
-    videoLabel: z.string(),
     cards: z.array(z.object({
       skill: z.enum(['audit', 'planning']),
       surface: z.string(),
@@ -123,7 +122,6 @@ const tryFree = defineCollection({
       name: z.string(),
       text: z.string(),
       pageHref: z.string(),
-      videoId: z.string().optional(),
     })),
   }),
 });

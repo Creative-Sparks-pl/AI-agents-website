@@ -3,7 +3,6 @@ heading: Wypróbuj za darmo, zanim kupisz pełną wersję.
 intro: Dwa darmowe skille wydzielone z pełnej wersji. Wybierz ten, który pasuje do Twojej sytuacji.
 submitLabel: Pobierz za darmo
 pageLabel: Poznaj szczegóły
-videoLabel: Zobacz demo pełnego skilla
 cards:
   - skill: audit
     surface: ux_design_skill_audyt
@@ -11,11 +10,9 @@ cards:
     name: Skill do audytu UX strony głównej
     text: Analizuje stronę główną i przygotowuje makietę z wnioskami audytu przypiętymi do konkretnych elementów strony (do 5 stron dziennie).
     pageHref: /free-homepage-ux-audit-skill/
-    videoId: efnuj1zoqx
   - skill: planning
     surface: ux_design_skill_planning
     question: Planujesz stronę?
     name: Skill do planowania stron
     text: Pyta o kontekst projektu, planuje mapę strony i rozpisuje sekcje każdej podstrony.
     pageHref: /free-website-planning-skill/
-    videoId: efnuj1zoqx

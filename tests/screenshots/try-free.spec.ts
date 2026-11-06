@@ -13,16 +13,16 @@ const PAGES = [
     path: '/ux-design-skill/',
     heroLabel: 'Wypróbuj za darmo',
     finalLabel: 'Albo wypróbuj za darmo',
-    audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', videoLabel: 'Zobacz demo pełnego skilla', submitLabel: 'Pobierz za darmo' },
-    planning: { page: '/free-website-planning-skill/', pageLabel: 'Poznaj szczegóły', videoLabel: 'Zobacz demo pełnego skilla', submitLabel: 'Pobierz za darmo' },
+    audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Pobierz za darmo' },
+    planning: { page: '/free-website-planning-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Pobierz za darmo' },
   },
   {
     locale: 'en',
     path: '/en/ux-design-skill/',
     heroLabel: 'Try it for free',
     finalLabel: 'Or try it for free',
-    audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', videoLabel: 'Watch the full skill demo', submitLabel: 'Download for free' },
-    planning: { page: '/en/free-website-planning-skill/', pageLabel: 'Learn more', videoLabel: 'Watch the full skill demo', submitLabel: 'Download for free' },
+    audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', submitLabel: 'Download for free' },
+    planning: { page: '/en/free-website-planning-skill/', pageLabel: 'Learn more', submitLabel: 'Download for free' },
   },
 ];
 
@@ -70,7 +70,7 @@ for (const { locale, path, heroLabel, finalLabel, audit, planning } of PAGES) {
       await expect(pageLink).toHaveAttribute('href', card.page);
       expect((await page.request.get(card.page)).status()).toBe(200);
 
-      await expect(root.getByRole('link', { name: card.videoLabel })).toHaveCount(1);
+      await expect(root.locator('wistia-player')).toHaveCount(0);
 
       // Email and button share a line when the card is wide enough, and stack on a phone.
       const email = await root.locator('input[name="email"]').boundingBox();
