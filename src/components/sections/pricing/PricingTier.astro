@@ -24,7 +24,7 @@ const copy = locale === 'en'
       currencyPosition: 'prefix' as const,
       taxNote: '',
       ctaLabel: (n: string) => `Buy ${n}`,
-      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-en',
+      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-en?lang=en',
     }
   : {
       packageLabel: 'Pakiet',
@@ -33,7 +33,7 @@ const copy = locale === 'en'
       currencyPosition: 'suffix' as const,
       taxNote: 'netto + VAT 23%',
       ctaLabel: (n: string) => `Kup pakiet ${n}`,
-      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-pl',
+      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-pl?lang=pl',
     };
 
 const oldPriceDisplay = copy.currencyPosition === 'prefix'
