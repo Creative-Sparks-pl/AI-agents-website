@@ -1,7 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import { expectAxeClean, openPage, shoot, widthOf } from './helpers';
 
-const SECTION = '#try-for-free';
 const HEADING = '#try-free-heading';
 
 // Wording that stopped being true when the pre-sale ended on June 1, 2026.
@@ -11,6 +10,9 @@ const PAGES = [
   {
     locale: 'pl',
     path: '/ux-design-skill/',
+    section: '#wyprobuj-za-darmo',
+    // Old addresses of the section that must still land on it.
+    oldAnchors: ['#audyt', '#try-for-free'],
     heroLabel: 'Wypróbuj za darmo',
     finalLabel: 'Albo wypróbuj za darmo',
     audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Pobierz za darmo' },
@@ -19,6 +21,8 @@ const PAGES = [
   {
     locale: 'en',
     path: '/en/ux-design-skill/',
+    section: '#try-for-free',
+    oldAnchors: ['#audyt'],
     heroLabel: 'Try it for free',
     finalLabel: 'Or try it for free',
     audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', submitLabel: 'Download for free' },
@@ -56,7 +60,7 @@ async function fullPageText(page: Page) {
   });
 }
 
-for (const { locale, path, heroLabel, finalLabel, audit, planning } of PAGES) {
+for (const { locale, path, section, oldAnchors, heroLabel, finalLabel, audit, planning } of PAGES) {
   test(`try-free ${locale}: both cards, axe and screenshot`, async ({ page }, testInfo) => {
     test.setTimeout(180_000);
     await openPage(page, path);
@@ -82,8 +86,8 @@ for (const { locale, path, heroLabel, finalLabel, audit, planning } of PAGES) {
       expect(overflow, `${skill} card overflows sideways`).toBeLessThanOrEqual(0);
     }
 
-    await expectAxeClean(page, SECTION);
-    await shoot(page, page.locator(SECTION), `try-free-${locale}-${widthOf(testInfo)}`);
+    await expectAxeClean(page, section);
+    await shoot(page, page.locator(section), `try-free-${locale}-${widthOf(testInfo)}`);
   });
 
   test(`try-free ${locale}: hero, final, menu and old links land on the section`, async ({ page }) => {
@@ -98,10 +102,10 @@ for (const { locale, path, heroLabel, finalLabel, audit, planning } of PAGES) {
     await expect(page.locator(HEADING)).toBeInViewport();
 
     // The menu links are hidden on phones, so their address is what gets checked and followed here.
-    const menuHref = await page.locator('nav a[href*="#try-for-free"]').getAttribute('href');
-    expect(menuHref).toBe(`${path}#try-for-free`);
+    const menuHref = await page.locator(`nav a[href$="${section}"]`).getAttribute('href');
+    expect(menuHref).toBe(`${path}${section}`);
 
-    for (const target of [menuHref!, `${path}#audyt`]) {
+    for (const target of [menuHref!, ...oldAnchors.map((anchor) => `${path}${anchor}`)]) {
       await page.goto('about:blank');
       await page.goto(target);
       await expect(page.locator(HEADING), target).toBeInViewport();

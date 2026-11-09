@@ -70,8 +70,8 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
 // Nav scoped to this page — in-page anchors stay on /ux-design-skill/.
 const navLinks = [
   { label: 'Pakiety', href: '/ux-design-skill/#cennik' },
-  { label: 'Opinie', href: '/ux-design-skill/#reviews' },
-  { label: 'Darmowe skille', href: '/ux-design-skill/#try-for-free' },
+  { label: 'Opinie', href: '/ux-design-skill/#opinie' },
+  { label: 'Darmowe skille', href: '/ux-design-skill/#wyprobuj-za-darmo' },
   { label: 'Baza wiedzy', href: '/ux-design-skill/#baza-wiedzy' },
   { label: 'Jak pracować', href: '/ux-design-skill/instrukcja' },
 ];
@@ -149,11 +149,14 @@ const navCtaHref = '/ux-design-skill/#cennik';
       icon={boundariesIcon}
       class="!bg-surface"
     />
-    <TestimonialsSection id="reviews" />
+    {/* Keeps old links to this section working. */}
+    <span id="reviews" aria-hidden="true"></span>
+    <TestimonialsSection id="opinie" />
     <PricingSection />
-    {/* The wrapper keeps old links to #audyt working. */}
+    {/* The wrapper and the marker keep old links to #audyt and #try-for-free working. */}
     <div id="audyt">
-      <TryFreeSection id="try-for-free" />
+      <span id="try-for-free" aria-hidden="true"></span>
+      <TryFreeSection id="wyprobuj-za-darmo" />
     </div>
     <ArchitectureSection />
     <PlatformSection />

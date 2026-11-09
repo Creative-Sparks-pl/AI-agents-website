@@ -12,11 +12,11 @@ cards:
       Markdown and HTML. Each artifact drops into the next tool in your workflow without conversion. The plan lives in your project files, not in a chat history.
     links:
       - label: See example files
-        href: "#dowod"
+        href: "#proof"
 
   - title: Built-in UX expertise. You still make every call.
     description: |
       16 page types, 13 UX frameworks, and 50+ section patterns baked in. The skill applies the methodology, but every checkpoint shows you the options and the trade-offs. The decision stays yours.
     links:
       - label: See the knowledge base
-        href: "#baza-wiedzy"
+        href: "#knowledge-base"

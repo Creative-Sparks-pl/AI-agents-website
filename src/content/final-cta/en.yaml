@@ -2,7 +2,7 @@ heading: Design your page with a solid plan, real copy, and clear decisions.
 intro: Pay once. No subscription.
 cta:
   label: See pricing
-  href: "#cennik"
+  href: "#pricing"
 secondaryLinks:
   - label: Or try it for free
     href: "#try-for-free"

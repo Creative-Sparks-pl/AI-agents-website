@@ -69,13 +69,13 @@ const valuePropsCases = valuePropsEntry.data.cards.map((c, i) => ({
 
 // Nav scoped to this page — in-page anchors stay on /en/ux-design-skill/.
 const navLinks = [
-  { label: 'Pricing', href: '/en/ux-design-skill/#cennik' },
+  { label: 'Pricing', href: '/en/ux-design-skill/#pricing' },
   { label: 'Reviews', href: '/en/ux-design-skill/#reviews' },
   { label: 'Free skills', href: '/en/ux-design-skill/#try-for-free' },
-  { label: 'Knowledge base', href: '/en/ux-design-skill/#baza-wiedzy' },
+  { label: 'Knowledge base', href: '/en/ux-design-skill/#knowledge-base' },
   { label: 'How it works', href: '/en/ux-design-skill/how-it-works' },
 ];
-const navCtaHref = '/en/ux-design-skill/#cennik';
+const navCtaHref = '/en/ux-design-skill/#pricing';
 ---
 
 <BaseLayout
@@ -88,8 +88,10 @@ const navCtaHref = '/en/ux-design-skill/#cennik';
   <TopAppBar navLinks={navLinks} ctaHref={navCtaHref} />
   <main>
     <HeroSection entryId="skill-lp" />
+    {/* Keeps old links to this section working. */}
+    <span id="dowod" aria-hidden="true"></span>
     <ProcessSection
-      id="dowod"
+      id="proof"
       headingId="proof-gallery-heading"
       badge={proofEntry.data.badge}
       heading={proofEntry.data.heading}
@@ -132,8 +134,10 @@ const navCtaHref = '/en/ux-design-skill/#cennik';
       videoTile={{ mediaId: 'q0uvnjyc60', label: 'Video', title: 'See the UX Design Skill in action' }}
       icon={processIcon}
     />
+    {/* Keeps old links to this section working. */}
+    <span id="baza-wiedzy" aria-hidden="true"></span>
     <KnowledgeBaseSection
-      id="baza-wiedzy"
+      id="knowledge-base"
       heading="This skill understands UX design through built-in processes and a UX knowledge base."
       mapLabel="The skill's knowledge map"
     />
@@ -150,6 +154,8 @@ const navCtaHref = '/en/ux-design-skill/#cennik';
       class="!bg-surface"
     />
     <TestimonialsSection id="reviews" />
+    {/* Keeps old links to this section working. */}
+    <span id="cennik" aria-hidden="true"></span>
     <PricingSection />
     {/* The wrapper keeps old links to #audyt working. */}
     <div id="audyt">

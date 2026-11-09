@@ -48,7 +48,7 @@ const COPY_EN = {
 const COPY = locale === 'en' ? COPY_EN : COPY_PL;
 ---
 
-<section class="py-20 md:py-28 bg-surface-accent" id="frameworki">
+<section class="py-20 md:py-28 bg-surface-accent" id={locale === 'en' ? 'frameworks' : 'frameworki'}>
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">

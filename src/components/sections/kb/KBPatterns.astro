@@ -210,7 +210,7 @@ const COPY_EN = {
 const COPY = locale === 'en' ? COPY_EN : COPY_PL;
 ---
 
-<section class="py-20 md:py-28 bg-pattern" id="wzorce">
+<section class="py-20 md:py-28 bg-pattern" id={locale === 'en' ? 'patterns' : 'wzorce'}>
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">

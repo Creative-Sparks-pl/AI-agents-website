@@ -32,7 +32,7 @@ const copy = locale === 'en'
 
 <section
   class:list={['py-20 md:py-28 bg-white', className]}
-  id="cennik"
+  id={locale === 'en' ? 'pricing' : 'cennik'}
   aria-labelledby="pricing-heading"
   {...rest}
 >

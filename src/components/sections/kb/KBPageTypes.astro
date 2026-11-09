@@ -676,7 +676,7 @@ const PAGE_TYPES_EN = [
 const pageTypes = locale === 'en' ? PAGE_TYPES_EN : PAGE_TYPES_PL;
 ---
 
-<section class="py-20 md:py-28 bg-surface-primary" id="typy-stron">
+<section class="py-20 md:py-28 bg-surface-primary" id={locale === 'en' ? 'page-types' : 'typy-stron'}>
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
