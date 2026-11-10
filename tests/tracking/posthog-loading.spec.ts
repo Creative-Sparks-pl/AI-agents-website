@@ -1,0 +1,76 @@
+import { test, expect, type Page } from '@playwright/test';
+import { blockThirdParty } from '../screenshots/helpers';
+
+// PostHog records sessions, so it may only load on the landing pages and only after
+// Cookiebot's statistics consent. Cookiebot is blocked here, so no consent is ever given.
+const PROJECT_KEY = 'phc_xJEvm2rFYcD3VKe3BQb2zPpAaWqVZRe7zBqYUwhsgG5t';
+const POSTHOG_HOST = /(^|\.)posthog\.com$/;
+
+const LANDING_PAGES = [
+  '/ux-design-skill/',
+  '/en/ux-design-skill/',
+  '/free-homepage-ux-audit-skill/',
+  '/en/free-homepage-ux-audit-skill/',
+  '/free-website-planning-skill/',
+  '/en/free-website-planning-skill/',
+];
+
+const PAGES_WITHOUT_POSTHOG = [
+  '/ux-design-skill/regulamin/',
+  '/en/ux-design-skill/terms/',
+  '/ux-design-skill/changelog/',
+  '/en/ux-design-skill/changelog/',
+];
+
+type ScriptInfo = { type: string | null; consent: string | null; src: string | null; text: string };
+
+/** Opens the page without consent; returns every script that mentions PostHog and every request to a PostHog host. */
+async function openWithoutConsent(page: Page, path: string) {
+  // The request event fires before routing, so a PostHog request counts here even though blockThirdParty aborts it.
+  const postHogRequests: string[] = [];
+  page.on('request', (request) => {
+    if (POSTHOG_HOST.test(new URL(request.url()).hostname)) postHogRequests.push(request.url());
+  });
+  await blockThirdParty(page);
+
+  const response = await page.goto(path, { waitUntil: 'load' });
+  expect(response?.status()).toBe(200);
+  await page.waitForLoadState('networkidle');
+
+  const scripts: ScriptInfo[] = await page.locator('script').evaluateAll((elements) =>
+    elements.map((el) => ({
+      type: el.getAttribute('type'),
+      consent: el.getAttribute('data-cookieconsent'),
+      src: el.getAttribute('src'),
+      text: el.textContent ?? '',
+    })),
+  );
+  const postHogScripts = scripts.filter(({ src, text }) => /posthog/i.test(`${src ?? ''} ${text}`));
+  return { postHogScripts, postHogRequests };
+}
+
+for (const path of LANDING_PAGES) {
+  test(`posthog ${path}: one statistics-gated snippet, inputs masked, nothing sent without consent`, async ({ page }) => {
+    const { postHogScripts, postHogRequests } = await openWithoutConsent(page, path);
+
+    expect(postHogScripts, 'scripts mentioning PostHog').toHaveLength(1);
+    const [snippet] = postHogScripts;
+    expect(snippet.type).toBe('text/plain');
+    expect(snippet.consent).toBe('statistics');
+    expect(snippet.text).toContain(`posthog.init('${PROJECT_KEY}'`);
+    expect(snippet.text).toMatch(/session_recording:\s*\{\s*maskAllInputs:\s*true\s*\}/);
+
+    // Without consent the snippet stays inert text: no stub on window, no request to PostHog.
+    expect(await page.evaluate(() => 'posthog' in window)).toBe(false);
+    expect(postHogRequests).toEqual([]);
+  });
+}
+
+for (const path of PAGES_WITHOUT_POSTHOG) {
+  test(`posthog ${path}: no snippet, nothing sent`, async ({ page }) => {
+    const { postHogScripts, postHogRequests } = await openWithoutConsent(page, path);
+
+    expect(postHogScripts).toEqual([]);
+    expect(postHogRequests).toEqual([]);
+  });
+}

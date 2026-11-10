@@ -11,7 +11,7 @@ export const widthOf = (testInfo: TestInfo) => testInfo.project.use.viewport?.wi
 
 /** Consent and analytics scripts are third-party, and they would count test runs as real visits. */
 export async function blockThirdParty(page: Page) {
-  await page.route(/consent\.cookiebot\.com|connect\.facebook\.net|analytics\.creativesparks\.pl/, (route) => route.abort());
+  await page.route(/consent\.cookiebot\.com|connect\.facebook\.net|analytics\.creativesparks\.pl|\.posthog\.com/, (route) => route.abort());
 }
 
 /** Opens a page ready for screenshots: lazy images loaded, fonts ready, dev toolbar gone. */
