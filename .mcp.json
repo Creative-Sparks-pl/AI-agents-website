@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "umami": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "dotenv-cli@11.1.0",
+        "-e",
+        ".env.local",
+        "--",
+        "npx",
+        "-y",
+        "@umami/mcp@0.2.0"
+      ],
+      "env": {
+        "UMAMI_URL": "https://analytics.creativesparks.pl"
+      }
+    },
+    "posthog": {
+      "type": "http",
+      "url": "https://mcp.posthog.com/mcp?readonly=true"
+    }
+  }
+}
