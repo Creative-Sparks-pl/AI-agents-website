@@ -13,6 +13,12 @@ const CASES = [
   { path: '/en/free-homepage-ux-audit-skill/', language: 'en', skill: 'audit', surface: 'free_audit_skill_hero' },
 ];
 
+// Plans in the order the pricing section shows them.
+const CHECKOUT_CASES = [
+  { path: '/ux-design-skill/', language: 'pl', plans: ['Solo', 'Studio', 'Agencja'] },
+  { path: '/en/ux-design-skill/', language: 'en', plans: ['Solo', 'Studio', 'Agency'] },
+];
+
 type UmamiCall = unknown[];
 
 /** Puts a recorder in place of Umami before any page script runs; returns a reader for what it caught. */
@@ -86,5 +92,32 @@ for (const { path, language, skill, surface } of CASES) {
     const serialized = JSON.stringify(calls);
     expect(serialized).not.toContain(EMAIL);
     expect(serialized).not.toContain(EMAIL.split('@')[0]);
+  });
+}
+
+for (const { path, language, plans } of CHECKOUT_CASES) {
+  test(`umami ${path} pricing: checkout links carry plan, language and page`, async ({ page }) => {
+    await blockThirdParty(page);
+
+    const response = await page.goto(path);
+    expect(response?.status()).toBe(200);
+
+    const links = page.locator('a[data-umami-event="Pricing CTA"]');
+    await expect(links).toHaveCount(plans.length);
+
+    for (const [i, plan] of plans.entries()) {
+      const link = links.nth(i);
+      await expect(link).toHaveAttribute('data-umami-event-plan', plan);
+      await expect(link).toHaveAttribute('data-umami-event-language', language);
+      await expect(link).toHaveAttribute('data-umami-event-page', path);
+
+      // The purchase webhook reports the sale on the page it finds in `page`, so it must sit beside `lang`.
+      const href = await link.getAttribute('href');
+      expect(href).toBeTruthy();
+      const checkout = new URL(href!);
+      expect(checkout.host).toBe('cart.creativesparks.pl');
+      expect(checkout.searchParams.get('lang')).toBe(language);
+      expect(checkout.searchParams.get('page')).toBe(path);
+    }
   });
 }

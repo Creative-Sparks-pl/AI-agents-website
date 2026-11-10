@@ -36,6 +36,12 @@ const copy = locale === 'en'
       checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-pl?lang=pl',
     };
 
+// The landing page rides along to checkout as `page`; the purchase webhook reads it back
+// from `custom_params.page` and reports the sale on that page in Umami.
+const page = Astro.url.pathname;
+const checkoutUrl = new URL(copy.checkoutUrl);
+checkoutUrl.searchParams.set('page', page);
+
 const oldPriceDisplay = copy.currencyPosition === 'prefix'
   ? `${copy.currencySymbol}${oldPrice}`
   : `${oldPrice} ${copy.currencySymbol}`;
@@ -101,12 +107,14 @@ const presaleActive = isPresaleActive(Date.now());
 
   <div class="mt-auto">
     <Button
-      href={copy.checkoutUrl}
+      href={checkoutUrl.href}
       external
       block
       size="md"
       data-umami-event="Pricing CTA"
       data-umami-event-plan={name}
+      data-umami-event-language={locale}
+      data-umami-event-page={page}
       data-track="InitiateCheckout"
       data-track-plan={name}
     >
