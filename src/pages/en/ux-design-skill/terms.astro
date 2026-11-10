@@ -9,7 +9,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
   <main class="py-20 md:py-28">
     <article class="max-w-3xl mx-auto px-6 prose-custom">
       <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Terms of sale</h1>
-      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-06</p>
+      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-10</p>
 
       <p class="text-sm bg-surface-primary p-5 border-l-4 border-primary mb-12"><strong>Note:</strong> This is an English translation provided for convenience. The Polish version of these terms is the legally binding version under Polish law. If there is any conflict between this English version and the Polish version, the Polish version controls. See the <a href="/ux-design-skill/regulamin">Polish terms</a>.</p>
 
@@ -18,8 +18,13 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <p>Contact: <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a></p>
 
       <h2>What I sell</h2>
-      <p>UX Design Skill is a digital product. You buy a set of files (SKILL.md, references/, scripts/) that you install on a chosen AI platform (Claude, ChatGPT, Gemini) and use to run a UX process for website projects.</p>
-      <p>The product is not software, an application, or an online service. It is text files (Markdown) that act as instructions and a knowledge base for AI models.</p>
+      <p>UX Design Skill is a digital product: a package of files that you install on a chosen AI platform (Claude, ChatGPT, Gemini) and use to run a UX process for website projects. The package contains:</p>
+      <ul>
+        <li>Instructions and a knowledge base in Markdown text files (SKILL.md and the references/ folder).</li>
+        <li>Helper scripts in Python and JavaScript (the references/scripts/ folder) that the AI model uses while it works, for example to save results and check that they are complete.</li>
+        <li>HTML templates in which the interactive result documents are built (wireframes, audits, plans).</li>
+      </ul>
+      <p>Paid packages also include an access key to the online service described in the "Online service" section.</p>
 
       <h2>Packages and license</h2>
       <p>The product is available in three packages:</p>
@@ -32,12 +37,14 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <ul>
         <li>Skill files in the current version.</li>
         <li>6 months of updates.</li>
+        <li>Access to the online service (see "Online service").</li>
       </ul>
       <p>The Agency package also includes one consultation with the author (30 min, online).</p>
       <p><strong>What the license covers:</strong> The license gives you the right to use the skill on your own and client projects. You can use the deliverables produced by the skill (wireframes, strategies, project contexts) without limits, including commercially.</p>
       <p><strong>What the license does not cover:</strong></p>
       <ul>
         <li>You cannot share the skill files with people outside the license (e.g. Solo = only you).</li>
+        <li>You cannot share the online service access key with people outside the license.</li>
         <li>You cannot resell, redistribute, or publish the skill files.</li>
         <li>You cannot use the skill files to create a competing product.</li>
       </ul>
@@ -49,25 +56,32 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Once paid, you receive an email with a link to download the files.</li>
         <li>The download link is active for 7 days. If it expires, write to tomasz@creativesparks.pl.</li>
       </ol>
-      <p>Prices on the site are shown in USD and are net prices. Applicable VAT is added at checkout where required.</p>
-      <p>A VAT invoice is issued automatically after payment. If you need a company invoice, provide your company details at checkout.</p>
+      <p>Prices on the site are shown in USD and are net prices. VAT is calculated at checkout based on your country and shown before you pay.</p>
+      <p>Easytools issues the invoice automatically after payment, on my behalf. Invoices for businesses are also registered in Poland's national e-invoicing system (KSeF). If you need a company invoice, choose to buy as a company at checkout and enter your tax ID.</p>
 
       <h2>Updates</h2>
       <p>Every package includes 6 months of updates from the purchase date. During this period you receive new versions of the skill (new page types, patterns, fixes) at the email address you provided at checkout.</p>
       <p>After 6 months the skill still works without changes. A subscription for further updates is optional and paid separately.</p>
 
+      <h2>Online service</h2>
+      <p>The service opens a given public web page in a browser and returns its layout (the position and content of its elements). The AI model uses it automatically when it reconstructs wireframes of existing pages.</p>
+      <ul>
+        <li>Limit: up to 30 requests per minute.</li>
+        <li>Technical interruptions can happen. In environments where the AI model runs code, it can then use a fallback method, with your consent.</li>
+      </ul>
+
       <h2>Using the product</h2>
       <p>The product requires an account on one of the supported AI platforms: Claude (Anthropic), ChatGPT (OpenAI), or Gemini (Google). The cost of an account on these platforms is not included in the product price and is a separate expense.</p>
+      <p>Full functionality requires an environment where the AI model can run code (for example Claude Code in a terminal or IDE) and Python 3. In web chats (Claude, ChatGPT, Gemini) the product works without the scripts and without the online service, with limits: wireframes in the mobile version only and no automatic completeness check. Screenshots through Playwright are optional and require installing Node.js.</p>
       <p>The skill runs on AI models provided by these platforms. The quality of results depends on the AI model, your answers, and the specifics of your project. I do not guarantee specific results because every project is different.</p>
 
       <h2>Right to withdraw from the contract</h2>
       <p>You have the right to withdraw from the contract within 14 days of its conclusion, with no reason required. If you exercise this right, I will refund the full purchase amount within 14 days.</p>
-      <p><strong>Important:</strong> The right to withdraw expires the moment you download the files, if at purchase you agreed to delivery of the digital content before the 14-day period ends (per article 38 point 13 of the Polish Consumer Rights Act).</p>
       <p>To withdraw from the contract, send a message to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Complaints</h2>
-      <p>If the files are damaged, incomplete, or do not match the product description on the site, you can file a complaint. Send the complaint to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a> with a description of the issue. I will respond within 14 days.</p>
-      <p>If the complaint is justified, I will deliver corrected files or refund your money.</p>
+      <p>If the files are damaged, incomplete, or do not match the product description on the site, or the online service does not work as described, you can file a complaint. Send the complaint to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a> with a description of the issue. I will respond within 14 days.</p>
+      <p>If the complaint is justified, I will deliver corrected files, restore the service, or refund your money.</p>
       <p><strong>What complaints do not cover:</strong></p>
       <ul>
         <li>The quality of results generated by AI models (that depends on the platform, not on me).</li>
@@ -80,12 +94,15 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <p>The deliverables the skill produces require your judgment and adaptation to the specific project. I am not liable for decisions made on the basis of those deliverables.</p>
 
       <h2>Copyright</h2>
-      <p>The skill files (SKILL.md, references/, scripts/) are protected by copyright. You buy a license to use them, not the copyright to the files.</p>
+      <p>The skill files (SKILL.md and references/, including the scripts and templates) are protected by copyright. You buy a license to use them, not the copyright to the files.</p>
       <p>The deliverables that the skill produces for your projects belong to you. You can use them without limits, including commercially.</p>
 
       <h2>Personal data</h2>
       <p>I process your personal data (email, billing details) to fulfill your order and deliver the product. Legal basis: GDPR article 6(1)(b), performance of a contract.</p>
-      <p>Your data is not shared with third parties, except the payment operator and the invoicing system.</p>
+      <p>Your data is not shared with third parties, except the companies that help me fulfill your order: Easytools (checkout, invoices), Stripe (payments), Vercel (online service servers).</p>
+      <p>The online service processes the address of the analyzed page and your IP address. For rate limits, I store the IP address only as a cryptographic hash.</p>
+      <p>If you send feedback or a bug report through the skill, its title and content are published publicly in GitHub Discussions. Your email address, if you give it, is not published: it reaches only me, so I can reply.</p>
+      <p>See the <a href="/en/ux-design-skill/privacy-policy">privacy policy</a> for details.</p>
       <p>You have the right to access, correct, and delete your data. Write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Changes to these terms</h2>

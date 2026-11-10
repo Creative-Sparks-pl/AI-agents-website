@@ -9,7 +9,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
   <main class="py-20 md:py-28">
     <article class="max-w-3xl mx-auto px-6 prose-custom">
       <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Privacy policy</h1>
-      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-03-22</p>
+      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-10</p>
 
       <p class="text-sm bg-surface-primary p-5 border-l-4 border-primary mb-12"><strong>Note:</strong> This is an English translation provided for convenience. The Polish version of this policy is the legally binding version under Polish law. If there is any conflict between this English version and the Polish version, the Polish version controls. See the <a href="/ux-design-skill/polityka-prywatnosci">Polish privacy policy</a>.</p>
 
@@ -22,6 +22,8 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li><strong>Email address</strong>, provided when you sign up for the waitlist or at purchase.</li>
         <li><strong>Billing details</strong>, if you provide company details at purchase (company name, tax ID, address).</li>
         <li><strong>Technical data</strong>, IP address and browser type, collected automatically by the server.</li>
+        <li><strong>Online service data</strong>, the address of the analyzed page and your IP address, which I store for rate limits only as a cryptographic hash.</li>
+        <li><strong>Reports sent through the skill</strong>, the title and content of feedback or a bug report, and your email address if you give it.</li>
       </ul>
 
       <h2>Why I collect data</h2>
@@ -30,16 +32,22 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>To issue a VAT invoice (GDPR article 6(1)(c), legal obligation).</li>
         <li>To inform you about product updates (GDPR article 6(1)(b), performance of a contract).</li>
         <li>Newsletter / waitlist, based on your consent (GDPR article 6(1)(a)).</li>
+        <li>To run the online service and enforce its rate limits (GDPR article 6(1)(b), performance of a contract).</li>
+        <li>To publish and handle feedback and bug reports you choose to send through the skill (GDPR article 6(1)(a), consent).</li>
       </ul>
 
       <h2>Who I share data with</h2>
       <p>Your data may be shared only with the entities necessary to provide the service:</p>
       <ul>
-        <li><strong>Easytools</strong>, mailing list and free skill delivery.</li>
+        <li><strong>Easytools</strong>, checkout, issuing VAT invoices on my behalf, mailing list and skill delivery.</li>
+        <li><strong>Stripe</strong>, online payment processing.</li>
         <li><strong>Meta</strong>, ad performance measurement, if you consent to marketing cookies.</li>
-        <li><strong>Payment operator</strong>, online payment processing.</li>
-        <li><strong>Invoicing system</strong>, issuing VAT invoices.</li>
+        <li><strong>Vercel</strong>, servers for the online service and the feedback server.</li>
+        <li><strong>Upstash</strong>, rate-limit counters for the online service (IP address hashes only).</li>
+        <li><strong>GitHub</strong>, public posting of reports in GitHub Discussions (without your email address).</li>
+        <li><strong>Make.com and Google (Gmail)</strong>, forwarding the email address you gave in a report to me.</li>
       </ul>
+      <p>Some of these companies may process data outside the European Economic Area, under the mechanisms GDPR provides (for example the EU-US Data Privacy Framework or standard contractual clauses).</p>
       <p>I do not sell or rent your data to third parties.</p>
 
       <h2>How long I keep data</h2>
@@ -47,6 +55,8 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Order fulfillment data, for the duration of the contract plus 5 years (tax obligation).</li>
         <li>Mailing list data, until you unsubscribe.</li>
         <li>Technical data (server logs), up to 30 days.</li>
+        <li>Online service rate-limit counters expire automatically.</li>
+        <li>Reports published in GitHub Discussions, until deleted; you can ask me to delete your report.</li>
       </ul>
 
       <h2>Your rights</h2>

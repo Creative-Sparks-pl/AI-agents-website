@@ -4,12 +4,12 @@ import TopAppBar from '../../components/sections/top-app-bar/TopAppBar.astro';
 import Footer from '../../components/sections/footer/Footer.astro';
 ---
 
-<BaseLayout title="Polityka prywatności — Asystent UX | Creative Sparks">
+<BaseLayout title="Polityka prywatności — UX Design Skill | Creative Sparks">
   <TopAppBar />
   <main class="py-20 md:py-28">
     <article class="max-w-3xl mx-auto px-6 prose-custom">
       <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Polityka prywatności</h1>
-      <p class="text-sm font-label text-muted mb-12">Ostatnia aktualizacja: 2026-03-22</p>
+      <p class="text-sm font-label text-muted mb-12">Ostatnia aktualizacja: 2026-11-10</p>
 
       <h2>Administrator danych</h2>
       <p>Administratorem Twoich danych osobowych jest Tomasz Maciąg, prowadzący działalność gospodarczą pod firmą "Creative Sparks Tomasz Maciąg", Na Polance 10B/10, 51-109 Wrocław, NIP: 7722112640.</p>
@@ -20,6 +20,8 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li><strong>Adres email</strong> — podany przy zapisie na listę oczekujących lub przy zakupie</li>
         <li><strong>Dane do faktury</strong> — jeśli podasz dane firmy przy zakupie (nazwa firmy, NIP, adres)</li>
         <li><strong>Dane techniczne</strong> — adres IP, typ przeglądarki (zbierane automatycznie przez serwer)</li>
+        <li><strong>Dane z usługi online</strong> — adres analizowanej strony i adres IP, który na potrzeby limitów zapytań zapisuję tylko w postaci skrótu kryptograficznego</li>
+        <li><strong>Zgłoszenia wysłane przez skill</strong> — tytuł i treść opinii lub zgłoszenia błędu oraz adres email, jeśli go podasz</li>
       </ul>
 
       <h2>Po co zbieram dane</h2>
@@ -28,16 +30,22 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Wystawienie faktury VAT (art. 6 ust. 1 lit. c RODO)</li>
         <li>Informowanie o aktualizacjach produktu (art. 6 ust. 1 lit. b RODO)</li>
         <li>Newsletter / lista oczekujących — na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO)</li>
+        <li>Działanie usługi online i pilnowanie limitów zapytań (art. 6 ust. 1 lit. b RODO)</li>
+        <li>Publikacja i obsługa opinii oraz zgłoszeń błędów, które dobrowolnie wysyłasz przez skill (art. 6 ust. 1 lit. a RODO)</li>
       </ul>
 
       <h2>Komu udostępniam dane</h2>
       <p>Twoje dane mogą być udostępnione wyłącznie podmiotom niezbędnym do realizacji usługi:</p>
       <ul>
-        <li><strong>Easytools</strong> — obsługa listy mailingowej i dostarczanie bezpłatnych skilli</li>
+        <li><strong>Easytools</strong> — koszyk, wystawianie faktur VAT w moim imieniu, obsługa listy mailingowej i dostarczanie skilli</li>
+        <li><strong>Stripe</strong> — przetwarzanie płatności online</li>
         <li><strong>Meta</strong> — pomiar skuteczności reklam, jeśli wyrazisz zgodę na cookies marketingowe</li>
-        <li><strong>Operator płatności</strong> — przetwarzanie płatności online</li>
-        <li><strong>System fakturowy</strong> — wystawianie faktur VAT</li>
+        <li><strong>Vercel</strong> — serwery usługi online i serwera zgłoszeń</li>
+        <li><strong>Upstash</strong> — liczniki limitów zapytań usługi online (tylko skróty adresów IP)</li>
+        <li><strong>GitHub</strong> — publiczna publikacja zgłoszeń w GitHub Discussions (bez adresu email)</li>
+        <li><strong>Make.com i Google (Gmail)</strong> — przekazanie mi adresu email podanego w zgłoszeniu</li>
       </ul>
+      <p>Część z tych podmiotów może przetwarzać dane poza Europejskim Obszarem Gospodarczym, na podstawie mechanizmów przewidzianych w RODO (np. EU-US Data Privacy Framework lub standardowych klauzul umownych).</p>
       <p>Nie sprzedaję ani nie wypożyczam Twoich danych osobom trzecim.</p>
 
       <h2>Jak długo przechowuję dane</h2>
@@ -45,6 +53,8 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Dane do realizacji zamówienia — przez okres obowiązywania umowy + 5 lat (obowiązek podatkowy)</li>
         <li>Dane z listy mailingowej — do momentu wypisania się</li>
         <li>Dane techniczne (logi serwera) — do 30 dni</li>
+        <li>Liczniki limitów usługi online — wygasają automatycznie</li>
+        <li>Zgłoszenia opublikowane w GitHub Discussions — do czasu usunięcia; możesz poprosić o usunięcie swojego zgłoszenia</li>
       </ul>
 
       <h2>Twoje prawa</h2>
