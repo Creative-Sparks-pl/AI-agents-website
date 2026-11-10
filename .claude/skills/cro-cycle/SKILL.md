@@ -1,6 +1,6 @@
 ---
 name: cro-cycle
-description: Run one conversion-improvement cycle for the landing pages of agents.creativesparks.pl. Reports due results from the change ledger, reads both funnels from Umami per page and language, reads PostHog recording notes and a UX audit for the page that loses the most visitors, and proposes one to three ranked, evidence-backed ideas. Builds only the idea the user picks, as a change the user approves.
+description: Run one conversion-improvement cycle for the landing pages of agents.creativesparks.pl. Reports due results from the change ledger, reads both funnels from Umami per page and language, reads PostHog recording notes and heatmaps for the page that loses the most visitors, and proposes one to three ranked, evidence-backed ideas. Builds only the idea the user picks, as a change the user approves.
 disable-model-invocation: true
 argument-hint: "[landing page path, optional — default: all six]"
 ---
@@ -17,7 +17,7 @@ Focus: `$ARGUMENTS` if a landing-page path is given, otherwise all six landing p
 - `docs/analytics/ledger.md` — every shipped change with its hypothesis, metrics and end date.
 - Umami connector (`umami` MCP server, read-only) — all counts. Website ID `37a76f9d-7246-4d45-b832-3b35e78eee08`.
 - PostHog connector (`posthog` MCP server, read-only, one `exec` tool) — recordings, recording notes, heatmaps. Before the first PostHog call in a session, follow the server's own instructions (load matching skills with `learn`, run `info` before every `call`).
-- The `ux-audit` skill (installed globally) — a review of the page itself.
+- The cycle does not run the `ux-audit` skill: the evidence is Umami counts plus PostHog recording notes and heatmaps.
 
 ## Standing rules
 
@@ -65,13 +65,12 @@ Show one table per funnel: page, language, each step's raw count for both window
 ### 5. Find out why, for that page
 
 - **Recordings (PostHog).** List recordings on that page in the window with `query-session-recordings-list`, using the UTC times that cover the window and the property filter `{"type":"recording","key":"visited_page","operator":"icontains","value":"<page path>"}`. That filter also matches the `/en/` page and subpages, so separate the languages afterwards (or use a `regex` operator). For each recording, read its existing AI notes with `vision-observations-list` and that recording's `session_id`, or find notes across recordings with `vision-observations-search`. If there are none, say so and give the user two or three recording links to watch or to summarise with the Summarize button in PostHog — don't generate summaries yourself. When the leak is about clicks or scrolling, read heatmaps with `heatmaps-list`, giving the full page URL as `url_exact` (or a full-URL regex as `url_pattern`). Recordings cover only visitors who accepted statistics cookies, so treat them as examples, never as counts.
-- **UX audit.** Run the `ux-audit` skill on the live page URL, focused on the section where the leak happens (e.g. the hero form, the pricing section).
 
 ### 6. Propose ideas
 
 Rank one to three ideas. For each:
 - **Change:** what exactly changes, and in which section or file.
-- **Evidence:** counts with denominators, recording notes with links, audit findings.
+- **Evidence:** counts with denominators, recording notes with links, heatmap observations.
 - **Hypothesis:** "If we …, then … rises, because …".
 - **Metrics:** one primary and one guardrail metric, both from `metrics.md`.
 - **End date:** when to judge it — long enough to reach about 30 conversions at the current volume, at least 14 and at most 28 days after shipping. Show the estimate. If 28 days can't reach about 30 conversions, set 28 days and mark the result directional from the start.
