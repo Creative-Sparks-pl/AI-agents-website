@@ -33,20 +33,20 @@ const rawSections = [
     bullets: [],
     groups: [
       {
+        heading: 'Claude Code, Codex i inne IDE',
+        bullets: [
+          '<strong>Najprościej:</strong> napisz agentowi: <em>„Zainstaluj ten skill zgodnie z INSTALL.md”</em> i wskaż mu folder z pobraną paczką. Zanim coś skopiuje, agent pokaże plan i poprosi o zgodę.',
+          '<strong>Wolisz ręcznie?</strong> Przeczytaj <code>README.md</code> w tym samym folderze.',
+          '<strong>Po instalacji:</strong> skill wywołasz przez <code>/ux-designer</code> w Claude Code i Cursorze albo <code>$ux-designer</code> w Codexie.',
+        ],
+      },
+      {
         heading: 'Platformy webowe',
         bullets: [
           'Claude Projects — wklej INSTRUCTIONS.md jako Project Instructions, wgraj resztę plików jako Knowledge',
           'ChatGPT Custom GPT — wklej INSTRUCTIONS.md w Instructions (max 8K znaków), wgraj pliki przez Upload files',
           'ChatGPT Projects — wklej INSTRUCTIONS.md w ustawieniach projektu, wgraj pliki jako Sources',
           'Gemini Gems — wklej INSTRUCTIONS.md jako instrukcje, wgraj pliki .md (max 10). <strong>Włącz narzędzie Canvas w trakcie rozmowy</strong> — bez tego pliki HTML nie wyświetlą się jako podgląd, tylko jako kod do pobrania.',
-        ],
-      },
-      {
-        heading: 'IDE (desktop)',
-        bullets: [
-          '<strong>Najprościej:</strong> w Claude Code, Codex lub Cursorze wskaż agentowi plik <code>INSTALL.md</code> z głównego folderu paczki. Agent pokaże plan i zapyta, zanim cokolwiek skopiuje. Na przykład: <em>„Zainstaluj ten skill zgodnie z plikiem INSTALL.md.”</em>',
-          '<strong>Wolisz ręcznie?</strong> Przeczytaj <code>README.md</code> w tym samym folderze.',
-          '<strong>Po instalacji:</strong> pełnego agenta uruchomisz w Claude Code komendą <code>/expert ux-designer</code>. Skill wywołasz przez <code>/ux-designer</code> w Claude Code i Cursorze albo <code>$ux-designer</code> w Codexie.',
         ],
       },
     ],
@@ -71,8 +71,7 @@ const rawSections = [
     title: 'Zawartość paczki',
     description: 'Otrzymujesz zestaw plików asystenta AI w wariantach na różne platformy.',
     bullets: [
-      'use-as-agent/ — pełny agent uruchamiany komendą /expert (Claude Code, także w VS Code, Cursorze i Antigravity)',
-      'use-as-skill/ — ten sam agent jako skill (Claude Code, Codex, Cursor)',
+      'use-as-skill/ — skill (Claude Code, Codex, Cursor)',
       'use-in-web-claude/ — Claude Projects (system prompt + pliki wiedzy)',
       'use-in-web-chatgpt/ — ChatGPT Custom GPT (Instructions + pliki wiedzy)',
       'use-in-web-gemini-gem/ — Gemini Gems (system prompt + pliki wiedzy, max 10 plików)',

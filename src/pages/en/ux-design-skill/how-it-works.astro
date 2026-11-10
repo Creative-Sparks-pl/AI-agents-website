@@ -33,20 +33,20 @@ const rawSections = [
     bullets: [],
     groups: [
       {
+        heading: 'Claude Code, Codex and other IDEs',
+        bullets: [
+          '<strong>Easiest way:</strong> tell your agent <em>"Install this skill by following INSTALL.md"</em> and point it to the folder with the downloaded package. It shows you the plan and asks before copying anything.',
+          '<strong>Prefer to do it by hand?</strong> Read <code>README.md</code> in the same folder.',
+          '<strong>Once installed:</strong> call the skill with <code>/ux-designer</code> in Claude Code and Cursor, or <code>$ux-designer</code> in Codex.',
+        ],
+      },
+      {
         heading: 'Web platforms',
         bullets: [
           'Claude Projects: paste INSTRUCTIONS.md as Project Instructions, upload the rest of the files as Knowledge',
           'ChatGPT Custom GPT: paste INSTRUCTIONS.md into Instructions (max 8K characters), upload files via Upload files',
           'ChatGPT Projects: paste INSTRUCTIONS.md into project settings, upload files as Sources',
           'Gemini Gems: paste INSTRUCTIONS.md as instructions, upload .md files (max 10). <strong>Turn on the Canvas tool during the conversation.</strong> Without it, HTML files will not render as a preview, only as a downloadable code file.',
-        ],
-      },
-      {
-        heading: 'IDE (desktop)',
-        bullets: [
-          '<strong>Easiest way:</strong> in Claude Code, Codex or Cursor, point your agent at the <code>INSTALL.md</code> file in the package\'s main folder. It shows you the plan and asks before copying anything. For example: <em>"Install this skill by following INSTALL.md."</em>',
-          '<strong>Prefer to do it by hand?</strong> Read <code>README.md</code> in the same folder.',
-          '<strong>Once installed:</strong> start the full agent in Claude Code with <code>/expert ux-designer</code>. Call the skill with <code>/ux-designer</code> in Claude Code and Cursor, or <code>$ux-designer</code> in Codex.',
         ],
       },
     ],
@@ -71,8 +71,7 @@ const rawSections = [
     title: "What's in the package",
     description: 'You get a set of AI assistant files in variants for different platforms.',
     bullets: [
-      'use-as-agent/ - the full agent, started with /expert (Claude Code, including inside VS Code, Cursor and Antigravity)',
-      'use-as-skill/ - the same agent as a skill (Claude Code, Codex, Cursor)',
+      'use-as-skill/ - the skill (Claude Code, Codex, Cursor)',
       'use-in-web-claude/ - Claude Projects (system prompt + knowledge files)',
       'use-in-web-chatgpt/ - ChatGPT Custom GPT (Instructions + knowledge files)',
       'use-in-web-gemini-gem/ - Gemini Gems (system prompt + knowledge files, max 10 files)',
