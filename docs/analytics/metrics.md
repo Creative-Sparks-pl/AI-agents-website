@@ -3,7 +3,7 @@
 These are the fixed definitions behind every number the improvement-cycle skill (`/cro-cycle`) reports, plus the questions the site owner wants answered. The agent uses only these definitions. For a question they don't cover, it answers "can't answer from the defined metrics" and does not make up a number. A change to a definition is reviewed like a code change.
 
 - **Status:** approved by the owner on 2026-11-10.
-- **Tracking release date:** not shipped yet. Fill in the day the `ai-native-analytics` branch reaches production. Everything marked "after release" starts counting on that day.
+- **Tracking release date:** 2026-11-10, deployed about 20:00 Warsaw time (site v1.0.0). Everything marked "after release" starts counting on that day; the first full day of after-release data is 2026-11-11.
 - **Umami:** `https://analytics.creativesparks.pl`, website ID `37a76f9d-7246-4d45-b832-3b35e78eee08`.
 
 ## Ground rules

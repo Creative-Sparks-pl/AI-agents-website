@@ -36,11 +36,13 @@ Where things live, so nobody has to ask again. No secrets here — secret values
   - Code: GitHub fork `Creative-Sparks-pl/umami`, no custom commits. Update with `gh repo sync Creative-Sparks-pl/umami`, then add an empty commit authored by the owner's account — Vercel's free plan refuses to deploy commits whose author is not on the Vercel team (the synced commits are authored by Umami's maintainers).
   - Hosting: its own Vercel project; environment includes `MCP_ENABLED=1`.
   - Database: Neon Postgres (Frankfurt). Before any Umami update, create a Neon backup branch from `production` (e.g. `before-umami-3.4`) with auto-delete of a week or more.
+  - Retention: the privacy policies promise visit statistics are kept up to 2 years. Umami deletes nothing by itself, so once a year delete data older than 2 years in the Neon database.
   - Website ID `37a76f9d-7246-4d45-b832-3b35e78eee08`; the tracking script is in `src/layouts/BaseLayout.astro`.
 - **Agent access to analytics** — `.mcp.json` at the repo root.
   - `umami`: Umami's official read-only connector (`@umami/mcp`), run locally through `dotenv-cli`, which loads `UMAMI_API_TOKEN` (an `umami_` API key from Umami → Settings → API keys) from `.env.local`.
   - `posthog`: PostHog's remote connector in read-only mode, signed in through OAuth.
-- **PostHog (recordings and heatmaps)** — Cloud EU project (`eu.posthog.com`), being set up in November 2026: landing pages only, loaded after Cookiebot statistics consent.
+  - The `/cro-cycle` skill (`.claude/skills/cro-cycle/`) runs an improvement cycle on these connectors; it uses only the definitions in `docs/analytics/metrics.md` and logs shipped changes in `docs/analytics/ledger.md`.
+- **PostHog (recordings and heatmaps)** — Cloud EU project (`eu.posthog.com`), live since 2026-11-10 (site v1.0.0): the six landing pages only, loaded after Cookiebot statistics consent; inputs masked, recordings kept 30 days, IPs discarded.
 - **Consent** — Cookiebot; its ID is in `src/layouts/BaseLayout.astro`.
 - **Checkout** — Easytools at `cart.creativesparks.pl`. Paid-purchase webhooks go to `/api/easytools-webhook?token=…`, where the token is `EASYTOOLS_WEBHOOK_TOKEN` in Vercel. Free skills are granted through `src/pages/api/subscribe.ts`.
 - **Ads** — Meta Pixel + Conversions API, loaded only after Cookiebot marketing consent.
