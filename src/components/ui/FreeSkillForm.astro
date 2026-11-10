@@ -218,17 +218,25 @@ const iconSize: Record<Size, string> = {
     document.body.removeChild(trigger);
   }
 
-  function trackLead(surface: string, skill: string) {
+  // Funnel events carry only these labels, never the email or anything else the visitor typed.
+  type FunnelData = { skill: string; language: string; surface: string; page: string };
+
+  // Umami loads as a deferred script and may be blocked, so every call checks it is there.
+  function trackUmami(name: string, data: FunnelData) {
+    const u = window as unknown as { umami?: { track: (name: string, data?: FunnelData) => void } };
+    if (u.umami && typeof u.umami.track === 'function') {
+      u.umami.track(name, data);
+    }
+  }
+
+  function trackLead(surface: string, skill: string, funnel: FunnelData) {
     const w = window as unknown as {
       trackConversion?: (event: string, params: Record<string, string>) => void;
     };
     if (typeof w.trackConversion === 'function') {
       w.trackConversion('Lead', { content_name: `free_${skill}_skill`, content_id: surface });
     }
-    const u = window as unknown as { umami?: { track: (name: string) => void } };
-    if (u.umami && typeof u.umami.track === 'function') {
-      u.umami.track(`Free skill submit: ${surface}`);
-    }
+    trackUmami(`Free skill submit: ${surface}`, funnel);
   }
 
   function attach(root: HTMLElement) {
@@ -249,6 +257,12 @@ const iconSize: Record<Size, string> = {
 
     const originalLabel = submitLabel.textContent ?? '';
     const locale = root.dataset.locale ?? 'pl';
+    const funnel: FunnelData = { skill, language: locale, surface, page: window.location.pathname };
+
+    // First keystroke in the email field counts as starting the form, once per form per page load.
+    root
+      .querySelector<HTMLInputElement>('input[name="email"]')
+      ?.addEventListener('input', () => trackUmami('Free skill form started', funnel), { once: true });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -282,7 +296,7 @@ const iconSize: Record<Size, string> = {
 
         if (res.ok && payload.ok && payload.downloadUrl) {
           setState(root, 'success');
-          trackLead(surface, skill);
+          trackLead(surface, skill, funnel);
           showSuccess(root, payload.downloadUrl);
           return;
         }
