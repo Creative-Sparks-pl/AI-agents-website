@@ -2,6 +2,20 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.0.0 — 2026-11-10
+
+### Added
+- Visit recordings and heatmaps with PostHog (EU) on the six landing pages, loaded only after statistics-cookie consent and after the page has loaded. Typed form fields are masked.
+- Funnel tracking in Umami: a "form started" event on the free-skill forms; skill, language, surface and page on signups; language and page on checkout clicks; paid purchases recorded server-side from the Easytools webhook (`/api/easytools-webhook`).
+- Agent access to the analytics: read-only Umami and PostHog connectors in `.mcp.json`.
+- `docs/analytics/metrics.md` (metric definitions and the question list) and `docs/analytics/ledger.md` (log of shipped changes and their check dates).
+- The `/cro-cycle` skill: an on-demand improvement cycle that reads both funnels and the recording notes, and proposes ranked, evidence-backed ideas.
+- A "Cookie settings" link in the footer that reopens the consent banner.
+
+### Changed
+- Both privacy policies name PostHog and Umami, with legal bases, retention periods, the right to object and how to withdraw cookie consent.
+- Checkout links carry the landing page as a `page` parameter next to `lang`.
+
 ## 0.1.0 — 2026-11-06
 
 ### Added
