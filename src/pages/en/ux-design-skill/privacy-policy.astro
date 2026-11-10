@@ -24,6 +24,8 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li><strong>Technical data</strong>, IP address and browser type, collected automatically by the server.</li>
         <li><strong>Online service data</strong>, the address of the analyzed page and your IP address, which I store for rate limits only as a cryptographic hash.</li>
         <li><strong>Reports sent through the skill</strong>, the title and content of feedback or a bug report, and your email address if you give it.</li>
+        <li><strong>Visit statistics</strong>, the pages you visit, the page you came from, browser, operating system, device type, language, approximate location (country, region, city) and selected actions such as a button click or a purchase (without your email address); collected without cookies by my own Umami instance, which does not store your IP address and tells visits apart by a cryptographic hash of your IP address, your browser and a value that changes regularly.</li>
+        <li><strong>Session recordings and heatmaps</strong>, how you move through the product pages (such as cursor movements, clicks and scrolling), only if you consent to statistics cookies; PostHog does not store your IP address.</li>
       </ul>
 
       <h2>Why I collect data</h2>
@@ -34,6 +36,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Newsletter / waitlist, based on your consent (GDPR article 6(1)(a)).</li>
         <li>To run the online service and enforce its rate limits (GDPR article 6(1)(b), performance of a contract).</li>
         <li>To publish and handle feedback and bug reports you choose to send through the skill (GDPR article 6(1)(a), consent).</li>
+        <li>Statistics and improving the pages: counting visits with Umami, based on my legitimate interest in measuring traffic on the site (GDPR article 6(1)(f)); session recordings and heatmaps with PostHog, based on your consent (GDPR article 6(1)(a)), which you can withdraw at any time in the cookie settings.</li>
       </ul>
 
       <h2>Who I share data with</h2>
@@ -42,11 +45,14 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li><strong>Easytools</strong>, checkout, issuing VAT invoices on my behalf, mailing list and skill delivery.</li>
         <li><strong>Stripe</strong>, online payment processing.</li>
         <li><strong>Meta</strong>, ad performance measurement, if you consent to marketing cookies.</li>
-        <li><strong>Vercel</strong>, servers for the online service and the feedback server.</li>
+        <li><strong>PostHog</strong>, session recordings and heatmaps on the product pages (UX Design Skill and the free skills), if you consent to statistics cookies; data is stored in the EU (Frankfurt).</li>
+        <li><strong>Vercel</strong>, servers for the online service, the feedback server and visit statistics (Umami).</li>
+        <li><strong>Neon</strong>, the database for visit statistics (Umami), stored in the EU (Frankfurt).</li>
         <li><strong>Upstash</strong>, rate-limit counters for the online service (IP address hashes only).</li>
         <li><strong>GitHub</strong>, public posting of reports in GitHub Discussions (without your email address).</li>
         <li><strong>Make.com and Google (Gmail)</strong>, forwarding the email address you gave in a report to me.</li>
       </ul>
+      <p>PostHog masks what you type into form fields (such as your email address) in recordings, so it is not saved. I summarize recordings with PostHog's AI features: the recording and the session's events (such as page views and clicks) are then sent to the AI model providers PostHog uses as subprocessors (Anthropic, OpenAI and Google).</p>
       <p>Some of these companies may process data outside the European Economic Area, under the mechanisms GDPR provides (for example the EU-US Data Privacy Framework or standard contractual clauses).</p>
       <p>I do not sell or rent your data to third parties.</p>
 
@@ -55,6 +61,8 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Order fulfillment data, for the duration of the contract plus 5 years (tax obligation).</li>
         <li>Mailing list data, until you unsubscribe.</li>
         <li>Technical data (server logs), up to 30 days.</li>
+        <li>Session recordings (PostHog), 30 days; heatmap data and other PostHog events, up to 1 year.</li>
+        <li>Visit statistics (Umami), up to 2 years.</li>
         <li>Online service rate-limit counters expire automatically.</li>
         <li>Reports published in GitHub Discussions, until deleted; you can ask me to delete your report.</li>
       </ul>
@@ -67,13 +75,14 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Erase your data ("right to be forgotten").</li>
         <li>Restrict processing.</li>
         <li>Data portability.</li>
-        <li>Withdraw consent (for the newsletter).</li>
+        <li>Object to processing based on my legitimate interest (such as visit statistics).</li>
+        <li>Withdraw consent (for the newsletter, and for statistics and marketing cookies in the cookie settings in the footer).</li>
         <li>Lodge a complaint with the President of the Polish Personal Data Protection Office (UODO). Under GDPR, EU and UK residents may also lodge a complaint with their local supervisory authority.</li>
       </ul>
       <p>To exercise your rights, write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Cookies</h2>
-      <p>The site uses cookies for technical purposes and, if you consent, for marketing (Meta Pixel).</p>
+      <p>The site uses cookies for technical purposes and, if you consent, for statistics (PostHog) and marketing (Meta Pixel). Visit statistics (Umami) work without cookies.</p>
 
       <h2>Changes to this policy</h2>
       <p>I may update this policy. I will announce changes on the site. Changes do not apply to data collected before they take effect.</p>

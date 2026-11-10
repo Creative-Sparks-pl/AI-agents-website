@@ -1,6 +1,8 @@
 links:
   - label: Polityka prywatności
     href: /ux-design-skill/polityka-prywatnosci
+  - label: Ustawienia cookies
+    href: "javascript:Cookiebot.renew()"
   - label: Regulamin sprzedaży
     href: /ux-design-skill/regulamin
   - label: Changelog

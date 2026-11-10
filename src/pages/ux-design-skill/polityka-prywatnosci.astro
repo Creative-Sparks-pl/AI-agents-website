@@ -22,6 +22,8 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li><strong>Dane techniczne</strong> — adres IP, typ przeglądarki (zbierane automatycznie przez serwer)</li>
         <li><strong>Dane z usługi online</strong> — adres analizowanej strony i adres IP, który na potrzeby limitów zapytań zapisuję tylko w postaci skrótu kryptograficznego</li>
         <li><strong>Zgłoszenia wysłane przez skill</strong> — tytuł i treść opinii lub zgłoszenia błędu oraz adres email, jeśli go podasz</li>
+        <li><strong>Statystyki odwiedzin</strong> — odwiedzone podstrony, strona, z której przychodzisz, przeglądarka, system operacyjny, typ urządzenia, język, przybliżona lokalizacja (kraj, region, miasto) i wybrane działania, np. kliknięcie przycisku lub zakup (bez adresu email); zbiera je bez cookies moja własna instancja Umami, która nie zapisuje adresu IP, a wizyty rozróżnia po skrócie kryptograficznym z adresu IP, przeglądarki i wartości, która regularnie się zmienia</li>
+        <li><strong>Nagrania sesji i mapy cieplne</strong> — przebieg wizyty na stronach produktów (np. ruchy kursora, kliknięcia, przewijanie), tylko jeśli wyrazisz zgodę na cookies statystyczne; PostHog nie zapisuje adresu IP</li>
       </ul>
 
       <h2>Po co zbieram dane</h2>
@@ -32,6 +34,7 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Newsletter / lista oczekujących — na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO)</li>
         <li>Działanie usługi online i pilnowanie limitów zapytań (art. 6 ust. 1 lit. b RODO)</li>
         <li>Publikacja i obsługa opinii oraz zgłoszeń błędów, które dobrowolnie wysyłasz przez skill (art. 6 ust. 1 lit. a RODO)</li>
+        <li>Statystyki i ulepszanie stron — liczenie odwiedzin w Umami na podstawie mojego prawnie uzasadnionego interesu, czyli mierzenia ruchu na stronie (art. 6 ust. 1 lit. f RODO); nagrania sesji i mapy cieplne w PostHog na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz w każdej chwili wycofać w ustawieniach cookies</li>
       </ul>
 
       <h2>Komu udostępniam dane</h2>
@@ -40,11 +43,14 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li><strong>Easytools</strong> — koszyk, wystawianie faktur VAT w moim imieniu, obsługa listy mailingowej i dostarczanie skilli</li>
         <li><strong>Stripe</strong> — przetwarzanie płatności online</li>
         <li><strong>Meta</strong> — pomiar skuteczności reklam, jeśli wyrazisz zgodę na cookies marketingowe</li>
-        <li><strong>Vercel</strong> — serwery usługi online i serwera zgłoszeń</li>
+        <li><strong>PostHog</strong> — nagrania sesji i mapy cieplne na stronach produktów (UX Design Skill i darmowe skille), jeśli wyrazisz zgodę na cookies statystyczne; dane są przechowywane w UE (Frankfurt)</li>
+        <li><strong>Vercel</strong> — serwery usługi online, serwera zgłoszeń i statystyk odwiedzin (Umami)</li>
+        <li><strong>Neon</strong> — baza danych statystyk odwiedzin (Umami), przechowywana w UE (Frankfurt)</li>
         <li><strong>Upstash</strong> — liczniki limitów zapytań usługi online (tylko skróty adresów IP)</li>
         <li><strong>GitHub</strong> — publiczna publikacja zgłoszeń w GitHub Discussions (bez adresu email)</li>
         <li><strong>Make.com i Google (Gmail)</strong> — przekazanie mi adresu email podanego w zgłoszeniu</li>
       </ul>
+      <p>PostHog maskuje w nagraniach treść wpisywaną w pola formularzy (np. adres email), więc nie jest ona zapisywana. Nagrania podsumowuję za pomocą funkcji AI PostHoga: nagranie i zdarzenia z sesji (np. odsłony stron i kliknięcia) trafiają wtedy do dostawców modeli AI, z których PostHog korzysta jako podprocesorów (Anthropic, OpenAI i Google).</p>
       <p>Część z tych podmiotów może przetwarzać dane poza Europejskim Obszarem Gospodarczym, na podstawie mechanizmów przewidzianych w RODO (np. EU-US Data Privacy Framework lub standardowych klauzul umownych).</p>
       <p>Nie sprzedaję ani nie wypożyczam Twoich danych osobom trzecim.</p>
 
@@ -53,6 +59,8 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Dane do realizacji zamówienia — przez okres obowiązywania umowy + 5 lat (obowiązek podatkowy)</li>
         <li>Dane z listy mailingowej — do momentu wypisania się</li>
         <li>Dane techniczne (logi serwera) — do 30 dni</li>
+        <li>Nagrania sesji (PostHog) — 30 dni; dane map cieplnych i pozostałe zdarzenia w PostHog — do 1 roku</li>
+        <li>Statystyki odwiedzin (Umami) — do 2 lat</li>
         <li>Liczniki limitów usługi online — wygasają automatycznie</li>
         <li>Zgłoszenia opublikowane w GitHub Discussions — do czasu usunięcia; możesz poprosić o usunięcie swojego zgłoszenia</li>
       </ul>
@@ -65,13 +73,14 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Usunięcia danych ("prawo do bycia zapomnianym")</li>
         <li>Ograniczenia przetwarzania</li>
         <li>Przenoszenia danych</li>
-        <li>Wycofania zgody (w przypadku newslettera)</li>
+        <li>Sprzeciwu wobec przetwarzania na podstawie mojego prawnie uzasadnionego interesu (np. statystyk odwiedzin)</li>
+        <li>Wycofania zgody (na newsletter oraz na cookies statystyczne i marketingowe — w ustawieniach cookies w stopce)</li>
         <li>Wniesienia skargi do Prezesa UODO</li>
       </ul>
       <p>Aby skorzystać ze swoich praw, napisz na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Pliki cookies</h2>
-      <p>Strona używa plików cookies w celach technicznych oraz, jeśli wyrazisz zgodę, marketingowych (Meta Pixel).</p>
+      <p>Strona używa plików cookies w celach technicznych oraz, jeśli wyrazisz zgodę, statystycznych (PostHog) i marketingowych (Meta Pixel). Statystyki odwiedzin (Umami) działają bez plików cookies.</p>
 
       <h2>Zmiany polityki prywatności</h2>
       <p>Mogę zaktualizować tę politykę. O zmianach poinformuję na stronie. Zmiany nie dotyczą danych zebranych przed ich wprowadzeniem.</p>
