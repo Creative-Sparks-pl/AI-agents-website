@@ -1,0 +1,189 @@
+banner:
+  title: This site uses cookies
+  description: >-
+    Necessary cookies keep the site working. With your consent we also use statistics cookies (session
+    recordings and video viewing statistics) to improve the site, and marketing cookies (Meta Pixel) to
+    measure how our ads perform. You can change or withdraw your consent at any time under "Cookie settings"
+    in the site footer.
+  acceptAll: Accept all
+  rejectAll: Reject all
+  settings: Settings
+preferences:
+  title: Cookie settings
+  description: >-
+    Choose which categories you agree to. Necessary cookies are always on. We remember your choice for
+    182 days; you can change it at any time under "Cookie settings" in the site footer.
+  acceptAll: Accept all
+  rejectAll: Reject all
+  save: Save my choice
+  close: Close
+  serviceCounter: Service|Services
+  tableCaption: Cookies and browser storage
+  headers:
+    name: Name
+    service: Service
+    kind: Type
+    duration: Kept for
+    purpose: Purpose
+  kinds:
+    cookie: cookie
+    localStorage: browser storage (localStorage)
+    sessionStorage: session storage (sessionStorage)
+  noStorage: none — stores nothing in your browser
+  more:
+    title: More information
+    description: >-
+      For details, including who we share data with, see the
+      <a href="/en/ux-design-skill/privacy-policy/">Privacy policy</a>.
+categories:
+  necessary:
+    title: Necessary
+    description: >-
+      Needed for the site to work: they remember your cookie choice and where you paused a video you
+      started yourself. They cannot be switched off.
+  statistics:
+    title: Statistics
+    description: >-
+      Help us understand how you use the site: PostHog records visits to the product pages (with form fields
+      hidden), and Wistia counts video views.
+  marketing:
+    title: Marketing
+    description: >-
+      Meta Pixel measures whether ads on Facebook and Instagram lead to sign-ups and purchases, and lets us
+      show you relevant ads.
+  cookieless:
+    title: Without cookies
+    description: >-
+      These services store nothing in your browser, but your browser connects to their servers. They run
+      without consent because they do not track you across sites.
+footerLabel: Cookie settings
+policy:
+  label: Privacy policy
+  href: /en/ux-design-skill/privacy-policy/
+cookies:
+  - id: cookieconsent
+    service: Cookie settings
+    provider: Creative Sparks (this site)
+    party: first
+    category: necessary
+    purpose: Remembers your cookie choice.
+    storage:
+      - name: cc_cookie
+        kind: cookie
+        duration: 182 days
+    hosts: []
+    loading: Always
+    lastVerified: 2026-11-11
+  - id: wistia-player
+    service: Wistia (video player)
+    provider: Wistia, Inc.
+    party: third
+    category: necessary
+    purpose: Plays the videos you start and remembers where you paused. Reports player errors to Sentry. Does not track viewing.
+    storage:
+      - name: wistia-video-progress-*
+        kind: localStorage
+        duration: until you clear your browser
+    hosts:
+      - fast.wistia.net
+      - fast.wistia.com
+      - embed-ssl.wistia.com
+      - embed-cloudfront.wistia.com
+      - browser.sentry-cdn.com
+      - '*.ingest.us.sentry.io'
+    loading: When you click a video
+    lastVerified: 2026-11-11
+  - id: posthog
+    service: PostHog
+    provider: PostHog, Inc. (EU servers)
+    party: third
+    category: statistics
+    purpose: Session recordings and click heatmaps on the six product pages, with form fields hidden.
+    storage:
+      - name: ph_*
+        kind: cookie
+        duration: 1 year
+      - name: ph_*
+        kind: localStorage
+        duration: until you clear your browser
+      - name: ph_*
+        kind: sessionStorage
+        duration: until you close the tab
+    hosts:
+      - eu.i.posthog.com
+      - eu-assets.i.posthog.com
+    loading: After statistics consent, on the product pages only
+    lastVerified: 2026-11-11
+  - id: wistia
+    service: Wistia (viewing statistics)
+    provider: Wistia, Inc.
+    party: third
+    category: statistics
+    purpose: Counts video views (also through Mux Data) and remembers your consent to these statistics.
+    storage:
+      - name: wistia
+        kind: localStorage
+        duration: until you clear your browser
+    hosts:
+      - pipedream.wistia.com
+      - distillery.wistia.com
+      - '*.litix.io'
+    loading: After statistics consent, when you start a video
+    lastVerified: 2026-11-11
+  - id: meta-pixel
+    service: Meta Pixel
+    provider: Meta Platforms Ireland Ltd.
+    party: third
+    category: marketing
+    purpose: Measures how ads on Facebook and Instagram perform and lets us show relevant ads.
+    storage:
+      - name: _fbp
+        kind: cookie
+        duration: 90 days
+      - name: lastExternalReferrer
+        kind: localStorage
+        duration: until you clear your browser
+      - name: lastExternalReferrerTime
+        kind: localStorage
+        duration: until you clear your browser
+    hosts:
+      - connect.facebook.net
+      - www.facebook.com
+      - yf-b498ef1790e74b69af7f2475cece9e0e.ecs.us-west-2.on.aws
+      - vwdb33u4tj1q.cloud.run
+    loading: After marketing consent
+    lastVerified: 2026-11-11
+  - id: umami
+    service: Umami (visit statistics)
+    provider: Creative Sparks (own server, data in the EU)
+    party: first
+    category: cookieless
+    purpose: Counts page visits without cookies and without identifying you.
+    storage: []
+    hosts:
+      - analytics.creativesparks.pl
+    loading: Always
+    lastVerified: 2026-11-11
+  - id: google-fonts
+    service: Google Fonts (icons)
+    provider: Google Ireland Ltd.
+    party: third
+    category: cookieless
+    purpose: Serves the icon font used on the site.
+    storage: []
+    hosts:
+      - fonts.googleapis.com
+      - fonts.gstatic.com
+    loading: Always
+    lastVerified: 2026-11-11
+  - id: tailwind-cdn
+    service: Tailwind CSS (example pages)
+    provider: Tailwind Labs, Inc.
+    party: third
+    category: cookieless
+    purpose: Serves the styles of the example wireframes under /examples/.
+    storage: []
+    hosts:
+      - cdn.tailwindcss.com
+    loading: Only on the example pages under /examples/
+    lastVerified: 2026-11-11

@@ -1,0 +1,189 @@
+banner:
+  title: Ta strona używa plików cookies
+  description: >-
+    Niezbędne pliki cookies pozwalają stronie działać. Za Twoją zgodą użyjemy też cookies statystycznych
+    (nagrania sesji i statystyki oglądania wideo), żeby ulepszać stronę, oraz marketingowych (Meta Pixel),
+    żeby mierzyć skuteczność reklam. Zgodę możesz w każdej chwili zmienić lub wycofać w „Ustawieniach cookies”
+    w stopce strony.
+  acceptAll: Akceptuj wszystkie
+  rejectAll: Odrzuć wszystkie
+  settings: Ustawienia
+preferences:
+  title: Ustawienia cookies
+  description: >-
+    Wybierz, na które kategorie się zgadzasz. Niezbędne cookies są zawsze włączone. Twój wybór zapamiętamy
+    na 182 dni; zmienisz go w każdej chwili w „Ustawieniach cookies” w stopce strony.
+  acceptAll: Akceptuj wszystkie
+  rejectAll: Odrzuć wszystkie
+  save: Zapisz wybór
+  close: Zamknij
+  serviceCounter: Usługa|Usługi
+  tableCaption: Lista plików cookies i danych w przeglądarce
+  headers:
+    name: Nazwa
+    service: Usługa
+    kind: Rodzaj
+    duration: Czas przechowywania
+    purpose: Cel
+  kinds:
+    cookie: plik cookie
+    localStorage: pamięć przeglądarki (localStorage)
+    sessionStorage: pamięć sesji (sessionStorage)
+  noStorage: brak — nie zapisuje niczego w przeglądarce
+  more:
+    title: Więcej informacji
+    description: >-
+      Szczegóły, w tym podmioty, którym przekazujemy dane, znajdziesz w
+      <a href="/ux-design-skill/polityka-prywatnosci/">Polityce prywatności</a>.
+categories:
+  necessary:
+    title: Niezbędne
+    description: >-
+      Potrzebne, żeby strona działała: zapamiętują Twój wybór dotyczący cookies i miejsce, w którym
+      zatrzymało się uruchomione przez Ciebie wideo. Nie można ich wyłączyć.
+  statistics:
+    title: Statystyczne
+    description: >-
+      Pomagają nam zrozumieć, jak korzystasz ze strony: PostHog nagrywa przebieg wizyty na stronach produktowych
+      (z ukrytymi polami formularzy), a Wistia liczy obejrzenia wideo.
+  marketing:
+    title: Marketingowe
+    description: >-
+      Meta Pixel mierzy, czy reklamy na Facebooku i Instagramie prowadzą do zapisów i zakupów, i pozwala
+      kierować do Ciebie dopasowane reklamy.
+  cookieless:
+    title: Bez plików cookies
+    description: >-
+      Te usługi nie zapisują niczego w przeglądarce, ale Twoja przeglądarka łączy się z ich serwerami.
+      Działają bez zgody, bo nie śledzą Cię między stronami.
+footerLabel: Ustawienia cookies
+policy:
+  label: Polityka prywatności
+  href: /ux-design-skill/polityka-prywatnosci/
+cookies:
+  - id: cookieconsent
+    service: Ustawienia cookies
+    provider: Creative Sparks (ta strona)
+    party: first
+    category: necessary
+    purpose: Zapamiętuje Twój wybór dotyczący plików cookies.
+    storage:
+      - name: cc_cookie
+        kind: cookie
+        duration: 182 dni
+    hosts: []
+    loading: Zawsze
+    lastVerified: 2026-11-11
+  - id: wistia-player
+    service: Wistia (odtwarzacz wideo)
+    provider: Wistia, Inc.
+    party: third
+    category: necessary
+    purpose: Odtwarza wideo, które uruchamiasz, i zapamiętuje miejsce, w którym się zatrzymało. Błędy odtwarzacza zgłasza do Sentry. Nie śledzi oglądania.
+    storage:
+      - name: wistia-video-progress-*
+        kind: localStorage
+        duration: do wyczyszczenia przeglądarki
+    hosts:
+      - fast.wistia.net
+      - fast.wistia.com
+      - embed-ssl.wistia.com
+      - embed-cloudfront.wistia.com
+      - browser.sentry-cdn.com
+      - '*.ingest.us.sentry.io'
+    loading: Po kliknięciu w wideo
+    lastVerified: 2026-11-11
+  - id: posthog
+    service: PostHog
+    provider: PostHog, Inc. (serwery w UE)
+    party: third
+    category: statistics
+    purpose: Nagrania sesji i mapy kliknięć na sześciu stronach produktowych, z ukrytymi polami formularzy.
+    storage:
+      - name: ph_*
+        kind: cookie
+        duration: 1 rok
+      - name: ph_*
+        kind: localStorage
+        duration: do wyczyszczenia przeglądarki
+      - name: ph_*
+        kind: sessionStorage
+        duration: do zamknięcia karty
+    hosts:
+      - eu.i.posthog.com
+      - eu-assets.i.posthog.com
+    loading: Po zgodzie na statystyki, tylko na stronach produktowych
+    lastVerified: 2026-11-11
+  - id: wistia
+    service: Wistia (statystyki oglądania)
+    provider: Wistia, Inc.
+    party: third
+    category: statistics
+    purpose: Liczy obejrzenia wideo (także przez Mux Data) i zapamiętuje Twoją zgodę na te statystyki.
+    storage:
+      - name: wistia
+        kind: localStorage
+        duration: do wyczyszczenia przeglądarki
+    hosts:
+      - pipedream.wistia.com
+      - distillery.wistia.com
+      - '*.litix.io'
+    loading: Po zgodzie na statystyki, gdy uruchomisz wideo
+    lastVerified: 2026-11-11
+  - id: meta-pixel
+    service: Meta Pixel
+    provider: Meta Platforms Ireland Ltd.
+    party: third
+    category: marketing
+    purpose: Mierzy skuteczność reklam na Facebooku i Instagramie oraz pozwala kierować dopasowane reklamy.
+    storage:
+      - name: _fbp
+        kind: cookie
+        duration: 90 dni
+      - name: lastExternalReferrer
+        kind: localStorage
+        duration: do wyczyszczenia przeglądarki
+      - name: lastExternalReferrerTime
+        kind: localStorage
+        duration: do wyczyszczenia przeglądarki
+    hosts:
+      - connect.facebook.net
+      - www.facebook.com
+      - yf-b498ef1790e74b69af7f2475cece9e0e.ecs.us-west-2.on.aws
+      - vwdb33u4tj1q.cloud.run
+    loading: Po zgodzie na marketing
+    lastVerified: 2026-11-11
+  - id: umami
+    service: Umami (statystyki odwiedzin)
+    provider: Creative Sparks (własny serwer, dane w UE)
+    party: first
+    category: cookieless
+    purpose: Liczy odwiedziny stron bez plików cookies i bez identyfikowania Cię.
+    storage: []
+    hosts:
+      - analytics.creativesparks.pl
+    loading: Zawsze
+    lastVerified: 2026-11-11
+  - id: google-fonts
+    service: Google Fonts (ikony)
+    provider: Google Ireland Ltd.
+    party: third
+    category: cookieless
+    purpose: Dostarcza czcionkę z ikonami używanymi na stronie.
+    storage: []
+    hosts:
+      - fonts.googleapis.com
+      - fonts.gstatic.com
+    loading: Zawsze
+    lastVerified: 2026-11-11
+  - id: tailwind-cdn
+    service: Tailwind CSS (przykładowe strony)
+    provider: Tailwind Labs, Inc.
+    party: third
+    category: cookieless
+    purpose: Dostarcza style przykładowych makiet w katalogu /examples/.
+    storage: []
+    hosts:
+      - cdn.tailwindcss.com
+    loading: Tylko na przykładowych stronach w /examples/
+    lastVerified: 2026-11-11

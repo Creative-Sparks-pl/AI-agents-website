@@ -1,6 +1,7 @@
 import { defineCollection } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { consentContentSchema } from './lib/consent-config';
 
 const linkSchema = z.object({
   label: z.string(),
@@ -363,6 +364,13 @@ const footer = defineCollection({
   }),
 });
 
+// Cookie banner text and the cookie list, one file per language. The schema lives with the
+// banner configuration builder so unit tests can validate the files without Astro.
+const consent = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/consent' }),
+  schema: consentContentSchema,
+});
+
 export const collections = {
   hero,
   'use-cases-examples': useCasesExamples,
@@ -389,4 +397,5 @@ export const collections = {
   changelog,
   nav,
   footer,
+  consent,
 };
