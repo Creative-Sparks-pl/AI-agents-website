@@ -235,7 +235,7 @@ The cookie banner and its preferences window are not a component of ours: they a
 | `--radius-default` (0px) | `--cc-modal-border-radius`, `--cc-btn-border-radius` |
 | `--radius-full` | `--cc-pm-toggle-border-radius` (the round toggles) |
 
-**Layout** (set in `buildConsentConfig`): the banner is a box at the bottom right on desktop and spans the full width on phones; it has no overlay, so the page stays usable while it is open. The preferences window is a box too — centred on desktop, full screen on phones — and dims the page behind it (`--cc-overlay-bg`).
+**Layout** (set in `buildConsentConfig`): the banner is a box at the bottom right on desktop and spans the screen width on phones, less an 8px margin each side; it has no overlay, so the page stays usable while it is open. The preferences window is a box too — centred on desktop, full screen on phones — and dims the page behind it (`--cc-overlay-bg`).
 
 **Equal weight.** Accept all and Reject all share the primary style and the same size (`equalWeightButtons: true`), so refusing is as easy as agreeing. Settings uses the secondary (outlined) style. Do not make Reject all look weaker than Accept all.
 
