@@ -1,6 +1,6 @@
 {
   "repo_layout": {
-    "code": ["src/"],
+    "code": ["src/", ".claude/skills/"],
     "notes": ["design.md", "docs/"],
     "skip": ["public/", "scripts/", "tests/", ".vscode/"]
   },
