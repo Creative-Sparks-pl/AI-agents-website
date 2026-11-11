@@ -2,6 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 // Port 4321 is often held by another local project, and `astro preview` serves no pages with this adapter.
 const PORT = 4325;
+// Set BASE_URL to run against a deployment (e.g. the cookie check on production); no dev server starts then.
+const BASE_URL = process.env.BASE_URL;
 
 export default defineConfig({
   testDir: './tests',
@@ -12,7 +14,7 @@ export default defineConfig({
   reporter: 'html',
   snapshotPathTemplate: '{testDir}/{testFileDir}/{testFileName}-snapshots/{arg}-{projectName}{ext}',
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: BASE_URL ?? `http://localhost:${PORT}`,
   },
   projects: [
     {
@@ -24,9 +26,11 @@ export default defineConfig({
       use: { ...devices['Pixel 5'], viewport: { width: 390, height: 844 } },
     },
   ],
-  webServer: {
-    command: `npx astro dev --port ${PORT}`,
-    port: PORT,
-    reuseExistingServer: !process.env.CI,
-  },
+  webServer: BASE_URL
+    ? undefined
+    : {
+        command: `npx astro dev --port ${PORT}`,
+        port: PORT,
+        reuseExistingServer: !process.env.CI,
+      },
 });
