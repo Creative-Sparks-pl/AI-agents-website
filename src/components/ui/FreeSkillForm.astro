@@ -229,12 +229,13 @@ const iconSize: Record<Size, string> = {
     }
   }
 
-  function trackLead(surface: string, skill: string, funnel: FunnelData) {
+  // The email goes only to the Meta helper, which sends its SHA-256 hash with marketing consent, never the address.
+  function trackLead(surface: string, skill: string, funnel: FunnelData, email: string) {
     const w = window as unknown as {
-      trackConversion?: (event: string, params: Record<string, string>) => void;
+      trackConversion?: (event: string, params: Record<string, string>, user?: { email?: string }) => void;
     };
     if (typeof w.trackConversion === 'function') {
-      w.trackConversion('Lead', { content_name: `free_${skill}_skill`, content_id: surface });
+      w.trackConversion('Lead', { content_name: `free_${skill}_skill`, content_id: surface }, { email });
     }
     trackUmami(`Free skill submit: ${surface}`, funnel);
   }
@@ -296,7 +297,7 @@ const iconSize: Record<Size, string> = {
 
         if (res.ok && payload.ok && payload.downloadUrl) {
           setState(root, 'success');
-          trackLead(surface, skill, funnel);
+          trackLead(surface, skill, funnel, email);
           showSuccess(root, payload.downloadUrl);
           return;
         }

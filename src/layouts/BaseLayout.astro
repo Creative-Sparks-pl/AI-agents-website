@@ -226,7 +226,43 @@ fbq('init', '${metaPixelId}');
           }
         }
 
-        window.trackConversion = function (eventName, params) {
+        // Meta matches a conversion to an ad click more often with the visitor's email. Only the
+        // SHA-256 hash of the trimmed, lowercased address leaves the browser, never the address itself.
+        // Resolves to undefined when hashing is unavailable, so the event is still sent without it.
+        function hashEmail(email) {
+          try {
+            var normalized = String(email || '').trim().toLowerCase();
+            if (!normalized || !window.crypto || !window.crypto.subtle || typeof TextEncoder === 'undefined') {
+              return Promise.resolve(undefined);
+            }
+            return window.crypto.subtle.digest('SHA-256', new TextEncoder().encode(normalized)).then(function (buf) {
+              return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+                return ('0' + b.toString(16)).slice(-2);
+              }).join('');
+            }, function () { return undefined; });
+          } catch (_e) {
+            return Promise.resolve(undefined);
+          }
+        }
+
+        function sendCapi(bodyObj) {
+          var body = JSON.stringify(bodyObj);
+          try {
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon('/api/meta-capi', new Blob([body], { type: 'application/json' }));
+            } else {
+              fetch('/api/meta-capi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: body,
+                keepalive: true,
+              });
+            }
+          } catch (_e) { /* no-op */ }
+        }
+
+        // `user` is optional: { email } adds the hashed email to the server-side event.
+        window.trackConversion = function (eventName, params, user) {
           params = params || {};
           if (!hasMarketingConsent()) return;
           var eventId = newEventId();
@@ -241,19 +277,14 @@ fbq('init', '${metaPixelId}');
             source_url: window.location.href,
           };
           if (testEventCode) bodyObj.test_event_code = testEventCode;
-          var body = JSON.stringify(bodyObj);
-          try {
-            if (navigator.sendBeacon) {
-              navigator.sendBeacon('/api/meta-capi', new Blob([body], { type: 'application/json' }));
-            } else {
-              fetch('/api/meta-capi', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: body,
-                keepalive: true,
-              });
-            }
-          } catch (_e) { /* no-op */ }
+          if (user && user.email) {
+            hashEmail(user.email).then(function (em) {
+              if (em) bodyObj.em = em;
+              sendCapi(bodyObj);
+            });
+          } else {
+            sendCapi(bodyObj);
+          }
         };
 
         document.addEventListener('click', function (e) {

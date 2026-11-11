@@ -8,7 +8,12 @@ interface CapiBody {
   custom_data?: Record<string, unknown>;
   source_url?: string;
   test_event_code?: string;
+  em?: unknown;
 }
+
+// The browser sends only the SHA-256 hash of the visitor's email. Anything that is not a
+// 64-character lowercase hex string is dropped, so a plain address never reaches Meta.
+const SHA256_HEX = /^[0-9a-f]{64}$/;
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
   const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
@@ -36,6 +41,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const fbp = cookieHeader.match(/(?:^|;\s*)_fbp=([^;]+)/)?.[1];
   const fbc = cookieHeader.match(/(?:^|;\s*)_fbc=([^;]+)/)?.[1];
   const userAgent = request.headers.get('user-agent') ?? '';
+  const em = typeof body.em === 'string' && SHA256_HEX.test(body.em) ? body.em : undefined;
 
   const payload: Record<string, unknown> = {
     data: [
@@ -50,6 +56,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
           client_user_agent: userAgent,
           ...(fbp ? { fbp } : {}),
           ...(fbc ? { fbc } : {}),
+          ...(em ? { em: [em] } : {}),
         },
         custom_data: body.custom_data ?? {},
       },
