@@ -218,7 +218,7 @@ The showcase is `noindex, nofollow` (set in `PreviewLayout.astro` head). It is n
 
 ## 9. Consent banner
 
-The cookie banner and its preferences window are not a component of ours: they are the own UI of CookieConsent v3 (`vanilla-cookieconsent` 3.3.0, pinned and bundled from this site). We keep the library's markup, keyboard handling and button logic, and restyle it only through its `--cc-*` CSS variables, mapped to the tokens in section 2 by `src/styles/cookieconsent-theme.css`. The one rule beyond variables puts the two titles in the headline font. Do not add hand-written colours or radii there — map a token instead.
+The cookie banner and its preferences window are not a component of ours: they are the own UI of CookieConsent v3 (`vanilla-cookieconsent` 3.3.0, pinned and bundled from this site). We keep the library's markup, keyboard handling and button logic, and restyle it only through its `--cc-*` CSS variables, mapped to the tokens in section 2 by `src/styles/cookieconsent-theme.css`. Two rules go beyond variables: the two titles use the headline font, and in the preferences window Accept all and Reject all share a two-column grid, so both take the longer label's width (phones keep the library's stacked, full-width buttons). Do not add hand-written colours or radii there — map a token instead.
 
 | Token | `--cc-*` variables it feeds |
 |---|---|
