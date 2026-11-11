@@ -59,10 +59,19 @@ for (const language of LANGUAGES) {
       ]);
     });
 
-    test('lists every cookie-list entry in the cookie table', () => {
+    test('lists every cookie-list entry in its section of the settings window', () => {
       const rows = sections.flatMap((section) => section.cookieTable?.body ?? []);
+      // The library draws no table for a section without a toggle, so the services that store
+      // nothing are listed in a table written into their own section's description.
+      const cookieless = sections.find((section) => section.title === content(language).categories.cookieless.title);
+      const escaped = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
       for (const entry of content(language).cookies) {
         const names = entry.storage.length ? entry.storage.map((item) => item.name) : [content(language).preferences.noStorage];
+        if (entry.category === 'cookieless') {
+          expect(cookieless?.linkedCategory).toBeUndefined();
+          for (const text of [entry.service, ...names]) expect(cookieless?.description, entry.service).toContain(escaped(text));
+          continue;
+        }
         for (const name of names) {
           expect(rows, `${entry.service}: ${name}`).toContainEqual(expect.objectContaining({ name, service: entry.service }));
         }
