@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro';
+import { CONSENT_REVISION } from '../../lib/consent-config';
+import { hasMarketingConsent } from '../../lib/consent-cookie';
 
 export const prerender = false;
 
@@ -16,6 +18,15 @@ interface CapiBody {
 const SHA256_HEX = /^[0-9a-f]{64}$/;
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
+  // Checked first, before any configuration is read or payload built: without marketing consent
+  // in the cookie banner's own cookie, nothing is sent to Meta, whoever calls this route.
+  if (!hasMarketingConsent(request.headers.get('cookie'), CONSENT_REVISION)) {
+    return new Response(JSON.stringify({ ok: false, reason: 'no_consent' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
   const accessToken = import.meta.env.META_CAPI_ACCESS_TOKEN;
 
