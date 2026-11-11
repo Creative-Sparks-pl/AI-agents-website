@@ -108,9 +108,12 @@ export async function waitForBannerSettled(page: Page, selector = '#cc-main .cm'
 
 /** Writes the banner's cookie as if the visitor had chosen `accepted`, under the current revision. */
 export async function setConsent(context: BrowserContext, baseURL: string, accepted: ConsentCategory[]) {
-  await context.addCookies([
-    { name: CONSENT_COOKIE_NAME, value: consentCookieValue(accepted), domain: new URL(baseURL).hostname, path: '/' },
-  ]);
+  // The same cookie the library writes: on a host with a dot it sets `Domain=<host>`, on localhost a
+  // host-only cookie. Writing a different one would leave two cookies, and a later choice would not
+  // replace the preset.
+  const host = new URL(baseURL).hostname;
+  const domain = host.includes('.') ? `.${host}` : host;
+  await context.addCookies([{ name: CONSENT_COOKIE_NAME, value: consentCookieValue(accepted), domain, path: '/' }]);
 }
 
 /** Same as `setConsent`, from inside the page, for helpers that only hold a page and a relative path. */
