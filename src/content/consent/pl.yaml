@@ -25,6 +25,8 @@ preferences:
     kind: Rodzaj
     duration: Czas przechowywania
     purpose: Cel
+    provider: Dostawca
+    hosts: Łączy się z
   kinds:
     cookie: plik cookie
     localStorage: pamięć przeglądarki (localStorage)

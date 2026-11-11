@@ -20,12 +20,6 @@ if (!entry) throw new Error(`Missing consent content for language "${lang}"`);
 const content = entry.data;
 const { headers } = content.preferences;
 
-// The banner's table shows neither provider nor hosts, so the content file has no labels for them.
-const LABELS = {
-  pl: { provider: 'Dostawca', hosts: 'Łączy się z' },
-  en: { provider: 'Provider', hosts: 'Connects to' },
-}[lang];
-
 const groups = LIST_CATEGORIES.map((category) => ({
   category,
   title: content.categories[category].title,
@@ -58,10 +52,10 @@ const td = 'py-3 pr-4 last:pr-0 align-top';
             <tr>
               <td colspan="3" class="pb-3 text-muted leading-relaxed">
                 <span class="block">{service.purpose}</span>
-                <span class="block mt-1 text-xs"><span class="font-bold">{LABELS.provider}:</span> {service.provider}</span>
+                <span class="block mt-1 text-xs"><span class="font-bold">{headers.provider}:</span> {service.provider}</span>
                 {service.hosts.length > 0 && (
                   <span class="block text-xs">
-                    <span class="font-bold">{LABELS.hosts}:</span> <span class="font-label wrap-anywhere">{service.hosts.join(', ')}</span>
+                    <span class="font-bold">{headers.hosts}:</span> <span class="font-label wrap-anywhere">{service.hosts.join(', ')}</span>
                   </span>
                 )}
               </td>

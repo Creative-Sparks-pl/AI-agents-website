@@ -66,6 +66,9 @@ export const consentContentSchema = z.object({
       kind: z.string(),
       duration: z.string(),
       purpose: z.string(),
+      // Used only by the privacy policies' table; the banner's table has no such columns.
+      provider: z.string(),
+      hosts: z.string(),
     }),
     kinds: z.object({ cookie: z.string(), localStorage: z.string(), sessionStorage: z.string() }),
     noStorage: z.string(),
@@ -132,15 +135,24 @@ export function buildConsentConfig(content: ConsentContent, language: ConsentLan
       cookies.filter((entry) => entry.category === category).map((entry) => [entry.id, { label: entry.service }]),
     );
 
-  const section = (category: ListCategory): PreferencesSection => ({
+  // The banner's table columns, in this order.
+  const { name, service, kind, duration, purpose } = preferences.headers;
+  const headers = { name, service, kind, duration, purpose };
+  const rows = (category: ListCategory) =>
+    cookies.filter((entry) => entry.category === category).flatMap((entry) => tableRows(entry, content));
+
+  const section = (category: ConsentCategory): PreferencesSection => ({
     ...categories[category],
-    ...(category === 'cookieless' ? {} : { linkedCategory: category }),
-    cookieTable: {
-      caption: preferences.tableCaption,
-      headers: preferences.headers,
-      body: cookies.filter((entry) => entry.category === category).flatMap((entry) => tableRows(entry, content)),
-    },
+    linkedCategory: category,
+    cookieTable: { caption: preferences.tableCaption, headers, body: rows(category) },
   });
+
+  // The library draws a section's table only when the section has a consent toggle, so the
+  // services that store nothing get the same table, written into the section's description.
+  const cookielessSection: PreferencesSection = {
+    title: categories.cookieless.title,
+    description: `${categories.cookieless.description}${tableHtml(preferences.tableCaption, headers, rows('cookieless'))}`,
+  };
 
   return {
     revision: CONSENT_REVISION,
@@ -181,7 +193,7 @@ export function buildConsentConfig(content: ConsentContent, language: ConsentLan
               section('necessary'),
               section('statistics'),
               section('marketing'),
-              section('cookieless'),
+              cookielessSection,
               preferences.more,
             ],
           },
@@ -189,6 +201,29 @@ export function buildConsentConfig(content: ConsentContent, language: ConsentLan
       },
     },
   };
+}
+
+// The library's own table markup and classes, so the theme and the phone layout apply.
+// The library inserts HTML, so every value is escaped here.
+function tableHtml(caption: string, headers: Record<string, string>, body: Record<string, string>[]): string {
+  const keys = Object.keys(headers);
+  const head = keys.map((key) => `<th scope="col" class="pm__table-th">${escapeHtml(headers[key])}</th>`).join('');
+  const rows = body
+    .map(
+      (row) =>
+        `<tr class="pm__table-tr">${keys
+          .map((key) => `<td class="pm__table-td" data-column="${escapeHtml(headers[key])}"><div>${escapeHtml(row[key] ?? '')}</div></td>`)
+          .join('')}</tr>`,
+    )
+    .join('');
+  return (
+    `<table class="pm__section-table"><caption class="pm__table-caption">${escapeHtml(caption)}</caption>` +
+    `<thead class="pm__table-head"><tr>${head}</tr></thead><tbody class="pm__table-body">${rows}</tbody></table>`
+  );
+}
+
+function escapeHtml(text: string): string {
+  return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 // One row per stored item; a service that stores nothing gets one row saying so.

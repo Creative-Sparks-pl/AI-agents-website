@@ -25,6 +25,8 @@ preferences:
     kind: Type
     duration: Kept for
     purpose: Purpose
+    provider: Provider
+    hosts: Connects to
   kinds:
     cookie: cookie
     localStorage: browser storage (localStorage)

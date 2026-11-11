@@ -51,5 +51,18 @@ for (const { lang, path } of LANGUAGES) {
     const serviceCells = page.locator(`#cc-main .pm td[data-column="${content.preferences.headers.service}"]`);
     const bannerRows = (await serviceCells.allTextContents()).map((text) => text.trim());
     expect(counts(bannerRows)).toEqual(expectedRows);
+
+    // Services that store nothing have their own section, not a consent category's.
+    const cookielessSection = page.locator('#cc-main .pm__section', {
+      has: page.getByRole('heading', { name: content.categories.cookieless.title, exact: true }),
+    });
+    const cookielessRows = (
+      await cookielessSection.locator(`td[data-column="${content.preferences.headers.service}"]`).allTextContents()
+    ).map((text) => text.trim());
+    const cookielessEntries = content.cookies.filter((entry) => entry.category === 'cookieless');
+    expect(cookielessEntries.length).toBeGreaterThan(0);
+    expect(counts(cookielessRows)).toEqual(
+      counts(cookielessEntries.flatMap((entry) => tableRows(entry, content).map(() => entry.service))),
+    );
   });
 }
