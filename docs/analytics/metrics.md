@@ -98,6 +98,33 @@ Splitting purchases by language is the same as splitting them by paid page, beca
 
 Recordings and their notes are evidence for why visitors drop. Cite them by recording, next to the counts. Never count them as conversions.
 
+## Ad traffic (Meta)
+
+Meta ad clicks arrive with these tags (checked against live clicks and an Ads Manager export, 2026-11-11):
+
+| Tag | Holds |
+|---|---|
+| `utm_source` | `facebook` |
+| `utm_medium` | `paid_social` |
+| `utm_campaign` | campaign name, e.g. `US-UXD-free-skills-2026Q4` |
+| `utm_content` | ad name, e.g. `website-planning-light`, `home-ux-audit-blue` |
+| `utm_id` | campaign ID |
+| `utm_term` | ad set ID — use this to split by ad set |
+
+Ad set IDs (campaign `120243755481080302`):
+
+| `utm_term` | Ad set |
+|---|---|
+| `120249754635630302` | US-Skill-Website-Planning-Prospecting |
+| `120249759871620302` | EU-Skill-Website-Planning-Prospecting |
+| `120243755481140302` | US-Skill-Audit-Prospecting |
+| `120249759844410302` | EU-Skill-Audit-Prospecting |
+
+- Split ad traffic by ad set with `filters.utmTerm`, by ad with `filters.utmContent`; signups per ad set = `Free skill submit: {surface}` events with that `utmTerm` filter.
+- One ad still sends old tags: `home-ux-audit-light` in US-Skill-Audit-Prospecting arrives as `utm_campaign=EN-UXD-faza1-2026Q2-Audyt`, `utm_content=free-audit-skil`. Its `utm_term` is still right, so count it by `utm_term`, never by `utm_campaign` or `utm_content` alone.
+- Add new ad sets to the table when they launch (their ID shows in Ads Manager's "Ad set ID" column, or as a new `utm_term` value in Umami).
+- Meta's own Lead counts cover only visitors who accepted marketing cookies; Umami counts every signup. Report both, never one as the other.
+
 ## Known limits
 
 - **PostHog sees only part of the traffic.** It covers only visitors who accept statistics cookies, only on the six landing pages, and only from after the page has loaded. A pattern seen in recordings describes visitors who consented, not everyone.
