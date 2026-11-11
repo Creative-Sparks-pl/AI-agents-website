@@ -1,11 +1,11 @@
 links:
   - label: Privacy policy
-    href: /en/ux-design-skill/privacy-policy
+    href: /en/ux-design-skill/privacy-policy/
   - label: Cookie settings
     href: "javascript:Cookiebot.renew()"
   - label: Terms of sale
-    href: /en/ux-design-skill/terms
+    href: /en/ux-design-skill/terms/
   - label: Changelog
-    href: /en/ux-design-skill/changelog
+    href: /en/ux-design-skill/changelog/
   - label: Contact
     href: "mailto:tomasz@creativesparks.pl?subject=Question%20about%20UX%20Design%20Skill"

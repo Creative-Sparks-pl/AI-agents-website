@@ -16,4 +16,4 @@ items:
     description: The skill picks up automatically on your next session with the model. No extra configuration.
 footerLink:
   label: See the full install guide
-  href: /en/ux-design-skill/how-it-works
+  href: /en/ux-design-skill/how-it-works/
