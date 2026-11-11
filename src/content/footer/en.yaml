@@ -2,7 +2,7 @@ links:
   - label: Privacy policy
     href: /en/ux-design-skill/privacy-policy/
   - label: Cookie settings
-    href: "javascript:Cookiebot.renew()"
+    href: "#cookie-settings"
   - label: Terms of sale
     href: /en/ux-design-skill/terms/
   - label: Changelog

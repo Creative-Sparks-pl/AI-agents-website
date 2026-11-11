@@ -19,7 +19,8 @@
     "@neondatabase/serverless": "1.2.0",
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.1",
-    "tailwindcss": "^4.2.2"
+    "tailwindcss": "^4.2.2",
+    "vanilla-cookieconsent": "3.3.0"
   },
   "devDependencies": {
     "@astrojs/mdx": "^5.0.4",

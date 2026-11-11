@@ -1,6 +1,10 @@
 ---
 import '../styles/global.css';
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import '../styles/cookieconsent-theme.css';
+import { getEntry } from 'astro:content';
 import { localeFromPathname, locales, pathForLocale, defaultLocale } from '../lib/i18n';
+import { buildConsentConfig } from '../lib/consent-config';
 import gilroyBoldUrl from '../assets/fonts/Radomir-Tinkov---Gilroy-Bold.woff2?url';
 
 interface ViewContentParams {
@@ -94,14 +98,17 @@ const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
 // PostHog Cloud EU. The project key is public by design, like Umami's website ID.
 const POSTHOG_PROJECT_KEY = 'phc_xJEvm2rFYcD3VKe3BQb2zPpAaWqVZRe7zBqYUwhsgG5t';
 const POSTHOG_API_HOST = 'https://eu.i.posthog.com';
+
+// Cookie banner configuration for this page's language, built from src/content/consent/.
+// `<` is escaped so the JSON can never close its <script> element.
+const consentContent = await getEntry('consent', locale);
+if (!consentContent) throw new Error(`Missing consent content for locale "${locale}"`);
+const consentConfigJson = JSON.stringify(buildConsentConfig(consentContent.data, locale)).replace(/</g, '\\u003c');
 ---
 
 <!doctype html>
 <html lang={locale}>
   <head>
-    <!-- Cookiebot CMP — async-loaded; gates downstream scripts via data-cookieconsent="..." tagging, not load order -->
-    <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="068aceee-c3db-442f-acf0-4310125da547" data-blockingmode="auto" type="text/javascript" async></script>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
@@ -151,8 +158,14 @@ const POSTHOG_API_HOST = 'https://eu.i.posthog.com';
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(productStructuredData)} />
 
-    <!-- Umami Analytics -->
+    <!-- Umami Analytics (cookieless, outside the banner) -->
     <script defer src="https://analytics.creativesparks.pl/script.js" data-website-id="37a76f9d-7246-4d45-b832-3b35e78eee08"></script>
+
+    <!-- Cookie banner (CookieConsent v3, self-hosted). Gates scripts tagged type="text/plain" data-category="…". -->
+    <script type="application/json" id="consent-config" set:html={consentConfigJson} />
+    <script>
+      import '../scripts/consent';
+    </script>
 
     {metaPixelId && (
       <Fragment>
