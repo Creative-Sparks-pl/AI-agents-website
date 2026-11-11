@@ -301,6 +301,17 @@ test.describe('consent records', () => {
 test.describe('Wistia and withdrawal', () => {
   test('without statistics consent the video plays, stores no viewer ID and sends no statistics', async ({ page }) => {
     const traffic = await blockDataSending(page);
+    // Wistia reports playback quality to Mux Data for a random 1 play in 10; make this play one of them.
+    await page.addInitScript(() => {
+      const random = crypto.getRandomValues.bind(crypto);
+      crypto.getRandomValues = <T extends ArrayBufferView | null>(array: T): T => {
+        if (array instanceof Uint32Array && array.length === 1) {
+          array[0] = 0;
+          return array;
+        }
+        return random(array as never) as T;
+      };
+    });
     await page.goto('/ux-design-skill/');
     await bannerButton(page, 'Odrzuć wszystkie').click();
     await playHeroVideo(page);

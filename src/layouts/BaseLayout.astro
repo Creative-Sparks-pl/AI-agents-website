@@ -105,8 +105,8 @@ const consentContent = await getEntry('consent', locale);
 if (!consentContent) throw new Error(`Missing consent content for locale "${locale}"`);
 const consentConfigJson = JSON.stringify(buildConsentConfig(consentContent.data, locale)).replace(/</g, '\\u003c');
 
-// What each optional category stores in the browser, so withdrawing a category can clear it.
-const consentStorage: Record<string, { name: string; kind: string }[]> = { statistics: [], marketing: [] };
+// What each category stores in the browser, so refusing or withdrawing a category can clear it.
+const consentStorage: Record<string, { name: string; kind: string }[]> = { necessary: [], statistics: [], marketing: [] };
 for (const entry of consentContent.data.cookies) {
   const items = consentStorage[entry.category];
   if (items) items.push(...entry.storage.map(({ name, kind }) => ({ name, kind })));
@@ -121,7 +121,8 @@ const consentStorageJson = JSON.stringify(consentStorage).replace(/</g, '\\u003c
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Wistia tracks only with statistics consent. This runs before any player script, so a
          player that loads with the page follows the stored choice. Without it, privacy mode keeps
-         the player from storing a viewer ID, and doNotTrack stops its anonymous play statistics. -->
+         the player from storing a viewer ID, doNotTrack stops its anonymous play statistics, and
+         wistiaDisableMux stops the playback-quality reports it sends to Mux Data for 1 play in 10. -->
     <script is:inline define:vars={{ consentCookieName: CONSENT_COOKIE_NAME, consentRevision: CONSENT_REVISION }}>
       var wistiaAllowed = false;
       try {
@@ -132,7 +133,10 @@ const consentStorageJson = JSON.stringify(consentStorage).replace(/</g, '\\u003c
         }
       } catch (_e) { /* a missing or malformed choice means no consent */ }
       (window._wq = window._wq || []).push(function (W) { W.consent(wistiaAllowed); });
-      if (!wistiaAllowed) window.wistiaOptions = { _all: { doNotTrack: true } };
+      if (!wistiaAllowed) {
+        window.wistiaOptions = { _all: { doNotTrack: true } };
+        window.wistiaDisableMux = true;
+      }
     </script>
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#010DFF" />

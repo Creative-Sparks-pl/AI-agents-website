@@ -79,9 +79,15 @@ function expireCookie(name: string) {
   }
 }
 
-/** Removes what the withdrawn categories stored, as named in the cookie list. */
-function clearStorage(storage: StorageByCategory, categories: ConsentCategory[]) {
-  const items = categories.flatMap((category) => storage[category] ?? []);
+/**
+ * Removes what the given categories stored, as named in the cookie list, except items that
+ * `keep` also lists (a key a category shares with one the visitor accepted).
+ */
+function clearStorage(storage: StorageByCategory, categories: ConsentCategory[], keep: ConsentCategory[] = []) {
+  const kept = keep.flatMap((category) => storage[category] ?? []);
+  const items = categories
+    .flatMap((category) => storage[category] ?? [])
+    .filter((item) => !kept.some((other) => other.kind === item.kind && other.name === item.name));
   const cookieNames = document.cookie
     .split(';')
     .map((pair) => pair.split('=')[0].trim())
@@ -117,7 +123,14 @@ if (config) {
   void CookieConsent.run({
     ...(config as unknown as CookieConsent.CookieConsentConfig),
     onFirstConsent: () => sendRecord(config, 'first'),
-    onConsent: () => tellWistia(),
+    onConsent: () => {
+      tellWistia();
+      // A script that was running when its category was withdrawn can write its storage again
+      // while the page unloads, so every page load also clears what refused categories stored.
+      const accepted = CookieConsent.getUserPreferences().acceptedCategories as ConsentCategory[];
+      const refused = (['statistics', 'marketing'] as const).filter((category) => !accepted.includes(category));
+      clearStorage(storage, refused, accepted);
+    },
     onChange: ({ changedCategories }) => {
       sendRecord(config, 'change');
       tellWistia();
