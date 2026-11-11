@@ -42,6 +42,11 @@ Where things live, so nobody has to ask again. No secrets here — secret values
   - `umami`: Umami's official read-only connector (`@umami/mcp`), run locally through `dotenv-cli`, which loads `UMAMI_API_TOKEN` (an `umami_` API key from Umami → Settings → API keys) from `.env.local`.
   - `posthog`: PostHog's remote connector in read-only mode, signed in through OAuth.
   - The `/cro-cycle` skill (`.claude/skills/cro-cycle/`) runs an improvement cycle on these connectors; it uses only the definitions in `docs/analytics/metrics.md` and logs shipped changes in `docs/analytics/ledger.md`.
+- **Agent access to the owner's browser** — Claude in Chrome (browser extension, tools `mcp__claude-in-chrome__*`), working in the owner's own Chrome with their sign-ins. Verified 2026-11-11.
+  - Connect: *Enabled by default* is on (set in `/chrome`), so every session connects as it starts. If the tools are missing, ask the owner to type `@browser` or run `/chrome` → *Reconnect extension*; don't work around it.
+  - Use it for what no connector reaches: dashboards the owner is signed into (e.g. Meta Events Manager), and checking the live or local site in a real browser (clicks, console, network requests).
+  - Meta Events Manager: business Fuse Collective → dataset "Creative Sparks Pixel" (`482025232476807`) → Test events. Opening a site URL with `?test_event_code=<code shown there>` makes its server-side events appear on that page (after marketing consent).
+  - Work in new tabs and close them when done. Look, don't change: no settings, publishing, deleting or payments unless the owner asks.
 - **PostHog (recordings and heatmaps)** — Cloud EU project (`eu.posthog.com`), live since 2026-11-10 (site v1.0.0): the six landing pages only, loaded after Cookiebot statistics consent; inputs masked, recordings kept 30 days, IPs discarded.
 - **Consent** — Cookiebot; its ID is in `src/layouts/BaseLayout.astro`.
 - **Checkout** — Easytools at `cart.creativesparks.pl`. Paid-purchase webhooks go to `/api/easytools-webhook?token=…`, where the token is `EASYTOOLS_WEBHOOK_TOKEN` in Vercel. Free skills are granted through `src/pages/api/subscribe.ts`.
