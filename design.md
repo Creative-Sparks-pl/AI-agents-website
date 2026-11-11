@@ -209,7 +209,40 @@ A standalone showcase lives at `/design-system/` and is driven by `src/layouts/P
 
 - `/design-system/` — overview with 3-card grid linking to sub-pages
 - `/design-system/tokens/` — every color, type scale step, spacing token, and radius rendered live
-- `/design-system/components/` — ui/ primitives with prop tables and live previews
+- `/design-system/components/` — ui/ primitives with prop tables and live previews, plus the consent banner preview (`#consent-banner`, see section 9)
 - `/design-system/sections/` — every section rendered live with its real content collection data
 
 The showcase is `noindex, nofollow` (set in `PreviewLayout.astro` head). It is not part of the main user-facing site but serves as the canary: if a section can't render cleanly in the showcase with its default content, decomposition isn't clean enough — fix it.
+
+---
+
+## 9. Consent banner
+
+The cookie banner and its preferences window are not a component of ours: they are the own UI of CookieConsent v3 (`vanilla-cookieconsent` 3.3.0, pinned and bundled from this site). We keep the library's markup, keyboard handling and button logic, and restyle it only through its `--cc-*` CSS variables, mapped to the tokens in section 2 by `src/styles/cookieconsent-theme.css`. The one rule beyond variables puts the two titles in the headline font. Do not add hand-written colours or radii there — map a token instead.
+
+| Token | `--cc-*` variables it feeds |
+|---|---|
+| `--color-primary` | `--cc-btn-primary-bg`, `--cc-btn-primary-border-color`, `--cc-btn-secondary-color`, `--cc-btn-secondary-border-color`, `--cc-btn-secondary-hover-bg`, `--cc-btn-secondary-hover-border-color`, `--cc-link-color`, `--cc-toggle-on-bg` |
+| `--color-on-primary` | `--cc-btn-primary-color`, `--cc-btn-primary-hover-color`, `--cc-btn-secondary-hover-color` |
+| `--color-foreground` | `--cc-primary-color` (text), `--cc-btn-primary-hover-bg`, `--cc-btn-primary-hover-border-color`, `--cc-overlay-bg` (at 65%) |
+| `--color-muted` | `--cc-secondary-color`, `--cc-toggle-off-bg`, `--cc-footer-color`, `--cc-webkit-scrollbar-hover-bg` |
+| `--color-background` | `--cc-bg`, `--cc-btn-secondary-bg`, `--cc-cookie-category-expanded-block-bg`, toggle knobs and toggle icons |
+| `--color-border` | `--cc-separator-border-color`, `--cc-section-category-border`, `--cc-cookie-category-block-border`, `--cc-cookie-category-block-hover-border`, `--cc-toggle-readonly-bg`, `--cc-toggle-readonly-knob-icon-color`, `--cc-footer-border-color`, `--cc-webkit-scrollbar-bg` |
+| `--color-surface` | `--cc-cookie-category-block-bg`, `--cc-footer-bg` |
+| `--color-surface-primary` | `--cc-cookie-category-block-hover-bg`, `--cc-cookie-category-expanded-block-hover-bg` |
+| `--font-body` | `--cc-font-family` |
+| `--font-headline` | `.cm__title`, `.pm__title` (a `font-family` rule, not a variable) |
+| `--radius-default` (0px) | `--cc-modal-border-radius`, `--cc-btn-border-radius` |
+| `--radius-full` | `--cc-pm-toggle-border-radius` (the round toggles) |
+
+**Layout** (set in `buildConsentConfig`): the banner is a box at the bottom right on desktop and spans the full width on phones; it has no overlay, so the page stays usable while it is open. The preferences window is a box too — centred on desktop, full screen on phones — and dims the page behind it (`--cc-overlay-bg`).
+
+**Equal weight.** Accept all and Reject all share the primary style and the same size (`equalWeightButtons: true`), so refusing is as easy as agreeing. Settings uses the secondary (outlined) style. Do not make Reject all look weaker than Accept all.
+
+**Where it lives.**
+
+- Text and cookie list: `src/content/consent/pl.yaml` and `en.yaml` (the `consent` collection). The same entries feed the privacy policies' cookie table.
+- Config builder: `src/lib/consent-config.ts` — `buildConsentConfig(content, language)`; raise `CONSENT_REVISION` to ask everyone again.
+- Theme: `src/styles/cookieconsent-theme.css`, imported right after `vanilla-cookieconsent/dist/cookieconsent.css`.
+- Runner: `src/scripts/consent.ts`, on every `BaseLayout` page.
+- Showcase: `/design-system/components/#consent-banner` opens the real banner and preferences window with the Polish text. It runs under its own `cc_preview` cookie with nothing automatic, so it never touches the viewer's real choice (`cc_cookie`).

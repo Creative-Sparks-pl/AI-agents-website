@@ -1,10 +1,35 @@
 ---
 import PreviewLayout from '../../layouts/PreviewLayout.astro';
+// The consent banner preview's styles, in BaseLayout's order: library CSS, then the theme.
+import 'vanilla-cookieconsent/dist/cookieconsent.css';
+import '../../styles/cookieconsent-theme.css';
+import { getEntry } from 'astro:content';
 import ChecklistItem from '../../components/ui/ChecklistItem.astro';
 import SectionWithIcon from '../../components/ui/SectionWithIcon.astro';
 import Button from '../../components/ui/Button.astro';
 import LinkArrow from '../../components/ui/LinkArrow.astro';
 import sampleIcon from '../../assets/icons/shape-3.svg';
+import { buildConsentConfig } from '../../lib/consent-config';
+
+// Consent banner preview: the real Polish text and theme, run under its own cookie name
+// with nothing automatic, so it never reads or changes the visitor's real choice (cc_cookie).
+const consentContent = await getEntry('consent', 'pl');
+if (!consentContent) throw new Error('Missing consent content for locale "pl"');
+const consentPreviewConfigJson = JSON.stringify({
+  ...buildConsentConfig(consentContent.data, 'pl'),
+  cookie: { name: 'cc_preview', expiresAfterDays: 1 },
+  autoShow: false,
+  manageScriptTags: false,
+  autoClearCookies: false,
+  hideFromBots: false,
+}).replace(/</g, '\\u003c');
+
+const consentFiles = [
+  { file: 'src/content/consent/{pl,en}.yaml', desc: 'Banner and preferences text plus the cookie list, one file per locale (the consent collection).' },
+  { file: 'src/lib/consent-config.ts', desc: 'buildConsentConfig(content, language) turns the content into the library config: layout, categories, text. Raise CONSENT_REVISION to ask everyone again.' },
+  { file: 'src/styles/cookieconsent-theme.css', desc: 'Maps the library\'s --cc-* variables to the @theme tokens; titles in the headline font. Imported after the library CSS.' },
+  { file: 'src/scripts/consent.ts', desc: 'Runs the library on every BaseLayout page from the #consent-config JSON.' },
+];
 
 const components = [
   {
@@ -203,6 +228,51 @@ const components = [
       </section>
     ))}
 
+    <section id="consent-banner" class="border-t border-border pt-12">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
+        <div class="lg:col-span-5">
+          <h2 class="font-headline text-3xl font-bold mb-3">Consent banner</h2>
+          <p class="text-sm text-muted leading-relaxed mb-4">
+            The cookie banner and its preferences window. Not one of our components: it is the own UI of CookieConsent v3 (vanilla-cookieconsent, bundled from this site), restyled only through its --cc-* variables. A box at the bottom right on desktop, full width on phones, no overlay. Accept all and Reject all share the primary style and size; Settings is secondary.
+          </p>
+          <p class="font-label text-xs text-primary">Runs on every BaseLayout page. This page has no banner of its own; the preview below starts a separate copy.</p>
+        </div>
+        <div class="lg:col-span-7">
+          <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-3">Files</h3>
+          <table class="w-full text-left border-collapse text-sm">
+            <thead>
+              <tr class="border-b border-border">
+                <th class="py-2 pr-4 font-label text-xs">File</th>
+                <th class="py-2 font-label text-xs">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              {consentFiles.map((f) => (
+                <tr class="border-b border-border/30">
+                  <td class="py-3 pr-4 font-label text-xs font-bold">{f.file}</td>
+                  <td class="py-3 text-xs text-muted">{f.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div>
+        <h3 class="font-label text-xs uppercase tracking-widest text-muted mb-3">Live preview</h3>
+        <div class="border border-border p-12 bg-surface">
+          <div class="flex flex-wrap items-center gap-4 mb-6">
+            <Button type="button" size="md" data-consent-preview="banner">Pokaż baner</Button>
+            <Button type="button" size="md" variant="secondary" data-consent-preview="preferences">Pokaż ustawienia</Button>
+          </div>
+          <p class="text-xs text-muted max-w-2xl">
+            Opens the real banner and preferences window with the Polish text and the site theme. The preview keeps its own cookie (cc_preview), written only when you click a choice inside it, so your real choice (cc_cookie) stays as it is. The library loads on the first click.
+          </p>
+        </div>
+      </div>
+      <script type="application/json" id="consent-preview-config" set:html={consentPreviewConfigJson} />
+    </section>
+
     <div class="border-t border-border pt-12">
       <h2 class="font-headline text-2xl font-bold mb-4">Colocated subcomponents</h2>
       <p class="text-sm text-muted mb-6 max-w-3xl">
@@ -212,3 +282,28 @@ const components = [
 
   </div>
 </PreviewLayout>
+
+<script>
+  // Consent banner preview: loads CookieConsent on the first click, then opens the banner or
+  // the preferences window. The config (from #consent-preview-config) uses the cc_preview cookie.
+  type CookieConsentModule = typeof import('vanilla-cookieconsent');
+  let ready: Promise<CookieConsentModule> | undefined;
+
+  function load(): Promise<CookieConsentModule> {
+    ready ??= (async () => {
+      const config = JSON.parse(document.getElementById('consent-preview-config')?.textContent ?? '{}');
+      const CookieConsent = await import('vanilla-cookieconsent');
+      await CookieConsent.run(config);
+      return CookieConsent;
+    })();
+    return ready;
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-consent-preview]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const CookieConsent = await load();
+      if (button.dataset.consentPreview === 'preferences') CookieConsent.showPreferences();
+      else CookieConsent.show(true);
+    });
+  });
+</script>

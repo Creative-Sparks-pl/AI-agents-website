@@ -58,6 +58,19 @@
   --cc-footer-border-color: var(--color-border);
 }
 
+/* Equal weight in the preferences window too: Accept all and Reject all share one width, that
+   of the longer label (the library otherwise sizes each to its own). Phones keep the library's
+   stacked, full-width buttons, whose rules are !important. */
+#cc-main .pm__footer .pm__btn-group:first-child {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 0.375rem;
+}
+
+#cc-main .pm__footer .pm__btn-group:first-child .pm__btn + .pm__btn {
+  margin-left: 0;
+}
+
 /* Titles use the headline face, as everywhere else on the site. */
 #cc-main .cm__title,
 #cc-main .pm__title {
