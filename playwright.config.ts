@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 // Port 4321 is often held by another local project, and `astro preview` serves no pages with this adapter.
 const PORT = 4325;
 // Set BASE_URL to run against a deployment (e.g. the cookie check on production); no dev server starts then.
-const BASE_URL = process.env.BASE_URL;
+const BASE_URL = process.env.BASE_URL || undefined;
 
 export default defineConfig({
   testDir: './tests',

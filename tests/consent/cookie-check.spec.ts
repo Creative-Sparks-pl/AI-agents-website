@@ -132,12 +132,12 @@ async function settle(page: Page) {
   await page.waitForTimeout(1000);
 }
 
-/** Starts one video the way a visitor would, if the page has one; returns whether it tried. */
-async function startVideo(page: Page): Promise<boolean> {
+/** Starts one video the way a visitor would, if the page has one. */
+async function startVideo(page: Page): Promise<'no video' | 'playing' | 'did not start'> {
   const kind = await page.evaluate(() =>
     document.querySelector('[data-wistia-trigger]') ? 'trigger' : document.querySelector('wistia-player') ? 'player' : null,
   );
-  if (!kind) return false;
+  if (!kind) return 'no video';
   if (kind === 'trigger') {
     // A script click: in the no-choice state the banner may cover the thumbnail.
     await page.evaluate(() => (document.querySelector('[data-wistia-trigger]') as HTMLElement).click());
@@ -154,8 +154,20 @@ async function startVideo(page: Page): Promise<boolean> {
       player.play?.()?.catch(() => undefined);
     });
   }
-  await page.waitForTimeout(5000);
-  return true;
+  const playing = await page
+    .waitForFunction(
+      () =>
+        [...document.querySelectorAll('wistia-player')].some(
+          (player) => ((player as unknown as { currentTime?: number }).currentTime ?? 0) > 0.5,
+        ),
+      null,
+      { timeout: 20_000 },
+    )
+    .then(() => true)
+    .catch(() => false);
+  // Let the player write and report what it does while playing.
+  await page.waitForTimeout(3000);
+  return playing ? 'playing' : 'did not start';
 }
 
 async function observe(page: Page): Promise<Observation['storage']> {
@@ -209,15 +221,38 @@ async function checkPage(browser: Browser, baseURL: string, path: string, state:
     // the shared blocker, whose answers for /api/meta-capi and /api/consent take precedence.
     await page.route(new RegExp(`^${origin.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/api/`), (route) => route.abort());
     await blockDataSending(page);
+    // Wistia reports playback quality to Mux Data for a random 1 play in 10; make every play one
+    // of them, so a Mux report outside statistics consent is caught every time, not 1 run in 10.
+    await page.addInitScript(() => {
+      const random = crypto.getRandomValues.bind(crypto);
+      crypto.getRandomValues = <T extends ArrayBufferView | null>(array: T): T => {
+        if (array instanceof Uint32Array && array.length === 1) {
+          array[0] = 0;
+          return array;
+        }
+        return random(array as never) as T;
+      };
+    });
     if (options.initScript) await page.addInitScript(options.initScript);
     if (state.preset) await setConsent(context, baseURL, state.preset);
 
-    await page.goto(path);
-    await settle(page);
-    await startVideo(page);
+    const at = `${path} [${state.name}]`;
+    const problems: string[] = [];
+    const visit = async () => {
+      await page.goto(path);
+      await settle(page);
+      // A redirect to another host would take the check (and the bypass header) somewhere else.
+      if (new URL(page.url()).hostname !== siteHost) problems.push(`${at} the page left ${siteHost} for ${page.url()}`);
+      if ((await startVideo(page)) === 'did not start') {
+        problems.push(`${at} the video did not start, so what it stores and contacts was not checked`);
+      }
+    };
+
+    await visit();
 
     if (state.withdraw) {
       const reloaded = page.waitForEvent('framenavigated', { predicate: (frame) => frame === page.mainFrame(), timeout: 15_000 });
+      reloaded.catch(() => undefined); // pages without the banner never reload
       const hasBanner = await page.evaluate(() => {
         const banner = (window as { CookieConsent?: { acceptCategory: (categories: string[]) => void } }).CookieConsent;
         banner?.acceptCategory([]);
@@ -230,12 +265,11 @@ async function checkPage(browser: Browser, baseURL: string, path: string, state:
       // Measure a fresh visit after the withdrawal, so the old page's last requests do not count.
       hosts.clear();
       completedDataSending.length = 0;
-      await page.goto(path);
-      await settle(page);
-      await startVideo(page);
+      problems.length = 0;
+      await visit();
     }
 
-    return violations(path, state, { storage: await observe(page), hosts: [...hosts], completedDataSending });
+    return [...problems, ...violations(path, state, { storage: await observe(page), hosts: [...hosts], completedDataSending })];
   } finally {
     await context.close();
   }
