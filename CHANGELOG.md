@@ -2,6 +2,25 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.1.0 — 2026-11-11
+
+### Added
+- A self-hosted cookie banner (CookieConsent v3, bundled and served by the site) in Polish and English, styled with the design tokens. Accept all and Reject all carry equal weight; "Cookie settings" in the footer reopens it. Choices could not be carried over from Cookiebot, so every visitor is asked once again.
+- A record of every first consent choice and every change (`/api/consent`), in its own Neon database: consent ID, time, banner revision, language, accepted and refused categories — no IP address or browser data. Kept two years.
+- One cookie list in `src/content/consent/{pl,en}.yaml` that feeds the banner's settings window and the cookie tables in both privacy policies.
+- An automated cookie check (`tests/consent/cookie-check.spec.ts`) that opens every page and example file in six consent states and fails on any stored key or outside host missing from the cookie list or outside its category. It replaces Cookiebot's scanner.
+
+### Changed
+- Cookiebot removed. Meta Pixel and PostHog load only through the new banner's statistics and marketing choices.
+- The Meta Conversions API route sends nothing to Meta unless the visitor's banner cookie holds marketing consent.
+- Wistia videos play for everyone in privacy mode; viewing statistics, Mux Data included, are sent only with statistics consent. Withdrawing a category reloads the page and clears what that category stored.
+- Every page has one address ending in a slash; the address without it redirects permanently.
+- Both privacy policies list every cookie and outside service by category, the consent record and its two-year retention, and Wistia.
+- The wireframe examples' menu links and deliverable links open the real pages and files.
+
+### Fixed
+- Meta PageView and ViewContent fire again after a visitor accepts marketing cookies; under Cookiebot they had stopped firing (the listener waited on the wrong object).
+
 ## 1.0.0 — 2026-11-10
 
 ### Added
