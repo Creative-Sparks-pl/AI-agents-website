@@ -1,0 +1,87 @@
+---
+// The cookie list for the privacy policies, in the page's language. Built from the same
+// content and the same rows (`tableRows`) as the banner's preferences window, so the policy
+// and the banner always list the same services: src/content/consent/{pl,en}.yaml.
+//
+// One table per category. Each service is a row group: its name, then what it does, who
+// provides it and which servers it contacts, then one row per item it stores. Three columns
+// keep the table readable on a phone without sideways scrolling.
+import { getEntry } from 'astro:content';
+import { LIST_CATEGORIES, tableRows } from '../../lib/consent-config';
+import type { ConsentLanguage } from '../../lib/consent-record';
+
+interface Props {
+  lang: ConsentLanguage;
+}
+
+const { lang } = Astro.props;
+const entry = await getEntry('consent', lang);
+if (!entry) throw new Error(`Missing consent content for language "${lang}"`);
+const content = entry.data;
+const { headers } = content.preferences;
+
+// The banner's table shows neither provider nor hosts, so the content file has no labels for them.
+const LABELS = {
+  pl: { provider: 'Dostawca', hosts: 'Łączy się z' },
+  en: { provider: 'Provider', hosts: 'Connects to' },
+}[lang];
+
+const groups = LIST_CATEGORIES.map((category) => ({
+  category,
+  title: content.categories[category].title,
+  services: content.cookies
+    .filter((service) => service.category === category)
+    .map((service) => ({ service, rows: tableRows(service, content) })),
+})).filter((group) => group.services.length > 0);
+
+const th = 'py-2 pr-4 last:pr-0 font-label text-xs font-bold text-muted align-bottom';
+const td = 'py-3 pr-4 last:pr-0 align-top';
+---
+
+<div data-cookie-table class="mt-8 mb-4 space-y-10">
+  {groups.map((group) => (
+    <div data-category={group.category}>
+      <h3 id={`cookie-table-${group.category}`} class="font-headline font-bold text-lg text-foreground mb-3">{group.title}</h3>
+      <table class="w-full table-fixed text-left border-collapse text-sm border-b border-border" aria-labelledby={`cookie-table-${group.category}`}>
+        <thead>
+          <tr class="border-b border-border">
+            <th scope="col" class:list={[th, 'w-[36%]']}>{headers.name}</th>
+            <th scope="col" class:list={[th, 'w-[34%]']}>{headers.kind}</th>
+            <th scope="col" class={th}>{headers.duration}</th>
+          </tr>
+        </thead>
+        {group.services.map(({ service, rows }) => (
+          <tbody data-service-id={service.id} class="border-t border-border">
+            <tr>
+              <th scope="rowgroup" colspan="3" data-service-name class="pt-5 pb-1 font-bold text-base text-foreground">{service.service}</th>
+            </tr>
+            <tr>
+              <td colspan="3" class="pb-3 text-muted leading-relaxed">
+                <span class="block">{service.purpose}</span>
+                <span class="block mt-1 text-xs"><span class="font-bold">{LABELS.provider}:</span> {service.provider}</span>
+                {service.hosts.length > 0 && (
+                  <span class="block text-xs">
+                    <span class="font-bold">{LABELS.hosts}:</span> <span class="font-label wrap-anywhere">{service.hosts.join(', ')}</span>
+                  </span>
+                )}
+              </td>
+            </tr>
+            {rows.map((row) =>
+              service.storage.length === 0 ? (
+                <tr data-cookie-row class="border-t border-border/40">
+                  <td colspan="3" class:list={[td, 'text-muted']}>{row.name}</td>
+                </tr>
+              ) : (
+                <tr data-cookie-row class="border-t border-border/40">
+                  <td class:list={[td, 'font-label text-xs leading-5 text-foreground wrap-anywhere']}>{row.name}</td>
+                  <td class:list={[td, 'text-muted']}>{row.kind}</td>
+                  <td class:list={[td, 'text-muted']}>{row.duration}</td>
+                </tr>
+              ),
+            )}
+          </tbody>
+        ))}
+      </table>
+    </div>
+  ))}
+</div>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopAppBar from '../../components/sections/top-app-bar/TopAppBar.astro';
 import Footer from '../../components/sections/footer/Footer.astro';
+import CookieTable from '../../components/ui/CookieTable.astro';
 ---
 
 <BaseLayout title="Polityka prywatności — UX Design Skill | Creative Sparks">
@@ -24,6 +25,7 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li><strong>Zgłoszenia wysłane przez skill</strong> — tytuł i treść opinii lub zgłoszenia błędu oraz adres email, jeśli go podasz</li>
         <li><strong>Statystyki odwiedzin</strong> — odwiedzone podstrony, strona, z której przychodzisz, przeglądarka, system operacyjny, typ urządzenia, język, przybliżona lokalizacja (kraj, region, miasto) i wybrane działania, np. kliknięcie przycisku lub zakup (bez adresu email); zbiera je bez cookies moja własna instancja Umami, która nie zapisuje adresu IP, a wizyty rozróżnia po skrócie kryptograficznym z adresu IP, przeglądarki i wartości, która regularnie się zmienia</li>
         <li><strong>Nagrania sesji i mapy cieplne</strong> — przebieg wizyty na stronach produktów (np. ruchy kursora, kliknięcia, przewijanie), tylko jeśli wyrazisz zgodę na cookies statystyczne; PostHog nie zapisuje adresu IP</li>
+        <li><strong>Wybory w banerze cookies</strong> — zaakceptowane i odrzucone kategorie cookies, czas wyboru i losowy identyfikator zgody (szczegóły w sekcji „Pliki cookies”)</li>
       </ul>
 
       <h2>Po co zbieram dane</h2>
@@ -34,7 +36,9 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Newsletter / lista oczekujących — na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO)</li>
         <li>Działanie usługi online i pilnowanie limitów zapytań (art. 6 ust. 1 lit. b RODO)</li>
         <li>Publikacja i obsługa opinii oraz zgłoszeń błędów, które dobrowolnie wysyłasz przez skill (art. 6 ust. 1 lit. a RODO)</li>
-        <li>Statystyki i ulepszanie stron — liczenie odwiedzin w Umami na podstawie mojego prawnie uzasadnionego interesu, czyli mierzenia ruchu na stronie (art. 6 ust. 1 lit. f RODO); nagrania sesji i mapy cieplne w PostHog na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz w każdej chwili wycofać w ustawieniach cookies</li>
+        <li>Statystyki i ulepszanie stron — liczenie odwiedzin w Umami na podstawie mojego prawnie uzasadnionego interesu, czyli mierzenia ruchu na stronie (art. 6 ust. 1 lit. f RODO); nagrania sesji i mapy cieplne w PostHog oraz statystyki oglądania wideo w Wistii na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz w każdej chwili wycofać w ustawieniach cookies</li>
+        <li>Odtwarzanie wideo na stronach (Wistia) i wykrywanie błędów odtwarzacza — na podstawie mojego prawnie uzasadnionego interesu, czyli pokazania Ci materiałów wideo o produktach (art. 6 ust. 1 lit. f RODO)</li>
+        <li>Rejestr zgód na cookies — wykazanie, że i kiedy wyrażono zgodę, do czego zobowiązuje mnie RODO (art. 6 ust. 1 lit. c w związku z art. 7 ust. 1 RODO); zapis odmowy — na podstawie mojego prawnie uzasadnionego interesu, czyli możliwości wykazania, że uszanowałem Twój wybór (art. 6 ust. 1 lit. f RODO)</li>
       </ul>
 
       <h2>Komu udostępniam dane</h2>
@@ -44,8 +48,9 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li><strong>Stripe</strong> — przetwarzanie płatności online</li>
         <li><strong>Meta</strong> — pomiar skuteczności reklam (w tym jednokierunkowy skrót, czyli hash, Twojego adresu e-mail przy zapisie), jeśli wyrazisz zgodę na cookies marketingowe</li>
         <li><strong>PostHog</strong> — nagrania sesji i mapy cieplne na stronach produktów (UX Design Skill i darmowe skille), jeśli wyrazisz zgodę na cookies statystyczne; dane są przechowywane w UE (Frankfurt)</li>
+        <li><strong>Wistia</strong> — odtwarzacz wideo na stronach (Wistia, Inc., USA), który zgłasza błędy odtwarzacza do Sentry; statystyki oglądania wideo (także przez Mux Data) zbiera tylko, jeśli wyrazisz zgodę na cookies statystyczne</li>
         <li><strong>Vercel</strong> — serwery usługi online, serwera zgłoszeń i statystyk odwiedzin (Umami)</li>
-        <li><strong>Neon</strong> — baza danych statystyk odwiedzin (Umami), przechowywana w UE (Frankfurt)</li>
+        <li><strong>Neon</strong> — osobne bazy danych statystyk odwiedzin (Umami) i rejestru zgód na cookies, przechowywane w UE (Frankfurt)</li>
         <li><strong>Upstash</strong> — liczniki limitów zapytań usługi online (tylko skróty adresów IP)</li>
         <li><strong>GitHub</strong> — publiczna publikacja zgłoszeń w GitHub Discussions (bez adresu email)</li>
         <li><strong>Make.com i Google (Gmail)</strong> — przekazanie mi adresu email podanego w zgłoszeniu</li>
@@ -61,6 +66,7 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Dane techniczne (logi serwera) — do 30 dni</li>
         <li>Nagrania sesji (PostHog) — 30 dni; dane map cieplnych i pozostałe zdarzenia w PostHog — do 1 roku</li>
         <li>Statystyki odwiedzin (Umami) — do 2 lat</li>
+        <li>Rejestr zgód na cookies — 2 lata; starsze wpisy usuwam raz w roku</li>
         <li>Liczniki limitów usługi online — wygasają automatycznie</li>
         <li>Zgłoszenia opublikowane w GitHub Discussions — do czasu usunięcia; możesz poprosić o usunięcie swojego zgłoszenia</li>
       </ul>
@@ -80,7 +86,17 @@ import Footer from '../../components/sections/footer/Footer.astro';
       <p>Aby skorzystać ze swoich praw, napisz na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Pliki cookies</h2>
-      <p>Strona używa plików cookies w celach technicznych oraz, jeśli wyrazisz zgodę, statystycznych (PostHog) i marketingowych (Meta Pixel). Statystyki odwiedzin (Umami) działają bez plików cookies.</p>
+      <p>Strona używa plików cookies i podobnych technologii, czyli pamięci przeglądarki (localStorage i sessionStorage). O zgodę pyta własny baner cookies strony, działający na moim serwerze — nie korzystam z zewnętrznej usługi do zbierania zgód. Dzielą się one na trzy kategorie:</p>
+      <ul>
+        <li><strong>Niezbędne</strong> — zapamiętują Twój wybór w banerze i miejsce, w którym zatrzymało się wideo; działają zawsze, bo bez nich strona nie działa prawidłowo; odtwarzacz wideo Wistia wczytuje się dla każdego w trybie bez śledzenia oglądania</li>
+        <li><strong>Statystyczne</strong> — nagrania sesji i mapy cieplne (PostHog) oraz statystyki oglądania wideo (Wistia, także przez Mux Data); tylko jeśli wyrazisz zgodę</li>
+        <li><strong>Marketingowe</strong> — pomiar skuteczności reklam na Facebooku i Instagramie oraz dopasowane reklamy (Meta Pixel); tylko jeśli wyrazisz zgodę</li>
+      </ul>
+      <p>Statystyki odwiedzin (Umami) i kilka innych usług działają bez plików cookies, więc nie wymagają zgody, choć Twoja przeglądarka łączy się z ich serwerami.</p>
+      <p>Twój wybór zapamiętuję na 182 dni, potem baner zapyta ponownie. Zapyta też wcześniej, jeśli dodam nowe narzędzie. Zgodę możesz w każdej chwili zmienić lub wycofać w <a href="#cookie-settings">Ustawieniach cookies</a> w stopce strony.</p>
+      <p>Każdy pierwszy wybór i każdą jego zmianę zapisuję w rejestrze zgód. Wpis zawiera tylko: losowy identyfikator zgody nadany przez baner, czas, wersję banera, język, zaakceptowane i odrzucone kategorie oraz informację, czy to pierwszy wybór, czy zmiana. Nie zawiera adresu IP ani danych o przeglądarce. Rejestr prowadzę w osobnej bazie danych w UE (Neon, Frankfurt), żeby móc wykazać, że i kiedy wyrażono zgodę albo jej odmówiono, i przechowuję go przez 2 lata.</p>
+      <p>Pełna lista plików cookies, danych zapisywanych w przeglądarce i serwerów, z którymi łączy się Twoja przeglądarka — ta sama, którą pokazują Ustawienia cookies:</p>
+      <CookieTable lang="pl" />
 
       <h2>Zmiany polityki prywatności</h2>
       <p>Mogę zaktualizować tę politykę. O zmianach poinformuję na stronie. Zmiany nie dotyczą danych zebranych przed ich wprowadzeniem.</p>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
 import Footer from '../../../components/sections/footer/Footer.astro';
+import CookieTable from '../../../components/ui/CookieTable.astro';
 ---
 
 <BaseLayout title="Privacy policy: UX Design Skill | Creative Sparks">
@@ -26,6 +27,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li><strong>Reports sent through the skill</strong>, the title and content of feedback or a bug report, and your email address if you give it.</li>
         <li><strong>Visit statistics</strong>, the pages you visit, the page you came from, browser, operating system, device type, language, approximate location (country, region, city) and selected actions such as a button click or a purchase (without your email address); collected without cookies by my own Umami instance, which does not store your IP address and tells visits apart by a cryptographic hash of your IP address, your browser and a value that changes regularly.</li>
         <li><strong>Session recordings and heatmaps</strong>, how you move through the product pages (such as cursor movements, clicks and scrolling), only if you consent to statistics cookies; PostHog does not store your IP address.</li>
+        <li><strong>Cookie banner choices</strong>, the cookie categories you accepted and rejected, the time of your choice and a random consent ID (details in the "Cookies" section).</li>
       </ul>
 
       <h2>Why I collect data</h2>
@@ -36,7 +38,9 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Newsletter / waitlist, based on your consent (GDPR article 6(1)(a)).</li>
         <li>To run the online service and enforce its rate limits (GDPR article 6(1)(b), performance of a contract).</li>
         <li>To publish and handle feedback and bug reports you choose to send through the skill (GDPR article 6(1)(a), consent).</li>
-        <li>Statistics and improving the pages: counting visits with Umami, based on my legitimate interest in measuring traffic on the site (GDPR article 6(1)(f)); session recordings and heatmaps with PostHog, based on your consent (GDPR article 6(1)(a)), which you can withdraw at any time in the cookie settings.</li>
+        <li>Statistics and improving the pages: counting visits with Umami, based on my legitimate interest in measuring traffic on the site (GDPR article 6(1)(f)); session recordings and heatmaps with PostHog and video viewing statistics with Wistia, based on your consent (GDPR article 6(1)(a)), which you can withdraw at any time in the cookie settings.</li>
+        <li>To play videos on the pages (Wistia) and detect player errors, based on my legitimate interest in showing you videos about the products (GDPR article 6(1)(f)).</li>
+        <li>To keep a record of cookie consents: showing that and when consent was given, which GDPR requires of me (GDPR article 6(1)(c) in conjunction with article 7(1)); recording a refusal is based on my legitimate interest in being able to show that I respected your choice (GDPR article 6(1)(f)).</li>
       </ul>
 
       <h2>Who I share data with</h2>
@@ -46,8 +50,9 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li><strong>Stripe</strong>, online payment processing.</li>
         <li><strong>Meta</strong>, ad performance measurement (including a one-way hash of your email address when you sign up), if you consent to marketing cookies.</li>
         <li><strong>PostHog</strong>, session recordings and heatmaps on the product pages (UX Design Skill and the free skills), if you consent to statistics cookies; data is stored in the EU (Frankfurt).</li>
+        <li><strong>Wistia</strong>, the video player on the pages (Wistia, Inc., USA), which reports player errors to Sentry; it collects video viewing statistics (also through Mux Data) only if you consent to statistics cookies.</li>
         <li><strong>Vercel</strong>, servers for the online service, the feedback server and visit statistics (Umami).</li>
-        <li><strong>Neon</strong>, the database for visit statistics (Umami), stored in the EU (Frankfurt).</li>
+        <li><strong>Neon</strong>, separate databases for visit statistics (Umami) and the record of cookie consents, stored in the EU (Frankfurt).</li>
         <li><strong>Upstash</strong>, rate-limit counters for the online service (IP address hashes only).</li>
         <li><strong>GitHub</strong>, public posting of reports in GitHub Discussions (without your email address).</li>
         <li><strong>Make.com and Google (Gmail)</strong>, forwarding the email address you gave in a report to me.</li>
@@ -63,6 +68,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>Technical data (server logs), up to 30 days.</li>
         <li>Session recordings (PostHog), 30 days; heatmap data and other PostHog events, up to 1 year.</li>
         <li>Visit statistics (Umami), up to 2 years.</li>
+        <li>Record of cookie consents, 2 years; I delete older entries once a year.</li>
         <li>Online service rate-limit counters expire automatically.</li>
         <li>Reports published in GitHub Discussions, until deleted; you can ask me to delete your report.</li>
       </ul>
@@ -82,7 +88,17 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <p>To exercise your rights, write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Cookies</h2>
-      <p>The site uses cookies for technical purposes and, if you consent, for statistics (PostHog) and marketing (Meta Pixel). Visit statistics (Umami) work without cookies.</p>
+      <p>The site uses cookies and similar technologies, namely browser storage (localStorage and sessionStorage). Consent is asked for by the site's own cookie banner, which runs on my server; I do not use an outside consent service. They fall into three categories:</p>
+      <ul>
+        <li><strong>Necessary</strong>, they remember your choice in the banner and where a video stopped; they are always on, because the site does not work properly without them; the Wistia video player loads for everyone with viewing tracking off.</li>
+        <li><strong>Statistics</strong>, session recordings and heatmaps (PostHog) and video viewing statistics (Wistia, also through Mux Data); only if you consent.</li>
+        <li><strong>Marketing</strong>, measuring ad performance on Facebook and Instagram and showing relevant ads (Meta Pixel); only if you consent.</li>
+      </ul>
+      <p>Visit statistics (Umami) and a few other services work without cookies, so they need no consent, although your browser connects to their servers.</p>
+      <p>I remember your choice for 182 days, after which the banner asks again. It also asks sooner if I add a new tool. You can change or withdraw your consent at any time under <a href="#cookie-settings">Cookie settings</a> in the site footer.</p>
+      <p>I store every first choice and every change to it in a record of consents. An entry holds only: the random consent ID the banner assigns, the time, the banner version, the language, the accepted and rejected categories, and whether it is a first choice or a change. It holds no IP address and no browser details. I keep the record in a separate database in the EU (Neon, Frankfurt) so I can show that and when consent was given or refused, and I keep it for 2 years.</p>
+      <p>The full list of cookies, data stored in your browser and servers your browser connects to, the same list the Cookie settings show:</p>
+      <CookieTable lang="en" />
 
       <h2>Changes to this policy</h2>
       <p>I may update this policy. I will announce changes on the site. Changes do not apply to data collected before they take effect.</p>
