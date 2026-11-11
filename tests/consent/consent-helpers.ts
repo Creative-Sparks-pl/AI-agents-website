@@ -59,6 +59,9 @@ export async function blockDataSending(page: Page, options: { consentStatus?: nu
     });
   }
 
+  // Astro's dev toolbar can ask for a stale dependency, which makes Vite reload the page mid-test.
+  await page.route(/\/dev-toolbar\//, (route) => route.abort());
+
   // Registered last, so it wins over a test's broader /api/ rule for these two routes.
   await page.route(/^https?:\/\/[^/]+\/api\/(meta-capi|consent)(\?|$)/, async (route) => {
     const request = route.request();

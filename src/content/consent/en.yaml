@@ -79,9 +79,12 @@ cookies:
     provider: Wistia, Inc.
     party: third
     category: necessary
-    purpose: Plays the videos you start and remembers where you paused. Reports player errors to Sentry. Does not track viewing.
+    purpose: Plays the videos you start and remembers where you paused and your choice about viewing statistics. Reports player errors to Sentry. Does not track viewing.
     storage:
       - name: wistia-video-progress-*
+        kind: localStorage
+        duration: until you clear your browser
+      - name: wistia
         kind: localStorage
         duration: until you clear your browser
     hosts:

@@ -2,7 +2,7 @@ import { test, expect, type Page, type BrowserContext } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { CONSENT_REVISION } from '../../src/lib/consent-config';
 import { summarize as summarizeViolations } from '../screenshots/helpers';
-import { consentContent, waitForBannerSettled } from './consent-helpers';
+import { blockDataSending, consentContent, setConsent, waitForBannerSettled } from './consent-helpers';
 
 // The cookie banner on a fresh visit: language, equal-weight buttons, the stored choice,
 // the footer link, no overlay, revision handling, and no outside consent service.
@@ -219,3 +219,126 @@ for (const lang of LANGUAGES) {
     });
   });
 }
+
+// ---- Recording choices, withdrawal and Wistia (appended to consent-flow.spec.ts) ----
+
+const RECORD_FIELDS = ['accepted', 'consentId', 'kind', 'language', 'rejected', 'revision'];
+
+async function openPreferencesFromFooter(page: Page, label: string) {
+  await page.locator('footer').getByRole('link', { name: label, exact: true }).click();
+  await expect(preferences(page)).toBeVisible();
+}
+
+async function setCategoryToggle(page: Page, category: string, on: boolean) {
+  await preferences(page).locator(`input[value="${category}"]`).setChecked(on, { force: true });
+}
+
+const saveButton = (page: Page) => preferences(page).locator('button[data-role="save"]');
+
+// Wistia keeps one localStorage key, `wistia`, in every case: the visitor's statistics choice and
+// which videos loaded. Only with tracking on does it also hold a viewer ID (`__distillery`).
+const wistiaViewerId = (page: Page) =>
+  page.evaluate(() => {
+    try {
+      return (JSON.parse(localStorage.getItem('wistia') ?? '{}') as { __distillery?: string }).__distillery ?? null;
+    } catch {
+      return null;
+    }
+  });
+
+/** Wistia's viewing statistics, including Mux Data; the shared blocker aborts them. */
+const WISTIA_STATS = /(pipedream|distillery)\.wistia\.com|litix\.io/;
+const wistiaStatsAttempts = (traffic: { aborted: () => string[] }) => traffic.aborted().filter((url) => WISTIA_STATS.test(url));
+
+async function playHeroVideo(page: Page) {
+  await page.locator('[data-wistia-trigger]').first().click();
+  await expect
+    .poll(() => page.evaluate(() => (document.querySelector('[data-hero-video]') as { currentTime?: number } | null)?.currentTime ?? 0), {
+      timeout: 20_000,
+    })
+    .toBeGreaterThan(1);
+}
+
+test.describe('consent records', () => {
+  test('a first choice and a later change each send one record with only the listed fields', async ({ page }) => {
+    const traffic = await blockDataSending(page);
+    await page.goto('/ux-design-skill/');
+    await bannerButton(page, 'Odrzuć wszystkie').click();
+    await expect(banner(page)).toBeHidden();
+
+    await expect.poll(() => traffic.consentRecords().length).toBe(1);
+    const [first] = traffic.consentRecords();
+    expect(Object.keys(first).sort()).toEqual(RECORD_FIELDS);
+    expect(first).toMatchObject({ kind: 'first', language: 'pl', revision: CONSENT_REVISION, accepted: ['necessary'] });
+    expect([...(first.rejected as string[])].sort()).toEqual(['marketing', 'statistics']);
+
+    await openPreferencesFromFooter(page, 'Ustawienia cookies');
+    await setCategoryToggle(page, 'statistics', true);
+    await saveButton(page).click();
+    await expect(preferences(page)).toBeHidden();
+
+    await expect.poll(() => traffic.consentRecords().length).toBe(2);
+    const change = traffic.consentRecords()[1];
+    expect(Object.keys(change).sort()).toEqual(RECORD_FIELDS);
+    expect(change).toMatchObject({ kind: 'change', consentId: first.consentId, rejected: ['marketing'] });
+    expect([...(change.accepted as string[])].sort()).toEqual(['necessary', 'statistics']);
+
+    // A plain page load with a stored choice sends nothing.
+    await page.reload();
+    await page.waitForLoadState('networkidle');
+    expect(traffic.consentRecords()).toHaveLength(2);
+  });
+
+  test('the banner closes even when the record route fails', async ({ page }) => {
+    const traffic = await blockDataSending(page, { consentStatus: 503 });
+    await page.goto('/en/ux-design-skill/');
+    await bannerButton(page, 'Accept all').click();
+    await expect(banner(page)).toBeHidden();
+    await expect.poll(() => traffic.consentRecords().length).toBe(1);
+  });
+});
+
+test.describe('Wistia and withdrawal', () => {
+  test('without statistics consent the video plays, stores no viewer ID and sends no statistics', async ({ page }) => {
+    const traffic = await blockDataSending(page);
+    await page.goto('/ux-design-skill/');
+    await bannerButton(page, 'Odrzuć wszystkie').click();
+    await playHeroVideo(page);
+
+    expect(await wistiaViewerId(page)).toBeNull();
+    expect(wistiaStatsAttempts(traffic)).toEqual([]);
+  });
+
+  test('with statistics consent the viewer ID appears; withdrawing statistics reloads the page and removes it', async ({ page, context, baseURL }) => {
+    test.slow(); // plays the video twice
+    const traffic = await blockDataSending(page);
+    await setConsent(context, baseURL!, ['statistics']);
+    await page.goto('/ux-design-skill/');
+    await playHeroVideo(page);
+    await expect.poll(() => wistiaViewerId(page), { timeout: 15_000 }).not.toBeNull();
+    expect(wistiaStatsAttempts(traffic).length).toBeGreaterThan(0);
+    // Close the video popup; its overlay covers the footer link.
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#_popover_overlay')).toBeHidden();
+
+    let navigations = 0;
+    page.on('framenavigated', (frame) => {
+      if (frame === page.mainFrame()) navigations++;
+    });
+    await openPreferencesFromFooter(page, 'Ustawienia cookies');
+    await setCategoryToggle(page, 'statistics', false);
+    await saveButton(page).click();
+
+    await expect.poll(() => navigations).toBe(1);
+    await page.waitForLoadState('load');
+    // The old page may flush a last statistics beacon while it unloads; let that settle first.
+    await page.waitForTimeout(3000);
+    expect(await wistiaViewerId(page)).toBeNull();
+    expect(traffic.consentRecords().at(-1)).toMatchObject({ kind: 'change', accepted: ['necessary'] });
+
+    // On the reloaded page, playing the video sends no statistics.
+    const attemptsBeforePlay = wistiaStatsAttempts(traffic).length;
+    await playHeroVideo(page);
+    expect(wistiaStatsAttempts(traffic)).toHaveLength(attemptsBeforePlay);
+  });
+});

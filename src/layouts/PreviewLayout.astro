@@ -21,6 +21,11 @@ const navItems = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The showcase has no cookie banner, so the section previews' Wistia players never track. -->
+    <script is:inline>
+      (window._wq = window._wq || []).push(function (W) { W.consent(false); });
+      window.wistiaOptions = { _all: { doNotTrack: true } };
+    </script>
     <meta name="robots" content="noindex, nofollow" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

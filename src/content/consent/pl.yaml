@@ -79,9 +79,12 @@ cookies:
     provider: Wistia, Inc.
     party: third
     category: necessary
-    purpose: Odtwarza wideo, które uruchamiasz, i zapamiętuje miejsce, w którym się zatrzymało. Błędy odtwarzacza zgłasza do Sentry. Nie śledzi oglądania.
+    purpose: Odtwarza wideo, które uruchamiasz, i zapamiętuje miejsce, w którym się zatrzymało, oraz Twój wybór dotyczący statystyk oglądania. Błędy odtwarzacza zgłasza do Sentry. Nie śledzi oglądania.
     storage:
       - name: wistia-video-progress-*
+        kind: localStorage
+        duration: do wyczyszczenia przeglądarki
+      - name: wistia
         kind: localStorage
         duration: do wyczyszczenia przeglądarki
     hosts:
