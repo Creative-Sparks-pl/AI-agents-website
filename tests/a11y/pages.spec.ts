@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { blockThirdParty, summarize } from '../screenshots/helpers';
+import { waitForBannerSettled } from '../consent/consent-helpers';
 
 // Full-page axe scan, at both viewports, of every page this project touched.
 // No tag filter: heading order and other best-practice rules count as well as WCAG.
@@ -21,6 +22,8 @@ for (const path of PAGES) {
     await blockThirdParty(page);
     const response = await page.goto(path, { waitUntil: 'load' });
     expect(response?.status()).toBe(200);
+    // A first visit shows the cookie banner; scan the page with it fully faded in.
+    await waitForBannerSettled(page);
     const { violations } = await new AxeBuilder({ page }).exclude('astro-dev-toolbar').analyze();
     expect(summarize(violations)).toEqual([]);
   });

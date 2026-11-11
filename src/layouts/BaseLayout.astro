@@ -169,10 +169,10 @@ const consentConfigJson = JSON.stringify(buildConsentConfig(consentContent.data,
 
     {metaPixelId && (
       <Fragment>
-        <!-- Meta Pixel (gated by Cookiebot marketing consent).
+        <!-- Meta Pixel (runs only after marketing consent in the cookie banner).
              Init only — the deduplicated PageView fires via queueConversion below
              so Pixel + CAPI share an event_id and Meta dedupes correctly. -->
-        <script type="text/plain" data-cookieconsent="marketing" set:html={`
+        <script type="text/plain" data-category="marketing" data-service="meta-pixel" set:html={`
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '${metaPixelId}');
         `} />
@@ -181,10 +181,10 @@ fbq('init', '${metaPixelId}');
 
     {posthog && (
       <Fragment>
-        <!-- PostHog session recordings + heatmaps (gated by Cookiebot statistics consent).
+        <!-- PostHog session recordings + heatmaps (runs only after statistics consent in the cookie banner).
              Official posthog-js stub; init waits for the load event so page-speed scores stay unchanged.
              No autocapture, surveys, console logs or performance events; every input is masked in recordings. -->
-        <script type="text/plain" data-cookieconsent="statistics" set:html={`
+        <script type="text/plain" data-category="statistics" data-service="posthog" set:html={`
 !function(t,e){var o,n,p,r;e.__SV||(window.posthog && window.posthog.__loaded)||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}p||((p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",p.onerror=function(){p=null},(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r));var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],Object.defineProperty(u,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e}}),Object.defineProperty(u.people,"toString",{configurable:!0,enumerable:!0,writable:!0,value:function(){return u.toString(1)+".people (stub)"}}),o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
 (function () {
   function initPostHog() {
@@ -213,10 +213,10 @@ fbq('init', '${metaPixelId}');
     <!-- Conversion tracking helper: fires fbq + CAPI on [data-track] click, post-consent -->
     <script is:inline>
       (function () {
+        // The cookie banner (src/scripts/consent.ts) exposes CookieConsent once it has run.
         function hasMarketingConsent() {
-          return typeof window.Cookiebot !== 'undefined'
-            && window.Cookiebot.consent
-            && window.Cookiebot.consent.marketing === true;
+          return typeof window.CookieConsent !== 'undefined'
+            && window.CookieConsent.acceptedCategory('marketing') === true;
         }
 
         function newEventId() {
@@ -315,9 +315,10 @@ fbq('init', '${metaPixelId}');
           window.trackConversion(eventName, params);
         });
 
-        // Queue conversions that need to fire on page load. Cookiebot may load
-        // after this script and may not yet have a consent decision — wait for
-        // CookiebotOnConsentReady (initial decision) and CookiebotOnAccept (user accepts later).
+        // Queue conversions that need to fire on page load. The banner script runs after this
+        // one, so wait for its events on window: cc:onConsent (a stored or first choice) and
+        // cc:onChange (a later change). The banner runs the tagged Pixel snippet before it
+        // dispatches either, so fbq exists and the browser and server events share one ID.
         window.queueConversion = function (eventName, params) {
           var fired = false;
           function tryFire() {
@@ -327,8 +328,8 @@ fbq('init', '${metaPixelId}');
             window.trackConversion(eventName, params);
           }
           tryFire();
-          document.addEventListener('CookiebotOnConsentReady', tryFire);
-          document.addEventListener('CookiebotOnAccept', tryFire);
+          window.addEventListener('cc:onConsent', tryFire);
+          window.addEventListener('cc:onChange', tryFire);
         };
       })();
     </script>

@@ -91,7 +91,7 @@ cookies:
       - embed-cloudfront.wistia.com
       - browser.sentry-cdn.com
       - '*.ingest.us.sentry.io'
-    loading: Po kliknięciu w wideo
+    loading: Gdy wczytuje się strona z wideo albo po kliknięciu w wideo
     lastVerified: 2026-11-11
   - id: posthog
     service: PostHog

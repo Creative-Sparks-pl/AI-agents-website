@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
-import { test, expect, type Page } from '@playwright/test';
-import { blockThirdParty } from '../screenshots/helpers';
+import { test, expect, type BrowserContext, type Page } from '@playwright/test';
+import { blockDataSending, setConsent } from '../consent/consent-helpers';
 
-// Cookiebot is blocked and replaced by a stub with a fixed consent answer, /api/subscribe is mocked,
-// and sendBeacon is swapped for a recorder, so these tests send no signup and nothing to Meta.
+// The banner's cookie is preset with a fixed choice (or the banner is clicked), Meta's scripts are
+// blocked, /api/subscribe is mocked and sendBeacon is swapped for a recorder, so these tests send
+// no signup and nothing to Meta.
 const FAKE_DOWNLOAD = 'https://downloads.test/skill.zip';
 const EMAIL = 'Lead.Check.4821@Example.com';
 // Meta's rule for emails: trim, lowercase, then SHA-256 as lowercase hex.
@@ -16,12 +17,11 @@ const CASES = [
 
 type CapiBody = { event_name?: string; em?: unknown; [key: string]: unknown };
 
-async function stubConsent(page: Page, marketing: boolean) {
-  await page.addInitScript((marketing) => {
-    Object.assign(window, {
-      Cookiebot: { consent: { necessary: true, preferences: false, statistics: false, marketing } },
-    });
-  }, marketing);
+/** Blocks data-sending and Meta's scripts, and presets the banner's cookie with or without marketing. */
+async function presetConsent(page: Page, context: BrowserContext, baseURL: string, marketing: boolean) {
+  await blockDataSending(page);
+  await page.route(/^https?:\/\/connect\.facebook\.net\//, (route) => route.abort());
+  await setConsent(context, baseURL, marketing ? ['marketing'] : []);
 }
 
 /** Records every body the page sends to the Meta endpoint, without sending it; returns a reader. */
@@ -79,9 +79,8 @@ async function submitForm(page: Page, path: string, surface: string) {
 }
 
 for (const { path, surface } of CASES) {
-  test(`meta lead ${path} ${surface}: with marketing consent the Lead carries only the email hash`, async ({ page }) => {
-    await blockThirdParty(page);
-    await stubConsent(page, true);
+  test(`meta lead ${path} ${surface}: with marketing consent the Lead carries only the email hash`, async ({ page, context, baseURL }) => {
+    await presetConsent(page, context, baseURL!, true);
     const readCapi = await recordCapi(page);
     await mockSubscribe(page);
 
@@ -106,10 +105,9 @@ for (const { path, surface } of CASES) {
   });
 }
 
-test('meta lead: without marketing consent nothing is sent to Meta', async ({ page }) => {
+test('meta lead: without marketing consent nothing is sent to Meta', async ({ page, context, baseURL }) => {
   const { path, surface } = CASES[0];
-  await blockThirdParty(page);
-  await stubConsent(page, false);
+  await presetConsent(page, context, baseURL!, false);
   const readCapi = await recordCapi(page);
   await mockSubscribe(page);
 
@@ -118,4 +116,49 @@ test('meta lead: without marketing consent nothing is sent to Meta', async ({ pa
   // Without consent the helper returns before hashing, so nothing can still be on its way; the wait is a margin.
   await page.waitForTimeout(500);
   expect(await readCapi()).toEqual([]);
+});
+
+test('meta pixel: accepting marketing in the banner loads the Pixel and sends one page view, without a reload', async ({ page }) => {
+  const pixelRequests: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().includes('connect.facebook.net')) pixelRequests.push(request.url());
+  });
+  await blockDataSending(page);
+  await page.route(/^https?:\/\/connect\.facebook\.net\//, (route) => route.abort());
+  const readCapi = await recordCapi(page);
+  let navigations = 0;
+  page.on('framenavigated', (frame) => {
+    if (frame === page.mainFrame()) navigations++;
+  });
+
+  await page.goto('/ux-design-skill/');
+  const banner = page.locator('#cc-main .cm');
+  await expect(banner).toBeVisible();
+
+  // Before any choice: no Pixel, no page view.
+  await page.waitForLoadState('networkidle');
+  expect(pixelRequests).toEqual([]);
+  expect(await readCapi()).toEqual([]);
+
+  await banner.getByRole('button', { name: 'Akceptuj wszystkie', exact: true }).click();
+
+  const pageViews = async () => (await readCapi()).filter((b) => b.event_name === 'PageView');
+  await expect.poll(async () => (await pageViews()).length).toBe(1);
+  expect(pixelRequests.length).toBeGreaterThan(0);
+
+  // The browser event (queued in the Pixel stub, since Meta's script is blocked) and the server
+  // event share one ID, so Meta counts the page view once.
+  const browserEventId = await page.evaluate(() => {
+    const queue = ((window as unknown as { fbq?: { queue?: ArrayLike<unknown>[] } }).fbq?.queue ?? []).map((args) =>
+      Array.from(args),
+    );
+    const call = queue.find((args) => args[0] === 'track' && args[1] === 'PageView');
+    return (call?.[3] as { eventID?: string } | undefined)?.eventID;
+  });
+  expect(browserEventId).toBeTruthy();
+  expect(browserEventId).toBe((await pageViews())[0].event_id);
+
+  await page.waitForTimeout(500);
+  expect(await pageViews()).toHaveLength(1);
+  expect(navigations).toBe(1);
 });

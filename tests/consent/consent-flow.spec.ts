@@ -2,6 +2,7 @@ import { test, expect, type Page, type BrowserContext } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { CONSENT_REVISION } from '../../src/lib/consent-config';
 import { summarize as summarizeViolations } from '../screenshots/helpers';
+import { consentContent, waitForBannerSettled } from './consent-helpers';
 
 // The cookie banner on a fresh visit: language, equal-weight buttons, the stored choice,
 // the footer link, no overlay, revision handling, and no outside consent service.
@@ -169,13 +170,14 @@ for (const lang of LANGUAGES) {
     test('the banner and the preferences window pass axe', async ({ page }) => {
       await prepare(page);
       await page.goto(lang.path);
-      await expect(banner(page)).toBeVisible();
+      await waitForBannerSettled(page);
       const scan = async () =>
         summarizeViolations((await new AxeBuilder({ page }).include('#cc-main').analyze()).violations);
       expect(await scan()).toEqual([]);
 
       await bannerButton(page, lang.settings).click();
       await expect(preferences(page)).toBeVisible();
+      await waitForBannerSettled(page, '#cc-main .pm');
       expect(await scan()).toEqual([]);
     });
 
@@ -183,23 +185,37 @@ for (const lang of LANGUAGES) {
       const requested = await prepare(page);
       await page.goto(lang.path);
       await expect(banner(page)).toBeVisible();
-      await bannerButton(page, lang.acceptAll).click();
-      await expect(banner(page)).toBeHidden();
-
+      await page.waitForLoadState('networkidle');
       const origin = new URL(page.url()).origin;
-      expect(requested.filter((url) => CONSENT_SERVICE_HOSTS.test(new URL(url).hostname))).toEqual([]);
       expect(requested.filter((url) => /cookieconsent/i.test(url) && !url.startsWith(origin))).toEqual([]);
 
-      // The banner code is part of this site's own bundle.
+      // The banner code is part of this site's own bundle: before any choice, every outside script
+      // comes from a host the cookie list allows without consent (necessary or cookieless services,
+      // such as the video player and Umami's counter).
       const scripts = await page.evaluate(() =>
         performance
           .getEntriesByType('resource')
           .filter((entry) => (entry as PerformanceResourceTiming).initiatorType === 'script')
           .map((entry) => entry.name),
       );
-      const ownBundles = scripts.filter((src) => src.startsWith(origin));
-      expect(ownBundles.length).toBeGreaterThan(0);
+      const allowedHosts = consentContent('pl')
+        .cookies.filter((entry) => entry.category === 'necessary' || entry.category === 'cookieless')
+        .flatMap((entry) => entry.hosts);
+      const allowed = (host: string) =>
+        allowedHosts.some((pattern) => (pattern.startsWith('*.') ? host.endsWith(pattern.slice(1)) : host === pattern));
+      expect(scripts.filter((src) => src.startsWith(origin)).length).toBeGreaterThan(0);
+      expect(scripts.filter((src) => !src.startsWith(origin) && !allowed(new URL(src).hostname))).toEqual([]);
+      const moduleScripts = await page.locator('script[type="module"][src]').evaluateAll((els) =>
+        els.map((el) => (el as HTMLScriptElement).src),
+      );
+      expect(moduleScripts.filter((src) => src.startsWith(origin)).length).toBeGreaterThan(0);
+      for (const src of moduleScripts) expect(src.startsWith(origin) || allowed(new URL(src).hostname), src).toBe(true);
       expect(await page.evaluate(() => typeof window.CookieConsent?.run)).toBe('function');
+
+      // After a choice, still nothing from a consent service or a foreign copy of the library.
+      await bannerButton(page, lang.acceptAll).click();
+      await expect(banner(page)).toBeHidden();
+      expect(requested.filter((url) => CONSENT_SERVICE_HOSTS.test(new URL(url).hostname))).toEqual([]);
     });
   });
 }

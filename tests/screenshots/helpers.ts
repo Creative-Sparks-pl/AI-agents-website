@@ -1,6 +1,7 @@
 import { expect, type Locator, type Page, type TestInfo } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { mkdirSync } from 'node:fs';
+import { blockDataSending, presetConsentInPage } from '../consent/consent-helpers';
 
 // scratch/ is git-ignored, so screenshots stay on disk for review without entering a commit.
 const OUT_DIR = 'scratch/screenshots';
@@ -9,14 +10,17 @@ const MAX_TILE_HEIGHT = 1800;
 
 export const widthOf = (testInfo: TestInfo) => testInfo.project.use.viewport?.width ?? 0;
 
-/** Consent and analytics scripts are third-party, and they would count test runs as real visits. */
+/** Analytics and ad scripts are third-party, and they would count test runs as real visits. */
 export async function blockThirdParty(page: Page) {
-  await page.route(/consent\.cookiebot\.com|connect\.facebook\.net|analytics\.creativesparks\.pl|\.posthog\.com/, (route) => route.abort());
+  await blockDataSending(page);
+  await page.route(/connect\.facebook\.net|analytics\.creativesparks\.pl|\.posthog\.com/, (route) => route.abort());
 }
 
 /** Opens a page ready for screenshots: lazy images loaded, fonts ready, dev toolbar gone. */
 export async function openPage(page: Page, path: string) {
   await blockThirdParty(page);
+  // A stored "reject all" keeps the cookie banner out of screenshots.
+  await presetConsentInPage(page, []);
   const response = await page.goto(path, { waitUntil: 'load' });
   expect(response?.status()).toBe(200);
   await page.addStyleTag({ content: 'astro-dev-toolbar { display: none !important; }' });
