@@ -51,6 +51,8 @@ The version number counts as the docs row even though it lives in `package.json`
 
 A production log proves the deployment it checked, so it is never reused across a deploy.
 
+The build writes no log, so this rule does not cover it: run `npm run build` again whenever a row lists it. It takes under a minute.
+
 Verify and release reports cite the log file and the diff output instead of re-running the suite:
 
 ```sh
