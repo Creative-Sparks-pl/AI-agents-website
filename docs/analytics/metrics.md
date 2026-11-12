@@ -20,10 +20,10 @@ These are the fixed definitions behind every number the improvement-cycle skill 
 2. **Live site only.** Every Umami call filters `hostname: agents.creativesparks.pl`. The tracking script also runs on local development and on Vercel previews, and this filter drops them.
 3. **Dates.** Use whole days in Europe/Warsaw. Pass `startAt` and `endAt` with the Warsaw offset (`+01:00` in winter, `+02:00` in summer), and pass `timezone: "Europe/Warsaw"` where the tool accepts it. When a window crosses a clock change, the start takes the start day's offset and the end the end day's (e.g. `2026-10-13T00:00:00+02:00` → `2026-10-26T23:59:59+01:00`). The PostHog project runs on UTC: pass PostHog the UTC times that cover the Warsaw window. The default window is the last 14 full days, compared with the 14 days before that. For an "after release" metric, a window that starts before the release date reports "no data yet", never zero.
 4. **Raw counts and denominators, always.** Write every rate as `count ÷ denominator (percent)`, e.g. `3 ÷ 412 (0.7%)`. A rate with a 0 denominator is written `0 ÷ 0 (no views)`, never 0%. If either window has fewer than 30 conversions, call the result directional and never call a change a win or a loss.
-5. **Units are views and events, not people.** A reload counts as a second view. Two signups by the same person count as two, because events carry no email (by design). Form events count per form: each free page has two forms (hero and final) and the paid page has two "try for free" cards, so one view can produce more than one form start, and `form_start_rate` is events per view, not a share of visitors. Browser autofill can submit without typing, so `signups` can exceed `form_starts` and `form_completion_rate` can pass 100%.
+5. **Units are views and events, not people.** A reload counts as a second view. Two signups by the same person count as two, because events carry no email (by design). Form events count per form: each free page has two forms (hero and final) and the paid page has two "try for free" cards, so one view can produce more than one form start. Read form metrics per form (`surface`): `form_start_rate` is starts per form seen, not a share of visitors. Browser autofill can fill a form's email field while the visitor isn't in it, which leaves no start, so `signups` can exceed `form_starts` and `form_completion_rate` can pass 100%.
 6. **Normalise page paths.** Umami can store the same page as `/ux-design-skill`, `/ux-design-skill/`, `/ux-design-skill/#cennik`, or with a query string. Cut everything from `#` or `?`, add a trailing `/` if it's missing, then add up the counts. A page's former paths (see the landing-page table) count as that page. Paths outside the six landing pages go into one "other pages" row. Don't drop them. Before a page's first recorded view, report it as "not live yet", not 0. To find that first view, run one `get_website_metrics` `type: "path"` listing from the site's first day (`get_website_daterange`) to the window start.
 7. **The page decides the language.** A path starting with `/en/` is English; any other path is Polish. After release, the event `language` property gives the same answer, and for `Purchase` that property is the only source. Umami's own `language` dimension and filter hold the visitor's browser language (e.g. `pl-PL`) for every browser event. Never use them as the site language. (For `Purchase`, sent from the server, read the event's `language` property too, not the dimension.)
-8. **Connector calls.** The parameter names below (`search`, `filters.path`, `filters.event`, `filters.hostname`, `eventName`, `propertyName`, `event`, `steps`, `windowMinutes`, the `*` wildcard in funnel steps) were checked against the Umami connector `@umami/mcp@0.2.0` on 2026-11-10. `filters.path` matches one exact stored path; `search` matches any path containing the text.
+8. **Connector calls.** The parameter names below (`search`, `filters.path`, `filters.event`, `filters.hostname`, `eventName`, `propertyName`, `event`, `steps`, `windowMinutes`, the `*` wildcard in funnel steps) were checked against the Umami connector `@umami/mcp@0.2.0` on 2026-11-10. `filters.path` matches one exact stored path; `search` matches any path containing the text. `filters.device` and `filters.browser` take one value or several exact values separated by commas, e.g. `"laptop,desktop"` (checked 2026-11-12).
 9. **Which call gives which count.** Take page views only from `get_website_metrics` with `type: "path"`; `get_website_stats` reports different `pageviews` totals for the same filter, so use it only for visitors and visits. The channel, referrer and hostname rankings count visitors per exact path, so never add them up across path variants. For events, get the totals with no path filter first, then split by path only where needed, and check the parts add up to the total.
 
 ## Landing pages
@@ -67,7 +67,7 @@ Umami files each `Purchase` under the path in its `page` property, or under `/pu
 
 ### Secondary clicks
 
-These are context, never a funnel step or a conversion; `Architecture CTA` also feeds the `cross_sell_clicks` guardrail, and `Hero video` and `Sample output` are the two interest actions behind `Interest shown`. None carries a `page` property: the event's own path gives the page. The four older clicks are sent by click handlers written into their buttons; the three new ones by the shared script's click attribute (see "How to add a tracked element").
+These are context, never a conversion. Two of them are also a funnel step: `Hero primary CTA` and `Nav CTA` jump to the prices, so the paid-page path counts them under "reached pricing" (`pricing_jumps`). `Architecture CTA` also feeds the `cross_sell_clicks` guardrail, and `Hero video` and `Sample output` are the two interest actions behind `Interest shown`. None carries a `page` property: the event's own path gives the page. The four older clicks are sent by click handlers written into their buttons; the three new ones by the shared script's click attribute (see "How to add a tracked element").
 
 The top bar's links are hidden below 768 px wide, so `Nav link` comes only from wider screens; its `Nav CTA` button is hidden below 640 px.
 
@@ -136,8 +136,8 @@ Each page type has exactly one main number, reported first for that page.
 
 | Page type | Main number | Read as | Shown beside it |
 |---|---|---|---|
-| Free pages: each free page, per language | `signup_rate` | signups per view, written `signups ÷ lp_views (percent)`. A reload or a second visit is another view. | `signups` as a count |
-| Paid page, per language | `purchases` | a count, not a rate: purchases are too few for a rate to mean anything | `revenue` per currency |
+| Free pages: each free page, per language | `signup_rate` | signups per view, written `signups ÷ lp_views (percent)`. A reload or a second visit is another view. | `signups` as a count; `interest_rate` |
+| Paid page, per language | `purchases` | a count, not a rate: purchases are too few for a rate to mean anything | `revenue` per currency; the paid-page path, which explains why it moves; `interest_rate` |
 
 - Checkout clicks are never the paid page's main number: they can rise with no sales.
 - Signups from the paid page's two "try for free" cards use the `signup_rate` definition and belong to the free scorecard. On the paid page they are context, never its main number.
@@ -148,36 +148,57 @@ Each page type has exactly one main number, reported first for that page.
 
 ### Funnel steps
 
-#### Free-skill funnel: page view → form started → signup
+#### Free-skill funnel, per form: page view → form seen → form started → signup
 
-The last step, `signups`, is a business outcome, and `signup_rate` is the main number; both are defined above.
+Read each form on its own: the hero and the final form of each free page, per page and language. The paid page's two "try for free" cards use the same rows, as context for that page. The last step, `signups`, is a business outcome, and `signup_rate` is the main number; both are defined above. The steps explain why `signup_rate` moves, and each points to a different fix: few forms seen → placement; seen but not started → the offer or the message; started but not sent → the form itself; failed submits → something broken, or a field that trips visitors up.
 
 | Metric | Role | Counts | Divided by | Umami call | Available |
 |---|---|---|---|---|---|
 | `lp_views` | funnel step: the first step, and the denominator of every per-view rate | Pageviews of the landing page: only stored paths that normalise to exactly one of the six landing paths | n/a | One `get_website_metrics` listing per window: `type: "path"`, `limit: 500`, hostname filter, no `search`. Normalise every path, add up the variants of each of the six landing paths (Polish and English separately), and put the rest in "other pages" | now |
-| `form_starts` | funnel step | `Free skill form started` events whose `page` is the landing page | n/a | `get_event_properties`, `eventName: "Free skill form started"`, `propertyName: "page"` (`"surface"` splits hero from final form) | after release |
-| `form_start_rate` | funnel step: view → form start | `form_starts` | `lp_views` | n/a | after release |
-| `form_completion_rate` | funnel step: form start → signup | `signups` | `form_starts`, same page, in a window entirely after release | n/a | after release |
+| `forms_seen` | funnel step | `Free skill form seen` events for one form (`surface`) on one page | n/a | Per page: `get_event_properties`, `eventName: "Free skill form seen"`, `propertyName: "page"`. Per form: the same with `propertyName: "surface"` and `filters.path` set to each stored path of that page; both languages share the surface names, so the path picks the language. A page's forms must add up to its `page` count | tracking release v1.2.0 |
+| `form_seen_rate` | funnel step: view → form seen | `forms_seen` for one form | `lp_views` of the same page. Unit: forms seen per view, at most 100%, since a form reports once per view | n/a | tracking release v1.2.0 |
+| `form_starts` | funnel step | `Free skill form started` events for one form on one page | n/a | As `forms_seen`, with `eventName: "Free skill form started"` | after release; needs the field in focus from tracking release v1.2.0 |
+| `form_start_rate` | funnel step: form seen → form start | `form_starts` for one form | `forms_seen` of the same form. Unit: starts per form seen | n/a | tracking release v1.2.0. Before it, this was `form_starts ÷ lp_views` per page, and starts included autofill doubles (Known limits): never compare across that date |
+| `form_completion_rate` | funnel step: form start → signup | `signups` from one form: `Free skill submit: <surface>` on that page | `form_starts` of the same form. Can pass 100% (ground rule 5) | `signups` per form: `get_event_properties`, `eventName: "Free skill submit: <surface>"`, `propertyName: "page"` | after release; never compared across tracking release v1.2.0, when starts began to need focus |
+| `submit_errors` | funnel step | `Free skill submit error` events for one form on one page | n/a | As `forms_seen`, with `eventName: "Free skill submit error"`. By reason: `propertyName: "reason"` with `filters.path` set to each stored path of the page, which gives both forms of the page together | tracking release v1.2.0 |
+| `submit_error_rate` | funnel step: submit → failed submit | `submit_errors` for one form | Submit attempts on the same form: `submit_errors` + `signups`. Unit: failed submits per attempt. A visitor who fixes a typo and sends again counts as one failed and one successful attempt. By reason, per page: each `reason`'s count ÷ the attempts on both forms of the page | n/a | tracking release v1.2.0 |
 
-#### Paid funnel: page view → checkout click → purchase
+#### Paid-page path: page view → reached pricing → started checkout → bought
 
-The last step, `purchases`, and `revenue` are business outcomes, defined above; `purchases` is also the paid page's main number.
+Read per language, each step as a count and per view of the paid page. The path shows whether visitors never reach the prices, reach them and don't pick a plan, or pick one and don't buy. A rise in checkout clicks alone is never a win. The last step, `purchases` and `revenue` (per currency, and per plan through `price_name`), is defined under Business outcomes; `purchases` is also the paid page's main number.
 
 | Metric | Role | Counts | Divided by | Umami call | Available |
 |---|---|---|---|---|---|
-| `lp_views` | funnel step: the first step | Pageviews of `/ux-design-skill/` or `/en/ux-design-skill/`, as above | n/a | as above | now |
-| `checkout_clicks` | funnel step | `Pricing CTA` events on the paid page | n/a | `get_website_metrics`, `type: "event"`, `filters.path` per variant. Split by plan: `get_event_properties`, `eventName: "Pricing CTA"`, `propertyName: "plan"` (after release also `"page"` and `"language"`) | now |
+| `lp_views` | funnel step 1, viewed the page | Pageviews of `/ux-design-skill/` or `/en/ux-design-skill/`, as above | n/a | as above | now |
+| `pricing_seen` | funnel step 2, reached pricing | `Pricing seen` events on the paid page: views in which a price was on screen | n/a | `get_website_metrics`, `type: "event"`, `search: "Pricing seen"`, `filters.path` per stored path of the paid page. The event has no `page` property, so its path gives the page (normalise as ground rule 6) | tracking release v1.2.0 |
+| `pricing_seen_rate` | funnel step: view → reached pricing | `pricing_seen` | `lp_views` of the paid page, same language. Unit: per view | n/a | tracking release v1.2.0 |
+| `pricing_jumps` | funnel step 2, reached pricing: how many got there by a button | `Hero primary CTA` + `Nav CTA` clicks on the paid page, which jump straight to the prices. Clicks on its subpages count under "other pages". Also read per view: `pricing_jumps ÷ lp_views` | n/a | `get_website_metrics`, `type: "event"`, `filters.path` per stored path of the paid page | now |
+| `checkout_clicks` | funnel step 3, started checkout | `Pricing CTA` events on the paid page | n/a | `get_website_metrics`, `type: "event"`, `filters.path` per variant. Split by plan: `get_event_properties`, `eventName: "Pricing CTA"`, `propertyName: "plan"` (after release also `"page"` and `"language"`) | now |
 | `checkout_click_rate` | funnel step: view → checkout click | `checkout_clicks` | `lp_views` of the paid page, same language | n/a | now |
 | `purchase_per_click` | funnel step: checkout click → purchase | `purchases` in one language | `checkout_clicks` on the paid page in that language | n/a | after release |
-| `purchase_rate` | funnel step: view → purchase | `purchases` in one language | `lp_views` of the paid page in that language | n/a | after release |
+| `purchase_rate` | funnel step 4, bought: view → purchase | `purchases` in one language | `lp_views` of the paid page in that language | n/a | after release |
+
+Never add `pricing_jumps` to `pricing_seen`: a jump brings the prices on screen, so that view usually sends `Pricing seen` too. Before tracking release v1.2.0 the jumps are the only sign that visitors reached the prices.
+
+Shown beside the path, as context: the other path on the paid page and the ways out of it.
+
+| Metric | Role | What it is | Call | Available |
+|---|---|---|---|---|
+| `card_signups` | context on the paid page: the other path | `signups` from the paid page's two "try for free" cards (`ux_design_skill_audyt`, `ux_design_skill_planning`), per language, with `Hero secondary CTA` clicks (the hero's jump to the cards) beside them. They belong to the free scorecard | As `signups`, for the two card surfaces. `Hero secondary CTA`: `get_website_metrics`, `type: "event"`, `filters.path` per stored path of the paid page | now |
+| `video_opens` | context: a side path, on every landing page | `Hero video` clicks on the page; also read per view, `video_opens ÷ lp_views` | `get_website_metrics`, `type: "event"`, `search: "Hero video"`, `filters.path` per stored path of the page | tracking release v1.2.0 |
+| `nav_link_clicks` | context: ways out through the top bar, on every landing page | `Nav link` clicks on the page, by `link`. On the paid page, the "how it works" link is `link` `/ux-design-skill/instrukcja/` or `/en/ux-design-skill/how-it-works/`. Wider screens only: the top bar's links are hidden below 768 px | `get_event_properties`, `eventName: "Nav link"`, `propertyName: "link"`, `filters.path` per stored path of the page | tracking release v1.2.0 |
 
 ### Guardrails
 
-Each ledger row names one guardrail for its change.
+Each ledger row names one guardrail for its change; the phone and in-app signup rates are checked after every change as well.
 
 | Metric | Role | What it is | Call | Available |
 |---|---|---|---|---|
 | `cross_sell_clicks` | guardrail on the free pages: a change aimed at signups must not cut the path to the paid page | `Architecture CTA` events on a free page ÷ that page's `lp_views` | `get_website_metrics`, `type: "event"`, `filters.path` | now |
+| `phone_signup_rate` | guardrail after any change, on every page with a form: must not clearly drop | `signup_rate` on phones: `signups` ÷ `lp_views`, both counted with `filters.device: "mobile"` | The calls behind `signups` and `lp_views`, each with `filters.device: "mobile"` added | now |
+| `in_app_signup_rate` | guardrail after any change, on every page with a form: must not clearly drop | `signup_rate` in in-app browsers: `signups` ÷ `lp_views`, both counted with `filters.browser: "instagram,facebook,chromium-webview,ios-webview"` | The calls behind `signups` and `lp_views`, each with that `filters.browser` added | now |
+
+Most visitors to the English pages come on phones, mostly inside the Instagram or Facebook app, so a change that works on a computer can still hurt there. "Clearly" is judged with ground rule 4. The two segment guardrails are warning signs, never a result on their own: their counts are small, so a drop is a reason to look (recordings, the page opened on a phone inside the Instagram app) before it is a reason to undo.
 
 ### Context
 
@@ -185,10 +206,30 @@ Each ledger row names one guardrail for its change.
 |---|---|---|---|---|
 | `visitors` | context | Unique visitors and visits on a page. Context only, never a funnel denominator. | `get_website_stats`, `filters.path` per variant | now |
 | `traffic_mix` | context | Visitors per channel or per referrer on a page | `get_website_metrics`, `type: "channel"` or `"referrer"`, `filters.path` | now |
-| `device_mix` | context | Visitors per device type. `filters.device` splits any event count above the same way. | `get_website_metrics`, `type: "device"`, `filters.path` | now |
+| `device_mix` | context | Visitors per device type. The segments under "Device and in-app splits" split any count above. | `get_website_metrics`, `type: "device"`, `filters.path` | now |
 | `free_to_paid_visits` | context | Visitors who viewed a free page and then the paid page, same language, in one visit | `run_funnel`, steps path free page → path paid page | now |
+| `interest_rate` | context: a leading signal, shown beside the main number on every landing page | Views with at least one interest action (opened a sample output or the hero video) ÷ `lp_views`, per page and language. `Interest shown` counts them: it fires once per view, however many interest actions follow. Unit: per view, like `signup_rate`. A change is never judged on it alone until the interest check below says interested visitors sign up more often | `get_event_properties`, `eventName: "Interest shown"`, `propertyName: "page"` (add a missing trailing slash; the page gives the language), divided by the same page's `lp_views` | tracking release v1.2.0 |
 
 Recordings and their notes are evidence for why visitors drop. Cite them by recording, next to the counts. Never count them as conversions.
+
+**Interest check.** Before `interest_rate` may count when a change is judged, the site's own data must show that visitors who open a sample or the video sign up more often than those who don't. Run it per free page once a few weeks of tracking release v1.2.0 data exist, over one window:
+1. `run_funnel`, steps path `<page path>*` → event `Interest shown` → event `Free skill submit: <prefix>*`, `windowMinutes: 60`, where `<prefix>` is the page's surface start (`free_audit_skill_` or `free_planning_skill_`), e.g. path `/en/free-website-planning-skill*` → event `Interest shown` → event `Free skill submit: free_planning_skill_*`. Step 2 gives the visitors who showed interest (I), step 3 those of them who then signed up (IS).
+2. `run_funnel`, steps path `<page path>*` → event `Free skill submit: <prefix>*`, `windowMinutes: 60`. Step 1 gives all the page's visitors (N), step 2 those who signed up (S).
+3. Signup rate with interest = IS ÷ I; without = (S − IS) ÷ (N − I). Compare the two with ground rule 4.
+
+The unit is visitors, not views: Umami can't tie two events to one page view. A visitor who signs up first and opens a sample afterwards counts as "interest, no signup", so the check leans against interest. Only a clearly higher signup rate with interest lets `interest_rate` count; log that under Definition changes.
+
+#### Device and in-app splits
+
+For each landing page, `signup_rate` and `interest_rate` are also shown per segment. Add the segment's filter to every call behind both counts of a rate, so the views and the events cover the same visitors; `get_website_metrics` and `get_event_properties` both take it.
+
+| Segment | Filter | Note |
+|---|---|---|
+| phone | `filters.device: "mobile"` | |
+| computer | `filters.device: "laptop,desktop"` | Umami's two computer types, in one call |
+| in-app browser | `filters.browser: "instagram,facebook,chromium-webview,ios-webview"` | The Instagram and Facebook apps, and pages opened inside other apps on Android (`chromium-webview`) and iOS (`ios-webview`). On Android, visits from the Instagram app show as `chromium-webview` (referrer `instagram.com`). The rest of the traffic is the page's total minus this segment |
+
+`tablet` (one visitor a month) belongs to neither device group and shows only in `device_mix`. Segments are warning signs, never a result on their own: their counts are small. The values come from `get_website_metrics` `type: "device"` and `type: "browser"` listings (2026-11-12); a new in-app browser name in that listing joins the filter, logged under Definition changes.
 
 ### Data quality
 
@@ -244,6 +285,7 @@ Every change to an event or a metric gets an entry: when it took effect, what ch
 - **Purchases by page depend on Easytools.** Purchases split by language for certain. They split by landing page only if Easytools sends the checkout link's `page` parameter back in `custom_params`, which stays unconfirmed until the first real purchase. Check it this way: `Purchase` events with a `page` property, filed on a landing-page path, mean the split works. Events filed on `/purchase` mean it doesn't. Even when it works, `page` names the page with the buy button (always the paid page), never a free page the buyer saw earlier.
 - **A purchase can't be tied to a visitor.** The webhook sends each purchase to Umami from the server, so it lands in a session the server creates. That session has no referrer, device or country, and Umami can't follow a visitor from click to purchase. `purchase_per_click` is a ratio of two separate counts, not a per-person conversion, and in a short window it can exceed 100% (e.g. someone buys through a link in an email). Never use `run_funnel` or visitor counts for `Purchase`.
 - **Most new events have no history.** Before the release, Umami has page views, `Free skill submit: {surface}` (no properties, page taken from the event's path), `Pricing CTA` with `plan`, and the secondary clicks. `Free skill form started`, `Purchase`, and the `skill`, `language`, `surface` and `page` properties start at the release. A window that crosses the release date compares different data, so start "after release" windows on the release day.
+- **Form starts before tracking release v1.2.0 include autofill doubles.** Until then any first change to a form's email field counted as a start, so autofill filling both forms of a page logged two starts for one visitor (on 2026-11-11, 19 of 32 visits with a start). Since then a start needs the field in focus. A form that autofill filled and the visitor sent without entering the field has a signup and no start, so `form_completion_rate` can still pass 100% (ground rule 5).
 - **Path variants.** One page can appear with or without the trailing slash, with a `#anchor`, or with a query string. Normalise them (ground rule 6). The `page` property never contains `#` or a query string, but it can lack the trailing slash.
 - **Ad blockers.** Some visitors block Umami's browser script, so views, form starts, signups and checkout clicks are undercounts. `Purchase` comes from the server and isn't blocked, so ratios with purchases on top read high.
 - **Owner and test traffic.** The owner's own visits can't be filtered out. Test signups and test purchases are removed by hand. List them below.
@@ -274,14 +316,14 @@ The statuses mean:
 |---|---|---|---|---|
 | 1 | How many page views and free-skill signups did each landing page get in the last 14 days? | goal (connector check) | answerable now | `lp_views`, `signups`, `signup_rate` |
 | 2 | What do both funnels look like per landing page and language over the last 14 days? | goal (funnel check) | answerable after release | all funnel metrics; views, signups and checkout clicks work already |
-| 3 | At which step does each landing page lose the most visitors? | goal | answerable after release | `form_start_rate`, `form_completion_rate`, `checkout_click_rate`, `purchase_per_click` |
+| 3 | At which step does each landing page lose the most visitors? | goal | answerable after release | `form_seen_rate`, `form_start_rate`, `form_completion_rate`, `submit_error_rate` per form; `pricing_seen_rate`, `checkout_click_rate`, `purchase_per_click` |
 | 4 | Are signups and purchases going up, page against page, this window against the last? | goal | answerable after release | `signups`, `signup_rate` (already); `purchases`, `purchase_rate` by language |
 | 5 | Did a shipped change move its metric by its end date? | goal (ledger) | answerable after release | the ledger row's primary and guardrail metrics, before vs after |
 | 6 | Which page and language got the most visits? | research | answerable now | `lp_views`. The research's "qualified visits" has no definition here. |
 | 7 | Did signups change in raw count and in rate, and over what denominator? | research | answerable now | `signups`, `signup_rate` |
 | 8 | Does a button get clicks with no completions after them? | research | answerable after release | `checkout_clicks` vs `purchases`; `form_starts` vs `signups` |
 | 9 | Did the traffic source or the page mix shift enough to explain a rate change? | research | answerable now | `traffic_mix`, `lp_views` per page |
-| 10 | How do Polish and English, and mobile and desktop, compare on views, signups and checkout clicks? | research | answerable now | `lp_views`, `signups`, `checkout_clicks`, split with `device_mix` |
+| 10 | How do Polish and English, and mobile and desktop, compare on views, signups and checkout clicks? | research | answerable now | `lp_views`, `signups`, `checkout_clicks`, split with the device and in-app segments |
 | 11 | How many visits come from AI assistants (ChatGPT, Claude, Perplexity)? | research | answerable now | `traffic_mix` (referrer) |
 | 12 | How many purchases, of which plan, and how much revenue, per language? | research | answerable after release | `purchases` by `price_name`, `revenue` |
 | 13 | What is the smallest reversible improvement, and what observation would reject its explanation? | research | not answerable with current tracking | none; this is a judgement call, and the cycle states both in each proposal |
