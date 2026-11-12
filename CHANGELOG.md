@@ -2,6 +2,19 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.1.1 — 2026-11-12
+
+### Added
+- `docs/testing.md` says which test suites a change needs (a map from kind of change to suites), when an earlier passing run counts instead of a new one, the release checklist in order, how to run the suites, the rules for revising them, and what they do not check today.
+- One npm command per suite: `npm run test:unit`, `test:consent`, `test:tracking`, `test:sections`, `test:a11y`, `test:cookies` and `test:cookies:prod`. Each runs through `scripts/test-run.mjs`, which saves a log in `scratch/test-runs/` recording the commit, whether there were uncommitted changes, and the exit code.
+
+### Changed
+- Unit tests, the cookie-list test, the cookie check and the Meta consent test run on desktop only, since nothing in them depends on screen size. Unit tests no longer run twice.
+- The cookie check runs when `docs/testing.md` lists it for a change, instead of before and after every release.
+
+### Removed
+- The screenshot comparison of the retired `/ux-designer/` pages (`tests/vrt.spec.ts` and its reference images).
+
 ## 1.1.0 — 2026-11-11
 
 ### Added
