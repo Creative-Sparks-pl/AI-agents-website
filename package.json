@@ -9,7 +9,14 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:unit": "node scripts/test-run.mjs unit test tests/unit --reporter=list",
+    "test:consent": "node scripts/test-run.mjs consent test tests/consent/consent-flow.spec.ts tests/consent/cookie-list.spec.ts --reporter=list",
+    "test:tracking": "node scripts/test-run.mjs tracking test tests/tracking --reporter=list",
+    "test:sections": "node scripts/test-run.mjs sections test tests/screenshots --reporter=list",
+    "test:a11y": "node scripts/test-run.mjs a11y test tests/a11y --reporter=list",
+    "test:cookies": "node scripts/test-run.mjs cookies test tests/consent/cookie-check.spec.ts --workers=4 --reporter=list",
+    "test:cookies:prod": "node scripts/test-run.mjs cookies-prod --base-url=https://agents.creativesparks.pl test tests/consent/cookie-check.spec.ts --workers=4 --reporter=list"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
