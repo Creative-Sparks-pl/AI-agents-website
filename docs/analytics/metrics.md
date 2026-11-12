@@ -4,6 +4,7 @@ These are the fixed definitions behind every number the improvement-cycle skill 
 
 - **Status:** approved by the owner on 2026-11-10.
 - **Tracking release date:** 2026-11-10, deployed about 20:00 Warsaw time (site v1.0.0). Everything marked "after release" starts counting on that day; the first full day of after-release data is 2026-11-11.
+- **Tracking release v1.2.0:** not shipped yet; its date goes here when it ships. Everything marked "tracking release v1.2.0" starts counting on that day and has no live data before it.
 - **Umami:** `https://analytics.creativesparks.pl`, website ID `37a76f9d-7246-4d45-b832-3b35e78eee08`.
 
 ## Principles
@@ -40,27 +41,72 @@ These are the fixed definitions behind every number the improvement-cycle skill 
 
 ## Events
 
-All of these are Umami custom events.
+All of these are Umami custom events, and together they are the tracking plan: an event not listed here is not used. Every row says:
+- **Fires when:** the exact action that sends it, and where.
+- **Counted once per:** what one event stands for, so nothing counts twice.
+- **Properties:** the labels it carries. They never hold anything the visitor typed.
+- **Informs which decision:** what a change in it would lead us to do.
+- **Test:** the test file that checks it; "none" means only the code guards it.
+- **Recorded since:** "release" is 2026-11-10; "tracking release v1.2.0" is the date at the top of this file.
 
-| Event (exact name) | Fires when | Properties | Recorded since |
-|---|---|---|---|
-| `Free skill form started` | The visitor types the first character in a form's email field. Fires once per form per page load. | `skill` (`audit` or `planning`), `language` (`pl` or `en`), `surface`, `page` | release |
-| `Free skill submit: {surface}` (one event name per surface, e.g. `Free skill submit: free_audit_skill_hero`) | `/api/subscribe` accepted the email and returned the download link: a successful signup. Failed or invalid submits don't fire it. | same four as above | the name: before this project; the properties: release |
-| `Pricing CTA` | Click on a plan's buy button, which opens the Easytools checkout (`cart.creativesparks.pl`) | `plan` (`Solo`, `Studio`, `Agencja` in Polish, `Agency` in English), `language`, `page` | `plan`: before this project; `language` and `page`: release |
-| `Purchase` | Sent server-side by `/api/easytools-webhook` when Easytools reports `single_product_bought` with `amount_paid` above 0. Free-skill grants (`product_assigned`) and zero-price checkouts are not counted. | `amount`, `currency`, `language` (Easytools `lang`), `product_id`, `price_name`, `page` (present only if Easytools sends the checkout link's `page` parameter back in `custom_params`) | release |
+Any change to a row is logged under "Definition changes". "How to add a tracked element" says how a row is added.
+
+### Funnel events
+
+The steps from a view to a signup or a purchase. A form's first step, `Free skill form seen`, is listed with the other seen events below.
+
+| Event (exact name) | Fires when | Counted once per | Properties | Informs which decision | Test | Recorded since |
+|---|---|---|---|---|---|---|
+| `Free skill form started` | The first change to a form's email field while that field has focus: typing, pasting, or picking an autofill suggestion in it. A value that autofill writes into another form's field, one the visitor isn't in, doesn't count and doesn't use up that form's start. | form per page load | `skill` (`audit` or `planning`), `language` (`pl` or `en`), `surface`, `page` | Whether visitors who see a form try it: if few do, the offer or the message around the form needs work | `tests/tracking/umami-events.spec.ts` | release; needs the field in focus from tracking release v1.2.0 |
+| `Free skill submit: {surface}` (one event name per surface, e.g. `Free skill submit: free_audit_skill_hero`) | `/api/subscribe` accepted the email and returned the download link: a successful signup. Failed or invalid submits don't fire it. | accepted signup | same four as above | The free pages' main number (`signup_rate`); against form starts, whether the form itself loses visitors | `tests/tracking/umami-events.spec.ts` | the name: before release; the properties: release |
+| `Free skill submit error` | A submit fails. `reason` is what the visitor was told: `invalid_email` (the form's own email check failed, or the server rejected the address), `not_configured` (signups unavailable: the server lacks its Easytools key), `server_error` (any other failed answer), `offline` (no answer at all, e.g. no connection) | failed submit | the four above, plus `reason` | Whether something is broken (fix it first, no experiment) or the field trips visitors up (many `invalid_email`) | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+| `Pricing CTA` | Click on a plan's buy button, which opens the Easytools checkout (`cart.creativesparks.pl`). Sent by Umami's own `data-umami-event` attribute. | click | `plan` (`Solo`, `Studio`, `Agencja` in Polish, `Agency` in English), `language`, `page` | Whether visitors who reach the prices start a checkout, and on which plan. Never a win on its own: it can rise with no sales | `tests/tracking/umami-events.spec.ts` (checks the attributes and the checkout link, not a sent click) | `plan`: before release; `language` and `page`: release |
+| `Purchase` | Sent server-side by `/api/easytools-webhook` when Easytools reports `single_product_bought` with `amount_paid` above 0. Free-skill grants (`product_assigned`) and zero-price checkouts are not counted. | paid purchase Easytools reports | `amount`, `currency`, `language` (Easytools `lang`), `product_id`, `price_name`, `page` (present only if Easytools sends the checkout link's `page` parameter back in `custom_params`) | The paid page's main number (`purchases`) and `revenue` | `tests/unit/purchase-event.spec.ts` (checks the event built from a webhook; nothing is sent) | release |
 
 Umami files each `Purchase` under the path in its `page` property, or under `/purchase` when `page` is missing.
 
-**Secondary clicks.** These are context, never a funnel step or a conversion; `Architecture CTA` also feeds the `cross_sell_clicks` guardrail. They carry no properties, so the event's own path gives the page.
+### Secondary clicks
 
-| Event | Where | Leads to |
-|---|---|---|
-| `Hero primary CTA` | paid page hero | pricing section (`#cennik` / `#pricing`) |
-| `Hero secondary CTA` | paid page hero | "try for free" section on the paid page |
-| `Nav CTA` | top bar of the paid page and its subpages | pricing section |
-| `Architecture CTA` | both free pages; also the paid page and the archive page | from a free page: the paid page ("full version"). `cross_sell_clicks` counts only the free-page paths |
+These are context, never a funnel step or a conversion; `Architecture CTA` also feeds the `cross_sell_clicks` guardrail, and `Hero video` and `Sample output` are the two interest actions behind `Interest shown`. None carries a `page` property: the event's own path gives the page. The four older clicks are sent by click handlers written into their buttons; the three new ones by the shared script's click attribute (see "How to add a tracked element").
 
-**PostHog.** PostHog records `$pageview` and `$pageleave`, session recordings and heatmaps. Autocapture is off, so it has no form or checkout events. AI notes on recordings come from PostHog's AI features, approved for the PostHog organisation on 2026-11-10.
+The top bar's links are hidden below 768 px wide, so `Nav link` comes only from wider screens; its `Nav CTA` button is hidden below 640 px.
+
+| Event (exact name) | Fires when | Counted once per | Properties | Informs which decision | Test | Recorded since |
+|---|---|---|---|---|---|---|
+| `Hero primary CTA` | Click on the paid page hero's main button, which jumps to the pricing section (`#cennik` / `#pricing`) | click | none | How many paid-page visitors go to the prices straight from the hero | none | before release |
+| `Hero secondary CTA` | Click on the paid page hero's second button, which jumps to the "try for free" section on the paid page | click | none | How many paid-page visitors turn to the free skills from the hero | none | before release |
+| `Nav CTA` | Click on the top bar's button, on the paid page and its subpages; it leads to the pricing section | click | none | How many visitors jump to the prices from the top bar | none | before release |
+| `Architecture CTA` | Click on the "full version" button: on both free pages, where it leads to the paid page; also on the paid page and the archive page. `cross_sell_clicks` counts only the free-page paths | click | none | Whether free-page visitors still find the paid page (the `cross_sell_clicks` guardrail) | none | before release |
+| `Hero video` | Click on the hero's video panel, on every landing page; the video opens over the page | click | none | Whether the video earns its place in the hero (few opens: change or move it) | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+| `Nav link` | Click on any link in the top bar's link list, on every page with a top bar | click | `link`: the address the link points to, e.g. `/en/ux-design-skill/how-it-works/` (leaves the page) or `/en/ux-design-skill/#pricing` (stays on it) | Whether wider-screen visitors leave through the top bar instead of the page's own path, e.g. through "How it works" now that the hero's playbook link is gone | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+| `Sample output` | Click on a sample-output card, on every landing page; it opens an example file in a new tab | click | `output`: the card's link, e.g. `/examples/website-planning-skill_project_plan_en.html#strategy`. Keep the `#section` (unlike page paths in ground rule 6): the planning page's three cards open the same file at different sections | Which samples draw visitors, to choose which to show first | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+
+### Seen and interest events
+
+The shared script `src/scripts/umami-attributes.ts` sends these. A seen event fires when at least half of its element is on screen, once per element per page load; scrolling away and back doesn't send it again. If Umami hasn't loaded yet when the element comes into view, it reports the next time it does. `Interest shown` fires on the first interest action in a page load; each of those clicks still sends its own event too.
+
+| Event (exact name) | Fires when | Counted once per | Properties | Informs which decision | Test | Recorded since |
+|---|---|---|---|---|---|---|
+| `Free skill form seen` | At least half of a signup form is on screen: the hero and final forms on the free pages, the forms in the paid page's two "try for free" cards | form per page load | `skill`, `language`, `surface`, `page`, with the same values as the other form events | Whether visitors never reach a form (a placement fix, e.g. the form higher on phones) or see it and pass (a message or offer fix) | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+| `Pricing seen` | At least half of the paid page's first price card is on screen. It sits on the first card, not the whole section, because on phones the section is too tall ever to be half on screen: it means "a price was on screen". The archive page has the same section; it counts under "other pages". | page load | none; the event's own path gives the page | Whether paid-page visitors never reach the prices (shorten or reorder what's above them) or reach them and don't pick a plan (the plans or the prices) | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+| `Interest shown` | The first interest action in a page load: a click on a sample-output card or on the hero video | page load, however many interest actions follow | `page` (the path, like the form events' `page`), `language` (`pl` or `en`, from the path) | Whether visitors look at what they'd get before signing up. Shown next to signups; a change is never judged on it alone | `tests/tracking/umami-events.spec.ts` | tracking release v1.2.0 |
+
+### PostHog
+
+PostHog records `$pageview` and `$pageleave`, session recordings and heatmaps. Autocapture is off, so it has no form or checkout events. AI notes on recordings come from PostHog's AI features, approved for the PostHog organisation on 2026-11-10.
+
+## How to add a tracked element
+
+A new click or seen event needs no code of its own: an attribute on the element, a row in the events tables, and a test.
+
+1. **Attribute.** The shared script `src/scripts/umami-attributes.ts`, loaded on every page, reads three attributes:
+   - **Click:** `data-umami-click="Event name"`, plus one `data-umami-click-<label>="value"` per label. It sends the event when the element is clicked and leaves the click itself alone. Don't use Umami's own `data-umami-event` for new clicks: it holds a same-tab link until Umami answers, and on an `href="#"` trigger it follows the `#`. (`Pricing CTA` keeps it.)
+   - **Seen:** `data-umami-seen="Event name"`, plus `data-umami-seen-<label>="value"`. It fires once per page load when half of the element is on screen. An element taller than twice the screen can never be half on screen, so put the attribute on a smaller part of it, as `Pricing seen` sits on the first price card.
+   - **Interest:** `data-umami-interest` (no value) makes a click on the element count toward `Interest shown`. Pair it with a click attribute, so the action also reports itself.
+
+   Name the event in the style of the ones above, saying what happened. Label values are fixed text written in the page, never anything the visitor typed. An event that depends on what the visitor does in a field or on a request's answer (like the form start and the submit error) stays in the component's own code instead.
+2. **Metrics line.** Add the event's row to the right events table, with every column filled and "recorded since" set to the release that ships it, and log it under "Definition changes". A metric that uses the event is defined under Metrics.
+3. **Test.** Add a case to `tests/tracking/umami-events.spec.ts` that checks the exact name and label values, and that the event fires only as often as "counted once per" says. Then run the suites `docs/testing.md` lists for a tracking change.
 
 ## Metrics
 
@@ -179,6 +225,18 @@ Ad set IDs (campaign `120243755481080302`):
 - One ad still sends old tags: `home-ux-audit-light` in US-Skill-Audit-Prospecting arrives as `utm_campaign=EN-UXD-faza1-2026Q2-Audyt`, `utm_content=free-audit-skil`. Its `utm_term` is still right, so count it by `utm_term`, never by `utm_campaign` or `utm_content` alone.
 - Add new ad sets to the table when they launch (their ID shows in Ads Manager's "Ad set ID" column, or as a new `utm_term` value in Umami).
 - Meta's own Lead counts cover only visitors who accepted marketing cookies; Umami counts every signup. Report both, never one as the other.
+
+## Definition changes
+
+Every change to an event or a metric gets an entry: when it took effect, what changed, why, and which comparisons it breaks. Nothing an entry lists under "Comparisons it breaks" is compared across its date: both windows must fall on the same side of it. Earlier history, up to the 2026-11-10 release, is covered by "Recorded since" in the events tables and by Known limits. Oldest first; add new entries at the bottom, dated the day the change took effect on the live site.
+
+| Date | What changed | Why | Comparisons it breaks |
+|---|---|---|---|
+| 2026-11-12 | **The owner's main browser is no longer counted.** Umami's opt-out (`umami.disabled` in the site's local storage) is on in the owner's main Chrome, so that browser sends Umami nothing. The owner's phone is not opted out (owner's decision): its visits still count, including previews opened inside the Instagram or Facebook app. | The owner's own checks shifted rates on low-traffic pages, and nothing could filter them out. | Views, events and rates on a page across this date: before it they include the owner's visits from that browser. On pages with few views, a few checks can move a rate. |
+| tracking release v1.2.0 | **A form start needs the field in focus.** `Free skill form started` counts only a change made while the email field has focus. Before, any first change counted, including autofill writing into a form the visitor wasn't in. | On 2026-11-11, 19 of 32 visits with a form start logged two starts (hero and final) within 1.7 s, nearly all in phone in-app browsers: autofill filling both email fields. It made the final forms look broken and inflated starts. | `form_starts`, `form_start_rate` and `form_completion_rate`, per page and per form: starts before this date include autofill doubles. |
+| tracking release v1.2.0 | **Form starts are read per form seen.** `form_start_rate` becomes form starts ÷ forms seen (`Free skill form seen`) for each form, instead of form starts ÷ `lp_views` per page. | It separates visitors who never reached a form from those who saw it and passed: the first need a placement fix, the second a message fix. | `form_start_rate` across this date: the denominator changes, and before it there is no count of forms seen. |
+| tracking release v1.2.0 | **Seven new events:** `Free skill form seen`, `Free skill submit error`, `Hero video`, `Nav link`, `Sample output`, `Pricing seen`, `Interest shown` (see Events). | The 2026-11-12 improvement cycle could not tell why visitors leave the free pages before the form: nothing recorded whether a form was seen, failed submits, video or sample opens, or exits through the top bar, and the paid page had no readable path. | Anything built on these events: before this date they have no data, so a window that starts earlier reports "no data yet", never zero (ground rule 3). The ledger's playbook-link removal (shipped 2026-11-12) has no top-bar clicks in the first part of its window. |
+| tracking release v1.2.0 | **Results are judged with the range-and-label rule** (ground rule 4), instead of "under 30 conversions in either window means directional". | 30 conversions is not a statistical threshold: the sample a clear answer needs depends on the size of the effect looked for. | No count or rate changes meaning. Verdicts do: a result called "directional" under the old rule is not a verdict under the new one, so old and new verdicts are not compared. |
 
 ## Known limits
 
