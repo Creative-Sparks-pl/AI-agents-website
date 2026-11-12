@@ -6,6 +6,13 @@ These are the fixed definitions behind every number the improvement-cycle skill 
 - **Tracking release date:** 2026-11-10, deployed about 20:00 Warsaw time (site v1.0.0). Everything marked "after release" starts counting on that day; the first full day of after-release data is 2026-11-11.
 - **Umami:** `https://analytics.creativesparks.pl`, website ID `37a76f9d-7246-4d45-b832-3b35e78eee08`.
 
+## Principles
+
+- **Privacy limits what we can link, by design.** A purchase is never tied to an ad or a signup; that is a choice, not a gap to work around.
+- **No made-up money values.** No "value per signup" to dress results up as revenue.
+- **More signups is not automatically a win** if failed or bogus signups rise with them.
+- **Distrust published "+40%" success stories.** When re-tested, such gains usually shrink.
+
 ## Ground rules
 
 1. **Counts come from Umami.** Umami counts every visitor and needs no consent. PostHog adds recordings, heatmaps and notes on recordings. Never compute a rate from PostHog.
@@ -44,7 +51,7 @@ All of these are Umami custom events.
 
 Umami files each `Purchase` under the path in its `page` property, or under `/purchase` when `page` is missing.
 
-**Secondary clicks.** These are context only, never a funnel step or a conversion. They carry no properties, so the event's own path gives the page.
+**Secondary clicks.** These are context, never a funnel step or a conversion; `Architecture CTA` also feeds the `cross_sell_clicks` guardrail. They carry no properties, so the event's own path gives the page.
 
 | Event | Where | Leads to |
 |---|---|---|
@@ -57,46 +64,94 @@ Umami files each `Purchase` under the path in its `page` property, or under `/pu
 
 ## Metrics
 
-### Free-skill funnel: page view → form started → signup
+Metrics sit in six layers, and every row names its role:
+- **Business outcomes:** what the site is for, signups and purchases with their revenue.
+- **Main number:** one per page type, the headline number for that page.
+- **Funnel steps:** the steps from a view to an outcome. They explain why a main number moves.
+- **Guardrails:** numbers that must not get worse when a change aims at a main number.
+- **Context:** numbers that help read the others: who came, from where, on what device.
+- **Data quality:** numbers that say how far the others can be trusted.
 
-| Metric | Counts | Divided by | Umami call | Available |
-|---|---|---|---|---|
-| `lp_views` | Pageviews of the landing page: only stored paths that normalise to exactly one of the six landing paths | n/a | One `get_website_metrics` listing per window: `type: "path"`, `limit: 500`, hostname filter, no `search`. Normalise every path, add up the variants of each of the six landing paths (Polish and English separately), and put the rest in "other pages" | now |
-| `form_starts` | `Free skill form started` events whose `page` is the landing page | n/a | `get_event_properties`, `eventName: "Free skill form started"`, `propertyName: "page"` (`"surface"` splits hero from final form) | after release |
-| `signups` | `Free skill submit: {surface}` events for the page's surfaces, on that page | n/a | Before release: `get_website_metrics`, `type: "event"`, `search: "Free skill submit"`, with `filters.path` set to each path variant that `lp_views` found. After release: `get_event_properties`, `eventName: "Free skill submit: <surface>"`, `propertyName: "page"` | now |
-| `form_start_rate` | `form_starts` | `lp_views` | n/a | after release |
-| `form_completion_rate` | `signups` | `form_starts`, same page, in a window entirely after release | n/a | after release |
-| `signup_rate` | `signups` | `lp_views` | n/a | now |
+Free signups and paid sales are separate scorecards. Never add them into one site-wide score: a purchase can't be linked to a signup, so a blended score would imply a link nobody can measure. A metric belongs here only if a change in it would change a decision.
 
-Cross-check, not the definition: `run_funnel` with steps path `/free-homepage-ux-audit-skill*` → event `Free skill form started` → event `Free skill submit: free_audit_skill_*` (`windowMinutes: 60`) shows visitors who did each step in order in one visit. Its unit is visitors, not events, so label it that way and don't mix it with the rates above.
+### Business outcomes
 
-### Paid funnel: page view → checkout click → purchase
-
-| Metric | Counts | Divided by | Umami call | Available |
-|---|---|---|---|---|
-| `lp_views` | Pageviews of `/ux-design-skill/` or `/en/ux-design-skill/`, as above | n/a | as above | now |
-| `checkout_clicks` | `Pricing CTA` events on the paid page | n/a | `get_website_metrics`, `type: "event"`, `filters.path` per variant. Split by plan: `get_event_properties`, `eventName: "Pricing CTA"`, `propertyName: "plan"` (after release also `"page"` and `"language"`) | now |
-| `purchases` | `Purchase` events, minus the test purchases listed below | n/a | `get_event_stats`, `filters.event: "Purchase"` for the total; `get_event_properties`, `eventName: "Purchase"`, `propertyName: "language"` (also `"price_name"`, `"currency"`, `"page"`); `get_events`, `event: "Purchase"` to list each one | after release |
-| `checkout_click_rate` | `checkout_clicks` | `lp_views` of the paid page, same language | n/a | now |
-| `purchase_per_click` | `purchases` in one language | `checkout_clicks` on the paid page in that language | n/a | after release |
-| `purchase_rate` | `purchases` in one language | `lp_views` of the paid page in that language | n/a | after release |
-| `revenue` | Sum of `amount` for each `currency` (PLN for Polish, USD for English). Never add the two currencies together. Whether `amount_paid` includes VAT is unconfirmed. | n/a | List purchases with `get_events`. If that doesn't return amounts: `get_event_properties`, `propertyName: "amount"`, then value × times seen | after release |
+| Metric | Role | Counts | Divided by | Umami call | Available |
+|---|---|---|---|---|---|
+| `signups` | business outcome (free) | `Free skill submit: {surface}` events for the page's surfaces, on that page | n/a | Before release: `get_website_metrics`, `type: "event"`, `search: "Free skill submit"`, with `filters.path` set to each path variant that `lp_views` found. After release: `get_event_properties`, `eventName: "Free skill submit: <surface>"`, `propertyName: "page"` | now |
+| `purchases` | business outcome (paid); the paid page's main number | `Purchase` events, minus the test purchases listed below | n/a | `get_event_stats`, `filters.event: "Purchase"` for the total; `get_event_properties`, `eventName: "Purchase"`, `propertyName: "language"` (also `"price_name"`, `"currency"`, `"page"`); `get_events`, `event: "Purchase"` to list each one | after release |
+| `revenue` | business outcome (paid); shown beside the paid page's main number | Sum of `amount` for each `currency` (PLN for Polish, USD for English). Never add the two currencies together. Whether `amount_paid` includes VAT is unconfirmed. | n/a | List purchases with `get_events`. If that doesn't return amounts: `get_event_properties`, `propertyName: "amount"`, then value × times seen | after release |
 
 Splitting purchases by language is the same as splitting them by paid page, because each language has exactly one paid page with buy buttons.
 
-### Context metrics
+### Main number per page
 
-| Metric | What it is | Call | Available |
+Each page type has exactly one main number, reported first for that page.
+
+| Page type | Main number | Read as | Shown beside it |
 |---|---|---|---|
-| `visitors` | Unique visitors and visits on a page. Context only, never a funnel denominator. | `get_website_stats`, `filters.path` per variant | now |
-| `traffic_mix` | Visitors per channel or per referrer on a page | `get_website_metrics`, `type: "channel"` or `"referrer"`, `filters.path` | now |
-| `device_mix` | Visitors per device type. `filters.device` splits any event count above the same way. | `get_website_metrics`, `type: "device"`, `filters.path` | now |
-| `cross_sell_clicks` | `Architecture CTA` events on a free page ÷ that page's `lp_views` | `get_website_metrics`, `type: "event"`, `filters.path` | now |
-| `free_to_paid_visits` | Visitors who viewed a free page and then the paid page, same language, in one visit | `run_funnel`, steps path free page → path paid page | now |
-| `recorded_views` | PostHog `$pageview` events on a landing page: views by visitors who accepted statistics cookies | PostHog connector `exec`, HogQL through `execute-sql` on `events` where `event = '$pageview'`, grouped by `properties.$pathname` | after release |
-| `recorded_share` | `recorded_views` ÷ `lp_views`: roughly how much traffic the recordings cover. Approximate, because the two tools count differently. | n/a | after release |
+| Free pages: each free page, per language | `signup_rate` | signups per view, written `signups ÷ lp_views (percent)`. A reload or a second visit is another view. | `signups` as a count |
+| Paid page, per language | `purchases` | a count, not a rate: purchases are too few for a rate to mean anything | `revenue` per currency |
+
+- Checkout clicks are never the paid page's main number: they can rise with no sales.
+- Signups from the paid page's two "try for free" cards use the `signup_rate` definition and belong to the free scorecard. On the paid page they are context, never its main number.
+
+| Metric | Role | Counts | Divided by | Umami call | Available |
+|---|---|---|---|---|---|
+| `signup_rate` | main number of each free page | `signups` | `lp_views` of the same page. Unit: signups per view | n/a | now |
+
+### Funnel steps
+
+#### Free-skill funnel: page view → form started → signup
+
+The last step, `signups`, is a business outcome, and `signup_rate` is the main number; both are defined above.
+
+| Metric | Role | Counts | Divided by | Umami call | Available |
+|---|---|---|---|---|---|
+| `lp_views` | funnel step: the first step, and the denominator of every per-view rate | Pageviews of the landing page: only stored paths that normalise to exactly one of the six landing paths | n/a | One `get_website_metrics` listing per window: `type: "path"`, `limit: 500`, hostname filter, no `search`. Normalise every path, add up the variants of each of the six landing paths (Polish and English separately), and put the rest in "other pages" | now |
+| `form_starts` | funnel step | `Free skill form started` events whose `page` is the landing page | n/a | `get_event_properties`, `eventName: "Free skill form started"`, `propertyName: "page"` (`"surface"` splits hero from final form) | after release |
+| `form_start_rate` | funnel step: view → form start | `form_starts` | `lp_views` | n/a | after release |
+| `form_completion_rate` | funnel step: form start → signup | `signups` | `form_starts`, same page, in a window entirely after release | n/a | after release |
+
+#### Paid funnel: page view → checkout click → purchase
+
+The last step, `purchases`, and `revenue` are business outcomes, defined above; `purchases` is also the paid page's main number.
+
+| Metric | Role | Counts | Divided by | Umami call | Available |
+|---|---|---|---|---|---|
+| `lp_views` | funnel step: the first step | Pageviews of `/ux-design-skill/` or `/en/ux-design-skill/`, as above | n/a | as above | now |
+| `checkout_clicks` | funnel step | `Pricing CTA` events on the paid page | n/a | `get_website_metrics`, `type: "event"`, `filters.path` per variant. Split by plan: `get_event_properties`, `eventName: "Pricing CTA"`, `propertyName: "plan"` (after release also `"page"` and `"language"`) | now |
+| `checkout_click_rate` | funnel step: view → checkout click | `checkout_clicks` | `lp_views` of the paid page, same language | n/a | now |
+| `purchase_per_click` | funnel step: checkout click → purchase | `purchases` in one language | `checkout_clicks` on the paid page in that language | n/a | after release |
+| `purchase_rate` | funnel step: view → purchase | `purchases` in one language | `lp_views` of the paid page in that language | n/a | after release |
+
+### Guardrails
+
+Each ledger row names one guardrail for its change.
+
+| Metric | Role | What it is | Call | Available |
+|---|---|---|---|---|
+| `cross_sell_clicks` | guardrail on the free pages: a change aimed at signups must not cut the path to the paid page | `Architecture CTA` events on a free page ÷ that page's `lp_views` | `get_website_metrics`, `type: "event"`, `filters.path` | now |
+
+### Context
+
+| Metric | Role | What it is | Call | Available |
+|---|---|---|---|---|
+| `visitors` | context | Unique visitors and visits on a page. Context only, never a funnel denominator. | `get_website_stats`, `filters.path` per variant | now |
+| `traffic_mix` | context | Visitors per channel or per referrer on a page | `get_website_metrics`, `type: "channel"` or `"referrer"`, `filters.path` | now |
+| `device_mix` | context | Visitors per device type. `filters.device` splits any event count above the same way. | `get_website_metrics`, `type: "device"`, `filters.path` | now |
+| `free_to_paid_visits` | context | Visitors who viewed a free page and then the paid page, same language, in one visit | `run_funnel`, steps path free page → path paid page | now |
 
 Recordings and their notes are evidence for why visitors drop. Cite them by recording, next to the counts. Never count them as conversions.
+
+### Data quality
+
+| Metric | Role | What it is | Call | Available |
+|---|---|---|---|---|
+| `recorded_views` | data quality: feeds `recorded_share` | PostHog `$pageview` events on a landing page: views by visitors who accepted statistics cookies | PostHog connector `exec`, HogQL through `execute-sql` on `events` where `event = '$pageview'`, grouped by `properties.$pathname` | after release |
+| `recorded_share` | data quality: how far recordings stand for all visitors | `recorded_views` ÷ `lp_views`: roughly how much traffic the recordings cover. Approximate, because the two tools count differently. | n/a | after release |
+
+Free-funnel cross-check, not a definition: `run_funnel` with steps path `/free-homepage-ux-audit-skill*` → event `Free skill form started` → event `Free skill submit: free_audit_skill_*` (`windowMinutes: 60`) shows visitors who did each step in order in one visit. Its unit is visitors, not events, so label it that way and don't mix it with the funnel rates.
 
 ## Ad traffic (Meta)
 
