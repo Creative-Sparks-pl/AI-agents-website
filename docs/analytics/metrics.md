@@ -49,7 +49,7 @@ Umami files each `Purchase` under the path in its `page` property, or under `/pu
 | Event | Where | Leads to |
 |---|---|---|
 | `Hero primary CTA` | paid page hero | pricing section (`#cennik` / `#pricing`) |
-| `Hero secondary CTA` | paid page hero; free audit page hero | "try for free" section on the paid page; the how-to guide from the audit page |
+| `Hero secondary CTA` | paid page hero | "try for free" section on the paid page |
 | `Nav CTA` | top bar of the paid page and its subpages | pricing section |
 | `Architecture CTA` | both free pages; also the paid page and the archive page | from a free page: the paid page ("full version"). `cross_sell_clicks` counts only the free-page paths |
 
