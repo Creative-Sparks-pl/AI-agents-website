@@ -24,6 +24,13 @@ export default defineConfig({
     {
       name: 'Mobile Chrome',
       use: { ...devices['Pixel 5'], viewport: { width: 390, height: 844 } },
+      // No assertion in these depends on screen size; the banner's mobile layout is covered by the consent flow on both sizes.
+      testIgnore: [
+        '**/tests/unit/**',
+        '**/tests/consent/cookie-list.spec.ts',
+        '**/tests/consent/cookie-check.spec.ts',
+        '**/tests/tracking/meta-consent.spec.ts',
+      ],
     },
   ],
   webServer: BASE_URL
