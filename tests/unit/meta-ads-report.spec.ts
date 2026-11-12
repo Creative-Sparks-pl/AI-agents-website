@@ -17,6 +17,7 @@ const RECORDS = [
     actions: [
       { action_type: 'link_click', value: '41' },
       { action_type: 'landing_page_view', value: '29' },
+      { action_type: 'lead', value: '3' },
       { action_type: 'page_engagement', value: '57' },
     ],
     date_start: '2026-10-29',
@@ -62,6 +63,7 @@ test.describe('toAdRows', () => {
         currency: 'PLN',
         linkClicks: 0,
         landingPageViews: 0,
+        metaLeads: 0,
       },
       {
         campaign: 'US-UXD-free-skills-2026Q4',
@@ -72,6 +74,7 @@ test.describe('toAdRows', () => {
         currency: 'PLN',
         linkClicks: 2,
         landingPageViews: 0,
+        metaLeads: 0,
       },
       {
         campaign: 'US-UXD-free-skills-2026Q4',
@@ -82,6 +85,7 @@ test.describe('toAdRows', () => {
         currency: 'PLN',
         linkClicks: 41,
         landingPageViews: 29,
+        metaLeads: 3,
       },
     ]);
   });
@@ -89,6 +93,7 @@ test.describe('toAdRows', () => {
   test('an ad without a landing_page_view action counts 0 landing-page views', () => {
     const [row] = toAdRows([RECORDS[1]]);
     expect(row.landingPageViews).toBe(0);
+    expect(row.metaLeads).toBe(0);
     expect(row.linkClicks).toBe(2);
   });
 
@@ -108,8 +113,8 @@ test.describe('formatTable', () => {
     const lines = formatTable(toAdRows([RECORDS[0]])).split('\n');
     expect(lines).toHaveLength(3);
     expect(lines[0]).toBe(
-      '| Campaign | Ad set ID (utm_term) | Ad set | Ad (utm_content) | Spend | Link clicks | Landing-page views |',
+      '| Campaign | Ad set ID (utm_term) | Ad set | Ad (utm_content) | Spend | Link clicks | Landing-page views | Meta leads |',
     );
-    expect(lines[2]).toBe('| US-UXD-free-skills-2026Q4 | 120200000000000011 | UXD broad | video-hook-b | 84.17 PLN | 41 | 29 |');
+    expect(lines[2]).toBe('| US-UXD-free-skills-2026Q4 | 120200000000000011 | UXD broad | video-hook-b | 84.17 PLN | 41 | 29 | 3 |');
   });
 });

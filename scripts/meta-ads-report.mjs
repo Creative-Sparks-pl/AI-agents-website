@@ -37,7 +37,7 @@ Options:
   --help               show this help
 
 Columns: campaign, ad set ID (= utm_term), ad set, ad (= utm_content), spend with currency,
-link clicks, landing-page views (0 when Meta reports none).
+link clicks, landing-page views, Meta leads (0 when Meta reports none).
 
 Needs META_ADS_ACCESS_TOKEN and META_AD_ACCOUNT_ID in .env.local.`;
 
@@ -45,6 +45,10 @@ const toNumber = (value) => {
   const number = Number(value);
   return Number.isFinite(number) ? number : 0;
 };
+
+// Meta lists an action type in `actions` only when it happened, so a missing one counts 0.
+const actionCount = (record, type) =>
+  toNumber((record.actions ?? []).find((action) => action.action_type === type)?.value);
 
 // One row per ad from Insights records (`level=ad`). Optional campaign filter: case-insensitive "name contains".
 export function toAdRows(records, { campaign } = {}) {
@@ -59,9 +63,8 @@ export function toAdRows(records, { campaign } = {}) {
       spend: toNumber(record.spend),
       currency: record.account_currency ?? '',
       linkClicks: toNumber(record.inline_link_clicks),
-      landingPageViews: toNumber(
-        (record.actions ?? []).find((action) => action.action_type === 'landing_page_view')?.value,
-      ),
+      landingPageViews: actionCount(record, 'landing_page_view'),
+      metaLeads: actionCount(record, 'lead'),
     }))
     .sort(
       (a, b) =>
@@ -74,7 +77,7 @@ export function toAdRows(records, { campaign } = {}) {
 // A Markdown table, so both people and the improvement cycle can read it.
 export function formatTable(rows) {
   const cell = (value) => String(value).replace(/\|/g, '\\|');
-  const header = ['Campaign', 'Ad set ID (utm_term)', 'Ad set', 'Ad (utm_content)', 'Spend', 'Link clicks', 'Landing-page views'];
+  const header = ['Campaign', 'Ad set ID (utm_term)', 'Ad set', 'Ad (utm_content)', 'Spend', 'Link clicks', 'Landing-page views', 'Meta leads'];
   const lines = [header, header.map(() => '---')];
   for (const row of rows) {
     lines.push([
@@ -85,6 +88,7 @@ export function formatTable(rows) {
       `${row.spend.toFixed(2)} ${row.currency}`.trim(),
       row.linkClicks,
       row.landingPageViews,
+      row.metaLeads,
     ]);
   }
   return lines.map((line) => `| ${line.map(cell).join(' | ')} |`).join('\n');
