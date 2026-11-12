@@ -1,5 +1,6 @@
-import { test, expect, type Page } from '@playwright/test';
-import { blockThirdParty } from '../screenshots/helpers';
+import { test, expect, type Locator, type Page } from '@playwright/test';
+import { presetConsentInPage } from '../consent/consent-helpers';
+import { blockThirdParty, widthOf } from '../screenshots/helpers';
 
 // The real Umami script is blocked and replaced by a recorder, and /api/subscribe is mocked,
 // so these tests never count a visit or send a real signup.
@@ -9,6 +10,13 @@ const STARTED = 'Free skill form started';
 const SUBMIT_PREFIX = 'Free skill submit: ';
 const SEEN = 'Free skill form seen';
 const SUBMIT_ERROR = 'Free skill submit error';
+const NAV_LINK = 'Nav link';
+const SAMPLE_OUTPUT = 'Sample output';
+const HERO_VIDEO = 'Hero video';
+const INTEREST = 'Interest shown';
+const PRICING_SEEN = 'Pricing seen';
+// The top bar shows its links from this width up.
+const NAV_LINKS_MIN_WIDTH = 768;
 
 // Each page has a hero form and a final form near the bottom.
 const CASES = [
@@ -111,6 +119,31 @@ function expectNothingTyped(calls: UmamiCall[], typed: string) {
   const serialized = JSON.stringify(calls);
   expect(serialized).not.toContain(typed);
   expect(serialized).not.toContain(typed.split('@')[0]);
+}
+
+/** The recorded calls of one event, in order. */
+function named(calls: UmamiCall[], event: string) {
+  return calls.filter(([name]) => name === event);
+}
+
+/** Opens a page for clicking: a stored "reject all" keeps the cookie banner from covering what the test clicks. */
+async function openForClicks(page: Page, path: string) {
+  await blockThirdParty(page);
+  await presetConsentInPage(page, []);
+  const umamiCalls = await recordUmami(page);
+  await open(page, path);
+  return umamiCalls;
+}
+
+/** Clicks a sample card, which opens its example in a new tab; returns the address that tab opened. */
+async function openSample(page: Page, card: Locator) {
+  const popup = page.waitForEvent('popup');
+  await card.click();
+  const sample = await popup;
+  await sample.waitForLoadState('domcontentloaded');
+  const opened = new URL(sample.url());
+  await sample.close();
+  return opened.pathname + opened.hash;
 }
 
 for (const { path, language, skill, surface } of CASES) {
@@ -255,5 +288,122 @@ for (const { path, language, plans } of CHECKOUT_CASES) {
       expect(checkout.searchParams.get('lang')).toBe(language);
       expect(checkout.searchParams.get('page')).toBe(path);
     }
+  });
+}
+
+for (const { path, language } of CASES) {
+  test(`umami ${path}: every top-bar link carries Nav link with its address`, async ({ page }, testInfo) => {
+    const umamiCalls = await openForClicks(page, path);
+
+    // The bar's link list; the logo link sits outside it, and free pages show no CTA button.
+    const links = page.locator('header nav > div a');
+    const count = await links.count();
+    expect(count).toBeGreaterThan(0);
+    await expect(page.locator(`[data-umami-click="${NAV_LINK}"]`)).toHaveCount(count);
+    for (let i = 0; i < count; i++) {
+      const href = await links.nth(i).getAttribute('href');
+      expect(href).toBeTruthy();
+      await expect(links.nth(i)).toHaveAttribute('data-umami-click', NAV_LINK);
+      await expect(links.nth(i)).toHaveAttribute('data-umami-click-link', href!);
+    }
+
+    // The link into this same page keeps the page, and with it the recorded calls.
+    const samePage = links.and(page.locator(`[href^="${path}#"]`));
+    if (widthOf(testInfo) < NAV_LINKS_MIN_WIDTH) {
+      // Phones get no top-bar links to click: the attributes above are all there is to check.
+      await expect(samePage).toBeHidden();
+      return;
+    }
+    const href = (await samePage.getAttribute('href'))!;
+    await samePage.click();
+    await expect.poll(() => new URL(page.url()).pathname + new URL(page.url()).hash).toBe(href);
+    expect(named(await umamiCalls(), NAV_LINK)).toEqual([[NAV_LINK, { link: href }]]);
+  });
+
+  test(`umami ${path}: a sample-card click records Sample output with the example's path`, async ({ page }) => {
+    const umamiCalls = await openForClicks(page, path);
+
+    const cards = page.locator('a[href^="/examples/"]');
+    const count = await cards.count();
+    expect(count).toBeGreaterThan(0);
+    for (let i = 0; i < count; i++) {
+      const href = await cards.nth(i).getAttribute('href');
+      await expect(cards.nth(i)).toHaveAttribute('data-umami-click', SAMPLE_OUTPUT);
+      await expect(cards.nth(i)).toHaveAttribute('data-umami-click-output', href!);
+      await expect(cards.nth(i)).toHaveAttribute('data-umami-interest');
+      // Meta's view-content attribute stays as it was.
+      await expect(cards.nth(i)).toHaveAttribute('data-track', 'ViewContent');
+    }
+
+    const card = cards.first();
+    const href = (await card.getAttribute('href'))!;
+    expect(await openSample(page, card)).toBe(href);
+    expect(named(await umamiCalls(), SAMPLE_OUTPUT)).toEqual([[SAMPLE_OUTPUT, { output: href }]]);
+  });
+
+  test(`umami ${path}: a video click records Hero video without labels and the popover opens`, async ({ page }) => {
+    const umamiCalls = await openForClicks(page, path);
+
+    const trigger = page.locator('[data-wistia-trigger]');
+    await expect(trigger).toHaveAttribute('data-umami-interest');
+    await trigger.click();
+    expect(named(await umamiCalls(), HERO_VIDEO)).toEqual([[HERO_VIDEO]]);
+
+    // Wistia's popup opens over the page, and the trigger's "#" address is never followed.
+    await expect(page.locator('.wistia_popover_overlay')).toBeVisible({ timeout: 20_000 });
+    expect(page.url()).not.toContain('#');
+  });
+
+  test(`umami ${path}: two interest clicks in one page load send one Interest shown`, async ({ page }) => {
+    const umamiCalls = await openForClicks(page, path);
+
+    await openSample(page, page.locator('a[href^="/examples/"]').first());
+    await page.locator('[data-wistia-trigger]').click();
+
+    const calls = await umamiCalls();
+    // Each click still reports itself; the page view reports interest only once.
+    expect(named(calls, SAMPLE_OUTPUT)).toHaveLength(1);
+    expect(named(calls, HERO_VIDEO)).toHaveLength(1);
+    expect(named(calls, INTEREST)).toEqual([[INTEREST, { page: path, language }]]);
+  });
+}
+
+for (const { path, plans } of CHECKOUT_CASES) {
+  test(`umami ${path}: Pricing seen fires once, when half the first price card is on screen`, async ({ page }) => {
+    await blockThirdParty(page);
+    const umamiCalls = await recordUmami(page);
+    await open(page, path);
+
+    const card = page.locator(`[data-umami-seen="${PRICING_SEEN}"]`);
+    await expect(card).toHaveCount(1);
+    // The first card: the one holding the first plan's checkout link.
+    await expect(card.locator('a[data-umami-event="Pricing CTA"]')).toHaveAttribute('data-umami-event-plan', plans[0]);
+
+    const pricingSeen = async () => named(await umamiCalls(), PRICING_SEEN);
+    /** Scrolls so that the given share of the card, from its top, shows at the bottom of the screen. */
+    const showTopShare = (share: number) =>
+      card.evaluate((element, share) => {
+        const box = element.getBoundingClientRect();
+        const top = window.scrollY + box.top - window.innerHeight + box.height * share;
+        window.scrollTo({ top, behavior: 'instant' });
+      }, share);
+
+    await settle(page);
+    expect(await pricingSeen()).toEqual([]);
+
+    // Under half on screen is not seen yet.
+    await showTopShare(0.4);
+    await settle(page);
+    expect(await pricingSeen()).toEqual([]);
+
+    await showTopShare(0.6);
+    await expect.poll(pricingSeen).toEqual([[PRICING_SEEN]]);
+
+    // Away and back again: still the one report.
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await settle(page);
+    await card.scrollIntoViewIfNeeded();
+    await settle(page);
+    expect(await pricingSeen()).toEqual([[PRICING_SEEN]]);
   });
 }

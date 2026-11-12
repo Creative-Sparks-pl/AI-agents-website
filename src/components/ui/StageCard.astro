@@ -38,7 +38,11 @@ if (outputLink && trackEvent) {
     }
   }
 }
-const linkAttrs = { ...baseLinkAttrs, ...trackAttrs };
+// Umami: which sample was opened, and that this page view showed interest.
+const umamiAttrs = outputLink
+  ? { 'data-umami-click': 'Sample output', 'data-umami-click-output': outputLink, 'data-umami-interest': '' }
+  : {};
+const linkAttrs = { ...baseLinkAttrs, ...trackAttrs, ...umamiAttrs };
 ---
 
 <Tag
