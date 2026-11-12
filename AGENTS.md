@@ -23,7 +23,7 @@ Rules are scoped by activity in `~/.claude/skills/wm/rules/`:
 - `src/content/` — content collections, one file per locale
 - `src/layouts/` — BaseLayout, PreviewLayout (design-system showcase)
 - `public/` — static assets and example HTML outputs
-- `tests/` — Playwright visual regression tests
+- `tests/` — the Playwright tests; `docs/testing.md` says which run when
 - `design.md` — design system reference
 - `projects/` — WM project records (gitignored)
 
@@ -32,6 +32,7 @@ Rules are scoped by activity in `~/.claude/skills/wm/rules/`:
 Where things live, so nobody has to ask again. No secrets here — secret values sit in `.env.local` (gitignored) and in Vercel's environment settings.
 
 - **Site** — Vercel project for `agents.creativesparks.pl`. Pushing `master` deploys production, so work happens on branches.
+- **Tests** — Playwright, run locally, no CI. `docs/testing.md` sets which suites run for a change (in verify and release too) and when an earlier pass still counts. One npm command per suite (`npm run test:unit` etc.); each saves a log in `scratch/test-runs/`.
 - **Umami (visitor counts)** — `https://analytics.creativesparks.pl`, self-hosted, v3.4.1 since 2026-11-10.
   - Code: GitHub fork `Creative-Sparks-pl/umami`, no custom commits. Update with `gh repo sync Creative-Sparks-pl/umami`, then add an empty commit authored by the owner's account — Vercel's free plan refuses to deploy commits whose author is not on the Vercel team (the synced commits are authored by Umami's maintainers).
   - Hosting: its own Vercel project; environment includes `MCP_ENABLED=1`.
@@ -53,7 +54,7 @@ Where things live, so nobody has to ask again. No secrets here — secret values
   - Configuration: `src/lib/consent-config.ts` (including `CONSENT_REVISION`); browser side: `src/scripts/consent.ts`; theme: `src/styles/cookieconsent-theme.css`. A script runs only after consent when tagged `type="text/plain" data-category="statistics|marketing"`.
   - Adding a tracker: tag its script, add it to both content files, and raise `CONSENT_REVISION` so every visitor is asked again (the policies promise this).
   - Wistia follows the statistics choice through its own API, set at the top of `<head>` in `src/layouts/BaseLayout.astro`: without it, privacy mode, `doNotTrack` (anonymous play statistics) and `wistiaDisableMux` (Mux Data playback reports for 1 play in 10).
-  - Cookie check — run before each release, and against production after it: `npx playwright test tests/consent/cookie-check.spec.ts --project="Desktop Chrome" --workers=4` (add `BASE_URL=https://agents.creativesparks.pl` for production). It opens every page and example file in six consent states and fails on any key or host missing from the cookie list or outside its category. It sends no data: visits, events and consent records are blocked in the browser.
+  - Cookie check — run when `docs/testing.md` lists it, locally (`npm run test:cookies`) and against production (`npm run test:cookies:prod`). It opens every page and example file in six consent states and fails on any key or host missing from the cookie list or outside its category. It sends no data: visits, events and consent records are blocked in the browser.
 - **Consent records** — Neon project `cs-consent-records` (Frankfurt), separate from Umami's database. Connection string `CONSENT_DATABASE_URL` in `.env.local` and in Vercel (Production and Preview). Schema: `docs/consent/consent-records.sql`; written only by `src/pages/api/consent.ts`, one row per first choice and per change, no IP address or browser data.
   - Before any schema change, create a Neon backup branch from `production`, as for Umami.
   - Retention: the privacy policies promise two years. In the yearly clean-up, run in the Neon SQL editor of this project: `DELETE FROM consent_records WHERE recorded_at < now() - interval '2 years';`

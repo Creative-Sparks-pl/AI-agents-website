@@ -82,7 +82,7 @@ If the evidence is too thin for any idea, say "not enough data" and name what to
 ### 7. The user picks one
 
 - For a bigger change, ask the user to watch the two or three recordings behind it first, and give the links, before building anything.
-- Build it on a new branch from `master`, following the repo's `AGENTS.md` and `design.md`. Run the relevant tests and `npm run build`, show the diff, and wait for approval (rule 5).
+- Build it on a new branch from `master`, following the repo's `AGENTS.md` and `design.md`. Run the tests the map in `docs/testing.md` lists for the change (that includes the build), show the diff, and wait for approval (rule 5).
 
 ### 8. Log it
 
