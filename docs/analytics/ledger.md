@@ -15,3 +15,4 @@ Also add an annotation for the ship date in Umami's own interface, so the date s
 
 | Hypothesis | Change | Ship date | Primary metric | Guardrail metric | End date | Result | Decision |
 |---|---|---|---|---|---|---|---|
+| If we remove the hero's playbook link from the audit pages, then more visitors reach the form and sign up, because the link led them away (15 clicks, no signups afterwards). | Removed the hero's "See the playbook" / "Zobacz instrukcję" link from `/en/free-homepage-ux-audit-skill/` and `/free-homepage-ux-audit-skill/` (0e051fc). Judgement change: shipped on judgement; the effect is too small to detect at current traffic. | 2026-11-12 | `signup_rate`, `/en/free-homepage-ux-audit-skill/` | `cross_sell_clicks`, `/en/free-homepage-ux-audit-skill/` | 2026-12-10 | | |
