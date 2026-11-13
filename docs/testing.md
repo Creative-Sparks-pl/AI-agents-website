@@ -81,6 +81,9 @@ Deploying before verify is the exception. When it happens, the verify report log
 - Playwright flags pass through an npm command: `npm run test:unit -- --list` lists the tests without running them.
 - To run one spec file, call the wrapper directly: `node scripts/test-run.mjs <name> test <spec file> --reporter=list`. A path added after an npm command does not narrow the run, because Playwright runs every file that matches any path it is given.
 - Logs land in `scratch/test-runs/`. Google Drive may add a `desktop.ini` there, so pick logs by `*.log`.
+- Commit before running a suite whose log verify or release will cite: a log that starts `dirty` never counts, and the run has to be repeated.
+- Leave nothing running. A dev server the suites started can stay on port 4325 and lock files in the repo (a folder move failed on 2026-11-13). After the last suite, stop it: in PowerShell, `Get-NetTCPConnection -State Listen -LocalPort 4325` gives the process to stop.
+- A real run on a preview: script it with `--base-url=<preview URL>` and the bypass secret above (phone size comes from the Mobile Chrome project), not the owner's Chrome. The owner's browser is needed only to read the Meta test-events code: Events Manager → dataset `482025232476807` → Test events → Website, then the server-events section, read as page text. Open the page with `?test_event_code=<code>` after accepting marketing cookies.
 
 ## Revising the tests
 
