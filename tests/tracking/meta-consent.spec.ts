@@ -94,6 +94,43 @@ test('meta consent: after "Reject all" a hero video click sends nothing', async 
   expect(calls()).toEqual([]);
 });
 
+// The sample cards send view content through the same consent-gated helper; each opens its example in a new tab.
+const sampleCard = (page: Page) => page.locator('a[data-umami-click="Sample output"][data-track="ViewContent"]').first();
+
+async function clickSampleCard(page: Page) {
+  const opened = page.context().waitForEvent('page');
+  await sampleCard(page).click();
+  await (await opened).close();
+}
+
+test('meta consent: after "Accept all" a sample card click sends one view content for that card', async ({ page }) => {
+  const calls = await catchCapi(page);
+  await page.goto(VIDEO_PAGE);
+  await banner(page).getByRole('button', { name: 'Accept all', exact: true }).click();
+  await expect.poll(() => calls().filter((c) => c.body.event_name === 'PageView').length).toBe(1);
+
+  const contentName = await sampleCard(page).getAttribute('data-track-content_name');
+  expect(contentName).toBeTruthy();
+  await clickSampleCard(page);
+  await expect.poll(() => viewContents(calls()).length).toBe(1);
+  await page.waitForTimeout(500);
+  const sent = viewContents(calls());
+  expect(sent).toHaveLength(1);
+  expect(sent[0].body.custom_data?.content_name).toBe(contentName);
+  expect(hasMarketingConsent(sent[0].cookie, CONSENT_REVISION)).toBe(true);
+});
+
+test('meta consent: after "Reject all" a sample card click sends nothing', async ({ page }) => {
+  const calls = await catchCapi(page);
+  await page.goto(VIDEO_PAGE);
+  await banner(page).getByRole('button', { name: 'Reject all', exact: true }).click();
+  await expect(banner(page)).toBeHidden();
+
+  await clickSampleCard(page);
+  await page.waitForTimeout(500);
+  expect(calls()).toEqual([]);
+});
+
 declare global {
   interface Window {
     trackConversion?: (eventName: string, params?: Record<string, unknown>) => void;
