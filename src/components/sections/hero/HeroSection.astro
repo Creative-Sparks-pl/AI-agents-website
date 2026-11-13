@@ -95,8 +95,6 @@ const showPreSaleCountdown = countdownTarget === 'presale';
                 <a
                   href={ctaSecondary.href}
                   class="inline-flex items-center gap-2 text-primary font-label font-bold text-lg tracking-tight"
-                  data-track={ctaSecondary.href.includes('/instrukcja') ? 'ViewContent' : undefined}
-                  data-track-content_name={ctaSecondary.href.includes('/instrukcja') ? 'instrukcja' : undefined}
                   onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)"
                 >
                   <span class="underline underline-offset-4">{ctaSecondary.label}</span>
@@ -122,8 +120,6 @@ const showPreSaleCountdown = countdownTarget === 'presale';
                 size="lg"
                 variant="secondary"
                 trailingIcon={ctaSecondary.icon}
-                data-track={ctaSecondary.href.includes('/instrukcja') ? 'ViewContent' : undefined}
-                data-track-content_name={ctaSecondary.href.includes('/instrukcja') ? 'instrukcja' : undefined}
                 onclick="setTimeout(function(){window.umami&&window.umami.track('Hero secondary CTA')},0)"
               >
                 {ctaSecondary.label}
@@ -134,8 +130,17 @@ const showPreSaleCountdown = countdownTarget === 'presale';
       </div>
 
       <div class="lg:col-span-5 relative">
-        {/* Stays outside the player, which hides anything inside it for a moment while it starts. */}
-        <a href="#" class="block group cursor-pointer" data-wistia-trigger>
+        {/* Stays outside the player, which hides anything inside it for a moment while it starts.
+            data-track sends Meta's view content, only after marketing consent (helper in BaseLayout). */}
+        <a
+          href="#"
+          class="block group cursor-pointer"
+          data-wistia-trigger
+          data-umami-click="Hero video"
+          data-umami-interest
+          data-track="ViewContent"
+          data-track-content_name="hero_video"
+        >
           <div class="relative shadow-[24px_24px_0px_var(--color-accent)] overflow-hidden border-t-4 border-primary">
             <div class="bg-zinc-900 p-6 font-label text-sm text-zinc-300 leading-relaxed">
               <div class="flex gap-2 mb-4 border-b border-zinc-800 pb-2">

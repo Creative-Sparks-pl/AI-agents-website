@@ -73,6 +73,8 @@ const {
 } = Astro.props;
 
 const privacyHref = COPY.privacyHref;
+// The seen event's labels hold the same values as the other funnel events' labels, built in the script below.
+const page = Astro.url.pathname;
 
 const inputSizeClasses: Record<Size, string> = {
   md: 'px-6 py-4 text-base',
@@ -101,6 +103,11 @@ const iconSize: Record<Size, string> = {
   data-i18n-err-unavailable={COPY.errUnavailable}
   data-i18n-err-generic={COPY.errGeneric}
   data-i18n-err-offline={COPY.errOffline}
+  data-umami-seen="Free skill form seen"
+  data-umami-seen-skill={skill}
+  data-umami-seen-language={locale}
+  data-umami-seen-surface={surface}
+  data-umami-seen-page={page}
 >
   <form
     class:list={['free-skill-form__form flex flex-col items-stretch gap-0 sm:gap-0', fitContainer ? '@sm:flex-row' : 'sm:flex-row']}
@@ -220,13 +227,20 @@ const iconSize: Record<Size, string> = {
 
   // Funnel events carry only these labels, never the email or anything else the visitor typed.
   type FunnelData = { skill: string; language: string; surface: string; page: string };
+  // Why a submit failed, as the visitor was told; never the server's message or the typed address.
+  type SubmitErrorReason = 'invalid_email' | 'not_configured' | 'server_error' | 'offline';
+  type EventData = FunnelData & { reason?: SubmitErrorReason };
 
   // Umami loads as a deferred script and may be blocked, so every call checks it is there.
-  function trackUmami(name: string, data: FunnelData) {
-    const u = window as unknown as { umami?: { track: (name: string, data?: FunnelData) => void } };
+  function trackUmami(name: string, data: EventData) {
+    const u = window as unknown as { umami?: { track: (name: string, data?: EventData) => void } };
     if (u.umami && typeof u.umami.track === 'function') {
       u.umami.track(name, data);
     }
+  }
+
+  function trackSubmitError(funnel: FunnelData, reason: SubmitErrorReason) {
+    trackUmami('Free skill submit error', { ...funnel, reason });
   }
 
   // The email goes only to the Meta helper, which sends its SHA-256 hash with marketing consent, never the address.
@@ -260,10 +274,18 @@ const iconSize: Record<Size, string> = {
     const locale = root.dataset.locale ?? 'pl';
     const funnel: FunnelData = { skill, language: locale, surface, page: window.location.pathname };
 
-    // First keystroke in the email field counts as starting the form, once per form per page load.
-    root
-      .querySelector<HTMLInputElement>('input[name="email"]')
-      ?.addEventListener('input', () => trackUmami('Free skill form started', funnel), { once: true });
+    // The first change to the email field while the visitor is in it counts as starting the form, once per
+    // form per page load. Autofill can also fill email fields the visitor is not in; such a change neither
+    // counts nor uses up that form's start.
+    const emailInput = root.querySelector<HTMLInputElement>('input[name="email"]');
+    if (emailInput) {
+      const onEmailInput = () => {
+        if (document.activeElement !== emailInput) return;
+        emailInput.removeEventListener('input', onEmailInput);
+        trackUmami('Free skill form started', funnel);
+      };
+      emailInput.addEventListener('input', onEmailInput);
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -275,6 +297,7 @@ const iconSize: Record<Size, string> = {
 
       if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showError(root, i18n.errEmail);
+        trackSubmitError(funnel, 'invalid_email');
         return;
       }
 
@@ -304,14 +327,18 @@ const iconSize: Record<Size, string> = {
 
         if (payload.reason === 'invalid_email') {
           showError(root, i18n.errEmail);
+          trackSubmitError(funnel, 'invalid_email');
         } else if (payload.reason === 'not_configured') {
           showError(root, i18n.errUnavailable);
+          trackSubmitError(funnel, 'not_configured');
         } else {
           showError(root, i18n.errGeneric);
+          trackSubmitError(funnel, 'server_error');
         }
         setState(root, 'error');
       } catch (_err) {
         showError(root, i18n.errOffline);
+        trackSubmitError(funnel, 'offline');
         setState(root, 'error');
       } finally {
         submit.disabled = false;

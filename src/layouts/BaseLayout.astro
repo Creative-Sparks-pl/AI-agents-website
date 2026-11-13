@@ -187,6 +187,10 @@ const consentStorageJson = JSON.stringify(consentStorage).replace(/</g, '\\u003c
 
     <!-- Umami Analytics (cookieless, outside the banner) -->
     <script defer src="https://analytics.creativesparks.pl/script.js" data-website-id="37a76f9d-7246-4d45-b832-3b35e78eee08"></script>
+    <!-- Umami events from data-umami-seen, data-umami-click and data-umami-interest attributes (bundled, sends through window.umami) -->
+    <script>
+      import '../scripts/umami-attributes';
+    </script>
 
     <!-- Cookie banner (CookieConsent v3, self-hosted). Gates scripts tagged type="text/plain" data-category="…". -->
     <script type="application/json" id="consent-config" set:html={consentConfigJson} />

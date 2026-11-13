@@ -8,7 +8,7 @@ import { blockDataSending } from '../consent/consent-helpers';
 // the cookie each one carries is checked with the same function the route uses.
 
 interface CapiCall {
-  body: { event_name?: string; event_id?: string };
+  body: { event_name?: string; event_id?: string; custom_data?: Record<string, unknown> };
   cookie: string;
 }
 
@@ -58,6 +58,77 @@ test('meta consent: after "Reject all" no event is sent, and a forced call would
   );
   await expect.poll(() => calls().length).toBe(1);
   expect(hasMarketingConsent(calls()[0].cookie, CONSENT_REVISION)).toBe(false);
+});
+
+// An English landing page, where the ads run; every landing page has the same hero video.
+const VIDEO_PAGE = '/en/free-homepage-ux-audit-skill/';
+const heroVideo = (page: Page) => page.locator('[data-wistia-trigger]');
+const viewContents = (calls: CapiCall[]) => calls.filter((c) => c.body.event_name === 'ViewContent');
+
+test('meta consent: after "Accept all" a hero video click sends one view content for the video', async ({ page }) => {
+  const calls = await catchCapi(page);
+  await page.goto(VIDEO_PAGE);
+  await banner(page).getByRole('button', { name: 'Accept all', exact: true }).click();
+  await expect.poll(() => calls().filter((c) => c.body.event_name === 'PageView').length).toBe(1);
+
+  await heroVideo(page).click();
+  await expect.poll(() => viewContents(calls()).length).toBe(1);
+  // A second event from the same click would arrive right after the first.
+  await page.waitForTimeout(500);
+  const sent = viewContents(calls());
+  expect(sent).toHaveLength(1);
+  expect(sent[0].body.custom_data).toEqual({ content_name: 'hero_video' });
+  expect(hasMarketingConsent(sent[0].cookie, CONSENT_REVISION)).toBe(true);
+});
+
+test('meta consent: after "Reject all" a hero video click sends nothing', async ({ page }) => {
+  const calls = await catchCapi(page);
+  await page.goto(VIDEO_PAGE);
+  await banner(page).getByRole('button', { name: 'Reject all', exact: true }).click();
+  await expect(banner(page)).toBeHidden();
+
+  await heroVideo(page).click();
+  // The click reached the page: the trigger has started loading the player.
+  await expect(page.locator('script[src="https://fast.wistia.com/player.js"]')).toHaveCount(1);
+  await page.waitForTimeout(500);
+  expect(calls()).toEqual([]);
+});
+
+// The sample cards send view content through the same consent-gated helper; each opens its example in a new tab.
+const sampleCard = (page: Page) => page.locator('a[data-umami-click="Sample output"][data-track="ViewContent"]').first();
+
+async function clickSampleCard(page: Page) {
+  const opened = page.context().waitForEvent('page');
+  await sampleCard(page).click();
+  await (await opened).close();
+}
+
+test('meta consent: after "Accept all" a sample card click sends one view content for that card', async ({ page }) => {
+  const calls = await catchCapi(page);
+  await page.goto(VIDEO_PAGE);
+  await banner(page).getByRole('button', { name: 'Accept all', exact: true }).click();
+  await expect.poll(() => calls().filter((c) => c.body.event_name === 'PageView').length).toBe(1);
+
+  const contentName = await sampleCard(page).getAttribute('data-track-content_name');
+  expect(contentName).toBeTruthy();
+  await clickSampleCard(page);
+  await expect.poll(() => viewContents(calls()).length).toBe(1);
+  await page.waitForTimeout(500);
+  const sent = viewContents(calls());
+  expect(sent).toHaveLength(1);
+  expect(sent[0].body.custom_data?.content_name).toBe(contentName);
+  expect(hasMarketingConsent(sent[0].cookie, CONSENT_REVISION)).toBe(true);
+});
+
+test('meta consent: after "Reject all" a sample card click sends nothing', async ({ page }) => {
+  const calls = await catchCapi(page);
+  await page.goto(VIDEO_PAGE);
+  await banner(page).getByRole('button', { name: 'Reject all', exact: true }).click();
+  await expect(banner(page)).toBeHidden();
+
+  await clickSampleCard(page);
+  await page.waitForTimeout(500);
+  expect(calls()).toEqual([]);
 });
 
 declare global {
