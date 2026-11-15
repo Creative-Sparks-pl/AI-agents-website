@@ -3,6 +3,7 @@ import type { HTMLAttributes } from 'astro/types';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-6.svg';
 import { localeFromPathname, requireLocalizedEntry } from '../../../lib/i18n';
+import { fillCount, formatShown, getShownDownloads, hasPlaceholder } from '../../../lib/free-skill-downloads';
 import TryFreeCard from './TryFreeCard.astro';
 
 interface Props extends HTMLAttributes<'section'> {
@@ -14,7 +15,11 @@ const { headingId = 'try-free-heading', class: className, ...rest } = Astro.prop
 
 const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireLocalizedEntry('try-free', locale);
-const { badge, heading, intro, submitLabel, pageLabel, cards } = entry.data;
+const { badge, heading, intro: introText, submitLabel, pageLabel, cards } = entry.data;
+// The intro carries the same build-time download count as the free pages' hero badge.
+const intro = hasPlaceholder(introText)
+  ? fillCount(introText, formatShown((await getShownDownloads()).shown, locale))
+  : introText;
 ---
 
 <section
