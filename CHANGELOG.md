@@ -2,6 +2,17 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.3.0 — 2026-11-15
+
+### Added
+- The free pages' hero badge shows how many times the free skills were downloaded: "200+ downloads of free skills for Claude Code, Codex, Cursor..." / "200+ pobrań darmowych skilli dla Claude Code, Codex, Cursor...". The paid page's "try for free" intro says the same ("downloaded 200+ times" / "pobrane już 200+ razy").
+- The number is counted at every build from Easytools orders (`src/lib/free-skill-downloads.ts`): distinct person and skill pairs among completed orders of the free-skill products, own and test addresses left out, rounded down to 50. Visitors' browsers never ask for it.
+- `/free-skill-downloads.json` publishes the shown number and where it came from (`easytools`, `live-site` or `minimum`), with no raw count. Without an Easytools answer the build reuses the live site's number, then 200; a build never fails over the count.
+- Two change-ledger rows (free pages' badge, paid page's intro), judged on 2026-12-13.
+
+### Changed
+- `docs/testing.md`: a spec file runs only its own suite, and a shared test helper runs every suite whose specs import it; test files no longer fall under "everything".
+
 ## 1.2.0 — 2026-11-13
 
 ### Added
