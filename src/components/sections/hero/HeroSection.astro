@@ -5,6 +5,7 @@ import ChecklistItem from '../../ui/ChecklistItem.astro';
 import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
 import RatingStars from '../../ui/RatingStars.astro';
 import { localeFromPathname, requireEntry } from '../../../lib/i18n';
+import { fillCount, formatShown, getShownDownloads, hasPlaceholder } from '../../../lib/free-skill-downloads';
 
 interface Props extends HTMLAttributes<'section'> {
   entryId?: string;
@@ -34,8 +35,12 @@ const entry = await requireEntry('hero', resolvedId, fallbackId);
 
 const demoVideoId = locale === 'en' ? 'q0uvnjyc60' : 'efnuj1zoqx';
 const defaultVideoLabel = locale === 'en' ? 'UX Design Skill — demo' : 'Demo możliwości UX Design Skill';
-const { badge, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel, countdownTarget, rating } = entry.data;
+const { badge: badgeText, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel, countdownTarget, rating } = entry.data;
 const showPreSaleCountdown = countdownTarget === 'presale';
+// Only a badge holding the count placeholder (the free pages) asks for the download count.
+const badge = hasPlaceholder(badgeText)
+  ? fillCount(badgeText, formatShown((await getShownDownloads()).shown, locale))
+  : badgeText;
 ---
 
 <section
