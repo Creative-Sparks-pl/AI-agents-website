@@ -36,7 +36,7 @@ export default defineConfig({
     // Astro 7 builds CSS for esnext, which drops prefixes Safari before 18 needs
     // (e.g. -webkit-backdrop-filter); target Vite's default browser baseline instead.
     build: {
-      cssTarget: ['chrome111', 'edge111', 'firefox114', 'safari16.4'],
+      cssTarget: ['chrome111', 'edge111', 'firefox114', 'safari16.4', 'ios16.4'],
     },
   },
 
