@@ -8,6 +8,7 @@ import mdx from '@astrojs/mdx';
 export default defineConfig({
   site: 'https://agents.creativesparks.pl',
   adapter: vercel(),
+  compressHTML: true,
 
   i18n: {
     defaultLocale: 'pl',
