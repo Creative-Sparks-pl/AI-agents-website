@@ -29,6 +29,7 @@ Look up every changed file (`git diff --name-only`) and run every suite its rows
 | Kind of change | Files | Suites |
 |---|---|---|
 | Docs only | `docs/`, `design.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, and the `"version"` lines of `package.json` and `package-lock.json` | no tests |
+| Agent skills | `.claude/skills/` | no tests: they are instructions for agents, and no test, build step or deployment reads them |
 | Content text with no new link, video or embed | text in `src/content/` (except `src/content/consent/`) | build + that page's section test (the spec in `tests/screenshots/` that opens the page; a page with none gets build only) |
 | Components, styles, page markup | `src/components/`, `src/layouts/` (outside the head scripts), `src/styles/global.css`, page markup in `src/pages/`, images in `src/assets/`, `src/lib/i18n.ts`, `src/lib/presale.ts` | build + page sections + accessibility |
 | Consent and trackers | `src/lib/consent-config.ts`, `src/scripts/consent.ts`, `src/scripts/umami-attributes.ts`, `src/styles/cookieconsent-theme.css`, `src/content/consent/`, the head scripts in `src/layouts/BaseLayout.astro`, a tracking event added, changed or removed in a section or component, and any change that adds a script, embed, iframe or other outside resource | build + unit + consent + tracking + cookie check |
@@ -40,7 +41,7 @@ Look up every changed file (`git diff --name-only`) and run every suite its rows
 | Meta ads report | `scripts/meta-ads-report.mjs` | unit (its spec is `tests/unit/meta-ads-report.spec.ts`); after a change to the request, one live run of `npm run report:meta-ads` |
 | Test specs | a spec file in `tests/` (`*.spec.ts`), added or changed | the suite whose spec files list it in the Suites table; a new spec is added to that list in the same change |
 | Shared test helpers | `tests/screenshots/helpers.ts`, `tests/consent/consent-helpers.ts` | every suite with a spec that imports the helper, directly or through the other one: `screenshots/helpers.ts` → page sections + accessibility + consent + tracking; `consent-helpers.ts` → consent + tracking + page sections + accessibility + cookie check |
-| Anything else | any file no row above names | everything, until it gets a row of its own. Today this covers `src/content.config.ts`, the files in `public/` outside `public/examples/`, `.mcp.json`, `.gitignore`, `scripts/` apart from the Meta ads report (the test-run wrapper included), and `.claude/skills/` |
+| Anything else | any file no row above names | everything, until it gets a row of its own. Today this covers `src/content.config.ts`, the files in `public/` outside `public/examples/`, `.mcp.json`, `.gitignore`, and `scripts/` apart from the Meta ads report (the test-run wrapper included) |
 
 ## Reusing a passing run
 
