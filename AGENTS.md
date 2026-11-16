@@ -3,7 +3,7 @@
 ## Project Identity
 
 **Project:** WEB-Agents-website
-**Purpose:** Astro 6 + Tailwind marketing site for Creative Sparks AI skills (agents.creativesparks.pl), PL + EN, deployed on Vercel.
+**Purpose:** Astro 7 + Tailwind marketing site for Creative Sparks AI skills (agents.creativesparks.pl), PL + EN, deployed on Vercel.
 
 ## Agent Rules
 
