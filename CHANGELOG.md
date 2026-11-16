@@ -2,6 +2,21 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.3.1 — 2026-11-16
+
+### Changed
+- Astro 6.4.8 → 7.4.12, with `@astrojs/vercel` 11.0.22, `@astrojs/mdx` 8.1.6 and `@astrojs/sitemap` 3.7.5. This closes the open Astro security alerts (the critical image one among them) and, through the same install, the sharp, esbuild, glob and minimatch ones; `npm audit` reports 0 vulnerabilities. Built pages match the Astro 6 build: same pages, same visible text, byte-identical images.
+- `astro.config.mjs` keeps Astro 6's whitespace handling (`compressHTML: true`), so spaces between inline words stay, and builds CSS for Vite's default browser range (`vite.build.cssTarget`), so Safari and iOS before 18 keep the blur behind the sticky header and the mobile bottom bar.
+- `path-to-regexp` is pinned at 6.3.0 only inside Vercel's routing library; the site-wide version 8 pin broke the Astro 7 build.
+- Builds run on Node 24 (`engines.node` 24.x), the version the tests run on; Vercel had been building on 26.x.
+- Built files under `/_astro/` are now served with a one-year immutable cache header; the old adapter's rule never applied, so browsers revalidated them on every visit.
+- The cookie banner's z-index is written as 2147480000 (the new CSS minifier rounds it); it still sits above the video popover and everything else on the site.
+- The cookie check skips Vercel's preview toolbar when it runs against a preview deployment, and the tests declare `js-yaml`, which Astro 6 used to bring along.
+- `AGENTS.md` and `design.md` name Astro 7.
+
+### Removed
+- The `vercel.json` header rule for the deleted staging address (`staging.agents.creativesparks.pl`), and its mention in `docs/testing.md`.
+
 ## 1.3.0 — 2026-11-15
 
 ### Added

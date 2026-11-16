@@ -209,12 +209,16 @@ async function checkPage(browser: Browser, baseURL: string, path: string, state:
       if (DATA_SENDING.some((pattern) => pattern.test(request.url()))) completedDataSending.push(request.url());
     });
 
-    // A protected preview deployment: the bypass secret goes to the site's own host only.
+    // A protected preview deployment: the bypass secret goes to the site's own host only. Previews
+    // also carry Vercel's toolbar (vercel.live), which production never shows; skip it.
     const bypass = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
     if (bypass && !/^(localhost|127\.0\.0\.1)$/.test(siteHost)) {
       await page.route(
         (url) => url.hostname === siteHost,
-        (route) => route.continue({ headers: { ...route.request().headers(), 'x-vercel-protection-bypass': bypass } }),
+        (route) =>
+          route.continue({
+            headers: { ...route.request().headers(), 'x-vercel-protection-bypass': bypass, 'x-vercel-skip-toolbar': '1' },
+          }),
       );
     }
     // Any other route of the site's own server is never called (forms, webhooks); registered before

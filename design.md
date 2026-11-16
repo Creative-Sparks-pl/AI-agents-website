@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-This design system documents the visual tokens, component primitives, section shells, and architectural conventions used in the WEB-Agents website (the Polish-language landing page at `/ux-designer/`). The site is built on Astro 6 and Tailwind 4, with content managed through Astro content collections. The system is designed to support a future English locale and a Keystatic CMS integration without requiring structural changes — those follow-up efforts become content edits, not architecture changes.
+This design system documents the visual tokens, component primitives, section shells, and architectural conventions used in the WEB-Agents website (the Polish-language landing page at `/ux-designer/`). The site is built on Astro 7 and Tailwind 4, with content managed through Astro content collections. The system is designed to support a future English locale and a Keystatic CMS integration without requiring structural changes — those follow-up efforts become content edits, not architecture changes.
 
 The decisions documented here cover three areas: the token vocabulary defined in the `@theme` block of `global.css`, the two promoted UI primitives (`ChecklistItem` and `SectionWithIcon`), and the decomposition and i18n conventions that govern how sections are built and how content is loaded. Anyone joining the project should be able to understand both the visual language and the component model from this document in a single read.
 
