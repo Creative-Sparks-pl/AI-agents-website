@@ -141,7 +141,7 @@ API routes:
 Deployment settings:
 
 - `vercel.json` redirects (the old `/ux-designer/` and `/free-ux-audit-skill/` addresses, and the trailing-slash rule): the dev server ignores `vercel.json`, so no test follows them.
-- `vercel.json` headers (`X-Robots-Tag: noindex, nofollow` on the staging host): not tested, and neither is any other response header.
+- Response headers: `vercel.json` sets none of its own, and no test checks any response header.
 - `.vercelignore` keeps `src/pages/archive/` out of deploys. The dev server still serves it, and nothing checks that it is absent in production.
 - Environment variables on Vercel (`CONSENT_DATABASE_URL`, `EASYTOOLS_WEBHOOK_TOKEN`, the Meta and Easytools keys): tests run without them, so nothing checks that Production and Preview have them right.
 - `astro.config.mjs` (Vercel adapter, language routing, sitemap, MDX, image service) is exercised only by the dev server.

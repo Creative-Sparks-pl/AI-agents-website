@@ -60,22 +60,5 @@
       "destination": "/:path/",
       "permanent": true
     }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "host",
-          "value": "staging.agents.creativesparks.pl"
-        }
-      ],
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
-    }
   ]
 }
