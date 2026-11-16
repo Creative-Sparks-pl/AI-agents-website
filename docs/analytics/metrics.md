@@ -30,7 +30,7 @@ These are the fixed definitions behind every number the improvement-cycle skill 
 7. **The page decides the language.** A path starting with `/en/` is English; any other path is Polish. After release, the event `language` property gives the same answer, and for `Purchase` that property is the only source. Umami's own `language` dimension and filter hold the visitor's browser language (e.g. `pl-PL`) for every browser event. Never use them as the site language. (For `Purchase`, sent from the server, read the event's `language` property too, not the dimension.)
 8. **Connector calls.** The parameter names below (`search`, `filters.path`, `filters.event`, `filters.hostname`, `eventName`, `propertyName`, `event`, `steps`, `windowMinutes`, the `*` wildcard in funnel steps) were checked against the Umami connector `@umami/mcp@0.2.0` on 2026-11-10. `filters.path` matches one exact stored path; `search` matches any path containing the text. `filters.device` and `filters.browser` take one value or several exact values separated by commas, e.g. `"laptop,desktop"` (checked 2026-11-12). The data-quality checks' `get_events` (`pageSize`, `page`; it returns `sessionId`, `path`, `createdAt` and `hasMore`, but no event labels) and `get_event_series` (`unit`, `limit`) were checked on 2026-11-12. So were `filters.utmTerm` and `filters.utmContent` (exact values, several separated by commas; the two together narrow to one ad), on `get_website_metrics` `type: "path"` and `type: "event"`.
 9. **Which call gives which count.** Take page views only from `get_website_metrics` with `type: "path"`; `get_website_stats` reports different `pageviews` totals for the same filter, so use it only for visitors and visits. The channel, referrer and hostname rankings count visitors per exact path, so never add them up across path variants. For events, get the totals with no path filter first, then split by path only where needed, and check the parts add up to the total.
-10. **Ad numbers from Meta come through one call.** Spend, link clicks, landing-page views and Meta leads per ad come from Meta's reporting API: `npm run report:meta-ads -- --since YYYY-MM-DD --until YYYY-MM-DD --campaign US-UXD-free-skills-2026Q4`, both days included. It is read-only: its key in `.env.local` can only read the ad account (`ads_read`), and the script never prints it. The ad account runs on Warsaw time, so `--since` and `--until` are the first and last Warsaw days of the Umami window (ground rule 3). The account also holds campaigns that aren't Creative Sparks, so always pass `--campaign`. Meta's numbers sit beside Umami's and never replace them (ground rule 1); "Ads" defines what is built from them.
+10. **Ad numbers from Meta come through one call.** Spend, link clicks, landing-page views and Meta leads per ad come from Meta's reporting API: `npm run report:meta-ads -- --since YYYY-MM-DD --until YYYY-MM-DD --campaign leads_free-skills`, both days included. The filter keeps campaigns whose name contains the text, so it catches `leads_free-skills_all` (named `US-UXD-free-skills-2026Q4` until 2026-11-16; Meta reports its earlier days under the new name). It is read-only: its key in `.env.local` can only read the ad account (`ads_read`), and the script never prints it. The ad account runs on Warsaw time, so `--since` and `--until` are the first and last Warsaw days of the Umami window (ground rule 3). The account also holds campaigns that aren't Creative Sparks, so always pass `--campaign`. Meta's numbers sit beside Umami's and never replace them (ground rule 1); "Ads" defines what is built from them.
 
 ## How we judge changes
 
@@ -297,7 +297,7 @@ Meta ad clicks arrive with these tags (checked against live clicks and an Ads Ma
 |---|---|
 | `utm_source` | `facebook` |
 | `utm_medium` | `paid_social` |
-| `utm_campaign` | campaign name, e.g. `US-UXD-free-skills-2026Q4` |
+| `utm_campaign` | campaign name, e.g. `leads_free-skills_all` (`US-UXD-free-skills-2026Q4` on clicks before 2026-11-16) |
 | `utm_content` | ad name, e.g. `website-planning-light`, `home-ux-audit-blue` |
 | `utm_id` | campaign ID |
 | `utm_term` | ad set ID — use this to split by ad set |
@@ -306,14 +306,27 @@ Ad set IDs (campaign `120243755481080302`):
 
 | `utm_term` | Ad set |
 |---|---|
-| `120249754635630302` | US-Skill-Website-Planning-Prospecting |
-| `120249759871620302` | EU-Skill-Website-Planning-Prospecting |
-| `120243755481140302` | US-Skill-Audit-Prospecting |
-| `120249759844410302` | EU-Skill-Audit-Prospecting |
+| `120249754635630302` | `us_planning_cold_claude` |
+| `120249759871620302` | `eu_planning_cold` |
+| `120243755481140302` | `us_audit_cold_claude` |
+| `120249759844410302` | `eu_audit_cold` |
+| `120249796240980302` | `us_audit_cold_cs` |
+| `120249796269420302` | `us_planning_cold_cs` |
+| `120249823489450302` | `us_uxd_cold` |
+| `120249823817780302` | `LAB_us_planning_cold_terminal-pn2` |
+| `120249847486340302` | `LAB_us_planning_cold_steps-pn4` |
+| `120249866500180302` | `LAB_pl_planning_cold_terminal-pn2` |
+| `120249866494370302` | `LAB_pl_planning_cold_steps-pn4` |
+| `120249866337600302` | `LAB_pl_planning_cold_screenshot-pn1` |
 
-- One ad still sends old tags: `home-ux-audit-light` in US-Skill-Audit-Prospecting arrives as `utm_campaign=EN-UXD-faza1-2026Q2-Audyt`, `utm_content=free-audit-skil`. Its `utm_term` is still right, so count it by `utm_term`, never by `utm_campaign` or `utm_content` alone. Per ad, Umami's `free-audit-skil` in ad set `120243755481140302` is the report's `home-ux-audit-light` in that ad set.
+- One ad still sends old tags: `home-ux-audit-light` in `us_audit_cold_claude` arrives as `utm_campaign=EN-UXD-faza1-2026Q2-Audyt`, `utm_content=free-audit-skil`. Its `utm_term` is still right, so count it by `utm_term`, never by `utm_campaign` or `utm_content` alone. Per ad, Umami's `free-audit-skil` in ad set `120243755481140302` is the report's `home-ux-audit-light` in that ad set.
 - Add new ad sets to the table when they launch (their ID shows in Ads Manager's "Ad set ID" column, in the report's "Ad set ID (utm_term)" column, or as a new `utm_term` value in Umami).
-- Ad set names can change in Ads Manager; IDs don't. The report now shows the two US ad sets as `US-Skill-Audit-Claude-Prospecting` and `US-Skill-Website-Planning-Claude-Prospecting`. Match ad sets by ID.
+- Ad set names can change in Ads Manager; IDs don't. All ad sets were renamed on 2026-11-16, and reports saved before that day use the old names (e.g. `US-Skill-Website-Planning-Claude-Prospecting`, `LAB-US-terminal-pn2-light`). Match ad sets by ID.
+
+Names follow one pattern since 2026-11-16: fields joined by `_`, words inside a field by `-`, lowercase (the `LAB_` flag in capitals).
+- **Campaign** `goal_product_market[_period]`: one per goal (`leads`, `reach`, `sales`) or time-boxed push, e.g. `leads_free-skills_all`, `reach_uxd_all_bf2026`. A new market or offer is an ad set, not a campaign. The name is `utm_campaign` and the report's `--campaign` filter, so a rename means updating the filter here (ground rule 10) and in `/cro-cycle`.
+- **Ad set** `[LAB_]market_offer_audience[_creative]`: market `us`, `eu`, `pl` (for retargeting, the price list: `en` or `pl`); offer `audit`, `planning`, `uxd`; audience `cold` (new people) or `warm-<audience>` (retargeting). `LAB_` marks a creative test and is dropped when the ad passes.
+- **Ad** `offer_concept-copy_style`, e.g. `planning_terminal-pn2_light`. The ad name is `utm_content`, so it is set once and never changed; ads launched before 2026-11-16 keep their old names (`website-planning-light`, `terminal-pn2-light`). The same creative keeps one name in every market; `utm_term` tells the markets apart.
 
 ### An ad's visitors in Umami
 
