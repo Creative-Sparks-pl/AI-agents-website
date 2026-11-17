@@ -62,7 +62,7 @@ rows:
     cells:
       skill:
         status: "price"
-        text: Od 1 299 zł, jednorazowo.
+        text: Od 449 zł, jednorazowo.
       claude:
         status: "price"
         text: Subskrypcja Claude Pro / Max.
