@@ -25,7 +25,7 @@ const prefix = SALE_PREFIX[locale];
 // browser by the script below, at both edges of the sale window:
 // - [data-sale-only] shows only inside the window, [data-list-only] only outside it;
 // - an element with data-list-href and data-sale-href gets the matching href;
-// - [data-sale-countdown] shows the time left until the window ends.
+// - [data-sale-countdown] shows the time left until the window ends, and hides itself outside it.
 // A tab left open across an edge flips without a reload; a stale build
 // corrects itself on load.
 ---
@@ -35,6 +35,7 @@ const prefix = SALE_PREFIX[locale];
     class="inline-flex items-baseline gap-1.5"
     data-sale-countdown
     data-sale-locale={locale}
+    style={initialRemaining ? undefined : 'display:none'}
   >
     <span>{prefix}</span>
     <span class="font-bold" data-sale-body>{initialText}</span>
@@ -80,7 +81,7 @@ const prefix = SALE_PREFIX[locale];
     function apply(inSale) {
       if (applied === inSale) return;
       applied = inSale;
-      document.querySelectorAll('[data-sale-only]').forEach(function (el) { show(el, inSale); });
+      document.querySelectorAll('[data-sale-only], [data-sale-countdown]').forEach(function (el) { show(el, inSale); });
       document.querySelectorAll('[data-list-only]').forEach(function (el) { show(el, !inSale); });
       document.querySelectorAll('[data-list-href][data-sale-href]').forEach(function (el) {
         el.setAttribute('href', el.getAttribute(inSale ? 'data-sale-href' : 'data-list-href'));
