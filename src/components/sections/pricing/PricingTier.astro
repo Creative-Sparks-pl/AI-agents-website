@@ -75,7 +75,7 @@ const inSale = isInSaleWindow(Date.now());
 
   <div class="mb-8" data-sale-only style={inSale ? undefined : 'display:none'}>
     <span class="text-xs font-label text-primary font-bold mb-1 block">{copy.saleLabel}</span>
-    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/40' : 'text-muted/60']}>{priceDisplay(listPrice)}</span>
+    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/70' : 'text-muted']}>{priceDisplay(listPrice)}</span>
     <div class="flex items-baseline">
       {copy.currencyPosition === 'prefix' && (
         <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>

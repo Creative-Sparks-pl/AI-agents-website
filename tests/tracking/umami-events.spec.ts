@@ -51,8 +51,8 @@ const ERROR_CASES: Array<{ name: string; typed: string; failure?: Failure; reaso
 
 // Plans in the order the pricing section shows them.
 const CHECKOUT_CASES = [
-  { path: '/ux-design-skill/', language: 'pl', plans: ['Solo', 'Studio', 'Agencja'] },
-  { path: '/en/ux-design-skill/', language: 'en', plans: ['Solo', 'Studio', 'Agency'] },
+  { path: '/ux-design-skill/', language: 'pl', plans: ['Własna strona', 'Projektant Solo', 'Studio'] },
+  { path: '/en/ux-design-skill/', language: 'en', plans: ['Own Site', 'Designer Solo', 'Studio'] },
 ];
 
 type UmamiCall = unknown[];
@@ -274,6 +274,8 @@ for (const { path, language, plans } of CHECKOUT_CASES) {
     const links = page.locator('a[data-umami-event="Pricing CTA"]');
     await expect(links).toHaveCount(plans.length);
 
+    // Each card opens its own package's cart, so the purchase shows which card sold.
+    const carts = new Set<string>();
     for (const [i, plan] of plans.entries()) {
       const link = links.nth(i);
       await expect(link).toHaveAttribute('data-umami-event-plan', plan);
@@ -287,7 +289,9 @@ for (const { path, language, plans } of CHECKOUT_CASES) {
       expect(checkout.host).toBe('cart.creativesparks.pl');
       expect(checkout.searchParams.get('lang')).toBe(language);
       expect(checkout.searchParams.get('page')).toBe(path);
+      carts.add(`${checkout.origin}${checkout.pathname}`);
     }
+    expect(carts.size).toBe(plans.length);
   });
 }
 
