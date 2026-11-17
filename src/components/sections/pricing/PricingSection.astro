@@ -60,6 +60,7 @@ const copy = locale === 'en'
           <div class="grid" data-umami-seen={i === 0 ? 'Pricing seen' : undefined}>
             <PricingTier
               name={plan.data.name}
+              group={plan.data.group}
               sub={plan.data.sub}
               value={plan.data.value}
               listPrice={plan.data.listPrice}

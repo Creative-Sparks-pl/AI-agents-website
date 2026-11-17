@@ -5,6 +5,7 @@ import { isInSaleWindow } from '../../../lib/presale';
 
 interface Props {
   name: string;
+  group: string;
   sub: string;
   value: string;
   listPrice: string;
@@ -15,13 +16,12 @@ interface Props {
   features: string[];
 }
 
-const { name, sub, value, listPrice, salePrice, listCheckoutUrl, saleCheckoutUrl, highlight, features } = Astro.props;
+const { name, group, sub, value, listPrice, salePrice, listCheckoutUrl, saleCheckoutUrl, highlight, features } = Astro.props;
 
 const locale = localeFromPathname(Astro.url.pathname);
 
 const copy = locale === 'en'
   ? {
-      packageLabel: 'Package',
       saleLabel: 'Black Friday',
       currencySymbol: '$',
       currencyPosition: 'prefix' as const,
@@ -30,7 +30,6 @@ const copy = locale === 'en'
       ctaLabel: (n: string) => `Buy ${n}`,
     }
   : {
-      packageLabel: 'Pakiet',
       saleLabel: 'Black Friday',
       currencySymbol: 'zł',
       currencyPosition: 'suffix' as const,
@@ -68,7 +67,7 @@ const inSale = isInSaleWindow(Date.now());
   highlight ? 'bg-accent text-foreground' : 'bg-surface'
 ]}>
   <div class="mb-8">
-    <span class="text-xs font-label text-primary mb-2 block">{copy.packageLabel}</span>
+    <span class="text-xs font-label text-primary mb-2 block">{group}</span>
     <h3 class="font-headline font-bold text-3xl mb-2">{name}</h3>
     <p class:list={['text-sm', highlight ? 'text-foreground/70' : 'text-muted']}>{sub}</p>
     <p class="text-base font-bold mt-4">{value}</p>

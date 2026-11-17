@@ -18,9 +18,9 @@ const PAGES = [
     countdownPrefix: 'Black Friday kończy się za',
     lowestPrice: (p: string) => `Najniższa cena z 30 dni przed obniżką: ${p}`,
     plans: [
-      { name: 'Własna strona', list: '449 zł', sale: '359' },
-      { name: 'Projektant Solo', list: '749 zł', sale: '599' },
-      { name: 'Studio', list: '1 249 zł', sale: '999' },
+      { name: 'Founder', group: 'Dla siebie', list: '449 zł', sale: '359' },
+      { name: 'Projektant Solo', group: 'Dla klientów', list: '749 zł', sale: '599' },
+      { name: 'Studio', group: 'Dla klientów', list: '1 249 zł', sale: '999' },
     ],
   },
   {
@@ -29,9 +29,9 @@ const PAGES = [
     countdownPrefix: 'Black Friday ends in',
     lowestPrice: (p: string) => `Lowest price in the 30 days before the discount: ${p}`,
     plans: [
-      { name: 'Own Site', list: '$149', sale: '119' },
-      { name: 'Designer Solo', list: '$229', sale: '183' },
-      { name: 'Studio', list: '$379', sale: '303' },
+      { name: 'Founder', group: 'For yourself', list: '$149', sale: '119' },
+      { name: 'Designer Solo', group: 'For clients', list: '$229', sale: '183' },
+      { name: 'Studio', group: 'For clients', list: '$379', sale: '303' },
     ],
   },
 ] as const;
@@ -70,6 +70,8 @@ async function expectState(page: Page, { locale, path, plans, countdownPrefix, l
     // Each card has its own list and Black Friday links; the button uses the one for the current state.
     const link = links.nth(i);
     await expect(link).toHaveAttribute('data-umami-event-plan', plan.name);
+    await expect(section.locator('h3').nth(i)).toHaveText(plan.name);
+    await expect(section.getByText(plan.group, { exact: true }).first()).toBeVisible();
     const listHref = (await link.getAttribute('data-list-href'))!;
     const saleHref = (await link.getAttribute('data-sale-href'))!;
     expect(listHref).not.toBe(saleHref);

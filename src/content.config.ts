@@ -68,6 +68,8 @@ const pricing = defineCollection({
   schema: z.object({
     order: z.number(),
     name: z.string(),
+    // Label above the name that sorts the cards by use: "Dla siebie" / "Dla klientów".
+    group: z.string(),
     sub: z.string(),
     // One sentence on what the package is worth to its buyer.
     value: z.string(),
