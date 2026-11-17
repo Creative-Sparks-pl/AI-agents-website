@@ -7,7 +7,6 @@ import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
 import PricingTier from './PricingTier.astro';
 import LinkArrow from '../../ui/LinkArrow.astro';
 import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
-import { isPresaleActive } from '../../../lib/presale';
 
 interface Props extends HTMLAttributes<'section'> {
   class?: string;
@@ -21,11 +20,13 @@ const plans = (await getLocalizedCollection('pricing', locale))
 
 const copy = locale === 'en'
   ? {
-      heading: 'Three packages, one-time license',
+      heading: 'Do you build sites for clients or for yourself?',
+      termsLine: 'One-time license · 12 months of updates · then renewal at about half the price',
       refundNote: '14-day refund. Not a fit? Return it.',
     }
   : {
-      heading: 'Trzy pakiety, jednorazowa licencja',
+      heading: 'Robisz strony dla klientów czy dla siebie?',
+      termsLine: 'Jednorazowa licencja · 12 miesięcy aktualizacji · potem przedłużenie za ok. połowę ceny',
       refundNote: '14 dni na sprawdzenie. Nie pasuje, oddajesz.',
     };
 ---
@@ -39,22 +40,12 @@ const copy = locale === 'en'
   <div class="max-w-screen-2xl mx-auto px-6">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <div
-          class="inline-flex items-center gap-2 bg-accent border border-accent text-foreground px-4 py-1.5 mb-6"
-          data-presale-badge
-          style={isPresaleActive(Date.now()) ? undefined : 'display:none'}
-        >
-          <span class="material-symbols-outlined text-primary text-sm" data-icon="auto_awesome" aria-hidden="true">auto_awesome</span>
-          <span class="text-sm font-bold text-foreground font-label">
-            <PreSaleCountdown />
-          </span>
-        </div>
         <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
           {copy.heading}
         </h2>
         {locale === 'pl' && (
           <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
-            Sześć miesięcy darmowych aktualizacji w cenie.
+            12 miesięcy darmowych aktualizacji w cenie.
             <LinkArrow href="/ux-design-skill/changelog/" class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
               Zobacz changelog
             </LinkArrow>
@@ -70,8 +61,11 @@ const copy = locale === 'en'
             <PricingTier
               name={plan.data.name}
               sub={plan.data.sub}
-              oldPrice={plan.data.oldPrice}
-              price={plan.data.price}
+              value={plan.data.value}
+              listPrice={plan.data.listPrice}
+              salePrice={plan.data.salePrice}
+              listCheckoutUrl={plan.data.listCheckoutUrl}
+              saleCheckoutUrl={plan.data.saleCheckoutUrl}
               highlight={plan.data.highlight}
               features={plan.data.features}
             />
@@ -79,11 +73,15 @@ const copy = locale === 'en'
         ))}
       </div>
 
-      <div class="mt-8 px-8 py-4 flex items-center justify-center gap-3 text-center">
+      <p class="mt-8 text-center text-base text-muted">{copy.termsLine}</p>
+
+      <div class="mt-4 px-8 py-4 flex items-center justify-center gap-3 text-center">
         <span class="material-symbols-outlined text-primary text-xl shrink-0" aria-hidden="true">task_alt</span>
         <p class="font-headline text-base md:text-lg font-bold text-foreground tracking-tight">{copy.refundNote}</p>
       </div>
 
     </SectionWithIcon>
   </div>
+  {/* Swaps the cards' prices and buy links at the edges of the sale window. */}
+  <PreSaleCountdown showCountdown={false} />
 </section>
