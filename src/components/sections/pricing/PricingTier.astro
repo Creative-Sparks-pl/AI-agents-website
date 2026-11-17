@@ -39,9 +39,10 @@ const copy = locale === 'en'
       ctaLabel: (n: string) => `Kup ${n}`,
     };
 
-const priceDisplay = (p: string) => copy.currencyPosition === 'prefix'
+// Non-breaking spaces keep a price such as "1 249 zł" on one line.
+const priceDisplay = (p: string) => (copy.currencyPosition === 'prefix'
   ? `${copy.currencySymbol}${p}`
-  : `${p} ${copy.currencySymbol}`;
+  : `${p} ${copy.currencySymbol}`).replace(/ /g, String.fromCharCode(160));
 
 // The landing page rides along to checkout as `page`; the purchase webhook reads it back
 // from `custom_params.page` and reports the sale on that page in Umami. Set with the URL API,
