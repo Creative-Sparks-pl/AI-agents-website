@@ -289,7 +289,8 @@ for (const { path, language, plans } of CHECKOUT_CASES) {
       expect(checkout.host).toBe('cart.creativesparks.pl');
       expect(checkout.searchParams.get('lang')).toBe(language);
       expect(checkout.searchParams.get('page')).toBe(path);
-      carts.add(`${checkout.origin}${checkout.pathname}`);
+      // A cart is its product address plus the price variant it opens (`plan`).
+      carts.add(`${checkout.origin}${checkout.pathname}?plan=${checkout.searchParams.get('plan')}`);
     }
     expect(carts.size).toBe(plans.length);
   });
