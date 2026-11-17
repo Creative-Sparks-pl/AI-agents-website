@@ -24,7 +24,8 @@ const hero = defineCollection({
     ctaPrimary: linkSchema,
     ctaSecondary: linkSchema.optional(),
     videoLabel: z.string().optional(),
-    countdownTarget: z.literal('presale').optional(),
+    // 'sale': the badge counts down to the end of the sale window while it runs.
+    countdownTarget: z.literal('sale').optional(),
     rating: z.object({ value: z.number(), text: z.string(), label: z.string(), href: z.string().optional() }).optional(),
   }),
 });
