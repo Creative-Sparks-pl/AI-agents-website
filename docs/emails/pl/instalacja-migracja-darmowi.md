@@ -1,8 +1,8 @@
 <!-- Draft: Polish, Easymail list "UX Designer – migracja darmowi (PL)" (`d1d354c7-4d17-4214-ab05-e7473d931df8`, setting `EASYMAIL_MIGRATION_LIST_FREE_PL`). Audience: current owners of a free skill from a Polish product (Skill do audytu UX strony głównej or Skill do planowania stron), sent once per skill by UX Designer 4.6's migration, so an owner of both gets two. Rewrite of the Polish free-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. One automation serves both skills, so the text names neither as "yours". {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
 
-**Subject:** Twój darmowy skill: osobisty link do instalacji.
+**Subject:** Aktualizacja Twojego darmowego skilla: osobisty link do instalacji.
 
-**Preheader:** Twoja kopia działa dalej, a link zaktualizuje ją do obecnej wersji.
+**Preheader:** Twoja kopia działa dalej, a instalacja z linku zachowa Twoje zmiany.
 
 ---
 
