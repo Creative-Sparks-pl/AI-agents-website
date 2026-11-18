@@ -4,7 +4,7 @@ The text customers see on the Easytools checkout pages at `cart.creativesparks.p
 
 How to use it:
 - To change cart text, edit it here first, then paste it into Easytools (product → Produkt for the name, description and link; Warianty ceny for the package names and prices) and publish the product. A saved change only reaches the cart after **Publikuj**.
-- After a change in Easytools made outside this file, copy it back here so the two stay the same.
+- Changes tried out in Easytools first are fine; copy them back here the same day so the two stay the same. When the two differ, the live cart is the newer version.
 - The site's own prices and package names live in `src/content/pricing/`; the variant names below must match the card names there.
 - Synced with the live carts on 2026-11-18.
 
@@ -92,7 +92,7 @@ Description, bullets and link: as in UX Design Skill EN above.
 
 ## Free: Website Planning Skill
 
-Granted by the site's sign-up form through `src/pages/api/subscribe.ts`; the checkout page is a second way in. The product names below are also read by the free-skill download count (`src/lib/free-skill-downloads.ts`), so a rename there must update that file too.
+The site does not send people to these carts: its sign-up form grants the skill through the Easytools API (`src/pages/api/subscribe.ts`), and marketing consent comes from the form's own wording, not from the cart checkbox. The cart page is still public, and the product name below is what the access email and the customer portal show. The free-skill download count (`src/lib/free-skill-downloads.ts`) matches orders by these product names, so a rename must update that file too.
 
 ### PL — `Skill do planowania stron`
 
@@ -100,18 +100,18 @@ Checkout: `https://cart.creativesparks.pl/checkout/website-planning-skill-pl` ·
 
 Description:
 
-> Pyta o Twoje potrzeby i kontekst projektu, a później planuje strukturę oraz zawartość strony.
+> Pyta o Twoje potrzeby i kontekst projektu, a później planuje strukturę oraz zawartość strony. Każda decyzja z uzasadnieniem i odrzuconymi wariantami obok.
 
-- Każda decyzja z uzasadnieniem i odrzuconymi wariantami obok.
 - Plan strony z mapą stron, strukturą sekcji i wytycznymi zawartości.
 - Rozumie 16 typów stron, używa 13 frameworków UX i 50+ wzorców projektowych.
+- Każda decyzja z uzasadnieniem i odrzuconymi wariantami.
 - Decyzje są oznaczone poziomem pewności, więc wiesz, gdzie AI zgaduje.
 
-Link: **» Sprawdź możliwości pełnej wersji Skilla do projektowania UX** → `https://agents.creativesparks.pl/ux-design-skill/`
+Link: **» Sprawdź możliwości pełnej wersji UX Design Skill** → `https://agents.creativesparks.pl/ux-design-skill/`
 
 Marketing checkbox:
 
-- [ ] Zgadzam się na otrzymywanie od Creative Sparks informacji o nowościach, produktach i usługach.
+- [ ] Zgadzam się na otrzymywanie od Creative Sparks informacji nowościach, produktach i usługach.
 
 ### EN — `Website Planning Skill`
 
@@ -126,7 +126,7 @@ Description:
 - Knows 16 site types and draws on 13 UX frameworks and 50+ design patterns.
 - Confidence levels on each decision show you where the AI is guessing.
 
-Link: **» See what the full UX Design Skill can do** → `https://agents.creativesparks.pl/en/ux-design-skill/`
+Link: **» See what the full UX Design Skill can do** → `https://agents.creativesparks.pl/ux-design-skill/`
 
 Marketing checkbox:
 
@@ -149,13 +149,11 @@ Description:
 
 Link: **» Sprawdź możliwości pełnej wersji Skilla do projektowania UX** → `https://agents.creativesparks.pl/ux-design-skill/`
 
-Marketing checkbox:
-
-- [ ] Zgadzam się na otrzymywanie od Creative Sparks informacji o nowościach, produktach i usługach.
+Marketing checkbox: none.
 
 ### EN — `Homepage UX Audit Skill`
 
-Checkout: `https://cart.creativesparks.pl/checkout/ux-audit-skill-en` · access 60 days
+Checkout: `https://cart.creativesparks.pl/checkout/ux-audit-skill-en` · access 60 days · variant name shown under the product name: "Pakiet Solo (1 użytkownik)"
 
 Description:
 
@@ -168,21 +166,19 @@ Description:
 
 Link: **» See what the full UX Design Skill can do** → `https://agents.creativesparks.pl/en/ux-design-skill/`
 
-Marketing checkbox:
-
-- [ ] I agree to receive news and updates about products and services from Creative Sparks.
+Marketing checkbox: none.
 
 ## Not listed
 
 - `UX Design Lead NGO` — a draft product, not on sale.
 
-## Live carts that differ from this file (2026-11-18)
+## Open points in the live carts (2026-11-18)
 
-Each line is a change to make in Easytools so the cart matches the text above.
+The text above is what the live carts show. These look like slips rather than choices; each is fixed in Easytools and then here.
 
-- Website Planning Skill PL: the description repeats "Każda decyzja z uzasadnieniem i odrzuconymi wariantami obok." at the end of its first paragraph; the link reads "Sprawdź możliwości pełnej wersji UX Design Skill"; the marketing checkbox lacks "o" ("informacji nowościach").
-- Website Planning Skill EN: the link goes to the Polish page (`/ux-design-skill/`).
-- Homepage UX Audit Skill PL and EN: no marketing checkbox.
-- Homepage UX Audit Skill EN: the variant is named "Pakiet Solo (1 użytkownik)" and shows under the product name.
-- Paid products: no marketing checkbox (the earlier copy had one) — keep off or add, owner's call.
-- Every cart: the privacy-policy link goes to `creativesparks.pl/ux-design-agent/polityka-prywatnosci`, which redirects to the agency's general policy, not the skill's (`agents.creativesparks.pl/ux-design-skill/polityka-prywatnosci/`, `/en/ux-design-skill/privacy-policy/`).
+- Website Planning Skill PL: the marketing checkbox lacks "o" ("informacji nowościach" → "informacji o nowościach").
+- Website Planning Skill PL: "Każda decyzja z uzasadnieniem i odrzuconymi wariantami" appears twice, at the end of the description and as the third bullet.
+- Website Planning Skill EN: "See what the full UX Design Skill can do" links to the Polish page; the audit cart links to `/en/ux-design-skill/`.
+- Homepage UX Audit Skill EN: the variant is named in Polish ("Pakiet Solo (1 użytkownik)") and shows under the product name.
+- The two free PL carts name the paid skill differently in their link: "UX Design Skill" (planning) and "Skilla do projektowania UX" (audit).
+- Every cart: the privacy-policy link (a store setting) goes to `creativesparks.pl/ux-design-agent/polityka-prywatnosci`, which redirects to the agency's general policy, not the skill's (`agents.creativesparks.pl/ux-design-skill/polityka-prywatnosci/`, `/en/ux-design-skill/privacy-policy/`).
