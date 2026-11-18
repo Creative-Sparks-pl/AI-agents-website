@@ -6,17 +6,7 @@
 
 ---
 
-Dziękuję za zakup [UX Design Skill](https://agents.creativesparks.pl/ux-design-skill/). Poniżej znajdziesz, jak go zainstalować i jak poprowadzić pierwszy projekt, żeby szybko dojść do dobrego wyniku.
-
-
-## Pobierz paczkę.
-
-Link do pobrania nie wygasa, więc możesz wrócić do niego w każdej chwili. W środku jest skill dla Claude Code, Codexa i Cursora oraz wersje dla Claude Projects, ChatGPT i Gemini. Przez 6 miesięcy dostajesz też nowe wersje skilla. [?]
-
-
-## Zainstaluj skill w 2-3 minuty.
-
-Najlepiej pracuje się w Claude Code. Napisz agentowi „Zainstaluj ten skill zgodnie z INSTALL.md" i wskaż folder z paczką. Zanim coś skopiuje, pokaże plan i poprosi o zgodę. Potem uruchomisz skill komendą /ux-designer, a w Codexie $ux-designer.
+Dziękuję za zakup [UX Design Skill](https://agents.creativesparks.pl/ux-design-skill/). Poniżej znajdziesz, jak poprowadzić pierwszy projekt, żeby szybko dojść do dobrego wyniku.
 
 
 ## Zacznij od briefu i researchu.

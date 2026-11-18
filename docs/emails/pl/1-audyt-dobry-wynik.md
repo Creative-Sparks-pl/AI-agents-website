@@ -40,5 +40,3 @@ Ma świetne opinie kupujących, a podobnego narzędzia nie ma na rynku.
 **CTA (until 15.11):** Sprawdź opinie i kup ze zniżką
 
 **CTA (from 16.11):** Sprawdź opinie i kup pełną wersję
-
-PS. Skilla zainstalujesz, wskazując agentowi AI plik INSTALL.md, a uruchomisz komendą /ux-audit.

@@ -38,5 +38,3 @@ Buyers love it, and there's nothing else like it out there.
 [image with review]
 
 **CTA:** See reviews and pricing
-
-PS. To install the skill, point your AI agent to INSTALL.md. Then run it with /ux-audit.
