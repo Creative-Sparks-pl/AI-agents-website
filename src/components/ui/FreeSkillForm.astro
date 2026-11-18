@@ -31,6 +31,7 @@ const COPY_PL = {
   errUnavailable: 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.',
   errGeneric: 'Wystąpił błąd. Spróbuj ponownie za chwilę.',
   errOffline: 'Brak połączenia. Sprawdź internet i spróbuj ponownie.',
+  nextStep: 'Wyślemy Ci mailem osobisty link do instalacji.',
   disclaimerPrefix: 'Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z ',
   disclaimerLinkLabel: 'Polityką prywatności',
   disclaimerSuffix: ').',
@@ -49,6 +50,7 @@ const COPY_EN = {
   errUnavailable: 'Temporarily unavailable. Try again in a moment.',
   errGeneric: 'Something went wrong. Try again in a moment.',
   errOffline: 'No connection. Check your internet and try again.',
+  nextStep: "We'll email you a personal install link.",
   disclaimerPrefix: 'By submitting your email you consent to receive product and service updates (per our ',
   disclaimerLinkLabel: 'Privacy Policy',
   disclaimerSuffix: ').',
@@ -155,6 +157,7 @@ const iconSize: Record<Size, string> = {
   </form>
 
   <p class="free-skill-form__disclaimer mt-3 text-sm text-muted leading-relaxed">
+    <span class="free-skill-form__next-step block">{COPY.nextStep}</span>
     {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix}
   </p>
 
