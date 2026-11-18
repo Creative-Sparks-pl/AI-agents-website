@@ -229,7 +229,11 @@ const iconSize: Record<Size, string> = {
   type FunnelData = { skill: string; language: string; surface: string; page: string };
   // Why a submit failed, as the visitor was told; never the server's message or the typed address.
   type SubmitErrorReason = 'invalid_email' | 'not_configured' | 'server_error' | 'offline';
-  type EventData = FunnelData & { reason?: SubmitErrorReason };
+  // Where a server_error came from: the site's HTTP status, the Easytools step that failed and Easytools'
+  // HTTP status (0: no answer). `stage` is "none" when the answer named no step, e.g. a platform timeout page.
+  type ServerErrorData = { site_status: number; stage: string; easytools_status?: number };
+  type EventData = FunnelData & { reason?: SubmitErrorReason } & Partial<ServerErrorData>;
+  const FAILED_STAGES = new Set(['grant', 'product_read', 'no_file']);
 
   // Umami loads as a deferred script and may be blocked, so every call checks it is there.
   function trackUmami(name: string, data: EventData) {
@@ -239,8 +243,16 @@ const iconSize: Record<Size, string> = {
     }
   }
 
-  function trackSubmitError(funnel: FunnelData, reason: SubmitErrorReason) {
-    trackUmami('Free skill submit error', { ...funnel, reason });
+  function trackSubmitError(funnel: FunnelData, reason: SubmitErrorReason, server?: ServerErrorData) {
+    trackUmami('Free skill submit error', { ...funnel, reason, ...server });
+  }
+
+  /** Only known step names and whole-number statuses pass, so nothing else from the answer reaches analytics. */
+  function serverErrorData(siteStatus: number, payload: { stage?: unknown; status?: unknown }): ServerErrorData {
+    const stage = typeof payload.stage === 'string' && FAILED_STAGES.has(payload.stage) ? payload.stage : 'none';
+    const data: ServerErrorData = { site_status: siteStatus, stage };
+    if (stage !== 'none' && Number.isInteger(payload.status)) data.easytools_status = payload.status as number;
+    return data;
   }
 
   // The email goes only to the Meta helper, which sends its SHA-256 hash with marketing consent, never the address.
@@ -316,6 +328,8 @@ const iconSize: Record<Size, string> = {
           ok?: boolean;
           downloadUrl?: string;
           reason?: string;
+          stage?: unknown;
+          status?: unknown;
         };
 
         if (res.ok && payload.ok && payload.downloadUrl) {
@@ -333,7 +347,7 @@ const iconSize: Record<Size, string> = {
           trackSubmitError(funnel, 'not_configured');
         } else {
           showError(root, i18n.errGeneric);
-          trackSubmitError(funnel, 'server_error');
+          trackSubmitError(funnel, 'server_error', serverErrorData(res.status, payload));
         }
         setState(root, 'error');
       } catch (_err) {

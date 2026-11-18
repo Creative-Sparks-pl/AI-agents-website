@@ -4,6 +4,8 @@ export const prerender = false;
 
 type Skill = 'audit' | 'planning';
 type Locale = 'pl' | 'en';
+// The Easytools step a failed signup stopped at.
+type FailedStage = 'grant' | 'product_read' | 'no_file';
 
 interface SubscribeBody {
   email?: string;
@@ -88,6 +90,10 @@ export const POST: APIRoute = async ({ request }) => {
     'User-Agent': USER_AGENT,
   };
 
+  // Failed answers say which step failed and Easytools' HTTP status (0: no answer), so the form's error
+  // event shows the cause. Never Easytools' message text, which may contain the email.
+  let stage: FailedStage = 'grant';
+
   try {
     // Grant the free product. Easytools creates the customer account if needed and sends the access email.
     const grant = await fetch(`${EASYCART_API}/product-access`, {
@@ -110,10 +116,11 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       console.error('[subscribe] easytools grant non-ok response:', grant.status, errorText);
-      return json({ ok: false, reason: 'upstream_error' }, 502);
+      return json({ ok: false, reason: 'upstream_error', stage, status: grant.status }, 502);
     }
 
     // The grant answer carries no link; reading the product returns a signed download link (~1 hour).
+    stage = 'product_read';
     const productResponse = await fetch(`${EASYCART_API}/products/${productId}`, { headers });
     if (!productResponse.ok) {
       console.error(
@@ -121,20 +128,21 @@ export const POST: APIRoute = async ({ request }) => {
         productResponse.status,
         await productResponse.text(),
       );
-      return json({ ok: false, reason: 'upstream_error' }, 502);
+      return json({ ok: false, reason: 'upstream_error', stage, status: productResponse.status }, 502);
     }
 
     const product = (await productResponse.json()) as EasytoolsProduct;
     const downloadUrl = product.files?.[0]?.download_url;
     if (!downloadUrl) {
       console.error('[subscribe] easytools product has no downloadable file:', productId);
-      return json({ ok: false, reason: 'upstream_error' }, 502);
+      return json({ ok: false, reason: 'upstream_error', stage: 'no_file', status: productResponse.status }, 502);
     }
 
     return json({ ok: true, downloadUrl }, 200);
   } catch (err) {
-    console.error('[subscribe] fetch failed:', err);
-    return json({ ok: false, reason: 'internal_error' }, 500);
+    // No usable answer at this step: the request failed, or the answer was not readable.
+    console.error('[subscribe] fetch failed:', stage, err);
+    return json({ ok: false, reason: 'internal_error', stage, status: 0 }, 500);
   }
 };
 

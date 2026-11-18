@@ -4,7 +4,8 @@ import { expectAxeClean, openPage, shoot, widthOf } from './helpers';
 const HEADING = '#try-free-heading';
 
 // Wording that stopped being true when the pre-sale ended on June 1, 2026.
-const EXPIRED = /przedsprzeda|pre-?sale|czerwca|june|launch pricing|dwana[sś]cie|twelve months|wy[zż]sze ceny/i;
+// The 12 months of updates are the offer again since the 2026-11 pricing (written with digits).
+const EXPIRED = /przedsprzeda|pre-?sale|czerwca|june|launch pricing|wy[zż]sze ceny/i;
 
 const PAGES = [
   {

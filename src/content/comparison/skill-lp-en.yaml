@@ -62,7 +62,7 @@ rows:
     cells:
       skill:
         status: "price"
-        text: From $379, one-time payment.
+        text: From $149, one-time payment.
       claude:
         status: "price"
         text: Claude Pro / Max subscription.

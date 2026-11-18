@@ -1,36 +1,53 @@
 ---
 import { localeFromPathname } from '../../lib/i18n';
 import {
-  PRESALE_DEADLINE_MS,
-  PRESALE_PREFIX,
+  SALE_START_MS,
+  SALE_END_MS,
+  SALE_PREFIX,
   getRemaining,
   formatRemaining,
 } from '../../lib/presale';
 
+interface Props {
+  // false renders only the sale-window script (for sections that swap prices
+  // and links but show no countdown of their own).
+  showCountdown?: boolean;
+}
+
+const { showCountdown = true } = Astro.props;
+
 const locale = localeFromPathname(Astro.url.pathname);
 const initialRemaining = getRemaining(Date.now());
 const initialText = initialRemaining ? formatRemaining(initialRemaining, locale) : '';
-const prefix = PRESALE_PREFIX[locale];
+const prefix = SALE_PREFIX[locale];
 
-// If the pre-sale is already over at build time we still emit the markup —
-// the inline script runs on the client, sees Date.now() > deadline, and
-// hides the badge. Server-rendered text is the static fallback for the
-// pre-JS paint window; never visible to anyone past the deadline because
-// the client script removes it before paint becomes interactive.
+// Page-wide contract, server-rendered for build time and kept right in the
+// browser by the script below, at both edges of the sale window:
+// - [data-sale-only] shows only inside the window, [data-list-only] only outside it;
+// - an element with data-list-href and data-sale-href gets the matching href;
+// - [data-sale-countdown] shows the time left until the window ends, and hides itself outside it.
+// A tab left open across an edge flips without a reload; a stale build
+// corrects itself on load.
 ---
 
-<span
-  class="inline-flex items-baseline gap-1.5"
-  data-presale-countdown
-  data-presale-deadline={PRESALE_DEADLINE_MS}
-  data-presale-locale={locale}
->
-  <span>{prefix}</span>
-  <span class="font-bold" data-presale-body>{initialText}</span>
-</span>
+{showCountdown && (
+  <span
+    class="inline-flex items-baseline gap-1.5"
+    data-sale-countdown
+    data-sale-locale={locale}
+    style={initialRemaining ? undefined : 'display:none'}
+  >
+    <span>{prefix}</span>
+    <span class="font-bold" data-sale-body>{initialText}</span>
+  </span>
+)}
 
-<script is:inline define:vars={{ PRESALE_DEADLINE_MS }}>
+<script is:inline define:vars={{ SALE_START_MS, SALE_END_MS }}>
   (function () {
+    // The component can appear more than once on a page; one script does the work.
+    if (window.__saleWindowStarted) return;
+    window.__saleWindowStarted = true;
+
     function polishPlural(n, one, few, many) {
       if (n === 1) return one;
       var m10 = n % 10;
@@ -55,45 +72,54 @@ const prefix = PRESALE_PREFIX[locale];
       return parts.join(' ');
     }
 
-    var postsaleApplied = false;
-    function applyPostsale() {
-      if (postsaleApplied) return;
-      postsaleApplied = true;
-      // Hide every pre-sale badge wrapper.
-      document.querySelectorAll('[data-presale-badge]').forEach(function (el) {
-        el.style.display = 'none';
-      });
-      // Swap presale-only / postsale-only blocks page-wide. Pricing tiers, badge
-      // copy, anywhere else this contract is used.
-      document.querySelectorAll('[data-presale-only]').forEach(function (el) {
-        el.style.display = 'none';
-      });
-      document.querySelectorAll('[data-postsale-only]').forEach(function (el) {
-        el.style.removeProperty('display');
+    function show(el, visible) {
+      if (visible) el.style.removeProperty('display');
+      else el.style.display = 'none';
+    }
+
+    var applied = null;
+    function apply(inSale) {
+      if (applied === inSale) return;
+      applied = inSale;
+      document.querySelectorAll('[data-sale-only], [data-sale-countdown]').forEach(function (el) { show(el, inSale); });
+      document.querySelectorAll('[data-list-only]').forEach(function (el) { show(el, !inSale); });
+      document.querySelectorAll('[data-list-href][data-sale-href]').forEach(function (el) {
+        el.setAttribute('href', el.getAttribute(inSale ? 'data-sale-href' : 'data-list-href'));
       });
     }
 
-    function tick(el) {
-      var bodyEl = el.querySelector('[data-presale-body]');
-      var locale = el.getAttribute('data-presale-locale') || 'pl';
-      var diff = PRESALE_DEADLINE_MS - Date.now();
-      if (diff <= 0) {
-        applyPostsale();
-        return false;
-      }
-      var days = Math.floor(diff / 86400000);
-      var hours = Math.floor((diff % 86400000) / 3600000);
-      var minutes = Math.floor((diff % 3600000) / 60000);
-      var seconds = Math.floor((diff % 60000) / 1000);
-      bodyEl.textContent = formatRemaining({ days: days, hours: hours, minutes: minutes, seconds: seconds }, locale);
-      return true;
+    function updateCountdowns(now) {
+      var diff = SALE_END_MS - now;
+      var r = {
+        days: Math.floor(diff / 86400000),
+        hours: Math.floor((diff % 86400000) / 3600000),
+        minutes: Math.floor((diff % 3600000) / 60000),
+        seconds: Math.floor((diff % 60000) / 1000),
+      };
+      document.querySelectorAll('[data-sale-countdown]').forEach(function (el) {
+        var bodyEl = el.querySelector('[data-sale-body]');
+        if (bodyEl) bodyEl.textContent = formatRemaining(r, el.getAttribute('data-sale-locale') || 'pl');
+      });
     }
 
-    document.querySelectorAll('[data-presale-countdown]').forEach(function (el) {
-      if (!tick(el)) return;
+    // Returns false once the window is over: nothing changes after that.
+    function tick() {
+      var now = Date.now();
+      var inSale = now >= SALE_START_MS && now < SALE_END_MS;
+      apply(inSale);
+      if (inSale) updateCountdowns(now);
+      return now < SALE_END_MS;
+    }
+
+    function start() {
+      if (!tick()) return;
       var iv = setInterval(function () {
-        if (!tick(el)) clearInterval(iv);
+        if (!tick()) clearInterval(iv);
       }, 1000);
-    });
+    }
+
+    // The script can sit above blocks it swaps (the hero comes before the pricing cards).
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+    else start();
   })();
 </script>

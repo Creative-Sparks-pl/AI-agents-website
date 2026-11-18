@@ -1,9 +1,11 @@
-// Pre-sale countdown — single source of truth for the deadline + formatters.
-// The deadline is expressed in Warsaw time and stored as a UTC instant so the
-// countdown is correct regardless of the visitor's timezone.
+// Sale window (Black Friday) — single source of truth for its edges + formatters.
+// Both edges are expressed in Warsaw time and stored as UTC instants, so the
+// switch happens at the same moment for every visitor, whatever their timezone.
 
-// Sale ends at 23:59 on June 1 (Warsaw time). From June 2 00:00 the offer is gone.
-export const PRESALE_DEADLINE_MS = new Date('2026-06-01T23:59:00+02:00').getTime();
+// Starts 23.11.2026 00:00 Warsaw time (inclusive).
+export const SALE_START_MS = new Date('2026-11-23T00:00:00+01:00').getTime();
+// Ends 1.12.2026 00:00 Warsaw time (exclusive) — the sale runs through 30.11 23:59:59.
+export const SALE_END_MS = new Date('2026-12-01T00:00:00+01:00').getTime();
 
 export type Locale = 'pl' | 'en';
 
@@ -14,13 +16,14 @@ export interface RemainingTime {
   seconds: number;
 }
 
-export function isPresaleActive(now: number): boolean {
-  return now < PRESALE_DEADLINE_MS;
+export function isInSaleWindow(now: number): boolean {
+  return now >= SALE_START_MS && now < SALE_END_MS;
 }
 
+// Time left until the sale ends; null outside the window.
 export function getRemaining(now: number): RemainingTime | null {
-  const diff = PRESALE_DEADLINE_MS - now;
-  if (diff <= 0) return null;
+  if (!isInSaleWindow(now)) return null;
+  const diff = SALE_END_MS - now;
   return {
     days: Math.floor(diff / 86_400_000),
     hours: Math.floor((diff % 86_400_000) / 3_600_000),
@@ -54,7 +57,7 @@ export function formatRemaining(r: RemainingTime, locale: Locale): string {
   return parts.join(' ');
 }
 
-export const PRESALE_PREFIX: Record<Locale, string> = {
-  pl: 'Koniec promocji za',
-  en: 'Sale ends in',
+export const SALE_PREFIX: Record<Locale, string> = {
+  pl: 'Black Friday kończy się za',
+  en: 'Black Friday ends in',
 };

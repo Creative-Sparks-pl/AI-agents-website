@@ -1,75 +1,102 @@
 ---
 import Button from '../../ui/Button.astro';
 import { localeFromPathname } from '../../../lib/i18n';
-import { isPresaleActive } from '../../../lib/presale';
+import { isInSaleWindow } from '../../../lib/presale';
 
 interface Props {
   name: string;
-  sub: string;
-  oldPrice: string;
-  price: string;
+  group: string;
+  value: string;
+  listPrice: string;
+  salePrice: string;
+  listCheckoutUrl: string;
+  saleCheckoutUrl: string;
   highlight: boolean;
   features: string[];
 }
 
-const { name, sub, oldPrice, price, highlight, features } = Astro.props;
+const { name, group, value, listPrice, salePrice, listCheckoutUrl, saleCheckoutUrl, highlight, features } = Astro.props;
 
 const locale = localeFromPathname(Astro.url.pathname);
 
 const copy = locale === 'en'
   ? {
-      packageLabel: 'Package',
-      presaleLabel: 'Pre-sale',
+      saleLabel: 'Black Friday',
       currencySymbol: '$',
       currencyPosition: 'prefix' as const,
       taxNote: '+ VAT where applicable',
+      lowestPriceLine: (p: string) => `Lowest price in the 30 days before the discount: ${p}`,
       ctaLabel: (n: string) => `Buy ${n}`,
-      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-en?lang=en',
     }
   : {
-      packageLabel: 'Pakiet',
-      presaleLabel: 'Przedsprzedaż',
+      saleLabel: 'Black Friday',
       currencySymbol: 'zł',
       currencyPosition: 'suffix' as const,
       taxNote: 'netto + VAT 23%',
-      ctaLabel: (n: string) => `Kup pakiet ${n}`,
-      checkoutUrl: 'https://cart.creativesparks.pl/checkout/ux-design-skill-pl?lang=pl',
+      lowestPriceLine: (p: string) => `Najniższa cena z 30 dni przed obniżką: ${p}`,
+      ctaLabel: (n: string) => `Kup ${n}`,
     };
 
+// Non-breaking spaces keep a price such as "1 249 zł" on one line.
+const priceDisplay = (p: string) => (copy.currencyPosition === 'prefix'
+  ? `${copy.currencySymbol}${p}`
+  : `${p} ${copy.currencySymbol}`).replace(/ /g, String.fromCharCode(160));
+
 // The landing page rides along to checkout as `page`; the purchase webhook reads it back
-// from `custom_params.page` and reports the sale on that page in Umami.
+// from `custom_params.page` and reports the sale on that page in Umami. Set with the URL API,
+// so a link that already carries its own query string keeps it.
 const page = Astro.url.pathname;
-const checkoutUrl = new URL(copy.checkoutUrl);
-checkoutUrl.searchParams.set('page', page);
+function withParams(url: string): string {
+  const u = new URL(url);
+  u.searchParams.set('lang', locale);
+  u.searchParams.set('page', page);
+  return u.href;
+}
+const listHref = withParams(listCheckoutUrl);
+const saleHref = withParams(saleCheckoutUrl);
 
-const oldPriceDisplay = copy.currencyPosition === 'prefix'
-  ? `${copy.currencySymbol}${oldPrice}`
-  : `${oldPrice} ${copy.currencySymbol}`;
-
-// Server-rendered initial state. The inline script in PreSaleCountdown also
-// swaps these at runtime when the deadline crosses mid-session, so a stale
-// build will self-correct in the browser.
-const presaleActive = isPresaleActive(Date.now());
+// Server-rendered state for build time. The inline script in PreSaleCountdown
+// swaps the price blocks and the buy link at both edges of the sale window,
+// so a page built before the window still flips in the browser.
+const inSale = isInSaleWindow(Date.now());
 ---
 
+{/* From md up the card's four parts (header, price with its value line, features, buy button) sit on the
+    section's shared rows, so prices and lists start at the same height in every card whatever the text length. */}
 <div class:list={[
-  'flex flex-col p-10',
+  'flex flex-col p-10 md:grid md:grid-rows-subgrid md:row-span-4',
   highlight ? 'bg-accent text-foreground' : 'bg-surface'
 ]}>
+  <div class="mb-4">
+    <span class="text-xs font-label text-primary mb-2 block">{group}</span>
+    <h3 class="font-headline font-bold text-3xl">{name}</h3>
+  </div>
+
   <div class="mb-8">
-    <span class="text-xs font-label text-primary mb-2 block">{copy.packageLabel}</span>
-    <h3 class="font-headline font-bold text-3xl mb-2">{name}</h3>
-    <p class:list={['text-sm', highlight ? 'text-foreground/70' : 'text-muted']}>{sub}</p>
-  </div>
-
-  <div class="mb-8" data-presale-only style={presaleActive ? undefined : 'display:none'}>
-    <span class="text-xs font-label text-primary font-bold mb-1 block">{copy.presaleLabel}</span>
-    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/40' : 'text-muted/60']}>{oldPriceDisplay}</span>
+  <div data-sale-only style={inSale ? undefined : 'display:none'}>
+    <span class="text-xs font-label text-primary font-bold mb-1 block">{copy.saleLabel}</span>
+    <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/70' : 'text-muted']}>{priceDisplay(listPrice)}</span>
     <div class="flex items-baseline">
       {copy.currencyPosition === 'prefix' && (
         <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
       )}
-      <span class="font-headline font-bold text-5xl">{price}</span>
+      <span class="font-headline font-bold text-5xl">{salePrice}</span>
+      {copy.currencyPosition === 'suffix' && (
+        <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.currencySymbol}</span>
+      )}
+    </div>
+    {copy.taxNote && (
+      <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.taxNote}</p>
+    )}
+    <p class:list={['text-xs mt-2', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.lowestPriceLine(priceDisplay(listPrice))}</p>
+  </div>
+
+  <div data-list-only style={inSale ? 'display:none' : undefined}>
+    <div class="flex items-baseline">
+      {copy.currencyPosition === 'prefix' && (
+        <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
+      )}
+      <span class="font-headline font-bold text-5xl">{listPrice}</span>
       {copy.currencyPosition === 'suffix' && (
         <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.currencySymbol}</span>
       )}
@@ -78,20 +105,7 @@ const presaleActive = isPresaleActive(Date.now());
       <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.taxNote}</p>
     )}
   </div>
-
-  <div class="mb-8" data-postsale-only style={presaleActive ? 'display:none' : undefined}>
-    <div class="flex items-baseline">
-      {copy.currencyPosition === 'prefix' && (
-        <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
-      )}
-      <span class="font-headline font-bold text-5xl">{oldPrice}</span>
-      {copy.currencyPosition === 'suffix' && (
-        <span class:list={['text-lg ml-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.currencySymbol}</span>
-      )}
-    </div>
-    {copy.taxNote && (
-      <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.taxNote}</p>
-    )}
+  <p class="text-base mt-6">{value}</p>
   </div>
 
   <div class:list={['border-t mb-8 pt-8', highlight ? 'border-foreground/10' : 'border-border/30']}>
@@ -107,7 +121,9 @@ const presaleActive = isPresaleActive(Date.now());
 
   <div class="mt-auto">
     <Button
-      href={checkoutUrl.href}
+      href={inSale ? saleHref : listHref}
+      data-list-href={listHref}
+      data-sale-href={saleHref}
       external
       block
       size="md"

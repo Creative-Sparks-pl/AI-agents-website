@@ -6,6 +6,7 @@ import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
 import RatingStars from '../../ui/RatingStars.astro';
 import { localeFromPathname, requireEntry } from '../../../lib/i18n';
 import { fillCount, formatShown, getShownDownloads, hasPlaceholder } from '../../../lib/free-skill-downloads';
+import { isInSaleWindow } from '../../../lib/presale';
 
 interface Props extends HTMLAttributes<'section'> {
   entryId?: string;
@@ -36,7 +37,12 @@ const entry = await requireEntry('hero', resolvedId, fallbackId);
 const demoVideoId = locale === 'en' ? 'q0uvnjyc60' : 'efnuj1zoqx';
 const defaultVideoLabel = locale === 'en' ? 'UX Design Skill — demo' : 'Demo możliwości UX Design Skill';
 const { badge: badgeText, badgeIcon, badgeNote, headlineLead, headlineEm, headlineTail, tagline, bullets, ctaPrimary, ctaSecondary, videoLabel = defaultVideoLabel, countdownTarget, rating } = entry.data;
-const showPreSaleCountdown = countdownTarget === 'presale';
+// The paid pages ask for the sale countdown: inside the sale window it replaces the
+// normal badge text, outside it the normal text shows (swapped by PreSaleCountdown's script).
+const showSaleCountdown = countdownTarget === 'sale';
+const inSale = isInSaleWindow(Date.now());
+// During Black Friday the primary CTA swaps for a black-and-yellow button with its own label (same link).
+const saleCtaLabel = locale === 'en' ? 'See Black Friday prices' : 'Zobacz ceny Black Friday';
 // Only a badge holding the count placeholder (the free pages) asks for the download count.
 const badge = hasPlaceholder(badgeText)
   ? fillCount(badgeText, formatShown((await getShownDownloads()).shown, locale))
@@ -55,24 +61,23 @@ const badge = hasPlaceholder(badgeText)
     <div class="max-w-screen-2xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
       <div class="lg:col-span-7">
         <div
-          class:list={[
-            'inline-flex items-center gap-2 px-4 py-1.5 border mb-6',
-            showPreSaleCountdown
-              ? 'bg-accent border-accent text-foreground'
-              : 'bg-primary/5 border-primary/20',
-          ]}
-          data-presale-badge={showPreSaleCountdown ? '' : undefined}
+          class="inline-flex items-center gap-2 px-4 py-1.5 border mb-6 bg-primary/5 border-primary/20"
+          data-list-only={showSaleCountdown ? '' : undefined}
+          style={showSaleCountdown && inSale ? 'display:none' : undefined}
         >
           <span class="material-symbols-outlined text-primary text-sm" aria-hidden="true">{badgeIcon}</span>
-          <span
-            class:list={[
-              'text-sm font-bold font-label',
-              showPreSaleCountdown ? 'text-foreground' : 'text-primary',
-            ]}
-          >
-            {showPreSaleCountdown ? <PreSaleCountdown /> : badge}
-          </span>
+          <span class="text-sm font-bold font-label text-primary">{badge}</span>
         </div>
+        {showSaleCountdown && (
+          <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 border mb-6 bg-accent border-accent text-foreground"
+            data-sale-only
+            style={inSale ? undefined : 'display:none'}
+          >
+            <span class="material-symbols-outlined text-primary text-sm" aria-hidden="true">{badgeIcon}</span>
+            <span class="text-sm font-bold font-label text-foreground"><PreSaleCountdown /></span>
+          </div>
+        )}
 
         {rating && <div class="mb-4"><RatingStars value={rating.value} text={rating.text} label={rating.label} href={rating.href} /></div>}
 
@@ -115,10 +120,25 @@ const badge = hasPlaceholder(badgeText)
               size="lg"
               trailingIcon={ctaPrimary.icon}
               data-track={ctaPrimary.href.includes('cart.creativesparks.pl/checkout/') ? 'Lead' : undefined}
+              data-list-only={showSaleCountdown ? '' : undefined}
+              style={showSaleCountdown && inSale ? 'display:none' : undefined}
               onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)"
             >
               {ctaPrimary.label}
             </Button>
+            {showSaleCountdown && (
+              <Button
+                href={ctaPrimary.href}
+                size="lg"
+                variant="sale"
+                trailingIcon={ctaPrimary.icon}
+                data-sale-only
+                style={inSale ? undefined : 'display:none'}
+                onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)"
+              >
+                {saleCtaLabel}
+              </Button>
+            )}
             {ctaSecondary && (
               <Button
                 href={ctaSecondary.href}

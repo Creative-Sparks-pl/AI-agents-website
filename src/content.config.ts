@@ -24,7 +24,8 @@ const hero = defineCollection({
     ctaPrimary: linkSchema,
     ctaSecondary: linkSchema.optional(),
     videoLabel: z.string().optional(),
-    countdownTarget: z.literal('presale').optional(),
+    // 'sale': the badge counts down to the end of the sale window while it runs.
+    countdownTarget: z.literal('sale').optional(),
     rating: z.object({ value: z.number(), text: z.string(), label: z.string(), href: z.string().optional() }).optional(),
   }),
 });
@@ -67,9 +68,17 @@ const pricing = defineCollection({
   schema: z.object({
     order: z.number(),
     name: z.string(),
-    sub: z.string(),
-    oldPrice: z.string(),
-    price: z.string(),
+    // Label above the name: how many people the license covers, e.g. "1 użytkownik", "Do 5 użytkowników".
+    group: z.string(),
+    // One sentence on what the package is worth to its buyer.
+    value: z.string(),
+    // Price outside the sale window; also the 30-day lowest price shown during it.
+    listPrice: z.string(),
+    // Price inside the sale window (Black Friday, see src/lib/presale.ts).
+    salePrice: z.string(),
+    // Easytools links, each opening the cart for this package's one price variant.
+    listCheckoutUrl: z.string().url(),
+    saleCheckoutUrl: z.string().url(),
     highlight: z.boolean().default(false),
     bg: z.string().optional(),
     features: z.array(z.string()),
