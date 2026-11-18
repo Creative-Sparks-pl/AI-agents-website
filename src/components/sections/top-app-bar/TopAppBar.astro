@@ -2,7 +2,9 @@
 import type { HTMLAttributes } from 'astro/types';
 import Logo from '../../../assets/logo.svg?raw';
 import Button from '../../ui/Button.astro';
+import PreSaleCountdown from '../../ui/PreSaleCountdown.astro';
 import { localeFromPathname, requireLocalizedEntry } from '../../../lib/i18n';
+import { isInSaleWindow } from '../../../lib/presale';
 
 interface NavLink {
   label: string;
@@ -31,6 +33,12 @@ const {
   class: className,
   ...rest
 } = Astro.props;
+
+// During Black Friday the default CTA (to the paid skill's prices) swaps for a black-and-yellow sale button.
+// A page with its own CTA keeps it. The sale-window script flips the pair at both edges of the window.
+const showSaleCta = showCta && ctaHref === defaults.cta.href;
+const saleCtaLabel = locale === 'en' ? 'Black Friday: 20% off' : 'Black Friday −20%';
+const inSale = isInSaleWindow(Date.now());
 ---
 
 <header
@@ -55,9 +63,32 @@ const {
     </div>
 
     {showCta && (
-      <Button href={ctaHref} size="sm" class="hidden sm:inline-flex" onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)">
+      <Button
+        href={ctaHref}
+        size="sm"
+        class="hidden sm:inline-flex"
+        data-list-only={showSaleCta ? '' : undefined}
+        style={showSaleCta && inSale ? 'display:none' : undefined}
+        onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)"
+      >
         {ctaLabel}
       </Button>
+    )}
+    {showSaleCta && (
+      <Fragment>
+        <Button
+          href={ctaHref}
+          size="sm"
+          variant="sale"
+          class="hidden sm:inline-flex"
+          data-sale-only
+          style={inSale ? undefined : 'display:none'}
+          onclick="setTimeout(function(){window.umami&&window.umami.track('Nav CTA')},0)"
+        >
+          {saleCtaLabel}
+        </Button>
+        <PreSaleCountdown showCountdown={false} />
+      </Fragment>
     )}
   </nav>
 </header>

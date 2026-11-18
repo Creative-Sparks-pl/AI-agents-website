@@ -6,7 +6,6 @@ import { isInSaleWindow } from '../../../lib/presale';
 interface Props {
   name: string;
   group: string;
-  sub: string;
   value: string;
   listPrice: string;
   salePrice: string;
@@ -16,7 +15,7 @@ interface Props {
   features: string[];
 }
 
-const { name, group, sub, value, listPrice, salePrice, listCheckoutUrl, saleCheckoutUrl, highlight, features } = Astro.props;
+const { name, group, value, listPrice, salePrice, listCheckoutUrl, saleCheckoutUrl, highlight, features } = Astro.props;
 
 const locale = localeFromPathname(Astro.url.pathname);
 
@@ -62,18 +61,19 @@ const saleHref = withParams(saleCheckoutUrl);
 const inSale = isInSaleWindow(Date.now());
 ---
 
+{/* From md up the card's four parts (header, price with its value line, features, buy button) sit on the
+    section's shared rows, so prices and lists start at the same height in every card whatever the text length. */}
 <div class:list={[
-  'flex flex-col p-10',
+  'flex flex-col p-10 md:grid md:grid-rows-subgrid md:row-span-4',
   highlight ? 'bg-accent text-foreground' : 'bg-surface'
 ]}>
-  <div class="mb-8">
+  <div class="mb-4">
     <span class="text-xs font-label text-primary mb-2 block">{group}</span>
-    <h3 class="font-headline font-bold text-3xl mb-2">{name}</h3>
-    <p class:list={['text-sm', highlight ? 'text-foreground/70' : 'text-muted']}>{sub}</p>
-    <p class="text-base font-bold mt-4">{value}</p>
+    <h3 class="font-headline font-bold text-3xl">{name}</h3>
   </div>
 
-  <div class="mb-8" data-sale-only style={inSale ? undefined : 'display:none'}>
+  <div class="mb-8">
+  <div data-sale-only style={inSale ? undefined : 'display:none'}>
     <span class="text-xs font-label text-primary font-bold mb-1 block">{copy.saleLabel}</span>
     <span class:list={['text-lg font-label line-through block', highlight ? 'text-foreground/70' : 'text-muted']}>{priceDisplay(listPrice)}</span>
     <div class="flex items-baseline">
@@ -91,7 +91,7 @@ const inSale = isInSaleWindow(Date.now());
     <p class:list={['text-xs mt-2', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.lowestPriceLine(priceDisplay(listPrice))}</p>
   </div>
 
-  <div class="mb-8" data-list-only style={inSale ? 'display:none' : undefined}>
+  <div data-list-only style={inSale ? 'display:none' : undefined}>
     <div class="flex items-baseline">
       {copy.currencyPosition === 'prefix' && (
         <span class="font-headline font-bold text-5xl">{copy.currencySymbol}</span>
@@ -104,6 +104,8 @@ const inSale = isInSaleWindow(Date.now());
     {copy.taxNote && (
       <p class:list={['text-xs font-label mt-1', highlight ? 'text-foreground/70' : 'text-muted']}>{copy.taxNote}</p>
     )}
+  </div>
+  <p class="text-base mt-6">{value}</p>
   </div>
 
   <div class:list={['border-t mb-8 pt-8', highlight ? 'border-foreground/10' : 'border-border/30']}>

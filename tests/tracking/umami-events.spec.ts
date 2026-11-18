@@ -86,8 +86,8 @@ const ERROR_CASES: Array<{
 
 // Plans in the order the pricing section shows them.
 const CHECKOUT_CASES = [
-  { path: '/ux-design-skill/', language: 'pl', plans: ['Founder', 'Projektant Solo', 'Studio'] },
-  { path: '/en/ux-design-skill/', language: 'en', plans: ['Founder', 'Designer Solo', 'Studio'] },
+  { path: '/ux-design-skill/', language: 'pl', plans: ['Founder', 'Solo Designer', 'Studio'] },
+  { path: '/en/ux-design-skill/', language: 'en', plans: ['Founder', 'Solo Designer', 'Studio'] },
 ];
 
 type UmamiCall = unknown[];

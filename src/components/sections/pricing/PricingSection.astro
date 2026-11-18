@@ -20,12 +20,12 @@ const plans = (await getLocalizedCollection('pricing', locale))
 
 const copy = locale === 'en'
   ? {
-      heading: 'Do you build sites for clients or for yourself?',
+      heading: 'Do you design sites for your own business or for clients?',
       termsLine: 'One-time license · 12 months of updates · then renewal at about half the price',
       refundNote: '14-day refund. Not a fit? Return it.',
     }
   : {
-      heading: 'Robisz strony dla klientów czy dla siebie?',
+      heading: 'Projektujesz strony dla swojej firmy czy dla klientów?',
       termsLine: 'Jednorazowa licencja · 12 miesięcy aktualizacji · potem przedłużenie za ok. połowę ceny',
       refundNote: '14 dni na sprawdzenie. Nie pasuje, oddajesz.',
     };
@@ -54,14 +54,14 @@ const copy = locale === 'en'
       </Fragment>
 
       {/* The first card reports "Pricing seen": on phones the whole section is too tall to be half on screen.
-          Each card's wrapper is a grid, so the card still fills the row's height. */}
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          Each card's wrapper is a grid, so the card still fills the row's height; from md up it passes the four
+          shared rows on to the card (subgrid), and those rows carry no gap of their own. */}
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-y-0">
         {plans.map((plan, i) => (
-          <div class="grid" data-umami-seen={i === 0 ? 'Pricing seen' : undefined}>
+          <div class="grid md:grid-rows-subgrid md:row-span-4" data-umami-seen={i === 0 ? 'Pricing seen' : undefined}>
             <PricingTier
               name={plan.data.name}
               group={plan.data.group}
-              sub={plan.data.sub}
               value={plan.data.value}
               listPrice={plan.data.listPrice}
               salePrice={plan.data.salePrice}

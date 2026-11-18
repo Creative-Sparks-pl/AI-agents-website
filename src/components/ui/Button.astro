@@ -2,7 +2,8 @@
 import type { HTMLAttributes } from 'astro/types';
 
 type Size = 'sm' | 'md' | 'lg';
-type Variant = 'primary' | 'secondary';
+// sale: the Black Friday look (black with the accent yellow), shown only inside the sale window.
+type Variant = 'primary' | 'secondary' | 'sale';
 
 interface Props extends Omit<HTMLAttributes<'a'>, 'size'> {
   href?: string;
@@ -34,6 +35,7 @@ const sizeClasses: Record<Size, string> = {
 const variantClasses: Record<Variant, string> = {
   primary: 'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
   secondary: 'bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white',
+  sale: 'bg-black text-accent border-2 border-black hover:bg-accent hover:text-black',
 };
 
 const iconSize: Record<Size, string> = {

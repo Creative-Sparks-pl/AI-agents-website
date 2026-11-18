@@ -31,8 +31,8 @@ Price variants (net prices; access 365 days):
 
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|
-| Projektant Solo | 749 zł | — | always |
-| Projektant Solo — Black Friday | 599 zł | 749 zł | 23.11.2026 00:00 – 1.12.2026 00:00 |
+| Solo Designer | 749 zł | — | always |
+| Solo Designer — Black Friday | 599 zł | 749 zł | 23.11.2026 00:00 – 1.12.2026 00:00 |
 | Studio (do 5 osób) | 1249 zł | — | always |
 | Studio (do 5 osób) — Black Friday | 999 zł | 1249 zł | 23.11.2026 00:00 – 1.12.2026 00:00 |
 
@@ -57,8 +57,8 @@ Price variants (net prices; access 365 days):
 
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|
-| Designer Solo | $229 | — | always |
-| Designer Solo — Black Friday | $183 | $229 | 23.11.2026 00:00 – 1.12.2026 00:00 |
+| Solo Designer | $229 | — | always |
+| Solo Designer — Black Friday | $183 | $229 | 23.11.2026 00:00 – 1.12.2026 00:00 |
 | Studio (up to 5 people) | $379 | — | always |
 | Studio (up to 5 people) — Black Friday | $303 | $379 | 23.11.2026 00:00 – 1.12.2026 00:00 |
 
@@ -74,7 +74,7 @@ Checkout: `https://cart.creativesparks.pl/checkout/founder-pl`
 
 Description, bullets and link: as in UX Design Skill PL above, then a closing paragraph after the bullets:
 
-> Licencja Founder: do projektowania stron Twojej własnej firmy. Nie obejmuje pracy dla klientów. Do tego wybierz Projektant Solo lub Studio.
+> Licencja Founder: do projektowania stron Twojej własnej firmy. Nie obejmuje pracy dla klientów. Do tego wybierz Solo Designer lub Studio.
 
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|
@@ -87,7 +87,7 @@ Checkout: `https://cart.creativesparks.pl/checkout/founder-en`
 
 Description, bullets and link: as in UX Design Skill EN above, then a closing paragraph after the bullets:
 
-> Founder license: for designing your own business's websites. It does not cover client work. For that, choose Designer Solo or Studio.
+> Founder license: for designing your own business's websites. It does not cover client work. For that, choose Solo Designer or Studio.
 
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|

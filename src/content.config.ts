@@ -68,9 +68,8 @@ const pricing = defineCollection({
   schema: z.object({
     order: z.number(),
     name: z.string(),
-    // Label above the name that sorts the cards by use: "Dla siebie" / "Dla klientów".
+    // Label above the name: how many people the license covers, e.g. "1 użytkownik", "Do 5 użytkowników".
     group: z.string(),
-    sub: z.string(),
     // One sentence on what the package is worth to its buyer.
     value: z.string(),
     // Price outside the sale window; also the 30-day lowest price shown during it.

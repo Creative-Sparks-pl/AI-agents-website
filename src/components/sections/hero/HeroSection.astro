@@ -41,6 +41,8 @@ const { badge: badgeText, badgeIcon, badgeNote, headlineLead, headlineEm, headli
 // normal badge text, outside it the normal text shows (swapped by PreSaleCountdown's script).
 const showSaleCountdown = countdownTarget === 'sale';
 const inSale = isInSaleWindow(Date.now());
+// During Black Friday the primary CTA swaps for a black-and-yellow button with its own label (same link).
+const saleCtaLabel = locale === 'en' ? 'See Black Friday prices' : 'Zobacz ceny Black Friday';
 // Only a badge holding the count placeholder (the free pages) asks for the download count.
 const badge = hasPlaceholder(badgeText)
   ? fillCount(badgeText, formatShown((await getShownDownloads()).shown, locale))
@@ -118,10 +120,25 @@ const badge = hasPlaceholder(badgeText)
               size="lg"
               trailingIcon={ctaPrimary.icon}
               data-track={ctaPrimary.href.includes('cart.creativesparks.pl/checkout/') ? 'Lead' : undefined}
+              data-list-only={showSaleCountdown ? '' : undefined}
+              style={showSaleCountdown && inSale ? 'display:none' : undefined}
               onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)"
             >
               {ctaPrimary.label}
             </Button>
+            {showSaleCountdown && (
+              <Button
+                href={ctaPrimary.href}
+                size="lg"
+                variant="sale"
+                trailingIcon={ctaPrimary.icon}
+                data-sale-only
+                style={inSale ? undefined : 'display:none'}
+                onclick="setTimeout(function(){window.umami&&window.umami.track('Hero primary CTA')},0)"
+              >
+                {saleCtaLabel}
+              </Button>
+            )}
             {ctaSecondary && (
               <Button
                 href={ctaSecondary.href}

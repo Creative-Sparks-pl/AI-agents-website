@@ -18,9 +18,9 @@ const PAGES = [
     countdownPrefix: 'Black Friday kończy się za',
     lowestPrice: (p: string) => `Najniższa cena z 30 dni przed obniżką: ${p}`,
     plans: [
-      { name: 'Founder', group: 'Dla siebie', list: '449 zł', sale: '359' },
-      { name: 'Projektant Solo', group: 'Dla klientów', list: '749 zł', sale: '599' },
-      { name: 'Studio', group: 'Dla klientów', list: '1 249 zł', sale: '999' },
+      { name: 'Founder', group: '1 użytkownik', list: '449 zł', sale: '359' },
+      { name: 'Solo Designer', group: '1 użytkownik', list: '749 zł', sale: '599' },
+      { name: 'Studio', group: 'Do 5 użytkowników', list: '1 249 zł', sale: '999' },
     ],
   },
   {
@@ -29,9 +29,9 @@ const PAGES = [
     countdownPrefix: 'Black Friday ends in',
     lowestPrice: (p: string) => `Lowest price in the 30 days before the discount: ${p}`,
     plans: [
-      { name: 'Founder', group: 'For yourself', list: '$149', sale: '119' },
-      { name: 'Designer Solo', group: 'For clients', list: '$229', sale: '183' },
-      { name: 'Studio', group: 'For clients', list: '$379', sale: '303' },
+      { name: 'Founder', group: '1 user', list: '$149', sale: '119' },
+      { name: 'Solo Designer', group: '1 user', list: '$229', sale: '183' },
+      { name: 'Studio', group: 'Up to 5 users', list: '$379', sale: '303' },
     ],
   },
 ] as const;
@@ -87,7 +87,7 @@ async function expectState(page: Page, { locale, path, plans, countdownPrefix, l
 
   // The hero badge counts down only inside the window; outside it shows its normal text.
   const countdown = page.locator(`${HERO} [data-sale-countdown]`);
-  const normalBadge = page.locator(`${HERO} [data-list-only]`);
+  const normalBadge = page.locator(`${HERO} div[data-list-only]`);
   if (inSale) {
     await expect(countdown).toBeVisible();
     await expect(countdown).toContainText(countdownPrefix);
@@ -95,6 +95,22 @@ async function expectState(page: Page, { locale, path, plans, countdownPrefix, l
   } else {
     await expect(countdown).toBeHidden();
     await expect(normalBadge).toBeVisible();
+  }
+
+  // Inside the window the top-bar and hero buttons to the prices swap for the black-and-yellow Black Friday ones
+  // (top bar first in the page), same link.
+  const saleCtas = page.locator(`header a[data-sale-only], ${HERO} a[data-sale-only]`);
+  const listCtas = page.locator(`header a[data-list-only], ${HERO} a[data-list-only]`);
+  await expect(saleCtas).toHaveCount(2);
+  await expect(listCtas).toHaveCount(2);
+  const saleLabels = locale === 'en'
+    ? ['Black Friday: 20% off', 'See Black Friday prices']
+    : ['Black Friday −20%', 'Zobacz ceny Black Friday'];
+  for (let i = 0; i < 2; i++) {
+    await expect(saleCtas.nth(i)).toHaveText(saleLabels[i]);
+    expect(await saleCtas.nth(i).getAttribute('href')).toBe(await listCtas.nth(i).getAttribute('href'));
+    await expect(inSale ? saleCtas.nth(i) : listCtas.nth(i)).toBeVisible();
+    await expect(inSale ? listCtas.nth(i) : saleCtas.nth(i)).toBeHidden();
   }
 }
 
