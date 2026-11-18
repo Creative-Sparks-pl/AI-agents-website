@@ -1,4 +1,4 @@
-<!-- Draft: Polish, Easymail list "UX Designer – migracja płatni (PL)" (`8b21c432-465c-4659-a5c9-b9d8ef700478`, setting `EASYMAIL_MIGRATION_LIST_PAID_PL`). Audience: current owners of a paid package from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the Polish paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. One automation serves every paid owner, so the presale paragraph is its own section here instead of a separate email; `[data]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
+<!-- Draft: Polish, Easymail list "UX Designer – migracja płatni (PL)" (`8b21c432-465c-4659-a5c9-b9d8ef700478`, setting `EASYMAIL_MIGRATION_LIST_PAID_PL`). Audience: current owners of a paid package from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the Polish paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. `[data]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
 
 **Subject:** UX Design Skill: Twój osobisty link do instalacji.
 
@@ -35,11 +35,6 @@ Do tego czasu Twoja obecna kopia pobiera całe strony do audytu jak dotąd. Pote
 ## Zachowujesz swój rok aktualizacji.
 
 Liczy się od dnia zakupu. Po instalacji z linku Twoja kopia przy starcie sprawdza, czy jest nowa wersja, i instaluje ją sama, pytając tylko o pliki zmienione przez Ciebie. Tak jest domyślnie, a żeby to wyłączyć, po prostu poproś agenta. Gdy rok aktualizacji się skończy, Twoja kopia działa dalej w obecnej wersji.
-
-
-## Zakup w przedsprzedaży? Zachowujesz 12 miesięcy aktualizacji.
-
-Były częścią Twojego zakupu i trwają do tego samego dnia w 2027 roku, czyli między marcem a czerwcem, zależnie od daty zakupu. Potem Twoja kopia działa dalej w obecnej wersji.
 
 
 ## Zachowaj tego maila.

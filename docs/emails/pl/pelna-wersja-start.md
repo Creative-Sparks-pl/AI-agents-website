@@ -11,7 +11,7 @@ Dziękuję za zakup [UX Design Skill](https://agents.creativesparks.pl/ux-design
 
 ## Zacznij od briefu i researchu.
 
-Wpisz „start", a skill się przedstawi i poprowadzi Cię dalej. Wystarczy jedno zdanie, ale im więcej kontekstu dasz, tym mniej skill zgaduje. Ja często zaczynam od briefu klienta i dokumentu z researchu firmy z Google Deep Research albo Perplexity. Wtedy skill dopytuje mnie już tylko o konkretne rzeczy. Masz plan z darmowego Skilla do planowania stron? Możesz kontynuować od niego.
+Uruchom skill komendą /ux-design (w Codexie $ux-design), a skill się przedstawi i poprowadzi Cię dalej. Wystarczy jedno zdanie, ale im więcej kontekstu dasz, tym mniej skill zgaduje. Ja często zaczynam od briefu klienta i dokumentu z researchu firmy z Google Deep Research albo Perplexity. Wtedy skill dopytuje mnie już tylko o konkretne rzeczy. Masz plan z darmowego Skilla do planowania stron? Możesz kontynuować od niego.
 
 
 ## Jedna sesja, jeden wynik.

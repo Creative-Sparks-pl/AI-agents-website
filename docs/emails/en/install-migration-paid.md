@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – migracja płatni (EN)" (`3f7433d0-3158-4c21-b0ac-9cafd5dba821`, setting `EASYMAIL_MIGRATION_LIST_PAID_EN`). Audience: current owners of a paid package from an English product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the English paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. One automation serves every paid owner, so the presale paragraph is its own section here instead of a separate email; `[date]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
+<!-- Draft: English, Easymail list "UX Designer – migracja płatni (EN)" (`3f7433d0-3158-4c21-b0ac-9cafd5dba821`, setting `EASYMAIL_MIGRATION_LIST_PAID_EN`). Audience: current owners of a paid package from an English product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the English paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. `[date]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
 
 **Subject:** UX Design Skill: your personal install link.
 
@@ -35,11 +35,6 @@ Until then, your current copy captures full sites for audits as before. After th
 ## You keep your year of updates.
 
 It counts from the day you bought. Once installed from the link, your copy checks for new versions when it starts and installs them by itself, asking only about files you edited. That's on by default; to turn it off, just ask the agent. When the update year ends, your copy keeps working as it is.
-
-
-## Bought in the presale? You keep your 12 months of updates.
-
-They came with your purchase and run until the same date in 2027, between March and June depending on when you bought. After that, your copy keeps working as it is.
 
 
 ## Keep this email.
