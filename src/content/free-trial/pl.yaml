@@ -1,5 +1,5 @@
 badge: Darmowy audyt
-heading: Pobierz darmowy skill audytu UX i uruchom na swojej stronie głównej
+heading: Odbierz darmowy skill audytu UX i uruchom go na swojej stronie głównej
 intro: Dostajesz konkret, zanim podejmiesz decyzję o zakupie pełnej wersji. Wystarczy, że podasz adres strony głównej, a narzędzie zrobi wszystko samo dalej.
 stages:
   - label: Etap 1
@@ -16,6 +16,6 @@ stages:
     shape: grid
 note: Pojedynczy workflow audytowy z pełnego skilla. Sprawdza stronę główną każdego z 16 typów stron, do 5 witryn dziennie.
 cta:
-  label: Pobierz darmowy audyt
+  label: Odbierz darmowy audyt
   href: https://cart.creativesparks.pl/checkout/ux-darmowy-audyt
-  icon: download
+  icon: mail

@@ -16,8 +16,8 @@ const PAGES = [
     oldAnchors: ['#audyt', '#try-for-free'],
     heroLabel: 'Wypróbuj za darmo',
     finalLabel: 'Albo wypróbuj za darmo',
-    audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Pobierz za darmo' },
-    planning: { page: '/free-website-planning-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Pobierz za darmo' },
+    audit: { page: '/free-homepage-ux-audit-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Odbierz za darmo' },
+    planning: { page: '/free-website-planning-skill/', pageLabel: 'Poznaj szczegóły', submitLabel: 'Odbierz za darmo' },
   },
   {
     locale: 'en',
@@ -26,8 +26,8 @@ const PAGES = [
     oldAnchors: ['#audyt'],
     heroLabel: 'Try it for free',
     finalLabel: 'Or try it for free',
-    audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', submitLabel: 'Download for free' },
-    planning: { page: '/en/free-website-planning-skill/', pageLabel: 'Learn more', submitLabel: 'Download for free' },
+    audit: { page: '/en/free-homepage-ux-audit-skill/', pageLabel: 'Learn more', submitLabel: 'Get it free' },
+    planning: { page: '/en/free-website-planning-skill/', pageLabel: 'Learn more', submitLabel: 'Get it free' },
   },
 ];
 

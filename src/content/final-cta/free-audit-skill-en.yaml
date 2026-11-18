@@ -1,7 +1,7 @@
 heading: Check your homepage now
-intro: Download the skill, install it in Claude Code, and get a wireframe with findings in minutes. No price, no commitment.
+intro: Get the skill by email, install it in Claude Code, and get a wireframe with findings in minutes. No price, no commitment.
 cta:
   label: Get the free skill
   href: "#download"
-  icon: download
+  icon: mail
 note: No credit card, no subscription.
