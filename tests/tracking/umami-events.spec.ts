@@ -36,16 +36,51 @@ const CASES = [
   },
 ];
 
-// A failed request: the status and code /api/subscribe answers with, or no answer at all.
-type Failure = { status: number; code: string } | 'network';
+// A failed request: the status and code /api/subscribe answers with (plus any other fields of its answer,
+// or a raw body that is not JSON), or no answer at all.
+type Failure = { status: number; code: string; extra?: Record<string, unknown>; rawBody?: string } | 'network';
 
-// Each way a submit can fail and the reason the form reports. `typed` fails the form's own email check,
-// so no request is sent.
-const ERROR_CASES: Array<{ name: string; typed: string; failure?: Failure; reason: string }> = [
+// Each way a submit can fail, the reason the form reports and, for server errors, the labels saying where it
+// failed. `typed` fails the form's own email check, so no request is sent.
+const ERROR_CASES: Array<{
+  name: string;
+  typed: string;
+  failure?: Failure;
+  reason: string;
+  labels?: Record<string, unknown>;
+}> = [
   { name: 'email check in the form', typed: 'funnel.check.4821@example', reason: 'invalid_email' },
   { name: 'server email check (422)', typed: EMAIL, failure: { status: 422, code: 'invalid_email' }, reason: 'invalid_email' },
   { name: 'signups unavailable (503)', typed: EMAIL, failure: { status: 503, code: 'not_configured' }, reason: 'not_configured' },
-  { name: 'server failure (500)', typed: EMAIL, failure: { status: 500, code: 'internal_error' }, reason: 'server_error' },
+  {
+    name: 'grant refused (502)',
+    typed: EMAIL,
+    failure: { status: 502, code: 'upstream_error', extra: { stage: 'grant', status: 409 } },
+    reason: 'server_error',
+    labels: { site_status: 502, stage: 'grant', easytools_status: 409 },
+  },
+  {
+    name: 'no answer from Easytools (500)',
+    typed: EMAIL,
+    failure: { status: 500, code: 'internal_error', extra: { stage: 'product_read', status: 0 } },
+    reason: 'server_error',
+    labels: { site_status: 500, stage: 'product_read', easytools_status: 0 },
+  },
+  {
+    name: 'platform timeout page (504)',
+    typed: EMAIL,
+    failure: { status: 504, code: '', rawBody: 'An error occurred with your deployment' },
+    reason: 'server_error',
+    labels: { site_status: 504, stage: 'none' },
+  },
+  {
+    // Anything but a known step name and a whole-number status is dropped, so typed text cannot get through.
+    name: 'unexpected answer fields (502)',
+    typed: EMAIL,
+    failure: { status: 502, code: 'upstream_error', extra: { stage: EMAIL, status: `422 ${EMAIL}` } },
+    reason: 'server_error',
+    labels: { site_status: 502, stage: 'none' },
+  },
   { name: 'no connection', typed: EMAIL, failure: 'network', reason: 'offline' },
 ];
 
@@ -81,10 +116,16 @@ async function mockSubscribe(page: Page, failure?: Failure) {
       await route.abort('internetdisconnected');
       return;
     }
+    if (failure?.rawBody !== undefined) {
+      await route.fulfill({ status: failure.status, contentType: 'text/html', body: failure.rawBody });
+      return;
+    }
     await route.fulfill({
       status: failure ? failure.status : 200,
       contentType: 'application/json',
-      body: JSON.stringify(failure ? { ok: false, reason: failure.code } : { ok: true, downloadUrl: FAKE_DOWNLOAD }),
+      body: JSON.stringify(
+        failure ? { ok: false, reason: failure.code, ...failure.extra } : { ok: true, downloadUrl: FAKE_DOWNLOAD },
+      ),
     });
   });
   // The real link answers as a file download, which keeps the visitor on the page; this does the same.
@@ -241,7 +282,7 @@ for (const { path, language, skill, surface, finalSurface } of CASES) {
     expect(await finalSeen()).toEqual([[SEEN, final]]);
   });
 
-  for (const { name, typed, failure, reason } of ERROR_CASES) {
+  for (const { name, typed, failure, reason, labels } of ERROR_CASES) {
     test(`umami ${path} ${surface}: failed submit (${name}) reports ${reason}`, async ({ page }) => {
       await blockThirdParty(page);
       const umamiCalls = await recordUmami(page);
@@ -255,7 +296,7 @@ for (const { path, language, skill, surface, finalSurface } of CASES) {
       expect(requests).toHaveLength(failure ? 1 : 0);
 
       const errors = async () => (await umamiCalls()).filter(([event]) => event === SUBMIT_ERROR);
-      await expect.poll(errors).toEqual([[SUBMIT_ERROR, { ...hero, reason }]]);
+      await expect.poll(errors).toEqual([[SUBMIT_ERROR, { ...hero, reason, ...labels }]]);
 
       const calls = await umamiCalls();
       expect(calls.filter(([event]) => String(event).startsWith(SUBMIT_PREFIX))).toEqual([]);
