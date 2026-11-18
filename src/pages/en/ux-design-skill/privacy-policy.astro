@@ -23,7 +23,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li><strong>Email address</strong>, provided when you sign up for the waitlist or at purchase.</li>
         <li><strong>Billing details</strong>, if you provide company details at purchase (company name, tax ID, address).</li>
         <li><strong>Technical data</strong>, IP address and browser type, collected automatically by the server.</li>
-        <li><strong>Online service data</strong>, the address of the analyzed page and your IP address, which I store for rate limits only as a cryptographic hash.</li>
+        <li><strong>License service and page capture data</strong>, sent by the agent at install, update, every start and page capture for the audit: the customer ID stored in its license.json file, the package, the version, the event type (install, update, start) and the date, and for a page capture also the page's address; for captures without a paid package's personal link, I store only a one-way hash of the network address and the site's name, for the daily limit.</li>
         <li><strong>Reports sent through the skill</strong>, the title and content of feedback or a bug report, and your email address if you give it.</li>
         <li><strong>Visit statistics</strong>, the pages you visit, the page you came from, browser, operating system, device type, language, approximate location (country, region, city) and selected actions such as a button click or a purchase (without your email address); collected without cookies by my own Umami instance, which does not store your IP address and tells visits apart by a cryptographic hash of your IP address, your browser and a value that changes regularly.</li>
         <li><strong>Session recordings and heatmaps</strong>, how you move through the product pages (such as cursor movements, clicks and scrolling), only if you consent to statistics cookies; PostHog does not store your IP address.</li>
@@ -36,7 +36,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li>To issue a VAT invoice (GDPR article 6(1)(c), legal obligation).</li>
         <li>To inform you about product updates (GDPR article 6(1)(b), performance of a contract).</li>
         <li>Newsletter / waitlist, based on your consent (GDPR article 6(1)(a)).</li>
-        <li>To run the online service and enforce its rate limits (GDPR article 6(1)(b), performance of a contract).</li>
+        <li>To deliver the product through your personal link, check the license and updates, and capture pages for the audit, including enforcing the daily limit (GDPR article 6(1)(b), performance of a contract).</li>
         <li>To publish and handle feedback and bug reports you choose to send through the skill (GDPR article 6(1)(a), consent).</li>
         <li>Statistics and improving the pages: counting visits with Umami, based on my legitimate interest in measuring traffic on the site (GDPR article 6(1)(f)); session recordings and heatmaps with PostHog and video viewing statistics with Wistia, based on your consent (GDPR article 6(1)(a)), which you can withdraw at any time in the cookie settings.</li>
         <li>To play videos on the pages (Wistia) and detect player errors, based on my legitimate interest in showing you videos about the products (GDPR article 6(1)(f)).</li>
@@ -46,14 +46,14 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
       <h2>Who I share data with</h2>
       <p>Your data may be shared only with the entities necessary to provide the service:</p>
       <ul>
-        <li><strong>Easytools</strong>, checkout, issuing VAT invoices on my behalf, mailing list and skill delivery.</li>
+        <li><strong>Easytools</strong>, checkout, issuing VAT invoices on my behalf, mailing list and skill delivery, including sending your personal install link through Easymail.</li>
         <li><strong>Stripe</strong>, online payment processing.</li>
         <li><strong>Meta</strong>, ad performance measurement (including a one-way hash of your email address when you sign up), if you consent to marketing cookies.</li>
         <li><strong>PostHog</strong>, session recordings and heatmaps on the product pages (UX Design Skill and the free skills), if you consent to statistics cookies; data is stored in the EU (Frankfurt).</li>
         <li><strong>Wistia</strong>, the video player on the pages (Wistia, Inc., USA), which reports player errors to Sentry; it collects video viewing statistics (also through Mux Data) only if you consent to statistics cookies.</li>
-        <li><strong>Vercel</strong>, servers for this website (including saving cookie-banner choices), the online service, the feedback server and visit statistics (Umami).</li>
+        <li><strong>Vercel</strong>, servers for this website (including saving cookie-banner choices), the license service and its downloads, the page capture service, the feedback server and visit statistics (Umami).</li>
         <li><strong>Neon</strong>, separate databases for visit statistics (Umami) and the record of cookie consents, stored in the EU (Frankfurt).</li>
-        <li><strong>Upstash</strong>, rate-limit counters for the online service (IP address hashes only).</li>
+        <li><strong>Upstash</strong>, the license service's database and the page capture limit counters (network addresses only as hashes).</li>
         <li><strong>GitHub</strong>, public posting of reports in GitHub Discussions (without your email address).</li>
         <li><strong>Make.com and Google (Gmail)</strong>, forwarding the email address you gave in a report to me.</li>
       </ul>
@@ -69,7 +69,8 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li>Session recordings (PostHog), 30 days; heatmap data and other PostHog events, up to 1 year.</li>
         <li>Visit statistics (Umami), up to 2 years.</li>
         <li>Record of cookie consents, 2 years; I delete older entries once a year.</li>
-        <li>Online service rate-limit counters expire automatically.</li>
+        <li>License service event records (installs, updates, starts), 24 months.</li>
+        <li>Network address hashes from page captures without a paid package's personal link, deleted at the end of the day.</li>
         <li>Reports published in GitHub Discussions, until deleted; you can ask me to delete your report.</li>
       </ul>
 

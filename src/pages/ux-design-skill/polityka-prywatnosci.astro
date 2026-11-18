@@ -21,7 +21,7 @@ import CookieTable from '../../components/ui/CookieTable.astro';
         <li><strong>Adres email</strong> — podany przy zapisie na listę oczekujących lub przy zakupie</li>
         <li><strong>Dane do faktury</strong> — jeśli podasz dane firmy przy zakupie (nazwa firmy, NIP, adres)</li>
         <li><strong>Dane techniczne</strong> — adres IP, typ przeglądarki (zbierane automatycznie przez serwer)</li>
-        <li><strong>Dane z usługi online</strong> — adres analizowanej strony i adres IP, który na potrzeby limitów zapytań zapisuję tylko w postaci skrótu kryptograficznego</li>
+        <li><strong>Dane z usługi licencji i pobierania stron</strong> — wysyłane przez agenta przy instalacji, aktualizacji, każdym uruchomieniu i pobieraniu stron do audytu: identyfikator klienta zapisany w pliku license.json, pakiet, wersja, rodzaj zdarzenia (instalacja, aktualizacja, uruchomienie) i data, a przy pobieraniu strony także jej adres; przy pobieraniu stron bez osobistego linku płatnego pakietu na potrzeby dziennego limitu zapisuję tylko jednokierunkowy skrót adresu sieci i nazwę pobieranej witryny</li>
         <li><strong>Zgłoszenia wysłane przez skill</strong> — tytuł i treść opinii lub zgłoszenia błędu oraz adres email, jeśli go podasz</li>
         <li><strong>Statystyki odwiedzin</strong> — odwiedzone podstrony, strona, z której przychodzisz, przeglądarka, system operacyjny, typ urządzenia, język, przybliżona lokalizacja (kraj, region, miasto) i wybrane działania, np. kliknięcie przycisku lub zakup (bez adresu email); zbiera je bez cookies moja własna instancja Umami, która nie zapisuje adresu IP, a wizyty rozróżnia po skrócie kryptograficznym z adresu IP, przeglądarki i wartości, która regularnie się zmienia</li>
         <li><strong>Nagrania sesji i mapy cieplne</strong> — przebieg wizyty na stronach produktów (np. ruchy kursora, kliknięcia, przewijanie), tylko jeśli wyrazisz zgodę na cookies statystyczne; PostHog nie zapisuje adresu IP</li>
@@ -34,7 +34,7 @@ import CookieTable from '../../components/ui/CookieTable.astro';
         <li>Wystawienie faktury VAT (art. 6 ust. 1 lit. c RODO)</li>
         <li>Informowanie o aktualizacjach produktu (art. 6 ust. 1 lit. b RODO)</li>
         <li>Newsletter / lista oczekujących — na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO)</li>
-        <li>Działanie usługi online i pilnowanie limitów zapytań (art. 6 ust. 1 lit. b RODO)</li>
+        <li>Dostarczenie produktu przez osobisty link, sprawdzanie licencji i aktualizacji oraz pobieranie stron do audytu wraz z pilnowaniem dziennego limitu (art. 6 ust. 1 lit. b RODO)</li>
         <li>Publikacja i obsługa opinii oraz zgłoszeń błędów, które dobrowolnie wysyłasz przez skill (art. 6 ust. 1 lit. a RODO)</li>
         <li>Statystyki i ulepszanie stron — liczenie odwiedzin w Umami na podstawie mojego prawnie uzasadnionego interesu, czyli mierzenia ruchu na stronie (art. 6 ust. 1 lit. f RODO); nagrania sesji i mapy cieplne w PostHog oraz statystyki oglądania wideo w Wistii na podstawie Twojej zgody (art. 6 ust. 1 lit. a RODO), którą możesz w każdej chwili wycofać w ustawieniach cookies</li>
         <li>Odtwarzanie wideo na stronach (Wistia) i wykrywanie błędów odtwarzacza — na podstawie mojego prawnie uzasadnionego interesu, czyli pokazania Ci materiałów wideo o produktach (art. 6 ust. 1 lit. f RODO)</li>
@@ -44,14 +44,14 @@ import CookieTable from '../../components/ui/CookieTable.astro';
       <h2>Komu udostępniam dane</h2>
       <p>Twoje dane mogą być udostępnione wyłącznie podmiotom niezbędnym do realizacji usługi:</p>
       <ul>
-        <li><strong>Easytools</strong> — koszyk, wystawianie faktur VAT w moim imieniu, obsługa listy mailingowej i dostarczanie skilli</li>
+        <li><strong>Easytools</strong> — koszyk, wystawianie faktur VAT w moim imieniu, obsługa listy mailingowej i dostarczanie skilli, w tym wysyłka osobistego linku do instalacji przez Easymail</li>
         <li><strong>Stripe</strong> — przetwarzanie płatności online</li>
         <li><strong>Meta</strong> — pomiar skuteczności reklam (w tym jednokierunkowy skrót, czyli hash, Twojego adresu e-mail przy zapisie), jeśli wyrazisz zgodę na cookies marketingowe</li>
         <li><strong>PostHog</strong> — nagrania sesji i mapy cieplne na stronach produktów (UX Design Skill i darmowe skille), jeśli wyrazisz zgodę na cookies statystyczne; dane są przechowywane w UE (Frankfurt)</li>
         <li><strong>Wistia</strong> — odtwarzacz wideo na stronach (Wistia, Inc., USA), który zgłasza błędy odtwarzacza do Sentry; statystyki oglądania wideo (także przez Mux Data) zbiera tylko, jeśli wyrazisz zgodę na cookies statystyczne</li>
-        <li><strong>Vercel</strong> — serwery tej strony (w tym zapis wyborów z banera cookies), usługi online, serwera zgłoszeń i statystyk odwiedzin (Umami)</li>
+        <li><strong>Vercel</strong> — serwery tej strony (w tym zapis wyborów z banera cookies), usługi licencji i plików do pobrania, usługi pobierania stron, serwera zgłoszeń i statystyk odwiedzin (Umami)</li>
         <li><strong>Neon</strong> — osobne bazy danych statystyk odwiedzin (Umami) i rejestru zgód na cookies, przechowywane w UE (Frankfurt)</li>
-        <li><strong>Upstash</strong> — liczniki limitów zapytań usługi online (tylko skróty adresów IP)</li>
+        <li><strong>Upstash</strong> — baza danych usługi licencji oraz liczniki limitów pobierania stron (adresy sieci tylko jako skróty)</li>
         <li><strong>GitHub</strong> — publiczna publikacja zgłoszeń w GitHub Discussions (bez adresu email)</li>
         <li><strong>Make.com i Google (Gmail)</strong> — przekazanie mi adresu email podanego w zgłoszeniu</li>
       </ul>
@@ -67,7 +67,8 @@ import CookieTable from '../../components/ui/CookieTable.astro';
         <li>Nagrania sesji (PostHog) — 30 dni; dane map cieplnych i pozostałe zdarzenia w PostHog — do 1 roku</li>
         <li>Statystyki odwiedzin (Umami) — do 2 lat</li>
         <li>Rejestr zgód na cookies — 2 lata; starsze wpisy usuwam raz w roku</li>
-        <li>Liczniki limitów usługi online — wygasają automatycznie</li>
+        <li>Zapis zdarzeń usługi licencji (instalacje, aktualizacje, uruchomienia) — 24 miesiące</li>
+        <li>Skróty adresów sieci przy pobieraniu stron bez osobistego linku płatnego pakietu — usuwane na koniec dnia</li>
         <li>Zgłoszenia opublikowane w GitHub Discussions — do czasu usunięcia; możesz poprosić o usunięcie swojego zgłoszenia</li>
       </ul>
 
