@@ -1,6 +1,6 @@
-<!-- Draft: Polish, Easymail list "UX Designer – migracja płatni (PL)" (`8b21c432-465c-4659-a5c9-b9d8ef700478`, setting `EASYMAIL_MIGRATION_LIST_PAID_PL`). Audience: current owners of a paid package from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the Polish paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. `[data]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
+<!-- Draft: Polish, Easymail list "UX Designer – migracja płatni (PL)" (`8b21c432-465c-4659-a5c9-b9d8ef700478`, setting `EASYMAIL_MIGRATION_LIST_PAID_PL`). Audience: current owners of a paid UX Design Skill package from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the Polish paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. `[data]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
 
-**Subject:** UX Design Skill: Twój osobisty link do instalacji.
+**Subject:** Aktualizacja UX Design Skill: Twój osobisty link do instalacji.
 
 **Preheader:** Twoja kopia działa dalej, a instalacja z linku zachowa Twoje zmiany.
 
@@ -17,7 +17,12 @@ Wklej to zdanie do Claude Code, Codex albo Cursora:
 
 Pobierz {{install-link}} do folderu tymczasowego, rozpakuj go i postępuj według pliku INSTALL.md w środku.
 
-Twój agent pokaże plan i zapyta, zanim cokolwiek skopiuje. Może kilka razy poprosić o zgodę na uruchomienie poleceń (pobranie, rozpakowanie, kopiowanie i sprawdzenie plików). To normalne. Instalację i aktualizację sprawdziłem na Windowsie. Jeśli coś nie zadziała, odpowiedz na tego maila albo napisz do mnie na tomasz@creativesparks.pl.
+Twój agent pokaże plan i zapyta, zanim cokolwiek skopiuje. Może kilka razy poprosić o zgodę na uruchomienie poleceń (pobranie, rozpakowanie, kopiowanie i sprawdzenie plików). To normalne. Instalację i aktualizację sprawdziłem na Windowsie.
+
+
+## Gdy agent skończy, uruchom skill komendą.
+
+Uruchamiasz go jak każdy inny skill: komendą /ux-design w Claude Code i Cursorze albo $ux-design w Codexie. Jeśli coś nie zadziała, odpowiedz na tego maila albo napisz do mnie na tomasz@creativesparks.pl.
 
 
 ## Twoja kopia i Twoje zmiany zostają.

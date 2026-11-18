@@ -1,6 +1,6 @@
-<!-- Draft: English, Easymail list "UX Designer – migracja płatni (EN)" (`3f7433d0-3158-4c21-b0ac-9cafd5dba821`, setting `EASYMAIL_MIGRATION_LIST_PAID_EN`). Audience: current owners of a paid package from an English product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the English paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. `[date]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
+<!-- Draft: English, Easymail list "UX Designer – migracja płatni (EN)" (`3f7433d0-3158-4c21-b0ac-9cafd5dba821`, setting `EASYMAIL_MIGRATION_LIST_PAID_EN`). Audience: current owners of a paid UX Design Skill package from an English product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the English paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. `[date]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
 
-**Subject:** UX Design Skill: your personal install link.
+**Subject:** An update for UX Design Skill: your personal install link.
 
 **Preheader:** Your copy keeps working, and installing from the link keeps your edits.
 
@@ -17,7 +17,12 @@ Paste this sentence into Claude Code, Codex or Cursor:
 
 Download {{install-link}} into a temporary folder, unpack it, and follow INSTALL.md inside.
 
-Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows. If something doesn't work, reply to this email or write to me at tomasz@creativesparks.pl.
+Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows.
+
+
+## When your agent is done, start the skill with its command.
+
+Start it like any other skill: with /ux-design in Claude Code or Cursor, or $ux-design in Codex. If something doesn't work, reply to this email or write to me at tomasz@creativesparks.pl.
 
 
 ## Your copy and your edits stay.
