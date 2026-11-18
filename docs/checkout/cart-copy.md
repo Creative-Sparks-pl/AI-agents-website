@@ -66,13 +66,15 @@ Old variants, shown on the plain checkout link until the release hides them: Sol
 
 ## Paid: Founder (own-business licence)
 
-A separate product per language; same description and link as the UX Design Skill.
+A separate product per language; same description and link as the UX Design Skill, plus a closing licence line so the buyer sees the limit before paying.
 
 ### PL — `Skill do projektowania UX dla właścicieli firm`
 
 Checkout: `https://cart.creativesparks.pl/checkout/founder-pl`
 
-Description, bullets and link: as in UX Design Skill PL above.
+Description, bullets and link: as in UX Design Skill PL above, then a closing paragraph after the bullets:
+
+> Licencja Founder: do projektowania stron Twojej własnej firmy. Nie obejmuje pracy dla klientów. Do tego wybierz Projektant Solo lub Studio.
 
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|
@@ -83,7 +85,9 @@ Description, bullets and link: as in UX Design Skill PL above.
 
 Checkout: `https://cart.creativesparks.pl/checkout/founder-en`
 
-Description, bullets and link: as in UX Design Skill EN above.
+Description, bullets and link: as in UX Design Skill EN above, then a closing paragraph after the bullets:
+
+> Founder license: for designing your own business's websites. It does not cover client work. For that, choose Designer Solo or Studio.
 
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|
