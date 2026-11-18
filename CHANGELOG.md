@@ -2,6 +2,21 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.4.0 — 2026-11-18
+
+### Added
+- Black Friday sale window, 23.11.2026 00:00 – 30.11.2026 23:59 Warsaw time, switched in the visitor's browser with no deploy: inside it the cards show the sale price, the crossed-out list price and the 30-day lowest-price line, the buy buttons open the Black Friday carts, and the paid pages' hero badge counts down. It replaces the presale deadline.
+- Every card has its own Easytools checkout link per language, for the list price and for the Black Friday price (twelve in all), with `lang` and `page` still added.
+- Failed free-skill signups say where they failed: `/api/subscribe` answers with the step (`grant`, `product_read`, `no_file`) and Easytools' HTTP status, and the `server_error` event carries both.
+- `docs/checkout/cart-copy.md`: the cart text of every Easytools product, PL and EN.
+
+### Changed
+- New packages and list prices on both paid pages: Founder 449 zł / $149 (own business, 1 user), Solo Designer 749 zł / $229 (client work, 1 user), Studio 1249 zł / $379 (client work, up to 5 people). Agencja / Agency is gone. The section asks "for clients or for yourself?", the cards are grouped by use and show a value line under the price.
+- Twelve months of updates everywhere the site states the update period.
+- Structured data, share text, the comparison table and the FAQ carry the new names and list prices; no old price is left on live pages.
+- Terms (PL and EN) describe two licences: Founder for the buyer's own business, Solo Designer and Studio for client work. In force from 2026-11-18; earlier purchases keep the terms they were bought under.
+- The checkout-click event's plan values, the tracking plan and a ledger row follow the new package names.
+
 ## 1.3.1 — 2026-11-16
 
 ### Changed
