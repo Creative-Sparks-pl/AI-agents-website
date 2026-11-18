@@ -12,7 +12,6 @@ interface Props {
   placeholder?: string;
   successHeading?: string;
   successNote?: string;
-  downloadLabel?: string;
   block?: boolean;
   fitContainer?: boolean;
   class?: string;
@@ -21,11 +20,11 @@ interface Props {
 const locale = localeFromPathname(Astro.url.pathname);
 
 const COPY_PL = {
-  submitLabel: 'Pobierz darmowy skill',
+  submitLabel: 'Odbierz darmowy skill',
   placeholder: 'adres email',
-  successHeading: 'Gotowe — paczka czeka.',
-  successNote: 'Wysłaliśmy też link na podany adres email.',
-  downloadLabel: 'Pobierz paczkę',
+  successHeading: 'Gotowe. Sprawdź skrzynkę.',
+  successNote: 'W ciągu minuty dostaniesz maila od tomasz@creativesparks.pl z osobistym linkiem do instalacji. Nie widzisz go? Zajrzyj do Spamu albo Ofert. Potem wklej zdanie z maila do Claude Code, Codexa albo Cursora.',
+  successRepeat: 'Masz już ten skill? Twój link jest w pierwszym mailu.',
   emailLabel: 'Adres email',
   loadingLabel: 'Wysyłam...',
   errEmail: 'Podaj poprawny adres email.',
@@ -41,9 +40,9 @@ const COPY_PL = {
 const COPY_EN = {
   submitLabel: 'Get the free skill',
   placeholder: 'email address',
-  successHeading: 'Done. Your package is ready.',
-  successNote: 'We also emailed you the link.',
-  downloadLabel: 'Download the package',
+  successHeading: 'Done. Check your inbox.',
+  successNote: 'Your personal install link arrives within a minute from tomasz@creativesparks.pl. Not there? Check Spam or Promotions. Then paste the sentence from the email into Claude Code, Codex or Cursor.',
+  successRepeat: 'Signed up before? Your link is in the first email.',
   emailLabel: 'Email address',
   loadingLabel: 'Sending...',
   errEmail: 'Enter a valid email address.',
@@ -66,7 +65,6 @@ const {
   placeholder = COPY.placeholder,
   successHeading = COPY.successHeading,
   successNote = COPY.successNote,
-  downloadLabel = COPY.downloadLabel,
   block = false,
   fitContainer = false,
   class: className,
@@ -152,7 +150,7 @@ const iconSize: Record<Size, string> = {
       ]}
     >
       <span class="free-skill-form__submit-label">{submitLabel}</span>
-      <span class:list={['material-symbols-outlined', iconSize[size]]} aria-hidden="true">download</span>
+      <span class:list={['material-symbols-outlined', iconSize[size]]} aria-hidden="true">mail</span>
     </button>
   </form>
 
@@ -171,16 +169,8 @@ const iconSize: Record<Size, string> = {
       <span class="material-symbols-outlined align-middle text-primary mr-2" aria-hidden="true">check_circle</span>
       <span class="free-skill-form__success-heading align-middle">{successHeading}</span>
     </p>
-    <p class="text-muted mt-2 mb-4 free-skill-form__success-note">{successNote}</p>
-    <a
-      class:list={['free-skill-form__download inline-flex items-center gap-2 tracking-tight transition-all duration-300 bg-primary text-white border-2 border-primary hover:bg-black hover:border-black py-4 text-base font-extrabold', fitContainer ? 'w-full justify-center px-6' : 'px-10']}
-      href="#"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      <span class="free-skill-form__download-label">{downloadLabel}</span>
-      <span class="material-symbols-outlined text-lg" aria-hidden="true">download</span>
-    </a>
+    <p class="text-muted mt-2 free-skill-form__success-note">{successNote}</p>
+    <p class="text-muted mt-2 free-skill-form__success-repeat">{COPY.successRepeat}</p>
   </div>
 </div>
 
@@ -205,24 +195,15 @@ const iconSize: Record<Size, string> = {
     el.classList.add('hidden');
   }
 
-  function showSuccess(root: HTMLElement, downloadUrl: string) {
+  // The personal install link comes only by email; the page never shows it.
+  function showSuccess(root: HTMLElement) {
     const form = root.querySelector<HTMLElement>('.free-skill-form__form');
     const disclaimer = root.querySelector<HTMLElement>('.free-skill-form__disclaimer');
     const success = root.querySelector<HTMLElement>('.free-skill-form__success');
-    const link = root.querySelector<HTMLAnchorElement>('.free-skill-form__download');
-    if (!form || !success || !link) return;
-    link.href = downloadUrl;
+    if (!form || !success) return;
     form.classList.add('hidden');
     disclaimer?.classList.add('hidden');
     success.classList.remove('hidden');
-
-    const trigger = document.createElement('a');
-    trigger.href = downloadUrl;
-    trigger.rel = 'noopener noreferrer';
-    trigger.style.display = 'none';
-    document.body.appendChild(trigger);
-    trigger.click();
-    document.body.removeChild(trigger);
   }
 
   // Funnel events carry only these labels, never the email or anything else the visitor typed.
@@ -233,7 +214,7 @@ const iconSize: Record<Size, string> = {
   // HTTP status (0: no answer). `stage` is "none" when the answer named no step, e.g. a platform timeout page.
   type ServerErrorData = { site_status: number; stage: string; easytools_status?: number };
   type EventData = FunnelData & { reason?: SubmitErrorReason } & Partial<ServerErrorData>;
-  const FAILED_STAGES = new Set(['grant', 'product_read', 'no_file']);
+  const FAILED_STAGES = new Set(['grant']);
 
   // Umami loads as a deferred script and may be blocked, so every call checks it is there.
   function trackUmami(name: string, data: EventData) {
@@ -326,16 +307,17 @@ const iconSize: Record<Size, string> = {
 
         const payload = (await res.json().catch(() => ({}))) as {
           ok?: boolean;
-          downloadUrl?: string;
+          granted?: boolean;
           reason?: string;
           stage?: unknown;
           status?: unknown;
         };
 
-        if (res.ok && payload.ok && payload.downloadUrl) {
+        // Only a real grant says `granted`; the honeypot's bare `ok` falls through to the generic error.
+        if (res.ok && payload.ok && payload.granted === true) {
           setState(root, 'success');
           trackLead(surface, skill, funnel, email);
-          showSuccess(root, payload.downloadUrl);
+          showSuccess(root);
           return;
         }
 

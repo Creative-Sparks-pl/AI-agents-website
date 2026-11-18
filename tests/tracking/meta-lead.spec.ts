@@ -5,7 +5,6 @@ import { blockDataSending, setConsent } from '../consent/consent-helpers';
 // The banner's cookie is preset with a fixed choice (or the banner is clicked), Meta's scripts are
 // blocked, /api/subscribe is mocked and sendBeacon is swapped for a recorder, so these tests send
 // no signup and nothing to Meta.
-const FAKE_DOWNLOAD = 'https://downloads.test/skill.zip';
 const EMAIL = 'Lead.Check.4821@Example.com';
 // Meta's rule for emails: trim, lowercase, then SHA-256 as lowercase hex.
 const EXPECTED_HASH = createHash('sha256').update(EMAIL.trim().toLowerCase()).digest('hex');
@@ -55,15 +54,7 @@ async function mockSubscribe(page: Page) {
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify({ ok: true, downloadUrl: FAKE_DOWNLOAD }),
-    }),
-  );
-  await page.route(`${FAKE_DOWNLOAD}*`, (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/zip',
-      headers: { 'Content-Disposition': 'attachment; filename="skill.zip"' },
-      body: 'zip',
+      body: JSON.stringify({ ok: true, granted: true }),
     }),
   );
 }

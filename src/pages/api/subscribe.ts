@@ -5,8 +5,8 @@ export const prerender = false;
 
 type Skill = 'audit' | 'planning';
 type Locale = 'pl' | 'en';
-// The Easytools step a failed signup stopped at.
-type FailedStage = 'grant' | 'product_read' | 'no_file';
+// The Easytools step a failed signup stopped at. Since 1.5.0 the grant is the only step.
+type FailedStage = 'grant';
 
 interface SubscribeBody {
   email?: string;
@@ -14,10 +14,6 @@ interface SubscribeBody {
   skill?: string;
   // honeypot — bots fill this, humans don't
   website?: string;
-}
-
-interface EasytoolsProduct {
-  files?: { download_url?: string | null }[];
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,8 +24,8 @@ const EASYCART_API = 'https://cart.easy.tools/api/v1';
 // Cloudflare in front of cart.easy.tools answers 403 (error 1010) to default client signatures.
 const USER_AGENT = 'creativesparks-site/1.0';
 
-// One free Easytools product per skill and language. These IDs are not secret:
-// they do nothing without the API key, which stays in the environment.
+// One free Easytools product per skill and language; the grant uses the variant. These IDs are not
+// secret: they do nothing without the API key, which stays in the environment.
 const PRODUCTS: Record<Skill, Record<Locale, { productId: string; variantId: string }>> = {
   audit: {
     pl: {
@@ -61,7 +57,7 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, reason: 'bad_request' }, 400);
   }
 
-  // Bots get a success answer, but Easytools is never called and no real link is handed out.
+  // Bots get a bare `ok` without `granted`, so the form shows its generic error; Easytools is never called.
   if (body.website) {
     return json({ ok: true }, 200);
   }
@@ -85,7 +81,7 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: false, reason: 'not_configured' }, 503);
   }
 
-  const { productId, variantId } = PRODUCTS[skill][locale];
+  const { variantId } = PRODUCTS[skill][locale];
 
   const headers = {
     Authorization: `Bearer ${apiKey}`,
@@ -95,10 +91,11 @@ export const POST: APIRoute = async ({ request }) => {
 
   // Failed answers say which step failed and Easytools' HTTP status (0: no answer), so the form's error
   // event shows the cause. Never Easytools' message text, which may contain the email.
-  let stage: FailedStage = 'grant';
+  const stage: FailedStage = 'grant';
 
   try {
-    // Grant the free product. Easytools creates the customer account if needed and sends the access email.
+    // Grant the free product. Easytools creates the customer account if needed and sends its access email;
+    // the license service then emails the personal install link. No file or link comes back here.
     const grant = await fetch(`${EASYCART_API}/product-access`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
@@ -122,26 +119,7 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ ok: false, reason: 'upstream_error', stage, status: grant.status }, 502);
     }
 
-    // The grant answer carries no link; reading the product returns a signed download link (~1 hour).
-    stage = 'product_read';
-    const productResponse = await fetch(`${EASYCART_API}/products/${productId}`, { headers });
-    if (!productResponse.ok) {
-      console.error(
-        '[subscribe] easytools product read non-ok response:',
-        productResponse.status,
-        await productResponse.text(),
-      );
-      return json({ ok: false, reason: 'upstream_error', stage, status: productResponse.status }, 502);
-    }
-
-    const product = (await productResponse.json()) as EasytoolsProduct;
-    const downloadUrl = product.files?.[0]?.download_url;
-    if (!downloadUrl) {
-      console.error('[subscribe] easytools product has no downloadable file:', productId);
-      return json({ ok: false, reason: 'upstream_error', stage: 'no_file', status: productResponse.status }, 502);
-    }
-
-    return json({ ok: true, downloadUrl }, 200);
+    return json({ ok: true, granted: true }, 200);
   } catch (err) {
     // No usable answer at this step: the request failed, or the answer was not readable.
     console.error('[subscribe] fetch failed:', stage, err);

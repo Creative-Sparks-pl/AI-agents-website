@@ -4,7 +4,6 @@ import { blockThirdParty, widthOf } from '../screenshots/helpers';
 
 // The real Umami script is blocked and replaced by a recorder, and /api/subscribe is mocked,
 // so these tests never count a visit or send a real signup.
-const FAKE_DOWNLOAD = 'https://downloads.test/skill.zip';
 const EMAIL = 'funnel.check.4821@example.com';
 const STARTED = 'Free skill form started';
 const SUBMIT_PREFIX = 'Free skill submit: ';
@@ -62,9 +61,9 @@ const ERROR_CASES: Array<{
   {
     name: 'no answer from Easytools (500)',
     typed: EMAIL,
-    failure: { status: 500, code: 'internal_error', extra: { stage: 'product_read', status: 0 } },
+    failure: { status: 500, code: 'internal_error', extra: { stage: 'grant', status: 0 } },
     reason: 'server_error',
-    labels: { site_status: 500, stage: 'product_read', easytools_status: 0 },
+    labels: { site_status: 500, stage: 'grant', easytools_status: 0 },
   },
   {
     name: 'platform timeout page (504)',
@@ -124,19 +123,10 @@ async function mockSubscribe(page: Page, failure?: Failure) {
       status: failure ? failure.status : 200,
       contentType: 'application/json',
       body: JSON.stringify(
-        failure ? { ok: false, reason: failure.code, ...failure.extra } : { ok: true, downloadUrl: FAKE_DOWNLOAD },
+        failure ? { ok: false, reason: failure.code, ...failure.extra } : { ok: true, granted: true },
       ),
     });
   });
-  // The real link answers as a file download, which keeps the visitor on the page; this does the same.
-  await page.route(`${FAKE_DOWNLOAD}*`, (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/zip',
-      headers: { 'Content-Disposition': 'attachment; filename="skill.zip"' },
-      body: 'zip',
-    }),
-  );
   return requests;
 }
 

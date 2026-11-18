@@ -2,7 +2,6 @@ import { test, expect, type Page } from '@playwright/test';
 import { expectAxeClean, openPage, shoot, widthOf } from './helpers';
 
 // /api/subscribe is always mocked here, so these tests never send a real signup.
-const FAKE_DOWNLOAD = 'https://downloads.test/skill.zip';
 
 const FORMS = [
   { name: 'audit-pl', path: '/free-homepage-ux-audit-skill/', locale: 'pl', skill: 'audit', surfaces: ['free_audit_skill_hero', 'free_audit_skill_final'] },
@@ -26,15 +25,6 @@ async function mockSubscribe(page: Page, reply: () => { status: number; body: ob
     const { status, body } = reply();
     await route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
   });
-  // The real link answers as a file download, which keeps the visitor on the page; this does the same.
-  await page.route(`${FAKE_DOWNLOAD}*`, (route) =>
-    route.fulfill({
-      status: 200,
-      contentType: 'application/zip',
-      headers: { 'Content-Disposition': 'attachment; filename="skill.zip"' },
-      body: 'zip',
-    }),
-  );
   return requests;
 }
 
@@ -72,12 +62,26 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
       await expectAxeClean(page, selector);
       await shot('error-server');
 
-      reply = { status: 200, body: { ok: true, downloadUrl: FAKE_DOWNLOAD } };
+      // The honeypot's answer is a bare `ok` without `granted`: the form shows the generic error, no success.
+      reply = { status: 200, body: { ok: true } };
+      await submit.click();
+      await expect(form).toHaveAttribute('data-state', 'error');
+      await expect(error).toBeVisible();
+
+      // The link arrives only by email: the success message names the sender and the spam folder,
+      // and holds no link; no download starts.
+      const downloads: string[] = [];
+      page.on('download', (d) => downloads.push(d.url()));
+      reply = { status: 200, body: { ok: true, granted: true } };
       await submit.click();
       await expect(form).toHaveAttribute('data-state', 'success');
-      await expect(form.locator('.free-skill-form__success')).toBeVisible();
-      await expect(form.locator('.free-skill-form__download')).toHaveAttribute('href', FAKE_DOWNLOAD);
+      const success = form.locator('.free-skill-form__success');
+      await expect(success).toBeVisible();
+      await expect(success).toContainText('tomasz@creativesparks.pl');
+      await expect(success).toContainText('Spam');
+      await expect(success.locator('a')).toHaveCount(0);
       await expect(error).toBeHidden();
+      expect(downloads).toHaveLength(0);
       expect(requests.at(-1)).toMatchObject({ email: 'reader@example.com', skill, locale });
       await expectAxeClean(page, selector);
       await shot('success');
