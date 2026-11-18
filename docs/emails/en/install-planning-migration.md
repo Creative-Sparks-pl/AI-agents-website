@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – planowanie, migracja (EN)" (`17305008-27f6-412b-b63a-f39d8e2b0740`). Audience: current owners of the free Website Planning Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the audit email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
+<!-- Draft: English, Easymail list "UX Designer – planowanie, migracja (EN)" (`17305008-27f6-412b-b63a-f39d8e2b0740`). Audience: current owners of the free Website Planning Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the audit email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. -->
 
 **Subject:** An update for your Website Planning Skill: your personal install link.
 
@@ -28,6 +28,11 @@ Start it like any other skill: with /website-planning in Claude Code or Cursor, 
 ## Your current copy keeps working.
 
 You don't have to do anything. Installing from your link brings it up to the current version: the install finds your copy, keeps the files you edited and backs up anything it replaces. Free editions keep the version you install; they don't update by themselves.
+
+
+## Keep this email.
+
+The link is yours, so you can reinstall from it any time. Please don't share it beyond the people your license covers.
 
 
 ## What does your copy send?

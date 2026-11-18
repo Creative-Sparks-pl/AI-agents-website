@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – audyt, migracja (EN)" (`0e158344-a87f-4453-99c7-767492ecd16a`, until 2026-11-18 "UX Designer – migracja darmowi (EN)"). Audience: current owners of the free Homepage UX Audit Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the planning email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. -->
+<!-- Draft: English, Easymail list "UX Designer – audyt, migracja (EN)" (`0e158344-a87f-4453-99c7-767492ecd16a`, until 2026-11-18 "UX Designer – migracja darmowi (EN)"). Audience: current owners of the free Homepage UX Audit Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the planning email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. -->
 
 **Subject:** An update for your Homepage UX Audit Skill: your personal install link.
 
@@ -28,6 +28,11 @@ Start it like any other skill: with /homepage-ux-audit in Claude Code or Cursor,
 ## Your current copy keeps working.
 
 You don't have to do anything. Installing from your link brings it up to the current version: the install finds your copy, keeps the files you edited and backs up anything it replaces. Free editions keep the version you install; they don't update by themselves.
+
+
+## Keep this email.
+
+The link is yours, so you can reinstall from it any time. Please don't share it beyond the people your license covers.
 
 
 ## What does your copy send?
