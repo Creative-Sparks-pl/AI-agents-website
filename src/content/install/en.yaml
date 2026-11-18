@@ -1,19 +1,19 @@
 badge: Install
-heading: Install it like a WordPress plugin
-intro: A folder of markdown files drops into your AI environment. Claude Code, Cursor, ChatGPT, Claude Projects, or Alice. No backend, no accounts, no onboarding queue.
+heading: Install with one command
+intro: You get an email with your personal install link. Paste the instruction from it into Claude Code, Codex or Cursor, and your agent installs the skill. No backend, no accounts, no onboarding queue.
 items:
-  - icon: download
+  - icon: mail
     label: Step 1
-    title: Download the folder
-    description: After you buy, you get a zipped folder with the skill files.
-  - icon: drive_folder_upload
+    title: Open the email with your link
+    description: It comes from tomasz@creativesparks.pl. Not there? Check Spam or Promotions.
+  - icon: content_paste
     label: Step 2
-    title: Drop it into your environment
-    description: Point your agent at INSTALL.md and it installs the skill for you. On web platforms, you upload the files following the instructions.
+    title: Paste the instruction into your tool
+    description: The link and the sentence below it, into Claude Code, Codex or Cursor. Your agent shows you the plan and asks before copying anything.
   - icon: play_arrow
     label: Step 3
-    title: Use it in your next session
-    description: The skill picks up automatically on your next session with the model. No extra configuration.
+    title: Start the skill with its command
+    description: Like any other skill. The command is in the email.
 footerLink:
   label: See the full install guide
   href: /en/ux-design-skill/how-it-works/

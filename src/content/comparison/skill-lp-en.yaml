@@ -29,18 +29,18 @@ rows:
     cells:
       skill:
         status: "yes"
-        text: 5 minutes (drop the folder into .claude/skills).
+        text: 5 minutes. Paste the instruction from the email, and your agent installs the skill.
       claude:
         status: "partial"
         text: 0 minutes, but 0 methodology.
       diy:
         status: "no"
         text: 80 to 160 hours of writing and testing.
-  - feature: Cross-model (Claude, ChatGPT, Gemini)
+  - feature: Cross-model (Claude, GPT, Gemini)
     cells:
       skill:
         status: "yes"
-        text: Yes. Works in any tool with any model (Claude Code, Codex, Gemini CLI, Cursor).
+        text: Yes. Works in Claude Code, Codex and Cursor, and in Cursor you pick the model.
       claude:
         status: "no"
         text: Claude only, inside Claude Code. No model choice.

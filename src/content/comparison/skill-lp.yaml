@@ -29,18 +29,18 @@ rows:
     cells:
       skill:
         status: "yes"
-        text: 5 minut (folder do .claude/skills).
+        text: 5 minut. Wklejasz instrukcję z maila, a agent instaluje skill.
       claude:
         status: "partial"
         text: 0 minut, ale 0 metodologii.
       diy:
         status: "no"
         text: 80 - 160 godzin pisania i testowania.
-  - feature: Cross-model (Claude, ChatGPT, Gemini)
+  - feature: Cross-model (Claude, GPT, Gemini)
     cells:
       skill:
         status: "yes"
-        text: Tak. Działa w narzędziach z dowolnym modelem (Claude Code, Codex, Gemini CLI, Cursor).
+        text: Tak. Działa w Claude Code, Codex i Cursorze, a w Cursorze wybierasz model.
       claude:
         status: "no"
         text: Tylko Claude w Claude Code. Bez wyboru modelu.

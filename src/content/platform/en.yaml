@@ -1,34 +1,32 @@
 badge: Platforms
 heading: The skill runs on the platforms you already use.
 contentsHeading: What's in the package
-contentsNote: No extra dependencies. Drop in the folder, open your platform, start your first project.
+contentsNote: No extra dependencies. Install from the link in your email, open your tool, start your first project.
 platforms:
   - icon: terminal
     name: Claude Code
     desc: Full file access, direct deliverable writes
+  - icon: data_object
+    name: Codex
+    desc: The same skill, started with $ux-design
+  - icon: edit_square
+    name: Cursor
+    desc: The skill in your editor, started with /ux-design
   - icon: code
     name: VS Code / IDE
-    desc: Integrates with your working environment
-  - icon: public
-    name: Claude / ChatGPT in the browser
-    desc: As a project instruction
-    note: Runs in the browser. Not all Claude Code features are available here.
-  - icon: auto_awesome
-    name: Custom GPTs / Gemini Gems
-    desc: Compatible as a knowledge plus instruction set
-    note: Runs in the browser. Not all Claude Code features are available here.
+    desc: Through the Claude Code or Codex extension
 contents:
   - label: Skill
     desc: Rules (SKILL.md), plus the orchestrator and workflows that steer the work
   - label: UX knowledge base
     desc: "110 files: 16 page types, 19 general topics"
-  - label: Versions for different tools
-    desc: Claude Code, Codex, Cursor, Claude Projects, ChatGPT, Gemini
+  - label: One skill, three tools
+    desc: Claude Code, Codex, Cursor
   - label: Document templates
     desc: Project plan, messaging canvas, wireframes, audit report
   - label: Install guide
     desc: INSTALL.md
 requirements:
-  - "Account on Claude, ChatGPT, or Gemini"
-  - The skill folder downloaded
+  - Claude Code, Codex or Cursor
+  - The email with your personal install link
   - 5 minutes to set up
