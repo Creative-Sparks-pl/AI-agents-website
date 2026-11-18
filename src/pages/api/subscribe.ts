@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { normalizeFreeSkillEmail } from '../../lib/free-skill-email';
 
 export const prerender = false;
 
@@ -70,10 +71,12 @@ export const POST: APIRoute = async ({ request }) => {
   }
   const skill = body.skill as Skill;
 
-  const email = (body.email ?? '').trim().toLowerCase();
-  if (!email || !EMAIL_RE.test(email) || email.length > 254) {
+  const typedEmail = (body.email ?? '').trim().toLowerCase();
+  if (!typedEmail || !EMAIL_RE.test(typedEmail) || typedEmail.length > 254) {
     return json({ ok: false, reason: 'invalid_email' }, 422);
   }
+  // Gmail aliases reach one mailbox, so they count as one address: Easytools gets the plain form.
+  const email = normalizeFreeSkillEmail(typedEmail);
 
   const locale: Locale = ALLOWED_LOCALES.has(body.locale ?? '') ? (body.locale as Locale) : 'pl';
 
