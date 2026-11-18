@@ -18,13 +18,13 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <p>Contact: <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a></p>
 
       <h2>What I sell</h2>
-      <p>UX Design Skill is a digital product: a package of files that you install on a chosen AI platform (Claude, ChatGPT, Gemini) and use to run a UX process for website projects. The package contains:</p>
+      <p>UX Design Skill is a digital product: a package of files that you install in your AI coding tool (Claude Code, Codex, or Cursor) and use to run a UX process for website projects. The package contains:</p>
       <ul>
         <li>Instructions and a knowledge base in Markdown text files (SKILL.md and the references/ folder).</li>
         <li>Helper scripts in Python and JavaScript (the references/scripts/ folder) that the AI model uses while it works, for example to save results and check that they are complete.</li>
         <li>HTML templates in which the interactive result documents are built (wireframes and plans, and in Solo Designer and Studio also audits).</li>
       </ul>
-      <p>Solo Designer and Studio also include an access key to the online service described in the "Online service" section.</p>
+      <p>The skill itself runs on your computer, in your AI tool. The product also includes online services that I run on Vercel servers: the license service and, in Solo Designer and Studio, also the page capture service. I describe them in the "Online services" section.</p>
 
       <h2>Packages and license</h2>
       <p>The product is available in three packages, which differ in the scope of the license:</p>
@@ -36,52 +36,58 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <p>A license for a larger team is available on request: <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
       <p>Every package includes:</p>
       <ul>
-        <li>Skill files in the current version.</li>
+        <li>Skill files in the current version and a personal install link.</li>
         <li>12 months of updates.</li>
       </ul>
-      <p>Solo Designer and Studio also include the features for client work: a template and section list for quoting a project, a full UX audit, and a wireframe of an existing site, plus access to the online service that the existing-site wireframe uses (see "Online service").</p>
+      <p>Solo Designer and Studio also include the features for client work: a template and section list for quoting a project, a full UX audit, and a wireframe of an existing site, plus access to the page capture service that the existing-site wireframe uses (see "Online services").</p>
       <p><strong>What the license covers:</strong></p>
       <ul>
         <li><strong>Founder:</strong> you can use the skill to design your own business's websites. You can use the deliverables produced by the skill (wireframes, strategies, project contexts) within your business without limits, including commercially.</li>
         <li><strong>Solo Designer and Studio:</strong> you can use the skill on your own and client projects. You can hand the deliverables to clients and use them without limits, including commercially.</li>
       </ul>
+      <p>Your right to use the skill ends in only two cases: after a refund of your purchase, or if I block your personal link for abuse (for example, sharing it with people outside the license). Your copy of the skill then stops working the next time it runs with an internet connection. The skill never stops working because of a missing payment, for example if you do not extend your updates.</p>
       <p><strong>What the license does not cover:</strong></p>
       <ul>
         <li>Under Founder, you cannot use the skill for client projects or for other businesses.</li>
         <li>You cannot share the skill files with people outside the license (e.g. Founder and Solo Designer = only you, Studio = up to 5 people in your team).</li>
-        <li>You cannot share the online service access key with people outside the license.</li>
+        <li>You cannot share your personal link with people outside the license.</li>
         <li>You cannot resell, redistribute, or publish the skill files.</li>
         <li>You cannot use the skill files to create a competing product.</li>
+        <li>You cannot remove or change the license file (license.json) or the license check in the skill files.</li>
       </ul>
 
       <h2>Purchase and payment</h2>
       <ol>
         <li>You pick a package on the site and go to the checkout.</li>
         <li>At checkout you enter your email address (and company details if you need a company invoice) and pay.</li>
-        <li>After payment you receive an email with a link to download the files.</li>
-        <li>You can download the files throughout your update period (12 months from purchase, or longer if you extend your updates). If the link does not work, write to tomasz@creativesparks.pl.</li>
+        <li>After payment you receive an email with your personal install link.</li>
+        <li>You install the skill by pasting one sentence with this link into your AI coding tool (Claude Code, Codex, or Cursor). You will find the sentence in the email.</li>
       </ol>
+      <p>Your personal link does not expire. You can reinstall the skill from it at any time. If the email with the link does not arrive, write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
+      <p>You get the free skills (for a homepage UX audit and for website planning) the same way: after you sign up, you receive an email with a personal link, with no payment.</p>
       <p>Prices on the site are shown in USD and are net prices. VAT is calculated at checkout based on your country and shown before you pay.</p>
       <p>Easytools issues the invoice automatically after payment, on my behalf. Invoices for businesses are also registered in Poland's national e-invoicing system (KSeF). If you need a company invoice, choose to buy as a company at checkout and enter your tax ID.</p>
 
       <h2>Updates</h2>
-      <p>Every package includes 12 months of updates from the purchase date. During this period you receive new versions of the skill (new page types, patterns, fixes) at the email address you provided at checkout.</p>
-      <p>After 12 months the skill still works without changes. You can extend updates for another year at about half the current package price. Extending is optional.</p>
+      <p>Every package includes 12 months of updates from the purchase date. During this period you have access to new versions of the skill (new page types, patterns, fixes).</p>
+      <p>Every time it starts, the skill checks your license and whether a new version is available. When automatic updates are on (the default), the skill installs the new version by itself and asks you only about files that contain your own changes. You can turn automatic updates off by asking the skill in a conversation. The skill then only tells you that a new version is available.</p>
+      <p>After 12 months the skill still works without changes, and in Solo Designer and Studio page capture keeps working too (within the daily limit). It only stops receiving new versions: your personal link then installs the last version released during your update period. You can extend updates for another year at about half the current package price. Extending is optional.</p>
 
-      <h2>Online service</h2>
-      <p>The service opens a given public web page in a browser and returns its layout (the position and content of its elements). The AI model uses it automatically when it reconstructs wireframes of existing pages.</p>
+      <h2>Online services</h2>
+      <p>The license service checks your license and updates (see "Updates") and delivers the skill files when you install and update. When it cannot be reached, the skill keeps working, only without updates.</p>
+      <p>The page capture service, available in Solo Designer and Studio, opens a given public web page in a browser and returns its layout (the position and content of its elements). The AI model uses it automatically when it reconstructs wireframes of existing pages.</p>
       <ul>
-        <li>Limit: up to 30 requests per minute.</li>
-        <li>Technical interruptions can happen. In environments where the AI model runs code, it can then use a fallback method, with your consent.</li>
+        <li>Page capture has a daily limit of captures per personal link.</li>
+        <li>Technical interruptions can happen. The AI model can then use a fallback method, with your consent.</li>
       </ul>
 
       <h2>Using the product</h2>
-      <p>The product requires an account on one of the supported AI platforms: Claude (Anthropic), ChatGPT (OpenAI), or Gemini (Google). The cost of an account on these platforms is not included in the product price and is a separate expense.</p>
-      <p>Full functionality requires an environment where the AI model can run code (for example Claude Code in a terminal or IDE) and Python 3. In web chats (Claude, ChatGPT, Gemini) the product works without the scripts and without the online service, with limits: wireframes in the mobile version only and no automatic completeness check. Screenshots through Playwright are optional and require installing Node.js.</p>
-      <p>The skill runs on AI models provided by these platforms. The quality of results depends on the AI model, your answers, and the specifics of your project. I do not guarantee specific results because every project is different.</p>
+      <p>The product requires one of the supported AI coding tools: Claude Code (Anthropic), Codex (OpenAI), or Cursor (Anysphere). The cost of an account in these tools is not included in the product price and is a separate expense.</p>
+      <p>Full functionality requires Python 3. Screenshots through Playwright are optional and require installing Node.js.</p>
+      <p>The skill runs on AI models provided by these tools. The quality of results depends on the AI model, your answers, and the specifics of your project. I do not guarantee specific results because every project is different.</p>
 
       <h2>Right to withdraw from the contract</h2>
-      <p>You have the right to withdraw from the contract within 14 days of its conclusion, with no reason required. If you exercise this right, I will refund the full purchase amount within 14 days.</p>
+      <p>You have the right to withdraw from the contract within 14 days of its conclusion, with no reason required. If you exercise this right, I will refund the full purchase amount within 14 days. After the refund, your copy of the skill stops working the next time it runs with an internet connection.</p>
       <p>To withdraw from the contract, send a message to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
 
       <h2>Complaints</h2>
@@ -89,8 +95,8 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <p>If the complaint is justified, I will deliver corrected files, restore the service, or refund your money.</p>
       <p><strong>What complaints do not cover:</strong></p>
       <ul>
-        <li>The quality of results generated by AI models (that depends on the platform, not on me).</li>
-        <li>Compatibility with platforms not listed on the product page.</li>
+        <li>The quality of results generated by AI models (that depends on the AI tool, not on me).</li>
+        <li>Compatibility with AI tools not listed on the product page.</li>
         <li>Expectations of results that do not follow from the product description.</li>
       </ul>
 
@@ -104,8 +110,8 @@ import Footer from '../../../components/sections/footer/Footer.astro';
 
       <h2>Personal data</h2>
       <p>I process your personal data (email, billing details) to fulfill your order and deliver the product. Legal basis: GDPR article 6(1)(b), performance of a contract.</p>
-      <p>Your data is not shared with third parties, except the companies that help me fulfill your order: Easytools (checkout, invoices), Stripe (payments), Vercel (online service servers).</p>
-      <p>The online service processes the address of the analyzed page and your IP address. For rate limits, I store the IP address only as a cryptographic hash.</p>
+      <p>Your data is not shared with third parties, except the companies that help me fulfill your order: Easytools (checkout, invoices, and the Easymail email system I use to send your personal link), Stripe (payments), Vercel (servers for the online services and the skill files for installation), Upstash (the online services' database: license service records and page capture limits).</p>
+      <p>The skill connects to my server when you install and update it, every time it starts (it then checks your license and updates), and when it captures pages. It sends the customer ID stored in the license.json file, the package, the version, the event type (install, update, start), and the date, and for a page capture also the page's address. I do not store your IP address or the content of your projects. For page captures without a paid package's personal link, the server stores, for the daily limit, only a one-way hash of the network address and the name of the captured site, and deletes them at the end of the day. I keep the record of these events for 24 months.</p>
       <p>If you send feedback or a bug report through the skill, its title and content are published publicly in GitHub Discussions. Your email address, if you give it, is not published: it reaches only me, so I can reply.</p>
       <p>See the <a href="/en/ux-design-skill/privacy-policy/">privacy policy</a> for details.</p>
       <p>You have the right to access, correct, and delete your data. Write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
@@ -113,6 +119,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <h2>Changes to these terms</h2>
       <p>I may change these terms. Changes do not apply to orders already completed. I will announce changes on the product page.</p>
       <p>Purchases made before 2026-11-18 remain under the terms in force on the day of purchase, including that version's license scope and update period.</p>
+      <p>If you have the skill from a purchase made before these terms took effect, you move to a personal link: your copy keeps working, and the previous shared key stops giving full page capture 60 days after this change. You keep full page capture by installing the skill from the personal link you will receive by email.</p>
 
       <p class="text-sm text-muted mt-12">This version of the terms is effective from 2026-11-18. Any disputes will be resolved by the court with jurisdiction over the seller's registered office.</p>
     </article>
