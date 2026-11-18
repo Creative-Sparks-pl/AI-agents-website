@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – planowanie, migracja (EN)" (`17305008-27f6-412b-b63a-f39d8e2b0740`). Audience: current owners of the free Website Planning Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the audit email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. -->
+<!-- Draft: English, Easymail list "UX Designer – planowanie, migracja (EN)" (`17305008-27f6-412b-b63a-f39d8e2b0740`). Audience: current owners of the free Website Planning Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the audit email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
 **Subject:** An update for your Website Planning Skill: your personal install link.
 
@@ -6,16 +6,15 @@
 
 ---
 
-The [Website Planning Skill](https://agents.creativesparks.pl/en/free-website-planning-skill/) now installs through a personal link, one per person. Here is yours:
+## Hi
 
-{{install-link}}
+The [Website Planning Skill](https://agents.creativesparks.pl/en/free-website-planning-skill/) now installs through a personal link, one per person. Below you'll find yours and what changes for your current copy.
 
 
-## Install it with one sentence.
+## Paste this instruction into Claude Code, Codex or Cursor.
 
-Paste this sentence into Claude Code, Codex or Cursor:
-
-Download {{install-link}} into a temporary folder, unpack it, and follow INSTALL.md inside.
+*{{install-link}}*  
+*Download the file from the link above into a temporary folder, unpack it, and follow INSTALL.md inside.*
 
 Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows.
 
@@ -35,7 +34,7 @@ You don't have to do anything. Installing from your link brings it up to the cur
 The link is yours, so you can reinstall from it any time. Please don't share it beyond the people your license covers.
 
 
-## What does your copy send?
+## What data does the skill send?
 
 When it installs, updates or starts, your copy sends your customer ID, package, version, the type of event and the date. No IP address and no project content is kept.
 

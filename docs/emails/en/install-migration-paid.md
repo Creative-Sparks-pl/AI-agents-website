@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – migracja płatni (EN)" (`3f7433d0-3158-4c21-b0ac-9cafd5dba821`, setting `EASYMAIL_MIGRATION_LIST_PAID_EN`). Audience: current owners of a paid UX Design Skill package from an English product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the English paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. `[date]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. -->
+<!-- Draft: English, Easymail list "UX Designer – migracja płatni (EN)" (`3f7433d0-3158-4c21-b0ac-9cafd5dba821`, setting `EASYMAIL_MIGRATION_LIST_PAID_EN`). Audience: current owners of a paid UX Design Skill package from an English product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the English paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. `[date]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
 **Subject:** An update for UX Design Skill: your personal install link.
 
@@ -6,16 +6,15 @@
 
 ---
 
-From now on, [UX Design Skill](https://agents.creativesparks.pl/en/ux-design-skill/) installs and updates through a personal link, one per owner. Here is yours:
+## Hi
 
-{{install-link}}
+From now on, [UX Design Skill](https://agents.creativesparks.pl/en/ux-design-skill/) installs and updates through a personal link, one per owner. Below you'll find yours and what changes for your copy.
 
 
-## Install it with one sentence.
+## Paste this instruction into Claude Code, Codex or Cursor.
 
-Paste this sentence into Claude Code, Codex or Cursor:
-
-Download {{install-link}} into a temporary folder, unpack it, and follow INSTALL.md inside.
+*{{install-link}}*  
+*Download the file from the link above into a temporary folder, unpack it, and follow INSTALL.md inside.*
 
 Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows.
 
@@ -44,10 +43,10 @@ It counts from the day you bought. Once installed from the link, your copy check
 
 ## Keep this email.
 
-You can paste the same sentence any time to reinstall. Please don't share the link beyond the people your license covers.
+You can paste the same instruction any time to reinstall. Please don't share the link beyond the people your license covers.
 
 
-## What does your copy send?
+## What data does the skill send?
 
 When it installs, updates or starts, your copy sends your customer ID, package, version, the type of event and the date. No IP address and no project content is kept.
 
