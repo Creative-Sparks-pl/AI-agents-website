@@ -8,6 +8,8 @@ How to use it:
 - The site's own prices and package names live in `src/content/pricing/`; the variant names below must match the card names there.
 - Synced with the live carts on 2026-11-18.
 
+Terms and privacy links (since 2026-11-18): each product sets its own under Koszyk → Regulamin i zwroty, overriding the store's default (Ustawienia sklepu → Strony prawne). Polish products link `https://agents.creativesparks.pl/ux-design-skill/regulamin/` and `/ux-design-skill/polityka-prywatnosci/`; English products `/en/ux-design-skill/terms/` and `/en/ux-design-skill/privacy-policy/`. The store default points to the Polish policy. The site and the cart carry no separate data note: the terms and the privacy policy hold it.
+
 Parts of the cart that Easytools writes itself, not set per product: the payment form, the tax lines, the terms-and-privacy checkbox, "Zwrot bez pytań w ciągu 14 dni od zakupu" / "No-questions refund policy within 14 days of purchase", and the privacy-policy link (store settings).
 
 ## Paid: UX Design Skill
@@ -185,4 +187,3 @@ The text above is what the live carts show. These look like slips rather than ch
 - Website Planning Skill EN: "See what the full UX Design Skill can do" links to the Polish page; the audit cart links to `/en/ux-design-skill/`.
 - Homepage UX Audit Skill EN: the variant is named in Polish ("Pakiet Solo (1 użytkownik)") and shows under the product name.
 - The two free PL carts name the paid skill differently in their link: "UX Design Skill" (planning) and "Skilla do projektowania UX" (audit).
-- Every cart: the privacy-policy link (a store setting) goes to `creativesparks.pl/ux-design-agent/polityka-prywatnosci`, which redirects to the agency's general policy, not the skill's (`agents.creativesparks.pl/ux-design-skill/polityka-prywatnosci/`, `/en/ux-design-skill/privacy-policy/`).
