@@ -2,6 +2,11 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.5.2 — 2026-11-19
+
+### Changed
+- The note under every free form's email field also tells repeat sign-ups where their link is: "Wyślemy Ci mailem osobisty link do instalacji. Masz już ten skill? Link jest w pierwszym mailu." / "We'll email you a personal install link. Have it already? Your link is in the first email." It reads the same for everyone, so it reveals nobody's holdings.
+
 ## 1.5.1 — 2026-11-19
 
 ### Changed
