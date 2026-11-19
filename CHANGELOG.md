@@ -2,6 +2,28 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.5.0 — 2026-11-19
+
+### Added
+- The v4.6 changelog pages, PL and EN: personal link and automatic updates.
+- Every free form says, under the email field, that the personal install link comes by email ("Wyślemy Ci mailem osobisty link do instalacji." / "We'll email you a personal install link.").
+- `docs/emails/`: the twelve install-link emails, one per list, in the approved Easymail template.
+
+### Changed
+- The free sign-up no longer hands out a download: `/api/subscribe` grants the free skill and answers without reading the product's file. The form shows one message for everyone: the personal install link arrives by email from tomasz@creativesparks.pl (check Spam or Promotions), and its link and sentence go into Claude Code, Codex or Cursor. Success, the submit event and the Meta Lead fire only on a real grant.
+- Gmail addresses count once: `gmail.com` and `googlemail.com` sign-ups drop a `+` tag and become one address; dots and other providers stay as typed.
+- Free-page buttons say to get the skill, with a mail icon; intros, final calls to action, the planning page's install step and the install FAQ say the link arrives by email.
+- The sales and free pages describe the personal-link install in Claude Code, Codex or Cursor: install section, install FAQ, platform section, and the setup-time and cross-model comparison rows. No folder download, browser chats, Custom GPTs or Gemini Gems.
+- Both how-to guides install from the email's personal link, say updates install themselves and start the skill by its command; the feedback section names Claude Code, Codex and Cursor only.
+- Terms (PL and EN) describe UX Designer 4.6's personal-link setup: coding tools only, a personal install link, license and update checks with auto-update, page capture for Solo Designer and Studio with a daily limit, licence limits, processors, and the 60-day switch for earlier buyers. In force from 2026-11-19; earlier purchases keep the terms they were bought under.
+- Both privacy policies add the license service's data: what is collected, why, by whom and for how long.
+- `Free skill submit error` labels `stage` as `grant` or `none` only; `docs/analytics/metrics.md` logs the change under "Definition changes".
+- Every Easytools cart links the skill's own terms and privacy policy in its language (`docs/checkout/cart-copy.md`).
+- The icon font includes `content_paste`, `data_object` and `edit_square`, which the install and platform sections use.
+
+### Removed
+- The download button and the auto-started download after a free sign-up, and the `product_read` and `no_file` error stages that came with the file read.
+
 ## 1.4.0 — 2026-11-18
 
 ### Added
