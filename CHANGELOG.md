@@ -2,6 +2,11 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.5.1 — 2026-11-19
+
+### Changed
+- One free skill per person: before granting, `/api/subscribe` asks Easytools whether the address already holds that free skill, in either language, and does not grant it again. No second order and no second store email. The form answers a holder exactly as it answers a new sign-up, so it never shows who holds a skill. If the check fails, the sign-up grants as before.
+
 ## 1.5.0 — 2026-11-19
 
 ### Added

@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { normalizeFreeSkillEmail } from '../../lib/free-skill-email';
+import { holdsFreeSkill, HolderLookupError } from '../../lib/free-skill-holder';
 
 export const prerender = false;
 
@@ -88,6 +89,20 @@ export const POST: APIRoute = async ({ request }) => {
     Accept: 'application/json',
     'User-Agent': USER_AGENT,
   };
+
+  // A holder of this free skill, in either language, is not granted again (one free skill per
+  // person). The answer is the same as for a new sign-up, so the form never reveals who holds a
+  // skill. A failed check grants.
+  try {
+    for (const { productId } of Object.values(PRODUCTS[skill])) {
+      if (await holdsFreeSkill(fetch, EASYCART_API, headers, productId, email)) {
+        console.log('[subscribe] address already holds this free skill: grant skipped');
+        return json({ ok: true, granted: true }, 200);
+      }
+    }
+  } catch (err) {
+    console.warn('[subscribe] holder check failed, granting:', err instanceof HolderLookupError ? err.message : 'unknown error');
+  }
 
   // Failed answers say which step failed and Easytools' HTTP status (0: no answer), so the form's error
   // event shows the cause. Never Easytools' message text, which may contain the email.
