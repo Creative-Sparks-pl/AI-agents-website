@@ -1,6 +1,6 @@
-<!-- Draft: English, Easymail list "UX Designer – audyt, migracja (EN)" (`0e158344-a87f-4453-99c7-767492ecd16a`, until 2026-11-18 "UX Designer – migracja darmowi (EN)"). Audience: current owners of the free Homepage UX Audit Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the planning email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
+<!-- Draft: English, Easymail list "UX Designer – audyt, migracja (EN)" (`0e158344-a87f-4453-99c7-767492ecd16a`, until 2026-11-18 "UX Designer – migracja darmowi (EN)"). Audience: current owners of the free Homepage UX Audit Skill from an English product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the English free-owners migration email (install-migration-free.md), which served both free skills until then, for the author's review; owners of both free skills also get the planning email. {{field.install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
-**Subject:** An update for your Homepage UX Audit Skill: your personal install link.
+**Subject:** Update: Homepage UX Audit Skill 1.1 - automatic updates
 
 **Preheader:** Your copy keeps working, and installing from the link keeps your edits.
 
@@ -13,7 +13,7 @@ The [Homepage UX Audit Skill](https://agents.creativesparks.pl/en/free-homepage-
 
 ## Paste this instruction into Claude Code, Codex or Cursor.
 
-*{{install-link}}*  
+*{{field.install-link}}*  
 *Download the file from the link above into a temporary folder, unpack it, and follow INSTALL.md inside.*
 
 Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows.
@@ -26,7 +26,7 @@ Start it like any other skill: with /homepage-ux-audit in Claude Code or Cursor,
 
 ## Your current copy keeps working.
 
-You don't have to do anything. Installing from your link brings it up to the current version: the install finds your copy, keeps the files you edited and backs up anything it replaces. Free editions keep the version you install; they don't update by themselves.
+You don't have to do anything. Installing from your link brings it up to the current version: the install finds your copy, keeps the files you edited and backs up anything it replaces. After that your copy updates by itself until your access ends.
 
 
 ## Keep this email.

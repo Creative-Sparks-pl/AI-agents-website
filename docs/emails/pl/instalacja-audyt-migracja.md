@@ -1,6 +1,6 @@
-<!-- Draft: Polish, Easymail list "UX Designer – audyt, migracja (PL)" (`d1d354c7-4d17-4214-ab05-e7473d931df8`, until 2026-11-18 "UX Designer – migracja darmowi (PL)"). Audience: current owners of the free Skill do audytu UX strony głównej from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the Polish free-owners migration email (instalacja-migracja-darmowi.md), which served both free skills until then, for the author's review; owners of both free skills also get the planning email. {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18): greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
+<!-- Draft: Polish, Easymail list "UX Designer – audyt, migracja (PL)" (`d1d354c7-4d17-4214-ab05-e7473d931df8`, until 2026-11-18 "UX Designer – migracja darmowi (PL)"). Audience: current owners of the free Skill do audytu UX strony głównej from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. One email per skill, purpose and language (owner, 2026-11-18): split from the Polish free-owners migration email (instalacja-migracja-darmowi.md), which served both free skills until then, for the author's review; owners of both free skills also get the planning email. {{field.install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18): greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
-**Subject:** Aktualizacja Skilla do audytu UX strony głównej: osobisty link do instalacji.
+**Subject:** Update: Skill do audytu UX strony głównej 1.1 - automatyczne aktualizacje
 
 **Preheader:** Twoja kopia działa dalej, a instalacja z linku zachowa Twoje zmiany.
 
@@ -13,7 +13,7 @@
 
 ## Wklej tę instrukcję do Claude Code, Codex albo Cursora.
 
-*{{install-link}}*  
+*{{field.install-link}}*  
 *Pobierz plik z linku powyżej do folderu tymczasowego, rozpakuj go i postępuj według pliku INSTALL.md w środku.*
 
 Twój agent pokaże plan i zapyta, zanim cokolwiek skopiuje. Może kilka razy poprosić o zgodę na uruchomienie poleceń (pobranie, rozpakowanie, kopiowanie i sprawdzenie plików). To normalne. Instalację i aktualizację sprawdziłem na Windowsie.
@@ -26,7 +26,7 @@ Uruchamiasz go jak każdy inny skill: komendą /homepage-ux-audit w Claude Code 
 
 ## Twoja obecna kopia działa dalej.
 
-Nie musisz nic robić. Instalacja z linku zaktualizuje ją do obecnej wersji: znajdzie Twoją kopię, zachowa zmienione przez Ciebie pliki i zrobi kopię zapasową wszystkiego, co podmienia. Darmowe wersje zostają przy wersji, którą zainstalujesz, i nie aktualizują się same.
+Nie musisz nic robić. Instalacja z linku zaktualizuje ją do obecnej wersji: znajdzie Twoją kopię, zachowa zmienione przez Ciebie pliki i zrobi kopię zapasową wszystkiego, co podmienia. Potem Twoja kopia aktualizuje się sama, do końca Twojego dostępu.
 
 
 ## Zachowaj tego maila.

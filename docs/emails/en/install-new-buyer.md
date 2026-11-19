@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – nowi kupujący (EN)" (`8ee2ab39-e67c-400d-a6ed-92273b55228b`, setting `EASYMAIL_NEW_BUYER_LIST_EN`). Audience: new owners of UX Design Skill from an English product (paid packages Founder, Solo Designer, Studio). One email per skill, purpose and language (owner, 2026-11-18); the free skills have their own new-owner emails. Rewrite of the English new-buyer draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
+<!-- Draft: English, Easymail list "UX Designer – nowi kupujący (EN)" (`8ee2ab39-e67c-400d-a6ed-92273b55228b`, setting `EASYMAIL_NEW_BUYER_LIST_EN`). Audience: new owners of UX Design Skill from an English product (paid packages Founder, Solo Designer, Studio). One email per skill, purpose and language (owner, 2026-11-18); the free skills have their own new-owner emails. Rewrite of the English new-buyer draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review; the 17 November approval of the English draft is being redone. {{field.install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
 **Subject:** UX Design Skill: your personal install link.
 
@@ -13,7 +13,7 @@ Thank you for buying [UX Design Skill](https://agents.creativesparks.pl/en/ux-de
 
 ## Paste this instruction into Claude Code, Codex or Cursor.
 
-*{{install-link}}*  
+*{{field.install-link}}*  
 *Download the file from the link above into a temporary folder, unpack it, and follow INSTALL.md inside.*
 
 Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows.

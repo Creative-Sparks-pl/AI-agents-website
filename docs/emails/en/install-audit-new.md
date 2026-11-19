@@ -1,4 +1,4 @@
-<!-- Draft: English, Easymail list "UX Designer – audyt, nowi (EN)" (`d62190c1-503d-47f3-9c80-7c9b0a3ea970`). Audience: new owners of the free Homepage UX Audit Skill from an English product. One email per skill, purpose and language (owner, 2026-11-18): split from the English new-buyer email (install-new-buyer.md), which served every skill until then, for the author's review. {{install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
+<!-- Draft: English, Easymail list "UX Designer – audyt, nowi (EN)" (`d62190c1-503d-47f3-9c80-7c9b0a3ea970`). Audience: new owners of the free Homepage UX Audit Skill from an English product. One email per skill, purpose and language (owner, 2026-11-18): split from the English new-buyer email (install-new-buyer.md), which served every skill until then, for the author's review. {{field.install-link}} is the contact's personal link (Easymail field `install-link`). The Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18), with the English signature: greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
 **Subject:** Homepage UX Audit Skill: your personal install link.
 
@@ -13,7 +13,7 @@ Thank you for signing up for the free [Homepage UX Audit Skill](https://agents.c
 
 ## Paste this instruction into Claude Code, Codex or Cursor.
 
-*{{install-link}}*  
+*{{field.install-link}}*  
 *Download the file from the link above into a temporary folder, unpack it, and follow INSTALL.md inside.*
 
 Your coding agent shows you the plan and asks before copying anything. It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That's expected. I've tested install and update on Windows.
@@ -26,7 +26,7 @@ Start it like any other skill: with /homepage-ux-audit in Claude Code or Cursor,
 
 ## How do updates work?
 
-Free editions keep the version you install; they don't update by themselves. Your copy keeps working.
+Your copy updates by itself until your access ends. After that it keeps working on its current version.
 
 
 ## Keep this email.

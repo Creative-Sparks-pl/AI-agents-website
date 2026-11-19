@@ -1,6 +1,6 @@
-<!-- Draft: Polish, Easymail list "UX Designer – migracja płatni (PL)" (`8b21c432-465c-4659-a5c9-b9d8ef700478`, setting `EASYMAIL_MIGRATION_LIST_PAID_PL`). Audience: current owners of a paid UX Design Skill package from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the Polish paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. `[data]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18): greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
+<!-- Draft: Polish, Easymail list "UX Designer – migracja płatni (PL)" (`8b21c432-465c-4659-a5c9-b9d8ef700478`, setting `EASYMAIL_MIGRATION_LIST_PAID_PL`). Audience: current owners of a paid UX Design Skill package from a Polish product, installed the old way, sent once by UX Designer 4.6's migration. Rewrite of the Polish paid-owners migration draft in owner-texts.md (UX Designer's archived license project) in the onboarding voice, for the author's review. `[data]` is written as 60 days from this email. The Founder sentence follows FIN-005. {{field.install-link}} is the contact's personal link (Easymail field `install-link`). The install sentence is untested until UX Designer's driven install; the Windows line goes if the macOS run passes. Footer from docs/emails/footer.md. No promo section. Owner: approved 2026-11-18. Layout from the owner-approved Easymail template "UXD - link instalacyjny" (2026-11-18): greeting heading, intro, the instruction heading, then the two italic lines that sit in the template's light-blue box; rebuilt to it 2026-11-18, for the owner's review in Easymail. -->
 
-**Subject:** Aktualizacja UX Design Skill: Twój osobisty link do instalacji.
+**Subject:** Update: UX Design Skill 4.6 - automatyczne aktualizacje
 
 **Preheader:** Twoja kopia działa dalej, a instalacja z linku zachowa Twoje zmiany.
 
@@ -13,7 +13,7 @@ Od teraz [UX Design Skill](https://agents.creativesparks.pl/ux-design-skill/) in
 
 ## Wklej tę instrukcję do Claude Code, Codex albo Cursora.
 
-*{{install-link}}*  
+*{{field.install-link}}*  
 *Pobierz plik z linku powyżej do folderu tymczasowego, rozpakuj go i postępuj według pliku INSTALL.md w środku.*
 
 Twój agent pokaże plan i zapyta, zanim cokolwiek skopiuje. Może kilka razy poprosić o zgodę na uruchomienie poleceń (pobranie, rozpakowanie, kopiowanie i sprawdzenie plików). To normalne. Instalację i aktualizację sprawdziłem na Windowsie.
