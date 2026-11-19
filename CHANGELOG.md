@@ -2,6 +2,12 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.5.3 — 2026-11-19
+
+### Changed
+- After a free sign-up, under "Gotowe. Sprawdź skrzynkę." / "Done. Check your inbox.", the form now says only that a free skill is sent once per address: "Ten darmowy skill odbierasz raz na adres email. Masz go już? Link jest w pierwszym mailu." / "You can claim this free skill once per email address. Have it already? Your link is in the first email." It reads the same for everyone, so it reveals nobody's holdings.
+- The note under the email field is back to "Wyślemy Ci mailem osobisty link do instalacji." / "We'll email you a personal install link." (1.5.2's addition moved to the message after sign-up).
+
 ## 1.5.2 — 2026-11-19
 
 ### Changed
