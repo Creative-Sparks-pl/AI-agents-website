@@ -9,7 +9,7 @@ All suites are Playwright tests that run locally; there is no CI. Each npm comma
 | Group | What it guards | Spec files | Command | Screen sizes | Tests | Run time |
 |---|---|---|---|---|---|---|
 | Build | The site compiles: pages, content collections and the types Astro checks | — | `npm run build` | — | — | 0.4 min |
-| Unit | The banner configuration in each language, the banner-cookie reader, the consent-record parser, the Easytools purchase event, the webhook's token guard, the Meta ads report's rows, the free-skill download count (which orders count, rounding, the fallback order, one read per build, no email in the log) and the free sign-up's Gmail rewrite (`+` tags and `googlemail.com` become one address; dots stay as typed; other providers stay as typed) | `tests/unit/consent-config.spec.ts`, `tests/unit/consent-cookie.spec.ts`, `tests/unit/consent-record.spec.ts`, `tests/unit/purchase-event.spec.ts`, `tests/unit/meta-ads-report.spec.ts`, `tests/unit/free-skill-downloads.spec.ts`, `tests/unit/free-skill-email.spec.ts` | `npm run test:unit` | desktop | 82 | 0.5 min |
+| Unit | The banner configuration in each language, the banner-cookie reader, the consent-record parser, the Easytools purchase event, the webhook's token guard, the Meta ads report's rows, the free-skill download count (which orders count, rounding, the fallback order, one read per build, no email in the log) the free sign-up's Gmail rewrite (`+` tags and `googlemail.com` become one address; dots stay as typed; other providers stay as typed) and its repeat check (an address that already holds the free skill, in either currency, is not granted it again; an Easytools or network error lets the grant go ahead) | `tests/unit/consent-config.spec.ts`, `tests/unit/consent-cookie.spec.ts`, `tests/unit/consent-record.spec.ts`, `tests/unit/purchase-event.spec.ts`, `tests/unit/meta-ads-report.spec.ts`, `tests/unit/free-skill-downloads.spec.ts`, `tests/unit/free-skill-email.spec.ts`, `tests/unit/free-skill-holder.spec.ts` | `npm run test:unit` | desktop | 88 | 0.5 min |
 | Consent | The cookie banner on a first visit (language, equal-weight buttons, the stored choice, the footer link, revision handling, no outside consent service) and the one cookie list shared by the content files, the privacy policies and the banner's settings window | `tests/consent/consent-flow.spec.ts`, `tests/consent/cookie-list.spec.ts` | `npm run test:consent` | both (cookie list: desktop) | 42 | 2.6 min |
 | Tracking | Meta events only with marketing consent, the hashed-email Meta Lead on signup, PostHog only on the landing pages and only after statistics consent, Umami events on plan clicks and signups, and the events the shared attribute script sends (form seen, form start with focus, submit errors, video, sample, top-bar and interest clicks, pricing seen) | `tests/tracking/meta-consent.spec.ts`, `tests/tracking/meta-lead.spec.ts`, `tests/tracking/posthog-loading.spec.ts`, `tests/tracking/umami-events.spec.ts` | `npm run test:tracking` | both (Meta consent: desktop) | 104 | 2.8 min |
 | Page sections | Section checks on the landing pages: the free-skill sections, the signup forms, testimonials, the try-free section and its videos, the download count in the free pages' hero badge and the try-free intro (wording, the badge at 360 px, no request for the count from the browser), the paid pages' prices, buy links and hero countdown before, inside and after the Black Friday window (browser clock set at each edge, and a tab left open across it), with axe on those sections and screenshots saved for a person to look at (no image comparison) | `tests/screenshots/free-planning-skill.spec.ts`, `tests/screenshots/free-skill-form.spec.ts`, `tests/screenshots/testimonials.spec.ts`, `tests/screenshots/try-free.spec.ts`, `tests/screenshots/download-count.spec.ts`, `tests/screenshots/pricing.spec.ts` | `npm run test:sections` | both (Black Friday window states: desktop) | 102 | 8.5 min |
@@ -28,7 +28,7 @@ Look up every changed file (`git diff --name-only`) and run every suite its rows
 
 | Kind of change | Files | Suites |
 |---|---|---|
-| Docs only | `docs/`, `design.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, and the `"version"` lines of `package.json` and `package-lock.json` | no tests |
+| Docs only | `docs/`, `.wm/`, `design.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, and the `"version"` lines of `package.json` and `package-lock.json` | no tests |
 | Agent skills | `.claude/skills/` | no tests: they are instructions for agents, and no test, build step or deployment reads them |
 | Content text with no new link, video or embed | text in `src/content/` (except `src/content/consent/`) | build + that page's section test (the spec in `tests/screenshots/` that opens the page; a page with none gets build only) |
 | Components, styles, page markup | `src/components/`, `src/layouts/` (outside the head scripts), `src/styles/global.css`, page markup in `src/pages/`, images in `src/assets/`, `src/lib/i18n.ts`, `src/lib/presale.ts` | build + page sections + accessibility |
@@ -91,6 +91,14 @@ Deploying before verify is the exception. When it happens, the verify report log
 - Leave nothing running. A dev server the suites started can stay on port 4325 and lock files in the repo (a folder move failed on 2026-11-13). After the last suite, stop it: in PowerShell, `Get-NetTCPConnection -State Listen -LocalPort 4325` gives the process to stop.
 - A real run on a preview: script it with `--base-url=<preview URL>` and the bypass secret above (phone size comes from the Mobile Chrome project), not the owner's Chrome. The owner's browser is needed only to read the Meta test-events code: Events Manager → dataset `482025232476807` → Test events → Website, then the server-events section, read as page text. Open the page with `?test_event_code=<code>` after accepting marketing cookies.
 
+## Keys and logins
+
+What the tests and checks read, by name and place; the values never go on this page. No suite calls an outside API with a key: outside services are blocked or mocked (see "Not covered today").
+
+- `VERCEL_AUTOMATION_BYPASS_SECRET`, in `.env.local`: opens a Vercel preview deployment, sent as the `x-vercel-protection-bypass` header by the cookie check and by real runs on a preview.
+- The `gh` CLI login: reads a preview deployment's address (`gh api repos/Creative-Sparks-pl/AI-agents-website/deployments/<id>/statuses`).
+- `EASYCART_API_KEY`, in `.env.local` and in Vercel (Production and Preview): the build reads Easytools orders with it to count free-skill downloads. Without it the build falls back to the live site's number, then 200, so the build and the suites still pass.
+
 ## Revising the tests
 
 Assume the suites do not cover every change we can make. The map says which suites run; it does not promise that they can see the change. Three rules keep the suites growing where it matters:
@@ -102,6 +110,12 @@ Assume the suites do not cover every change we can make. The map says which suit
    ```sh
    for f in $(find tests -name '*.spec.ts'); do grep -qF "$f" docs/testing.md || echo "MISSING $f"; done
    ```
+
+### Failures that got past the tests
+
+Each failure the tests did not catch, whether found after a release or fixed in a fix commit: the date, what broke, the fix, and what covers it now.
+
+- 2026-11-19 — a repeat free sign-up was granted the skill again — fix 6f8a9d2 — covered by: test
 
 ### Not covered today
 
