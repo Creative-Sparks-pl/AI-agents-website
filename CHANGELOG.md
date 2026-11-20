@@ -2,6 +2,19 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.6.0 — 2026-11-20
+
+### Added
+- Release-notes pages for the two free skills, in Polish and English: `/free-homepage-ux-audit-skill/changelog/`, `/free-website-planning-skill/changelog/` and their `/en/` twins. Each lists only its skill's versions, newest first, with the skill's name above the heading, and uses its landing page's top bar (same links, no buy button, not sticky).
+- Entries copied word for word from the public notes in Markdown-Agents: Homepage UX Audit v1.0 and v1.1; Website Planning v1.0, v1.1 and v1.2; UX Design Skill v4.7, with the same text as Website Planning v1.2 ("Wytyczne treści jako brief do pisania" / "Content guidelines as a writing brief").
+- The free landing pages link to their own release notes from the footer's "Changelog" and from the "under the hood" section ("Historia zmian i aktualizacji" / "Changelog and updates"). Every other page's footer still links to the paid changelog.
+
+### Changed
+- Changelog entries sit in one folder per product, `src/content/changelog/{product}/{pl,en}/`. The paid skill's entries moved unchanged, and its pages show the same entries as before.
+- The changelog heading is each changelog page's main heading (h1), with the entry titles as h2, with no visible change. The six changelog pages join the accessibility scan.
+- The sign-up form and changelog tests check behaviour and the names a text must carry, not exact wording, so a copy edit does not break them.
+- The testing page: WM finds it through `.wm/settings.json`; it names the keys and logins the site reads (names and places only) and lists the failures that got past the tests.
+
 ## 1.5.3 — 2026-11-19
 
 ### Changed
