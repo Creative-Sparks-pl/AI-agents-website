@@ -150,7 +150,7 @@ const navLinks: { label: string; href: string }[] = [
       badge="Pod maską"
       heading="To nie jest jeden prompt,<br />tylko fragment systemu UX Design Skill."
       lead="Website Planning Skill to dwa pierwsze etapy pełnego UX Design Skill: rozmowa o projekcie i plan strony."
-      link={null}
+      link={{ href: '/free-website-planning-skill/changelog/', label: 'Historia zmian i aktualizacji' }}
       decisions={architectureDecisions}
       cta={{
         heading: 'Co dostajesz w pełnej wersji Skilla',
@@ -231,5 +231,5 @@ const navLinks: { label: string; href: string }[] = [
       <FreeSkillForm slot="cta" skill="planning" surface="free_planning_skill_final" block class="sm:max-w-2xl" />
     </DemoSection>
   </main>
-  <Footer />
+  <Footer changelogHref="/free-website-planning-skill/changelog/" />
 </BaseLayout>

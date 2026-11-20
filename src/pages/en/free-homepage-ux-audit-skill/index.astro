@@ -129,7 +129,7 @@ const navLinks: { label: string; href: string }[] = [
       badge="Under the hood"
       heading="Not just a prompt.<br />A slice of the UX Design Skill system."
       lead="The audit uses the same mature architecture as the full version of UX Design Skill: SKILL.md, the orchestrator and the workflows as the operating playbook, domain knowledge packs loaded after the site type is detected. The architecture took months to get right in the full version. The audit is the slice that loads the knowledge pack for your site type."
-      link={null}
+      link={{ href: '/en/free-homepage-ux-audit-skill/changelog/', label: 'Changelog and updates' }}
       decisions={architectureDecisions}
       cta={{
         heading: 'What you get in the full UX Design Skill',
@@ -170,5 +170,5 @@ const navLinks: { label: string; href: string }[] = [
       <FreeSkillForm slot="cta" skill="audit" surface="free_audit_skill_final" block class="sm:max-w-2xl" />
     </DemoSection>
   </main>
-  <Footer />
+  <Footer changelogHref="/en/free-homepage-ux-audit-skill/changelog/" />
 </BaseLayout>
