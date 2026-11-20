@@ -8,9 +8,11 @@ import ChangelogEntry from './ChangelogEntry.astro';
 interface Props {
   // The folder in src/content/changelog/ that holds the product's entries, one subfolder per language.
   product: 'ux-design-skill' | 'homepage-ux-audit' | 'website-planning';
+  // The small text above the main heading; a free skill's page shows the skill's name.
+  label?: string;
 }
 
-const { product } = Astro.props;
+const { product, label = 'Changelog' } = Astro.props;
 const locale = localeFromPathname(Astro.url.pathname);
 const entriesIn = (loc: string) => getCollection('changelog', (e) => e.id.startsWith(`${product}/${loc}/`));
 // A language with no entries falls back to the Polish ones.
@@ -25,10 +27,10 @@ const sectionHeading = locale === 'en' ? 'Release notes' : 'Historia zmian';
   <div class="max-w-screen-2xl mx-auto">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <span class="font-label text-primary text-sm mb-4">Changelog</span>
-        <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+        <span class="font-label text-primary text-sm mb-4">{label}</span>
+        <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
           {sectionHeading}
-        </h2>
+        </h1>
       </Fragment>
 
       <div class="flex flex-col">
