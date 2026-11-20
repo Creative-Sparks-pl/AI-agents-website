@@ -130,7 +130,7 @@ const navLinks: { label: string; href: string }[] = [
       badge="Pod maską"
       heading="To nie jest jeden prompt,<br />tylko fragment systemu UX Design Skill."
       lead="Audyt korzysta z tej samej dojrzałej architektury, co pełna wersja UX Design Skill: SKILL.md, orkiestrator i workflowy jako instrukcja działania, pakiety wiedzy domenowej ładowane po wykryciu typu strony. Architektura dojrzewała kilka miesięcy w pełnej wersji; audyt to wycinek, który ładuje pakiet wiedzy dla typu Twojej strony."
-      link={null}
+      link={{ href: '/free-homepage-ux-audit-skill/changelog/', label: 'Historia zmian i aktualizacji' }}
       decisions={architectureDecisions}
       cta={{
         heading: 'Co dostajesz w pełnej wersji UX Design Skill',
@@ -171,5 +171,5 @@ const navLinks: { label: string; href: string }[] = [
       <FreeSkillForm slot="cta" skill="audit" surface="free_audit_skill_final" block class="sm:max-w-2xl" />
     </DemoSection>
   </main>
-  <Footer />
+  <Footer changelogHref="/free-homepage-ux-audit-skill/changelog/" />
 </BaseLayout>

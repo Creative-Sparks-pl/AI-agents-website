@@ -2,11 +2,23 @@
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-3.svg';
-import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
+import { localeFromPathname, defaultLocale } from '../../../lib/i18n';
 import ChangelogEntry from './ChangelogEntry.astro';
 
+interface Props {
+  // The folder in src/content/changelog/ that holds the product's entries, one subfolder per language.
+  product: 'ux-design-skill' | 'homepage-ux-audit' | 'website-planning';
+  // The small text above the main heading; a free skill's page shows the skill's name.
+  label?: string;
+}
+
+const { product, label = 'Changelog' } = Astro.props;
 const locale = localeFromPathname(Astro.url.pathname);
-const entries = (await getLocalizedCollection('changelog', locale))
+const entriesIn = (loc: string) => getCollection('changelog', (e) => e.id.startsWith(`${product}/${loc}/`));
+// A language with no entries falls back to the Polish ones.
+let productEntries = await entriesIn(locale);
+if (productEntries.length === 0 && locale !== defaultLocale) productEntries = await entriesIn(defaultLocale);
+const entries = productEntries
   .sort((a, b) => b.data.date.localeCompare(a.data.date) || b.data.version.localeCompare(a.data.version, undefined, { numeric: true }));
 const sectionHeading = locale === 'en' ? 'Release notes' : 'Historia zmian';
 ---
@@ -15,10 +27,10 @@ const sectionHeading = locale === 'en' ? 'Release notes' : 'Historia zmian';
   <div class="max-w-screen-2xl mx-auto">
     <SectionWithIcon icon={sectionIcon}>
       <Fragment slot="header">
-        <span class="font-label text-primary text-sm mb-4">Changelog</span>
-        <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+        <span class="font-label text-primary text-sm mb-4">{label}</span>
+        <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
           {sectionHeading}
-        </h2>
+        </h1>
       </Fragment>
 
       <div class="flex flex-col">

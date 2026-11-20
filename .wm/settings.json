@@ -11,5 +11,6 @@
     "allow": [
       {"path": "public/examples/"}
     ]
-  }
+  },
+  "testing": {"page": "docs/testing.md"}
 }

@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopAppBar from '../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../components/sections/footer/Footer.astro';
+import ChangelogSection from '../../components/sections/changelog/ChangelogSection.astro';
+
+// The same top bar as the skill's landing page in this language: its three links, no buy button, not sticky.
+const navLinks: { label: string; href: string }[] = [
+  { label: 'UX Design Skill', href: '/ux-design-skill/' },
+  { label: 'Opinie', href: '/free-website-planning-skill/#opinie' },
+  { label: 'Jak pracować', href: '/ux-design-skill/instrukcja/' },
+];
+---
+
+<BaseLayout
+  title="Changelog — Historia zmian | Website Planning Skill"
+  description="Historia zmian Website Planning Skill, darmowego skilla do planowania stron. Co zmieniło się w każdej wersji, od v1.0."
+>
+  <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
+  <main>
+    <ChangelogSection product="website-planning" label="Website Planning Skill" />
+  </main>
+  <Footer changelogHref="/free-website-planning-skill/changelog/" />
+</BaseLayout>
