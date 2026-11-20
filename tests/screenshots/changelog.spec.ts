@@ -63,7 +63,7 @@ const FREE = [
   },
 ];
 
-const UNDER_THE_HOOD_LABEL = { pl: 'Historia zmian', en: 'Release notes' };
+const UNDER_THE_HOOD_LABEL = { pl: 'Historia zmian i aktualizacji', en: 'Changelog and updates' };
 
 const LOCALES: Locale[] = ['pl', 'en'];
 
