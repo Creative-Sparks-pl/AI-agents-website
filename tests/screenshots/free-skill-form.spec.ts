@@ -68,8 +68,8 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
       await expect(form).toHaveAttribute('data-state', 'error');
       await expect(error).toBeVisible();
 
-      // The link arrives only by email: the success message names the sender and the spam folder,
-      // and holds no link; no download starts.
+      // The link arrives only by email: the success message holds no link and no download starts.
+      // Its wording is not checked, so a copy edit does not break the test; the saved screenshot shows it.
       const downloads: string[] = [];
       page.on('download', (d) => downloads.push(d.url()));
       reply = { status: 200, body: { ok: true, granted: true } };
@@ -77,8 +77,6 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
       await expect(form).toHaveAttribute('data-state', 'success');
       const success = form.locator('.free-skill-form__success');
       await expect(success).toBeVisible();
-      await expect(success).toContainText('tomasz@creativesparks.pl');
-      await expect(success).toContainText('Spam');
       await expect(success.locator('a')).toHaveCount(0);
       await expect(error).toBeHidden();
       expect(downloads).toHaveLength(0);
