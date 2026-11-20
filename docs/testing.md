@@ -98,6 +98,9 @@ What the tests and checks read, by name and place; the values never go on this p
 - `VERCEL_AUTOMATION_BYPASS_SECRET`, in `.env.local`: opens a Vercel preview deployment, sent as the `x-vercel-protection-bypass` header by the cookie check and by real runs on a preview.
 - The `gh` CLI login: reads a preview deployment's address (`gh api repos/Creative-Sparks-pl/AI-agents-website/deployments/<id>/statuses`).
 - `EASYCART_API_KEY`, in `.env.local` and in Vercel (Production and Preview): the build reads Easytools orders with it to count free-skill downloads. Without it the build falls back to the live site's number, then 200, so the build and the suites still pass.
+- `CONSENT_DATABASE_URL`, in `.env.local` and in Vercel (Production and Preview): the consent route's database. No suite reaches it: the route's requests are answered inside the browser.
+- `EASYTOOLS_WEBHOOK_TOKEN`, in `.env.local` and in Vercel: the paid-purchase webhook's token. The unit test checks only that a call without the right token is rejected.
+- `META_CAPI_ACCESS_TOKEN` and `PUBLIC_META_PIXEL_ID`, in `.env.local` and in Vercel: the Conversions API route and the Meta Pixel. The suites block Meta, so no event is sent.
 
 ## Revising the tests
 
