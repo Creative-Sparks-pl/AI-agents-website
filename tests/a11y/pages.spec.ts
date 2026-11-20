@@ -14,6 +14,12 @@ const PAGES = [
   '/en/ux-design-skill/',
   '/ux-design-skill/polityka-prywatnosci/',
   '/en/ux-design-skill/privacy-policy/',
+  '/ux-design-skill/changelog/',
+  '/en/ux-design-skill/changelog/',
+  '/free-homepage-ux-audit-skill/changelog/',
+  '/en/free-homepage-ux-audit-skill/changelog/',
+  '/free-website-planning-skill/changelog/',
+  '/en/free-website-planning-skill/changelog/',
 ];
 
 for (const path of PAGES) {
