@@ -2,9 +2,18 @@
 import Logo from '../../../assets/logo.svg?raw';
 import { localeFromPathname, requireEntry, requireLocalizedEntry } from '../../../lib/i18n';
 
+interface Props {
+  // A page with its own release notes (a free skill's) points the Changelog link there instead of the paid skill's.
+  changelogHref?: string;
+}
+
+const { changelogHref } = Astro.props;
 const locale = localeFromPathname(Astro.url.pathname);
 const entry = await requireLocalizedEntry('footer', locale);
-const { links } = entry.data;
+const paidChangelog = locale === 'en' ? '/en/ux-design-skill/changelog/' : '/ux-design-skill/changelog/';
+const links = entry.data.links.map((link) =>
+  changelogHref && link.href === paidChangelog ? { ...link, href: changelogHref } : link,
+);
 ---
 
 <footer class="py-12 bg-white border-t border-border/20">
