@@ -2,11 +2,21 @@
 import { getCollection } from 'astro:content';
 import SectionWithIcon from '../../ui/SectionWithIcon.astro';
 import sectionIcon from '../../../assets/icons/shape-3.svg';
-import { localeFromPathname, getLocalizedCollection } from '../../../lib/i18n';
+import { localeFromPathname, defaultLocale } from '../../../lib/i18n';
 import ChangelogEntry from './ChangelogEntry.astro';
 
+interface Props {
+  // The folder in src/content/changelog/ that holds the product's entries, one subfolder per language.
+  product: 'ux-design-skill' | 'homepage-ux-audit' | 'website-planning';
+}
+
+const { product } = Astro.props;
 const locale = localeFromPathname(Astro.url.pathname);
-const entries = (await getLocalizedCollection('changelog', locale))
+const entriesIn = (loc: string) => getCollection('changelog', (e) => e.id.startsWith(`${product}/${loc}/`));
+// A language with no entries falls back to the Polish ones.
+let productEntries = await entriesIn(locale);
+if (productEntries.length === 0 && locale !== defaultLocale) productEntries = await entriesIn(defaultLocale);
+const entries = productEntries
   .sort((a, b) => b.data.date.localeCompare(a.data.date) || b.data.version.localeCompare(a.data.version, undefined, { numeric: true }));
 const sectionHeading = locale === 'en' ? 'Release notes' : 'Historia zmian';
 ---

@@ -131,7 +131,7 @@ Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<
 | `faqs/FAQSection.astro` | `faqs` | `FAQItem` | 8 accordion FAQ items. |
 | `author/AuthorSection.astro` | `author` | — | Author bio card with photo, experience badge, contact block. |
 | `testimonials/TestimonialsSection.astro` | `testimonials` | — | One-at-a-time slider on the accent background: quote, name, optional company (a link when it has an address), photo with speckle texture, previous/next buttons and a polite counter. No autoplay, no swipe; 300 ms fade, instant with reduced motion. Optional `buttons` prop, default none. |
-| `changelog/ChangelogSection.astro` | `changelog` | `ChangelogEntry` | 12 versioned changelog accordion entries. |
+| `changelog/ChangelogSection.astro` | `changelog` | `ChangelogEntry` | Versioned changelog accordion entries of the product the page names (`product`, required), newest first. |
 | `top-app-bar/TopAppBar.astro` | `nav` | — | Sticky header with logo, nav links, CTA. Accepts overrides via props for sub-pages. |
 | `footer/Footer.astro` | `footer` | — | Logo + flat link list. |
 
@@ -197,7 +197,7 @@ All collections are defined and Zod-validated in `src/content.config.ts`. The lo
 | `faqs` | MDX per item per locale | Order, question string, optional link; answer prose in MDX slot |
 | `author` | MDX singleton per locale | Badge, heading, nameFirst, nameLast, role, bio (frontmatter), email, contactNote, experienceLabel, experienceValue |
 | `testimonials` | YAML singleton per locale | Badge, heading, subheading, items array (pullQuote, body, name, optional company as label + optional href, photo as an `image()` path into `src/assets/testimonials/`) |
-| `changelog` | MDX per version per locale | Version string, date string (range allowed), title, description, changes array |
+| `changelog` | MDX per version, in one folder per product with one subfolder per locale (`{product}/{pl,en}/`) | Version string, date string (range allowed), title, description, changes array |
 | `nav` | YAML singleton per locale | Links array, CTA link |
 | `footer` | YAML singleton per locale | Flat links array, optional legal string |
 
