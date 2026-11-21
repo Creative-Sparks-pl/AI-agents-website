@@ -2,6 +2,12 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.6.2 — 2026-11-21
+
+### Changed
+- The free pages' FAQ answers a user's questions: "Jak długo mogę używać skilla?" / "How long can I use the skill?" (no time limit; new versions for the first 60 days, then it keeps working on its version), and the data answers say the conversation falls under the user's own tool's privacy policy and that the start check sends only customer ID, package and version. The planning page's data answer no longer says only feedback reaches us, and its cost answer adds that the skill runs on the user's own plan.
+- The paid FAQ gets the same data question (plus the page-reading service the audit uses), and "Co konkretnie kupuję?" / "What exactly am I buying?" says the copy checks its license at start and stops only after a refund or a blocked link, instead of promising no server login. A leftover sentence about a pre-purchase preview is gone from the install answer.
+
 ## 1.6.1 — 2026-11-21
 
 ### Changed
