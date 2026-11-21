@@ -37,7 +37,7 @@ const {
 // During Black Friday the default CTA (to the paid skill's prices) swaps for a black-and-yellow sale button.
 // A page with its own CTA keeps it. The sale-window script flips the pair at both edges of the window.
 const showSaleCta = showCta && ctaHref === defaults.cta.href;
-const saleCtaLabel = locale === 'en' ? 'Black Friday: 20% off' : 'Black Friday −20%';
+const saleCtaLabel = locale === 'en' ? 'Black Friday: 20% off' : 'Black Friday do −20%';
 const inSale = isInSaleWindow(Date.now());
 ---
 
