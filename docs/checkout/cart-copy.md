@@ -34,7 +34,7 @@ Price variants (net prices; access 365 days):
 | Variant name | Price | Crossed-out price | Available |
 |---|---|---|---|
 | Solo Designer | 749 zł | — | always |
-| Solo Designer — Black Friday | 599 zł | 749 zł | 23.11.2026 00:00 – 1.12.2026 00:00 |
+| Solo Designer — Black Friday | 649 zł | 749 zł | 23.11.2026 00:00 – 1.12.2026 00:00 |
 | Studio (do 5 osób) | 1249 zł | — | always |
 | Studio (do 5 osób) — Black Friday | 999 zł | 1249 zł | 23.11.2026 00:00 – 1.12.2026 00:00 |
 

@@ -2,6 +2,12 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.6.1 — 2026-11-21
+
+### Changed
+- Polish Black Friday price for Solo Designer: 649 zł instead of 599 zł (list price 749 zł), on the pricing card and in Easytools. The new price is a new Easytools variant ("Solo Designer — Black Friday", same window 23.11–1.12, crossed-out 749 zł), so the card's Black Friday link is new; the 599 zł variant is archived. Founder (359 zł) and Studio (999 zł) are unchanged.
+- The Polish top-bar sale button reads "Black Friday do −20%", since Solo Designer is no longer 20% off. The English button is unchanged.
+
 ## 1.6.0 — 2026-11-20
 
 ### Added
