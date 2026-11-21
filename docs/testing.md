@@ -25,11 +25,13 @@ Look up every changed file (`git diff --name-only`) and run every suite its rows
 
 - A change that fits two rows takes the row with more tests.
 - A text edit that adds a link, video or embed counts as a page change (the components row). A video or embed also adds an outside resource, so it takes the consent and trackers row as well.
+- A wording-only edit takes the wording-only row, even when it sits in a page file that the components row also names. Wording only means sentences of prose changed and nothing else: no price, date, version, link, address or product name, and no element, class or prop. No test checks wording (the specs check behaviour and the names a text must carry), so only the build can catch what such an edit breaks.
 
 | Kind of change | Files | Suites |
 |---|---|---|
 | Docs only | `docs/`, `.wm/`, `design.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, and the `"version"` lines of `package.json` and `package-lock.json` | no tests |
 | Agent skills | `.claude/skills/` | no tests: they are instructions for agents, and no test, build step or deployment reads them |
+| Wording only | prose sentences in `src/content/` (except `src/content/consent/`) or in the markup of `src/pages/`, with nothing else changed (see the rule above) | build only |
 | Content text with no new link, video or embed | text in `src/content/` (except `src/content/consent/`) | build + that page's section test (the spec in `tests/screenshots/` that opens the page; a page with none gets build only) |
 | Components, styles, page markup | `src/components/`, `src/layouts/` (outside the head scripts), `src/styles/global.css`, page markup in `src/pages/`, images in `src/assets/`, `src/lib/i18n.ts`, `src/lib/presale.ts` | build + page sections + accessibility |
 | Consent and trackers | `src/lib/consent-config.ts`, `src/scripts/consent.ts`, `src/scripts/umami-attributes.ts`, `src/styles/cookieconsent-theme.css`, `src/content/consent/`, the head scripts in `src/layouts/BaseLayout.astro`, a tracking event added, changed or removed in a section or component, and any change that adds a script, embed, iframe or other outside resource | build + unit + consent + tracking + cookie check |
