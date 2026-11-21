@@ -2,6 +2,11 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.6.3 — 2026-11-21
+
+### Changed
+- The FAQ data answers on the planning page and the paid page no longer end with the sentence about feedback going to a public GitHub forum: it does not answer what happens to the project data.
+
 ## 1.6.2 — 2026-11-21
 
 ### Changed
