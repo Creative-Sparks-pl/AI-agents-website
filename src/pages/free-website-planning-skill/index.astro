@@ -87,7 +87,7 @@ const faqEntries = [
   },
   {
     q: 'Co dzieje się z danymi o moim projekcie?',
-    body: 'Skill działa w Claude Code albo innym narzędziu, którego używasz. Rozmowa i plik z planem zostają po Twojej stronie. Do nas trafia tylko feedback, jeśli sam zdecydujesz się go wysłać.',
+    body: 'Skill działa w Claude Code, Codex albo Cursorze, na Twoim koncie. Rozmowa podlega polityce prywatności i ustawieniom tego narzędzia, a skill daje mu tylko instrukcje, jak poprowadzić proces. Plik z planem zostaje u Ciebie. Na starcie skill sprawdza licencję i wysyła nam tylko Twój identyfikator klienta, nazwę pakietu i numer wersji, nic z rozmowy. Uwagi trafiają na publiczne forum na GitHubie tylko wtedy, gdy sam je wyślesz.',
   },
   {
     q: 'Czym to się różni od pełnej wersji UX Design Skill?',
@@ -99,8 +99,12 @@ const faqEntries = [
     body: 'Wklejasz instrukcję z maila do Claude Code, Codex albo Cursora, a agent sam instaluje skill.',
   },
   {
+    q: 'Jak długo mogę używać skilla?',
+    body: 'Bez ograniczeń czasowych. Przez pierwsze 60 dni skill sam instaluje też nowe wersje, jeśli się pojawią. Potem działa dalej w wersji, którą masz.',
+  },
+  {
     q: 'Ile kosztuje i co przyjdzie mailem?',
-    body: '0 zł. Zostawiasz adres email, a w ciągu minuty dostajesz mailem osobisty link do instalacji. Będziemy też wysyłać Ci wiadomości o naszych produktach i usługach.',
+    body: '0 zł, bez opłat później. Skill pracuje w ramach Twojego planu Claude, Codex albo Cursora. Zostawiasz adres email, a w ciągu minuty dostajesz mailem osobisty link do instalacji. Będziemy też wysyłać Ci wiadomości o naszych produktach i usługach.',
   },
 ];
 
@@ -221,7 +225,7 @@ const navLinks: { label: string; href: string }[] = [
       icon={boundariesIcon}
       class="!bg-surface"
     />
-    <FAQSection heading="Pięć pytań przed pobraniem" entries={faqEntries} />
+    <FAQSection heading="Sześć pytań przed pobraniem" entries={faqEntries} />
     <DemoSection
       id="pobierz"
       heading={finalCtaEntry.data.heading}

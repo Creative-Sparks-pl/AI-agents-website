@@ -35,8 +35,12 @@ const faqEntries = [
     body: 'Tylko stronę główną, do 5 witryn dziennie.',
   },
   {
+    q: 'Jak długo mogę używać skilla?',
+    body: 'Bez ograniczeń czasowych. Przez pierwsze 60 dni skill sam instaluje też nowe wersje, jeśli się pojawią. Potem działa dalej w wersji, którą masz.',
+  },
+  {
     q: 'Co Skill robi z moją stroną? Jakie dane wysyła?',
-    body: 'Żeby odczytać stronę, Skill wysyła jej adres do naszej usługi odczytu stron. Usługa otwiera publicznie dostępną wersję Twojej strony głównej (tę samą, którą widzi każdy odwiedzający) i zwraca jej układ, a analiza odbywa się w Twoim modelu AI. Usługa widzi adres strony i Twój adres IP, bo po nim liczy dzienny limit. Skill żyje lokalnie w Twoim Claude Code, Codex albo Cursorze. Klucz API do modelu jest po Twojej stronie.',
+    body: 'Żeby odczytać stronę, Skill wysyła jej adres do naszej usługi odczytu stron. Usługa otwiera publicznie dostępną wersję Twojej strony głównej (tę samą, którą widzi każdy odwiedzający) i zwraca jej układ, a analiza odbywa się w Twoim modelu AI. Usługa widzi adres strony i Twój adres IP, bo po nim liczy dzienny limit. Skill żyje lokalnie w Twoim Claude Code, Codex albo Cursorze. Klucz API do modelu jest po Twojej stronie. Na starcie skill sprawdza licencję i wysyła nam tylko Twój identyfikator klienta, nazwę pakietu i numer wersji, nic z rozmowy.',
   },
   {
     q: 'Co jeśli Skill nie ogarnie mojego typu strony?',

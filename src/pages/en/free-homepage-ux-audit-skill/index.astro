@@ -35,8 +35,12 @@ const faqEntries = [
     body: 'Homepages only, up to 5 sites a day.',
   },
   {
+    q: 'How long can I use the skill?',
+    body: 'As long as you like. For the first 60 days it also installs new versions by itself, if there are any. After that it keeps working on the version you have.',
+  },
+  {
     q: 'What does the skill do with my site? What data does it send?',
-    body: 'To read the page, the skill sends its address to our page-reading service. The service opens the publicly available version of your homepage (the same one every visitor sees) and returns its layout, and the analysis runs inside your AI model. The service sees the page address and your IP address, which it uses to count the daily limit. The skill lives locally in your Claude Code, Codex, or Cursor. Your AI model API key stays with you.',
+    body: 'To read the page, the skill sends its address to our page-reading service. The service opens the publicly available version of your homepage (the same one every visitor sees) and returns its layout, and the analysis runs inside your AI model. The service sees the page address and your IP address, which it uses to count the daily limit. The skill lives locally in your Claude Code, Codex, or Cursor. Your AI model API key stays with you. At start-up the skill checks its licence and sends us only your customer ID, the package name and the version number, nothing from the conversation.',
   },
   {
     q: 'What if the skill can\'t handle my site type?',

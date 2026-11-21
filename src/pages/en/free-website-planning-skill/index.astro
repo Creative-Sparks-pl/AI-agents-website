@@ -87,7 +87,7 @@ const faqEntries = [
   },
   {
     q: 'What happens to my project data?',
-    body: 'The skill runs in Claude Code or whichever similar tool you use. The conversation and your plan file stay on your side. All we ever receive is feedback, and only if you choose to send it.',
+    body: 'The skill runs in Claude Code, Codex or Cursor, on your own account. The conversation falls under that tool\'s privacy policy and settings; the skill only gives it instructions for running the process. Your plan file stays with you. At start-up the skill checks its licence and sends us only your customer ID, the package name and the version number, nothing from the conversation. Feedback goes to a public forum on GitHub only when you send it yourself.',
   },
   {
     q: 'How is it different from the full version of UX Design Skill?',
@@ -99,8 +99,12 @@ const faqEntries = [
     body: 'Paste the instruction from the email into Claude Code, Codex or Cursor, and your agent installs the skill.',
   },
   {
+    q: 'How long can I use the skill?',
+    body: 'As long as you like. For the first 60 days it also installs new versions by itself, if there are any. After that it keeps working on the version you have.',
+  },
+  {
     q: 'What does it cost, and what will I get by email?',
-    body: "It's free. Leave your email and your personal install link arrives by email within a minute. We'll also send you news about our products and services.",
+    body: "It's free, with nothing to pay later. The skill runs on your own Claude, Codex or Cursor plan. Leave your email and your personal install link arrives by email within a minute. We'll also send you news about our products and services.",
   },
 ];
 
@@ -221,7 +225,7 @@ const navLinks: { label: string; href: string }[] = [
       icon={boundariesIcon}
       class="!bg-surface"
     />
-    <FAQSection heading="Five questions before you download" entries={faqEntries} />
+    <FAQSection heading="Six questions before you download" entries={faqEntries} />
     <DemoSection
       id="download"
       heading={finalCtaEntry.data.heading}
