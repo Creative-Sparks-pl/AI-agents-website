@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uxd-product-website-v3 — Project Plan</title>
+  <title>ux-design-skill — Project Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -101,11 +101,6 @@
     .ui-badge--red    { background: #f8d7da; color: #721c24; }
     .ui-badge--gray   { background: #e9ecef; color: #495057; }
 
-    /* Content-readiness pill variants — compose with .ui-badge. */
-    .ui-badge--content-ready  { background: #d4edda; color: #155724; }
-    .ui-badge--needs-content  { background: #fff3cd; color: #856404; }
-    .ui-badge--tbd-status     { background: #e9ecef; color: #495057; }
-
     /* ---- Content-label modifiers on .ui-badge ----
        `--plain` neutralizes the status-pill styling (uppercase / bold / 9px) so
        the base class can carry mixed-case prose labels like "Trial signup".
@@ -137,7 +132,7 @@
       display: grid;
       gap: var(--wf-gap);
     }
-    .ui-card-row--three { grid-template-columns: 1fr 1fr 1fr; }
+    .ui-card-row--three { grid-template-columns: 1fr 1fr; }
     .ui-card-row--two   { grid-template-columns: 1fr 1fr; }
     .ui-card-row--one   { grid-template-columns: 1fr; }
     .ui-card-row-title {
@@ -725,8 +720,8 @@
     /* ============================================================ */
     /* === PROJECT-PLAN-SPECIFIC — class prefix .pp-*            === */
     /* === Sub-page containers, canvas rows (selective port from === */
-    /* === messaging-canvas-template.html), content-readiness    === */
-    /* === pills. Composes with UNIVERSAL shell chrome above.    === */
+    /* === messaging-canvas-template.html), section cards.       === */
+    /* === Composes with UNIVERSAL shell chrome above.           === */
     /* ============================================================ */
 
     /* Sub-page containers — one active at a time via page switcher.
@@ -1005,7 +1000,7 @@
     }
 
     /* Section card supplemental primitives. Base class is .ui-card;
-       these children hold the narrative tag + question line + readiness pill. */
+       these children hold the narrative tag + question line. */
     .pp-cell-tags {
       display: flex;
       flex-wrap: wrap;
@@ -1029,8 +1024,9 @@
       font-size: 0.8125rem;
       margin: 0;
     }
-    /* Section card — labeled field row. One pattern reused for Goal /
-       Message / Content rows. Content bullets render inside
+    /* Section card — labeled field row. One pattern reused for the Goal /
+       Question rows, and for the Content row of older-shape items (plans
+       written before 4.7). Content bullets render inside
        .pp-section-card__field (label on first line, <ul> below). */
     .pp-section-card__field {
       font-size: 0.8125rem;
@@ -1049,6 +1045,25 @@
     }
     .pp-section-card__field ul li,
     .pp-section-card__content-list li { padding: 2px 0; }
+    /* Section card — content brief (layout A). One labeled list after the
+       Question row; its top border is the thin divider between the rows
+       and the brief. Each <li> opens with a .pp-section-card__field-label;
+       Must cover nests a bulleted <ul> under its label. Reads at the same
+       size and color as the field rows above. */
+    .ui-card > .pp-section-card__brief {
+      margin: 0;
+      padding: 8px 0 0;
+      border-top: 1px solid var(--wf-line);
+      list-style: none;
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+    }
+    .ui-card .pp-section-card__brief ul {
+      margin: 2px 0 0;
+      padding-left: 18px;
+      list-style: disc;
+      color: inherit;
+    }
     /* Section map — per-page button list. Sits below the page header; one
        button per page (Home / Product / Global...). Active button shows
        which page-map is visible below. Shares the 600px centered column
@@ -1105,10 +1120,10 @@
 
     /* ---- Design plan sub-page primitives (formerly "Inventory") ---- */
 
-    /* Summary stat block — three big numbers, their labels underneath. */
+    /* Summary stat block — two big numbers, their labels underneath. */
     .pp-summary {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin: 12px 0 24px;
       padding: 20px 24px;
@@ -1269,8 +1284,6 @@
 
     /* === Responsive — page-width steps (container set on .pp-main) === */
     @container pp-main (width <= 900px) {
-      .ui-card-row--three { grid-template-columns: 1fr 1fr; }
-      .pp-summary { grid-template-columns: 1fr 1fr; }
       .pp-header h1 { font-size: 1.75rem; }
     }
     @container pp-main (width < 600px) {
@@ -1437,7 +1450,7 @@
      ============================================================ -->
 <script type="application/json" id="context-data">
 {
-  "namespace": "ux-designer-project-plan-uxd-product-website-v3-2026-04-26",
+  "namespace": "ux-designer-project-plan-ux-design-skill-2026-04-26",
   "labels": {
     "confidence_confirmed": "Potwierdzone",
     "confidence_likely": "Prawdopodobne",
@@ -1488,13 +1501,8 @@
     "pp_strategy_messaging_voice": "Messaging i głos",
     "pp_strategy_messaging": "Hierarchia komunikatów",
     "pp_strategy_voice": "Brief głosu",
-    "pp_content_ready": "Gotowa treść",
-    "pp_needs_content": "Brakuje treści",
-    "pp_tbd_status": "Do uzupełnienia",
     "pp_section_card_goal": "Cel:",
-    "pp_section_card_message": "Komunikat:",
     "pp_section_card_content": "Treść:",
-    "pp_section_card_readiness": "Gotowość:",
     "detail_rationale": "Uzasadnienie",
     "detail_alternatives": "Rozważone alternatywy",
     "detail_element": "Element",
@@ -1504,22 +1512,18 @@
     "detail_goal": "Cel",
     "detail_question": "Pytanie",
     "detail_content": "Opis treści",
-    "detail_content_status": "Gotowość treści",
     "group_scope_page": "Poziom strony",
     "group_scope_section": "Sekcje",
     "group_scope_ia": "Decyzje IA",
     "page_global_label": "Globalne",
     "pp_inventory_total_templates": "Unikalne szablony",
     "pp_inventory_unique_sections": "Unikalne sekcje",
-    "pp_inventory_sections_needing_content": "Sekcje wymagające treści",
     "pp_inventory_field_narrative": "Funkcja narracyjna",
     "pp_inventory_field_goal": "Cel",
     "pp_inventory_field_question": "Pytanie",
-    "pp_inventory_field_key_message": "Kluczowy komunikat",
     "pp_inventory_field_used_in": "Używane w",
     "pp_inventory_field_atoms": "Atomy",
     "pp_inventory_field_variants": "Warianty",
-    "pp_inventory_field_readiness": "Gotowość",
     "pp_inventory_field_usage": "Zastosowanie",
     "pp_inventory_template_map": "Unikalne szablony",
     "pp_inventory_usage_single": "Jedna strona",
@@ -1533,7 +1537,6 @@
     "group_kind_section": "Sekcje",
     "group_kind_template": "Szablony",
     "detail_used_in": "Używane w",
-    "detail_key_message": "Kluczowy komunikat",
     "detail_atoms": "Atomy",
     "detail_variants": "Warianty",
     "detail_pages_using": "Strony używające",
@@ -1575,9 +1578,8 @@
     "md_goal": "Cel",
     "md_question": "Pytanie",
     "md_content_description": "Treść",
-    "md_key_message": "Kluczowy komunikat",
+    "md_key_message": "Główny przekaz",
     "md_narrative": "Funkcja narracyjna",
-    "md_content_status": "Gotowość treści",
     "md_top_tasks_served": "Realizowane zadania",
     "md_element": "Element",
     "md_decision_status": "Status decyzji",
@@ -1593,11 +1595,23 @@
     "md_inventory_section_template_arch": "Architektura per szablon",
     "md_inventory_summary_total_templates": "Szablony",
     "md_inventory_summary_unique_sections": "Unikalne sekcje",
-    "md_inventory_summary_sections_needing_content": "Sekcje wymagające treści",
     "md_inventory_template_arch_corp_pool_shared": "Wspólne sekcje",
     "md_inventory_template_arch_corp_pool_variants": "Warianty z puli",
-    "md_inventory_template_arch_modular_atoms": "Paleta atomów"
+    "md_inventory_template_arch_modular_atoms": "Paleta atomów",
+    "pp_section_card_question": "Pytanie:",
+    "pp_section_card_key_message": "Główny przekaz:",
+    "pp_section_card_must_cover": "Musi się znaleźć:",
+    "pp_section_card_doubt": "Obawa do rozwiania:",
+    "pp_section_card_proof": "Dowód:",
+    "pp_section_card_action": "Działanie:",
+    "pp_section_card_leave_out": "Pominąć:",
+    "md_must_cover": "Musi się znaleźć",
+    "md_doubt": "Obawa do rozwiania",
+    "md_proof": "Dowód",
+    "md_action": "Działanie",
+    "md_leave_out": "Pominąć"
   },
+  "project_language": "pl",
   "canvas": {
     "rows": [
       {
@@ -1644,7 +1658,7 @@
         },
         {
           "label": "Model biznesowy",
-          "value": "Licencja jednorazowa „pay once, own forever\" w trzech pakietach (Solo / Studio / Agencja). Przedsprzedaż polska do 30 maja 2026 z cenami niższymi; po niej globalny launch z wyższymi cenami. 12 miesięcy aktualizacji w cenie pakietu."
+          "value": "Licencja jednorazowa „pay once, own forever\" w trzech pakietach (Solo / Studio / Agencja). Przedsprzedaż polska do 30 maja 2026 z cenami niższymi; po niej globalny launch z wyższymi cenami. 12 miesięcy aktualizacji w cenie pakietu. Wejście do zakupu: dwie darmowe wersje częściowe w teście, darmowy audyt i Website Planning Skill."
         }
       ]
     },
@@ -1657,11 +1671,11 @@
       "kv": [
         {
           "label": "Główny cel",
-          "value": "Sprzedaż licencji w okresie polskiej przedsprzedaży (do 30 maja 2026), plus pipeline leadów przez darmowy audyt strony i edycję NGO."
+          "value": "Sprzedaż licencji w okresie polskiej przedsprzedaży (do 30 maja 2026), plus pipeline leadów przez dwie darmowe ścieżki w teście (darmowy audyt strony i darmowy Website Planning Skill) oraz edycję NGO."
         },
         {
           "label": "Miara sukcesu",
-          "value": "Liczba sprzedanych licencji w okresie przedsprzedaży (konkretna wartość docelowa do ustalenia przez właściciela); wtórnie liczba uruchomionych darmowych audytów jako wskaźnik pre-konwersji."
+          "value": "Liczba sprzedanych licencji w okresie przedsprzedaży (konkretna wartość docelowa do ustalenia przez właściciela); wtórnie liczba uruchomionych darmowych audytów jako wskaźnik pre-konwersji. Miara porównania dwóch darmowych ścieżek: do ustalenia przy teście."
         }
       ],
       "rationale": "Cel sprzedażowy ma priorytet ponad budowaniem kategorii — narzędzie istnieje, model „pay once\" wymaga przedsprzedaży jako głównego momentu monetyzacji, a po niej ceny rosną wraz z globalnym launchem. Lead gen przez audyt jest podporządkowany temu celowi, nie jest celem samym w sobie."
@@ -1781,6 +1795,7 @@
           "Zakup licencji w trzech pakietach z cenami przedsprzedażowymi i regularnymi",
           "Pobranie plików narzędzia po zakupie (dystrybucja typu plug-in)",
           "Darmowy audyt strony (Reverse Wireframing + Review + propozycje zmian) jako element pre-konwersji",
+          "Podstrona darmowej wersji Website Planning Skill (pobranie za 0 zł przez koszyk, przejście do pełnej paczki); opis i plan podstrony w osobnym projekcie website-planning-skill",
           "Edycja NGO — bezpłatna licencja w zamian za publiczne studium przypadku",
           "Podgląd sample artifacts (galeria plików z procesu budowy tej strony)",
           "Hierarchia CTA: zakup (główne), audyt (drugie), NGO (trzecie)"
@@ -1798,7 +1813,8 @@
           "Live interactive demo modelu AI na stronie (koszt API, ryzyko nadużyć, wrażenie „canned demo\")",
           "Hosted audit web app (rewizja, jeśli wysoki drop-off w przedsprzedaży)",
           "Quick Mode (3-pytaniowy speedrun) — audyt już serwuje fast lane",
-          "Backend subscription enforcement (sprzeczne z modelem „pay once\")"
+          "Backend subscription enforcement (sprzeczne z modelem „pay once\")",
+          "Przejście z podstrony darmowego planowania do darmowego audytu"
         ]
       }
     },
@@ -1903,15 +1919,15 @@
           "value": "Aplikacja o edycję NGO — pipeline studiów przypadku przed launchem globalnym"
         },
         {
-          "label": "Brak free trial",
-          "value": "Brak free trial i freemium na samym narzędziu (sprzeczne z modelem „pay once\"); audyt pełni rolę szybkiego demo wartości, sample artifacts pełnią rolę pasywnego dowodu"
+          "label": "Darmowe ścieżki",
+          "value": "Brak free trial na pełnym narzędziu (sprzeczne z modelem „pay once\"). W teście dwie równoległe darmowe ścieżki, obie prowadzą do pełnej paczki: darmowy audyt i darmowy Website Planning Skill (dwa etapy pełnego narzędzia). Zostanie ta, która lepiej konwertuje. Sample artifacts pełnią rolę pasywnego dowodu."
         }
       ],
       "rationale": "Hierarchia trzech CTA wynika z: (1) modelu monetyzacji — sprzedaż licencji jest celem, więc zakup ma priorytet wizualny i pozycyjny; (2) roli audytu jako landing page'u dla płatnego ruchu, gdzie demo wartości na realnej stronie odbiorcy konwertuje silniej niż klasyczne demo produktowe; (3) roli edycji NGO jako źródła studiów przypadku, których brak w przedsprzedaży.",
       "alternatives": "Audyt jako pierwsze CTA na stronie głównej (odrzucone — odbiera widoczność CTA zakupowemu, mimo że paid traffic i tak ląduje na osobnej podstronie audytu); newsletter / zapis na premierę (odrzucone wprost przez właściciela — przedsprzedaż jest teraz, więc rejestracja na powiadomienie konkurowałaby ze sprzedażą)."
     }
   ],
-  "messaging_routing": "sufficient-skipped"
+  "messaging_routing": "deferred"
 }
 </script>
 
@@ -1926,6 +1942,17 @@
     "value": "Authority-Led (proof-first)",
     "confidence": "high"
   },
+  "positioning": {
+    "strategy": "wedge",
+    "statement": "Narzędzie na etap przed budową strony: plan w pliku, zanim otworzysz Figmę albo generator stron. Darmowa wersja daje ten etap za 0 zł.",
+    "against": "ChatGPT albo Claude w trybie ad hoc i generatory stron z domyślną strukturą",
+    "confidence": "high"
+  },
+  "differentiator": {
+    "value": "Plik z planem strony, w którym przy każdej decyzji stoi uzasadnienie oparte na wiedzy o danym typie strony. Czat daje listę stron do przepisania, bez powodów.",
+    "confidence": "high",
+    "rationale": "Potwierdzone przez właściciela przy planowaniu podstrony Website Planning Skill. Zgodne z pierwszym filarem hierarchii komunikatów (plan strony z uzasadnieniem każdej decyzji)."
+  },
   "main_menu_meta": {
     "rationale": "Menu minimalne — Logo do home, dwa anchory na home (Pakiety, Audyt) absorbują główne CTA bez wymuszania nawigacji do podstron, dwie podstrony (Baza wiedzy, Jak pracować) dla głębi, primary CTA 'Zobacz pakiety' jako prawe-skrajne wezwanie do działania. Designer-skeptyk powinien znaleźć dowód (Baza wiedzy) i pakiety w 1 kliknięciu.",
     "alternatives": "Menu rozbudowane z linkami do każdej sekcji home — odrzucone, dubluje scroll. Hamburger na desktop — odrzucone, 4 itemy mieszczą się w pasku, hamburger zwiększa friction. Dropdown 'Zasoby' — odrzucone, mamy tylko dwa zasoby (Baza wiedzy, Jak pracować), grupowanie nie ma wartości."
@@ -1933,7 +1960,7 @@
   "main_menu": [
     {
       "id": "menu-logo",
-      "name": "Logo (→ Home)",
+      "name": "Logo (→ UX Design Skill)",
       "children": []
     },
     {
@@ -1963,13 +1990,13 @@
     }
   ],
   "sitemap_meta": {
-    "rationale": "Płaska hierarchia: Home + 2 podstrony. Wszystkie trzy główne CTA (zakup, audyt, NGO) reachable w 1 kliknięciu. Top tasks: kwalifikacja persony, sprawdzenie plików, porównanie pakietów, instalacja — wszystkie na home jako sekcje albo bezpośrednie linki na podstrony.",
+    "rationale": "Płaska hierarchia: UX Design Skill + 2 podstrony. Wszystkie trzy główne CTA (zakup, audyt, NGO) reachable w 1 kliknięciu. Top tasks: kwalifikacja persony, sprawdzenie plików, porównanie pakietów, instalacja — wszystkie na home jako sekcje albo bezpośrednie linki na podstrony. Poza tym dwie samodzielne strony docelowe poza menu, Free UX Audit Skill i Website Planning Skill, na ruch z reklam i newslettera.",
     "alternatives": "Głębsza hierarchia z osobnymi podstronami /pakiety, /audyt, /metodologia — odrzucona, dla v2 scope niepotrzebne; zwiększa friction zakupową bez merytorycznego zysku."
   },
   "sitemap": [
     {
       "id": "page-home",
-      "name": "Home",
+      "name": "UX Design Skill",
       "children": [
         {
           "id": "page-baza-wiedzy",
@@ -1982,6 +2009,16 @@
           "children": []
         }
       ]
+    },
+    {
+      "id": "page-free-ux-audit-skill",
+      "name": "Free UX Audit Skill",
+      "children": []
+    },
+    {
+      "id": "page-website-planning-skill",
+      "name": "Website Planning Skill",
+      "children": []
     }
   ],
   "footer_meta": {
@@ -2044,6 +2081,33 @@
     }
   ],
   "items": [
+    {
+      "id": "strategy-id-positioning",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Pozycjonowanie",
+      "name": "Pozycjonowanie",
+      "layout": "simple-meta",
+      "lead": "Narzędzie na etap przed budową strony: plan w pliku, zanim otworzysz Figmę albo generator stron. Darmowa wersja daje ten etap za 0 zł.",
+      "kv": [
+        {
+          "label": "Wobec",
+          "value": "ChatGPT albo Claude w trybie ad hoc i generatory stron z domyślną strukturą"
+        }
+      ],
+      "rationale": "Odbiorca, który dziś prosi czat o mapę strony albo przyjmuje strukturę z generatora, nie ma etapu planowania. Narzędzie zajmuje właśnie ten etap, przed pierwszym ekranem w Figmie i przed generatorem, zamiast konkurować z nimi.",
+      "alternatives": "Atak wprost na czat jako narzędzie gorsze w ogóle: odrzucone, odbiorca i tak używa czatu, a narzędzie działa w tych samych środowiskach. Porównanie z freelancerem UX: odrzucone dla darmowej wersji, bo cena 0 zł nie wymaga argumentu kosztowego."
+    },
+    {
+      "id": "strategy-id-differentiator",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Wyróżnik",
+      "name": "Wyróżnik",
+      "layout": "simple-meta",
+      "lead": "Plik z planem strony, w którym przy każdej decyzji stoi uzasadnienie oparte na wiedzy o danym typie strony. Czat daje listę stron do przepisania, bez powodów.",
+      "rationale": "Potwierdzone przez właściciela przy planowaniu podstrony Website Planning Skill. Zgodne z pierwszym filarem hierarchii komunikatów (plan strony z uzasadnieniem każdej decyzji)."
+    },
     {
       "id": "strategy-id-site-format",
       "scope": "page",
@@ -2124,8 +2188,8 @@
       "confidence": "high",
       "title": "Audyt jako sekcja-anchor `#audyt` na home",
       "element": "Darmowy audyt",
-      "decision_status": "confirmed",
-      "rationale": "Audyt jest sekundarnym CTA już w hero i drugim filarem pre-konwersji. Reklamy mogą linkować do `#audyt` na home — odbiorca skoraluje na sekcję, która domyka flow. Mniej powierzchni do utrzymania, narracja spójna.",
+      "decision_status": "revised",
+      "rationale": "Audyt jest sekundarnym CTA już w hero i drugim filarem pre-konwersji. Reklamy mogą linkować do `#audyt` na home — odbiorca skoraluje na sekcję, która domyka flow. Mniej powierzchni do utrzymania, narracja spójna. Rewizja: reklamy audytu lądują teraz na osobnej stronie Free UX Audit Skill (patrz decyzja o samodzielnych stronach darmowych skilli).",
       "alternatives": "Osobna podstrona /audyt jako paid-traffic landing — odrzucone w tej iteracji, ale możliwa rewizja jeśli post-launch dane pokażą, że długi scroll dusi konwersję z reklam."
     },
     {
@@ -2177,6 +2241,16 @@
       "decision_status": "confirmed",
       "rationale": "Przedsprzedaż polska jest właśnie teraz, ceny po niej rosną przy globalnym launchu. Rejestracja na powiadomienia konkurowałaby ze sprzedażą — kto chce kupić, powinien kupić w niższej cenie teraz, a nie zapisywać się na alert.",
       "alternatives": "Newsletter signup w stopce — odrzucone wprost przez właściciela; newsletter ogólny (updates, content marketing) — odrzucone w v2 scope, blog/content marketing poza zakresem."
+    },
+    {
+      "id": "strategy-id-ia-decision-free-landing-pages",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Darmowe skille jako samodzielne strony docelowe poza menu",
+      "element": "Free UX Audit Skill i Website Planning Skill",
+      "decision_status": "confirmed",
+      "rationale": "Ruch na obie strony przychodzi z reklam i newslettera, nie z nawigacji. Każda ma jedną akcję (pobranie za 0 zł), a u góry tylko logo i link do pełnej paczki. Strony nie odsyłają do siebie nawzajem: to dwie równoległe ścieżki w teście i linki między nimi zamazałyby wynik. Strona audytu powstała w maju od razu jako szkic, do planu dopisana teraz.",
+      "alternatives": "Zwykła podstrona w menu głównym: odrzucone, daje więcej wyjść i rozmywa test. Sekcja na stronie głównej: odrzucone, reklama musi lądować na stronie o jednym temacie. Koszt wybranej opcji: jedna krótka strona ma mało treści dla wyszukiwarki, do rewizji, gdy wyszukiwarka zacznie się liczyć."
     }
   ],
   "canvas": {
@@ -2187,7 +2261,9 @@
         "variant": "two",
         "card_ids": [
           "strategy-id-site-format",
-          "strategy-id-archetype"
+          "strategy-id-archetype",
+          "strategy-id-positioning",
+          "strategy-id-differentiator"
         ]
       },
       {
@@ -2232,7 +2308,7 @@
   "page_sections": [
     {
       "page_id": "page-home",
-      "name": "Home",
+      "name": "UX Design Skill",
       "goal": "Sprzedać licencję w okresie polskiej przedsprzedaży; alternatywnie zaproponować darmowy audyt jako pre-konwersję.",
       "top_tasks_served": [
         "Zorientować się, czy narzędzie jest dla mnie",
@@ -2260,6 +2336,30 @@
       ]
     },
     {
+      "page_id": "page-free-ux-audit-skill",
+      "name": "Free UX Audit Skill",
+      "goal": "Pobranie darmowego audytu za 0 zł przez ruch z reklam i newslettera, z otwartą drogą do pełnej paczki UX Design Skill.",
+      "top_tasks_served": [
+        "Uruchomić darmowy audyt własnej strony"
+      ]
+    },
+    {
+      "page_id": "page-website-planning-skill",
+      "name": "Website Planning Skill",
+      "goal": "Pobranie darmowego skilla do planowania za 0 zł przez ruch z reklam i newslettera, z otwartą drogą do pełnej paczki UX Design Skill. Mapa sekcji w osobnym projekcie website-planning-skill.",
+      "top_tasks_served": [
+        "Sprawdzić, co robi darmowy skill i jaki plik dostanę",
+        "Zobaczyć przykładowy plan strony",
+        "Sprawdzić, czy to dla mnie, bez względu na to, czy mam stronę i czy znam się na UX",
+        "Sprawdzić, czy działa w moim narzędziu",
+        "Zobaczyć, jak wygląda instalacja",
+        "Pobrać skill za 0 zł",
+        "Dowiedzieć się, czego darmowa wersja nie robi i co daje pełna paczka",
+        "Przejść do pełnej paczki UX Design Skill",
+        "Sprawdzić, co dzieje się z danymi o moim projekcie"
+      ]
+    },
+    {
       "page_id": "global",
       "name": "Globalne — nawigacja i stopka",
       "goal": "Zapewnić spójną nawigację i stopkę na każdej podstronie.",
@@ -2282,6 +2382,14 @@
       },
       {
         "type": "page-map",
+        "page_id": "page-free-ux-audit-skill"
+      },
+      {
+        "type": "page-map",
+        "page_id": "page-website-planning-skill"
+      },
+      {
+        "type": "page-map",
         "page_id": "global"
       }
     ]
@@ -2296,12 +2404,22 @@
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Złapać uwagę i nazwać moment, w którym znajduje się odbiorca (przed Figmą, przed generatorem stron); kotwica czasowa + obietnica trzech filarów.",
-      "question": "Czy to dla mnie i czy mam ten moment?",
-      "content_description": "Headline z czasownikiem akcji ('Zaplanuj strukturę i copy strony, zanim ruszysz w Figmę albo do vibe codingu, bez eksperta UX'); podtytuł z trzema obietnicami (plan z uzasadnieniem, gotowe pliki, wbudowana wiedza UX, decyzja po stronie odbiorcy); główne CTA do pakietów; drugorzędne CTA do darmowego audytu (anchor `#audyt`); wskazówka wizualna: zrzut folderu projektu z plikami HTML+MD obok siebie.",
-      "content_status": "content-ready",
+      "goal": "W pierwszym ekranie powiedzieć, czym jest skill i co z nim dostajesz, i dać dwie drogi dalej: do cen albo do darmowej wersji.",
+      "question": "Co to jest i czy rozwiąże mój problem z projektem strony?",
       "rationale": "Hero kotwiczy w czasie pracy designera ('zanim Figma, zanim vibe coding') zamiast w nazwie kategorii — odbiorca rozpoznaje moment, nie etykietę półki. Primary CTA prowadzi do pakietów; secondary daje skeptykom realny test bez podejmowania decyzji. Headline REC z kanwy (16 słów, w limicie 25).",
-      "alternatives": "Hero z kategorią produktową ('Narzędzie AI do planowania struktury strony') — odrzucone, bo kategoria 'AI UX' nie istnieje w głowie nabywcy, anchor czasowy działa silniej. Hero z bólem persony jako otwarciem — odrzucone w archetypie A na rzecz proof-first."
+      "alternatives": "Hero z kategorią produktową ('Narzędzie AI do planowania struktury strony') — odrzucone, bo kategoria 'AI UX' nie istnieje w głowie nabywcy, anchor czasowy działa silniej. Hero z bólem persony jako otwarciem — odrzucone w archetypie A na rzecz proof-first.",
+      "key_message": "UX Design Skill prowadzi projekt strony od briefu po makiety: pyta o kontekst, planuje strukturę i pisze prawdziwe copy.",
+      "must_cover": [
+        "Co robi skill: prowadzi projekt strony od briefu po makiety",
+        "Co dostajesz: plan strony z mapą stron, strukturą sekcji i narracją, prawdziwe copy i makiety",
+        "Na czym działa: Claude Code, Codex i Cursor, dzięki otwartej specyfikacji SKILL.md",
+        "Wbudowana wiedza: 16 typów stron, 13 frameworków UX i 50+ wzorców",
+        "Każda decyzja z uzasadnieniem, poziomem pewności i odrzuconymi wariantami",
+        "Bez backendu, kont i abonamentu: płacisz raz"
+      ],
+      "doubt": "To kolejny prompt, który wygeneruje ogólniki zamiast planu, którego da się użyć.",
+      "proof": "Ocena 4,52 z 23 ocen i wideo z demo skilla w akcji.",
+      "action": "Sprawdź ceny; druga droga: wypróbuj za darmo."
     },
     {
       "id": "section-map-id-home-pliki-z-procesu",
@@ -2478,6 +2596,96 @@
       "content_status": "content-ready",
       "rationale": "Footer minimalny — produkt + firma + legal wystarczą. Brak newsletter signup zgodnie z decyzją o przedsprzedaży: kto chce kupić, kupuje teraz w niższej cenie, a nie zapisuje się na alert. Final CTA do pakietów żyje w sekcji 'Finalne CTA' nad stopką, nie w samej stopce.",
       "alternatives": "Fat Footer z newsletter signup — odrzucone wprost przez właściciela. Stopka z social linkami — odrzucone w v2, do dodania jeśli pojawią się aktywne kanały."
+    },
+    {
+      "id": "section-map-id-fuas-hero",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Co to jest i pobranie",
+      "name": "Co to jest i pobranie",
+      "page_id": "page-free-ux-audit-skill",
+      "layout": "section-card",
+      "narrative": "hook",
+      "goal": "Potwierdzić odwiedzającemu z reklamy, że trafił na darmowy skill do audytu własnej strony, i dać pobranie od razu.",
+      "question": "Czy to faktycznie skill dla Claude Code, który audytuje moją stronę, i co dokładnie dostanę?",
+      "content_description": "Etykieta dla użytkowników Claude Code, Cursora i Codex. Nagłówek z nazwą i obietnicą audytu. Akapit o tym, co skill robi ze stroną. Cztery fakty (plik HTML z makietą i wnioskami, porównanie do standardu z poziomem pewności, szesnaście typów stron, działanie w kilku narzędziach). Przycisk pobrania za 0 zł z mikrotekstem. Obok obraz wyniku audytu.",
+      "content_status": "content-ready",
+      "rationale": "Spisane z gotowego szkicu strony audytu, żeby plan obejmował wszystkie strony."
+    },
+    {
+      "id": "section-map-id-fuas-value",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Co dostajesz",
+      "name": "Co dostajesz",
+      "page_id": "page-free-ux-audit-skill",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Pokazać trzy korzyści z wyniku audytu.",
+      "question": "Co konkretnie dostaję, kiedy skill skończy audyt mojej strony?",
+      "content_description": "Nagłówek i wstęp o pliku HTML z makietą i wnioskami. Trzy karty: wniosek wpięty w miejsce, którego dotyczy; porównanie do standardu dla typu strony; materiał wprost do następnej wersji strony. Każda karta z linkiem do przykładu audytu.",
+      "content_status": "content-ready",
+      "rationale": "Spisane z gotowego szkicu strony audytu."
+    },
+    {
+      "id": "section-map-id-fuas-under-hood",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Pod maską",
+      "name": "Pod maską",
+      "page_id": "page-free-ux-audit-skill",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Pokazać, że audyt jest częścią systemu UX Design Skill, i otworzyć drogę do pełnej paczki.",
+      "question": "Co siedzi pod spodem: ogólna lista kontrolna czy skill osadzony w większym systemie?",
+      "content_description": "Obraz struktury plików skilla, cztery karty o tym, jak działa (wiedza oddzielona od instrukcji i inne), wyróżniona karta o pełnej paczce z drugim przyciskiem.",
+      "content_status": "content-ready",
+      "rationale": "Spisane z gotowego szkicu strony audytu. Ten układ jest wzorem dla sekcji o pełnym procesie na stronie Website Planning Skill."
+    },
+    {
+      "id": "section-map-id-fuas-boundaries",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Granice audytu",
+      "name": "Granice audytu",
+      "page_id": "page-free-ux-audit-skill",
+      "layout": "section-card",
+      "narrative": "tension",
+      "goal": "Uczciwie postawić granice przed pobraniem.",
+      "question": "Czego ten skill nie robi i gdzie nadal muszę myśleć sam?",
+      "content_description": "Krótka lista w formacie „Nie X. Y.”: nie projektuje rozwiązań, nie zastępuje strategicznego myślenia.",
+      "content_status": "content-ready",
+      "rationale": "Spisane z gotowego szkicu strony audytu."
+    },
+    {
+      "id": "section-map-id-fuas-faq",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Pytania i odpowiedzi",
+      "name": "Pytania i odpowiedzi",
+      "page_id": "page-free-ux-audit-skill",
+      "layout": "section-card",
+      "narrative": "tension",
+      "goal": "Zamknąć typowe obiekcje i wpiąć przejście do pełnej paczki.",
+      "question": "Co jeszcze powinienem wiedzieć przed pobraniem?",
+      "content_description": "Rozwijane pytania, m.in.: co dokładnie dostaję, co skill robi z moją stroną i jakie dane wysyła, co jeśli nie rozpozna mojego typu strony, czym różni się od pełnej paczki.",
+      "content_status": "content-ready",
+      "rationale": "Spisane z gotowego szkicu strony audytu."
+    },
+    {
+      "id": "section-map-id-fuas-final-cta",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Pobranie na koniec",
+      "name": "Pobranie na koniec",
+      "page_id": "page-free-ux-audit-skill",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Dać drugi moment pobrania osobom, które przeczytały całą stronę.",
+      "question": "Jak ruszam dalej?",
+      "content_description": "Nagłówek z wezwaniem do sprawdzenia własnej strony, zdanie o przebiegu (pobranie, instalacja, wynik w kilka minut), przycisk pobrania, mikrotekst.",
+      "content_status": "content-ready",
+      "rationale": "Spisane z gotowego szkicu strony audytu."
     }
   ]
 }
@@ -2900,14 +3108,17 @@
     pp_strategy_messaging_voice: '{Messaging & Voice}',
     pp_strategy_messaging:       '{Messaging Hierarchy}',
     pp_strategy_voice:           '{Voice Brief}',
-    // Content-readiness pill short labels
-    pp_content_ready: '{Content ready}',
-    pp_needs_content: '{Needs content}',
-    pp_tbd_status:    '{TBD}',
-    pp_section_card_goal:       '{Goal:}',
-    pp_section_card_message:    '{Message:}',
-    pp_section_card_content:    '{Content:}',
-    pp_section_card_readiness:  '{Readiness:}',
+    // Section card rows + content brief (layout A). `_content` labels the
+    // older-shape items' content row only.
+    pp_section_card_goal:        '{Goal:}',
+    pp_section_card_question:    '{Question:}',
+    pp_section_card_key_message: '{Key message:}',
+    pp_section_card_must_cover:  '{Must cover:}',
+    pp_section_card_doubt:       '{Doubt it removes:}',
+    pp_section_card_proof:       '{Proof:}',
+    pp_section_card_action:      '{Action:}',
+    pp_section_card_leave_out:   '{Leave out:}',
+    pp_section_card_content:     '{Content:}',
     // Detail block headings
     detail_rationale:      '{Rationale}',
     detail_alternatives:   '{Alternatives considered}',
@@ -2918,7 +3129,6 @@
     detail_goal:           '{Goal}',
     detail_question:       '{Question}',
     detail_content:        '{Content description}',
-    detail_content_status: '{Content readiness}',
     // Scope group headers
     group_scope_page:    '{Page-level}',
     group_scope_section: '{Sections}',
@@ -2928,16 +3138,13 @@
     // Design plan canvas labels
     pp_inventory_total_templates:          '{Unique templates}',
     pp_inventory_unique_sections:          '{Unique sections}',
-    pp_inventory_sections_needing_content: '{Sections needing content}',
     // Section Index card field labels (Design plan) — translatable overrides.
     pp_inventory_field_narrative:    '{Narrative}',
     pp_inventory_field_goal:         '{Goal}',
     pp_inventory_field_question:     '{Question}',
-    pp_inventory_field_key_message:  '{Key message}',
     pp_inventory_field_used_in:      '{Used in}',
     pp_inventory_field_atoms:        '{Atoms}',
     pp_inventory_field_variants:     '{Variants}',
-    pp_inventory_field_readiness:    '{Readiness}',
     pp_inventory_field_usage:        '{Usage}',
     pp_inventory_template_map:    '{Unique templates}',
     pp_inventory_usage_single:    '{Single page}',
@@ -2952,7 +3159,6 @@
     group_kind_section:  '{Sections}',
     group_kind_template: '{Templates}',
     detail_used_in:      '{Used in}',
-    detail_key_message:  '{Key message}',
     detail_atoms:        '{Atoms}',
     detail_variants:     '{Variants}',
     detail_pages_using:  '{Pages using}',
@@ -2998,8 +3204,12 @@
     md_question:             '{Question}',
     md_content_description:  '{Content}',
     md_key_message:          '{Key message}',
+    md_must_cover:           '{Must cover}',
+    md_doubt:                '{Doubt it removes}',
+    md_proof:                '{Proof}',
+    md_action:               '{Action}',
+    md_leave_out:            '{Leave out}',
     md_narrative:            '{Narrative}',
-    md_content_status:       '{Content readiness}',
     md_top_tasks_served:     '{Top tasks served}',
     md_element:              '{Element}',
     md_decision_status:      '{Decision status}',
@@ -3019,7 +3229,6 @@
     md_inventory_section_template_arch:             '{Per-template architecture}',
     md_inventory_summary_total_templates:           '{Templates}',
     md_inventory_summary_unique_sections:           '{Unique sections}',
-    md_inventory_summary_sections_needing_content:  '{Sections needing content}',
     md_inventory_template_arch_corp_pool_shared:    '{Shared sections}',
     md_inventory_template_arch_corp_pool_variants:  '{Pool variants}',
     md_inventory_template_arch_modular_atoms:       '{Atom palette}'
@@ -3096,17 +3305,6 @@
   // synthesized `_kind` marker.
   // ============================================================
 
-  const CONTENT_STATUS_MAP = {
-    'content-ready': { cls: 'ui-badge--content-ready', labelKey: 'pp_content_ready' },
-    'needs-content': { cls: 'ui-badge--needs-content', labelKey: 'pp_needs_content' },
-    'tbd':           { cls: 'ui-badge--tbd-status',    labelKey: 'pp_tbd_status' }
-  };
-  function contentStatusPill(status) {
-    const m = CONTENT_STATUS_MAP[status];
-    if (!m) return '';
-    const label = LABELS[m.labelKey] != null ? LABELS[m.labelKey] : status;
-    return '<span class="ui-badge ' + m.cls + '">' + label + '</span>';
-  }
   function narrativeTag(narrative) {
     if (!narrative) return '';
     // Strip placeholder braces so `{hook}` renders as `hook` in the pill
@@ -3388,7 +3586,7 @@
   }
 
   function rowHtml(row, byId, data) {
-    if (row.type === 'summary')       return summaryHtml(data.summary, data);
+    if (row.type === 'summary')       return summaryHtml(data.summary);
     if (row.type === 'heading')       return '<h2 class="ui-card-row-title">' + (row.title || '') + '</h2>';
     if (row.type === 'tree')          return treeRowHtml(resolveTreeRow(row, data));
     if (row.type === 'sitemap')       return treeRowHtml(resolveTreeRow(Object.assign({ kind: 'sitemap', title: row.title || 'Sitemap' }, row), data));
@@ -3440,9 +3638,13 @@
       : '';
     // bullets[] — free-form placeholder list (each entry is a unified `{...}` string
     // rendered verbatim inside <li>). Used by the Alternatives card for behavior
-    // clusters — agent keeps/drops/renames clusters per project.
+    // clusters — agent keeps/drops/renames clusters per project. On that card each
+    // bullet reads "Cluster: what buyers do", so the cluster name renders in bold.
+    const boldName = /^\x7B?context-id-alternative\x7D?$/.test(item.id || '');
     const bulletsHtml = (item.bullets && item.bullets.length)
-      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul>'
+      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) {
+          return '<li>' + (boldName ? String(b).replace(/^(\x7B?)([^:\x7B\x7D<]+):/, '$1<strong>$2</strong>:') : b) + '</li>';
+        }).join('') + '</ul>'
       : '';
     const metaPillsHtml = (item.meta_pills || []).map(plainChip).join('');
     const confPill = item.confidence
@@ -3504,25 +3706,63 @@
       + '</article>';
   }
 
-  // Six-field section card — Name + narrative tag (inline in h4);
-  // then labeled rows for Goal / Message / Content; readiness pill labeled
-  // in .ui-card__meta. Confidence is NOT rendered on the card —
-  // rationale + confidence live in the left panel.
+  // Section card, layout A (schema §Section card (layout A)) — Name +
+  // narrative tag (inline in h4); labeled Goal and Question rows; then the
+  // content brief as one labeled list (Key message, Must cover as a bulleted
+  // sub-list, then Doubt it removes / Proof / Action / Leave out, each only
+  // when present). An older-shape item (no key_message, no must_cover —
+  // written before 4.7) shows its Content row in place of the brief; its
+  // legacy readiness field is ignored. Confidence is NOT rendered on the
+  // card — rationale + confidence live in the left panel.
   function sectionCardHtml(item) {
     const heading = item.name || item.title || '';
     const narrInline = item.narrative ? ' ' + narrativeTag(item.narrative) : '';
-    const readinessPill = contentStatusPill(item.content_status);
-    const fields = [
-      sectionFieldRow(LABELS.pp_section_card_goal      || 'Goal:',      item.goal),
-      sectionFieldRow(LABELS.pp_section_card_message   || 'Message:',   item.question),
-      sectionFieldRow(LABELS.pp_section_card_readiness || 'Readiness:', readinessPill),
-      sectionFieldRow(LABELS.pp_section_card_content   || 'Content:',   sectionContentValue(item.content_description))
-    ].join('');
+    const mustCover = sectionListEntries(item.must_cover);
+    const rows = [
+      sectionFieldRow(LABELS.pp_section_card_goal     || 'Goal:',     item.goal),
+      sectionFieldRow(LABELS.pp_section_card_question || 'Question:', item.question)
+    ];
+    if (item.key_message || mustCover.length) {
+      const mustCoverList = mustCover.length
+        ? '<ul>' + mustCover.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
+        : '';
+      rows.push(sectionBriefList([
+        sectionBriefPart(LABELS.pp_section_card_key_message || 'Key message:',      item.key_message),
+        sectionBriefPart(LABELS.pp_section_card_must_cover  || 'Must cover:',       mustCoverList),
+        sectionBriefPart(LABELS.pp_section_card_doubt       || 'Doubt it removes:', item.doubt),
+        sectionBriefPart(LABELS.pp_section_card_proof       || 'Proof:',            item.proof),
+        sectionBriefPart(LABELS.pp_section_card_action      || 'Action:',           item.action),
+        sectionBriefPart(LABELS.pp_section_card_leave_out   || 'Leave out:',        item.leave_out)
+      ]));
+    } else {
+      rows.push(sectionFieldRow(LABELS.pp_section_card_content || 'Content:', sectionContentValue(item.content_description)));
+    }
     return ''
       + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
       +   '<h4>' + heading + narrInline + '</h4>'
-      +   fields
+      +   rows.join('')
       + '</article>';
+  }
+
+  // The content brief list. Its top border (CSS) is the divider between the
+  // Goal / Question rows and the brief. Parts that rendered empty drop out.
+  function sectionBriefList(parts) {
+    const html = parts.join('');
+    return html ? '<ul class="pp-section-card__brief">' + html + '</ul>' : '';
+  }
+
+  // One labeled part of the brief. An empty value (missing, null or '')
+  // prints no <li> and no label.
+  function sectionBriefPart(label, value) {
+    if (!value) return '';
+    return '<li><span class="pp-section-card__field-label">' + label + '</span>' + value + '</li>';
+  }
+
+  // List-valued section field → non-empty entries. An array keeps its order;
+  // a lone string is one entry; anything else is none.
+  function sectionListEntries(value) {
+    const items = Array.isArray(value) ? value : (value ? [value] : []);
+    return items.filter(function(c) { return c != null && c !== ''; });
   }
 
   // One labeled row inside a section card. Value can be a string (inline
@@ -3589,8 +3829,8 @@
     // longer render on Design plan, so the field is dead signal on the card.
     // Priority moves to .ui-card__meta at the bottom as a labeled colored
     // pill (red/amber/green via PRIORITY_MAP) with top separator.
-    // Readiness uses the colored pill (matches Section map's labeled-row
-    // treatment) instead of plain text.
+    // No readiness and no key message: an older entry that still carries
+    // either shows without it.
     const L = function(key, fallback) {
       const v = LABELS[key];
       if (v == null) return fallback;
@@ -3601,11 +3841,9 @@
       item.narrative           ? metaSeg(L('pp_inventory_field_narrative',    'Narrative'),    item.narrative)                        : '',
       item.goal                ? metaSeg(L('pp_inventory_field_goal',         'Goal'),         item.goal)                             : '',
       item.question            ? metaSeg(L('pp_inventory_field_question',     'Question'),     item.question)                         : '',
-      item.key_message         ? metaSeg(L('pp_inventory_field_key_message',  'Key message'),  item.key_message)                      : '',
       listSeg(L('pp_inventory_field_used_in', 'Used in'), item.used_in),
       listChipsSeg(L('pp_inventory_field_atoms',    'Atoms'),    item.atoms),
-      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants),
-      item.content_status      ? metaSeg(L('pp_inventory_field_readiness',    'Readiness'),    contentStatusPill(item.content_status)) : ''
+      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants)
     ].join('');
     const priorityMeta = item.priority_tier
       ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_priority + ':</span>' + pill(PRIORITY_MAP, item.priority_tier) + '</div>'
@@ -3679,7 +3917,7 @@
       return it.scope === 'section' && it.page_id === row.page_id;
     });
     // Section cards stack vertically on Section map — one column, section cards
-    // carry multi-line content (Goal + Message + bullets + readiness pill).
+    // carry multi-line content (Goal + Question rows + the content brief).
     const variant = 'one';
     const cardsHtml = sectionItems.map(cardHtml).join('');
     return ''
@@ -3689,23 +3927,17 @@
       + '</section>';
   }
 
-  function summaryHtml(summary, data) {
+  // Two figures. A legacy summary.sections_needing_content (plans written
+  // before 4.7) is ignored — readiness is gone.
+  function summaryHtml(summary) {
     if (!summary) return '';
     function stat(n, labelKey, fallback) {
       return '<div class="pp-summary__stat"><div class="pp-summary__n">' + (n != null ? n : '') + '</div><div class="pp-summary__label">' + (LABELS[labelKey] || fallback) + '</div></div>';
     }
-    // Sections needing content = count of section_index entries whose
-    // content_status is NOT content-ready. Derived (not persisted) because
-    // it's a view over data the agent already wrote.
-    const sections = (data && data.section_index) || [];
-    const needingContent = summary.sections_needing_content != null
-      ? summary.sections_needing_content
-      : sections.filter(function(s) { return s.content_status && s.content_status !== 'content-ready'; }).length;
     return ''
       + '<div class="pp-summary">'
-      +   stat(summary.total_templates,  'pp_inventory_total_templates',          'Unique templates')
-      +   stat(summary.unique_sections,  'pp_inventory_unique_sections',          'Unique sections')
-      +   stat(needingContent,           'pp_inventory_sections_needing_content', 'Sections needing content')
+      +   stat(summary.total_templates,  'pp_inventory_total_templates', 'Unique templates')
+      +   stat(summary.unique_sections,  'pp_inventory_unique_sections', 'Unique sections')
       + '</div>';
   }
 
@@ -4163,7 +4395,7 @@
   }
 
   // ---- Section map detail — rationale + alternatives only. Section card
-  // fields (Goal / Message / Readiness / Content) are already on the canvas
+  // fields (Goal / Question / content brief) are already on the canvas
   // card; repeating them in the panel is redundant. ----
   function renderSectionMapDetail(id) {
     view = 'detail';
@@ -4233,7 +4465,7 @@
   }
 
   // ---- Design plan detail — rationale + alternatives only. Priority /
-  // usage / used-in / atoms / variants / goal / key_message / narrative
+  // usage / used-in / atoms / variants / goal / narrative
   // all live on the canvas card already. Panel surfaces only the "why". ----
   function renderInventoryDetail(id) {
     view = 'detail';
@@ -4451,12 +4683,6 @@
     if (t === 'modular')        return LABELS.template_modular;
     return t || '';
   }
-  function _md_contentStatusLabel(s) {
-    if (s === 'content-ready') return LABELS.pp_content_ready;
-    if (s === 'needs-content') return LABELS.pp_needs_content;
-    if (s === 'tbd')           return LABELS.pp_tbd_status;
-    return s || '';
-  }
   function _md_joinChips(arr) {
     if (!arr || !arr.length) return '';
     return arr.map(_md_stripBraces).join(', ');
@@ -4625,17 +4851,32 @@
       var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
       pageSections.forEach(function(s) {
         // Heading shape per schema's MD export contract:
-        // ### {Title} — {narrative} ({confidence}, {content_status})
+        // ### {Title} — {narrative} ({confidence})
         var heading = '### ' + _md_stripBraces(s.title || s.id || '');
         if (s.narrative) heading += ' — ' + _md_stripBraces(s.narrative);
         var pillBits = [];
         if (s.confidence)     pillBits.push(_md_confidenceLabel(s.confidence));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.goal)                parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)            parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.content_description) parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        // Content brief, in the card's order; Must cover nests its entries
+        // two spaces in. An older-shape item (no key_message, no must_cover)
+        // keeps its content line in place of the brief.
+        var mustCover = sectionListEntries(s.must_cover);
+        if (s.key_message || mustCover.length) {
+          if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
+          if (mustCover.length) {
+            parts.push('- **' + LABELS.md_must_cover + ':**');
+            mustCover.forEach(function(c) { parts.push('  - ' + _md_stripBraces(c)); });
+          }
+          if (s.doubt)     parts.push('- **' + LABELS.md_doubt + ':** ' + _md_stripBraces(s.doubt));
+          if (s.proof)     parts.push('- **' + LABELS.md_proof + ':** ' + _md_stripBraces(s.proof));
+          if (s.action)    parts.push('- **' + LABELS.md_action + ':** ' + _md_stripBraces(s.action));
+          if (s.leave_out) parts.push('- **' + LABELS.md_leave_out + ':** ' + _md_stripBraces(s.leave_out));
+        } else if (s.content_description) {
+          parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        }
         if (s.rationale)           parts.push('- **' + LABELS.md_rationale + ':** ' + _md_stripBraces(s.rationale));
         if (s.alternatives)        parts.push('- **' + LABELS.md_alternatives + ':** ' + _md_stripBraces(s.alternatives));
         parts.push('');
@@ -4649,13 +4890,9 @@
     data = data || INVENTORY;
     var parts = ['# ' + LABELS.md_pp_inventory_title, ''];
     var summary = data.summary || {};
-    var sectionsNeeding = (typeof summary.sections_needing_content === 'number')
-      ? summary.sections_needing_content
-      : (data.section_index || []).filter(function(s) { return s.content_status !== 'content-ready'; }).length;
     parts.push('## ' + LABELS.md_inventory_section_summary, '');
     parts.push('- **' + LABELS.md_inventory_summary_total_templates + ':** ' + (summary.total_templates || 0));
     parts.push('- **' + LABELS.md_inventory_summary_unique_sections + ':** ' + (summary.unique_sections || 0));
-    parts.push('- **' + LABELS.md_inventory_summary_sections_needing_content + ':** ' + sectionsNeeding);
     parts.push('', '---', '');
     var templateMap = data.template_map || [];
     if (templateMap.length) {
@@ -4682,7 +4919,6 @@
         var pillBits = [];
         if (s.priority_tier)  pillBits.push(_md_priorityLabel(s.priority_tier));
         if (s.template_type)  pillBits.push(_md_templateTypeLabel(s.template_type));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.narrative)   parts.push('- **' + LABELS.md_narrative + ':** ' + _md_stripBraces(s.narrative));
@@ -4691,7 +4927,6 @@
         }
         if (s.goal)        parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)    parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
         if (s.atoms && s.atoms.length) {
           parts.push('- **' + LABELS.md_atoms + ':** ' + _md_joinChips(s.atoms));
         }
