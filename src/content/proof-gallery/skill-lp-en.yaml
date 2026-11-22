@@ -15,7 +15,7 @@ cards:
       label: Open the messaging canvas
       href: /examples/uxd-product-website-v3_messaging_canvas_en.html
   - title: Wireframes
-    description: Section sketches with real copy, plus before-and-after wireframes for an audited site.
+    description: This page, sketched section by section, with the same copy you're reading now.
     shape: bars
     link:
       label: Open the wireframes

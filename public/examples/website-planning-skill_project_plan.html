@@ -101,11 +101,6 @@
     .ui-badge--red    { background: #f8d7da; color: #721c24; }
     .ui-badge--gray   { background: #e9ecef; color: #495057; }
 
-    /* Content-readiness pill variants — compose with .ui-badge. */
-    .ui-badge--content-ready  { background: #d4edda; color: #155724; }
-    .ui-badge--needs-content  { background: #fff3cd; color: #856404; }
-    .ui-badge--tbd-status     { background: #e9ecef; color: #495057; }
-
     /* ---- Content-label modifiers on .ui-badge ----
        `--plain` neutralizes the status-pill styling (uppercase / bold / 9px) so
        the base class can carry mixed-case prose labels like "Trial signup".
@@ -137,7 +132,7 @@
       display: grid;
       gap: var(--wf-gap);
     }
-    .ui-card-row--three { grid-template-columns: 1fr 1fr 1fr; }
+    .ui-card-row--three { grid-template-columns: 1fr 1fr; }
     .ui-card-row--two   { grid-template-columns: 1fr 1fr; }
     .ui-card-row--one   { grid-template-columns: 1fr; }
     .ui-card-row-title {
@@ -725,8 +720,8 @@
     /* ============================================================ */
     /* === PROJECT-PLAN-SPECIFIC — class prefix .pp-*            === */
     /* === Sub-page containers, canvas rows (selective port from === */
-    /* === messaging-canvas-template.html), content-readiness    === */
-    /* === pills. Composes with UNIVERSAL shell chrome above.    === */
+    /* === messaging-canvas-template.html), section cards.       === */
+    /* === Composes with UNIVERSAL shell chrome above.           === */
     /* ============================================================ */
 
     /* Sub-page containers — one active at a time via page switcher.
@@ -1005,7 +1000,7 @@
     }
 
     /* Section card supplemental primitives. Base class is .ui-card;
-       these children hold the narrative tag + question line + readiness pill. */
+       these children hold the narrative tag + question line. */
     .pp-cell-tags {
       display: flex;
       flex-wrap: wrap;
@@ -1029,8 +1024,9 @@
       font-size: 0.8125rem;
       margin: 0;
     }
-    /* Section card — labeled field row. One pattern reused for Goal /
-       Message / Content rows. Content bullets render inside
+    /* Section card — labeled field row. One pattern reused for the Goal /
+       Question rows, and for the Content row of older-shape items (plans
+       written before 4.7). Content bullets render inside
        .pp-section-card__field (label on first line, <ul> below). */
     .pp-section-card__field {
       font-size: 0.8125rem;
@@ -1049,6 +1045,25 @@
     }
     .pp-section-card__field ul li,
     .pp-section-card__content-list li { padding: 2px 0; }
+    /* Section card — content brief (layout A). One labeled list after the
+       Question row; its top border is the thin divider between the rows
+       and the brief. Each <li> opens with a .pp-section-card__field-label;
+       Must cover nests a bulleted <ul> under its label. Reads at the same
+       size and color as the field rows above. */
+    .ui-card > .pp-section-card__brief {
+      margin: 0;
+      padding: 8px 0 0;
+      border-top: 1px solid var(--wf-line);
+      list-style: none;
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+    }
+    .ui-card .pp-section-card__brief ul {
+      margin: 2px 0 0;
+      padding-left: 18px;
+      list-style: disc;
+      color: inherit;
+    }
     /* Section map — per-page button list. Sits below the page header; one
        button per page (Home / Product / Global...). Active button shows
        which page-map is visible below. Shares the 600px centered column
@@ -1105,10 +1120,10 @@
 
     /* ---- Design plan sub-page primitives (formerly "Inventory") ---- */
 
-    /* Summary stat block — three big numbers, their labels underneath. */
+    /* Summary stat block — two big numbers, their labels underneath. */
     .pp-summary {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin: 12px 0 24px;
       padding: 20px 24px;
@@ -1269,8 +1284,6 @@
 
     /* === Responsive — page-width steps (container set on .pp-main) === */
     @container pp-main (width <= 900px) {
-      .ui-card-row--three { grid-template-columns: 1fr 1fr; }
-      .pp-summary { grid-template-columns: 1fr 1fr; }
       .pp-header h1 { font-size: 1.75rem; }
     }
     @container pp-main (width < 600px) {
@@ -1488,13 +1501,8 @@
     "pp_strategy_messaging_voice": "Messaging i głos",
     "pp_strategy_messaging": "Hierarchia komunikatów",
     "pp_strategy_voice": "Brief głosu",
-    "pp_content_ready": "Gotowa treść",
-    "pp_needs_content": "Brakuje treści",
-    "pp_tbd_status": "Do uzupełnienia",
     "pp_section_card_goal": "Cel:",
-    "pp_section_card_message": "Komunikat:",
     "pp_section_card_content": "Treść:",
-    "pp_section_card_readiness": "Gotowość:",
     "detail_rationale": "Uzasadnienie",
     "detail_alternatives": "Rozważone alternatywy",
     "detail_element": "Element",
@@ -1504,22 +1512,18 @@
     "detail_goal": "Cel",
     "detail_question": "Pytanie",
     "detail_content": "Opis treści",
-    "detail_content_status": "Gotowość treści",
     "group_scope_page": "Poziom strony",
     "group_scope_section": "Sekcje",
     "group_scope_ia": "Decyzje IA",
     "page_global_label": "Globalne",
     "pp_inventory_total_templates": "Unikalne szablony",
     "pp_inventory_unique_sections": "Unikalne sekcje",
-    "pp_inventory_sections_needing_content": "Sekcje wymagające treści",
     "pp_inventory_field_narrative": "Funkcja narracyjna",
     "pp_inventory_field_goal": "Cel",
     "pp_inventory_field_question": "Pytanie",
-    "pp_inventory_field_key_message": "Kluczowy komunikat",
     "pp_inventory_field_used_in": "Używane w",
     "pp_inventory_field_atoms": "Atomy",
     "pp_inventory_field_variants": "Warianty",
-    "pp_inventory_field_readiness": "Gotowość",
     "pp_inventory_field_usage": "Zastosowanie",
     "pp_inventory_template_map": "Unikalne szablony",
     "pp_inventory_usage_single": "Jedna strona",
@@ -1533,7 +1537,6 @@
     "group_kind_section": "Sekcje",
     "group_kind_template": "Szablony",
     "detail_used_in": "Używane w",
-    "detail_key_message": "Kluczowy komunikat",
     "detail_atoms": "Atomy",
     "detail_variants": "Warianty",
     "detail_pages_using": "Strony używające",
@@ -1575,9 +1578,8 @@
     "md_goal": "Cel",
     "md_question": "Pytanie",
     "md_content_description": "Treść",
-    "md_key_message": "Kluczowy komunikat",
+    "md_key_message": "Główny przekaz",
     "md_narrative": "Funkcja narracyjna",
-    "md_content_status": "Gotowość treści",
     "md_top_tasks_served": "Realizowane zadania",
     "md_element": "Element",
     "md_decision_status": "Status decyzji",
@@ -1593,10 +1595,21 @@
     "md_inventory_section_template_arch": "Architektura per szablon",
     "md_inventory_summary_total_templates": "Szablony",
     "md_inventory_summary_unique_sections": "Unikalne sekcje",
-    "md_inventory_summary_sections_needing_content": "Sekcje wymagające treści",
     "md_inventory_template_arch_corp_pool_shared": "Wspólne sekcje",
     "md_inventory_template_arch_corp_pool_variants": "Warianty z puli",
-    "md_inventory_template_arch_modular_atoms": "Paleta atomów"
+    "md_inventory_template_arch_modular_atoms": "Paleta atomów",
+    "pp_section_card_question": "Pytanie:",
+    "pp_section_card_key_message": "Główny przekaz:",
+    "pp_section_card_must_cover": "Musi się znaleźć:",
+    "pp_section_card_doubt": "Obawa do rozwiania:",
+    "pp_section_card_proof": "Dowód:",
+    "pp_section_card_action": "Działanie:",
+    "pp_section_card_leave_out": "Pominąć:",
+    "md_must_cover": "Musi się znaleźć",
+    "md_doubt": "Obawa do rozwiania",
+    "md_proof": "Dowód",
+    "md_action": "Działanie",
+    "md_leave_out": "Pominąć"
   },
   "project_language": "pl",
   "messaging_routing": "deferred",
@@ -1637,15 +1650,19 @@
       "kv": [
         {
           "label": "Nazwa",
-          "value": "Website Planning Skill: podstrona darmowej wersji"
+          "value": "Website Planning Skill: strona darmowej wersji"
+        },
+        {
+          "label": "Adres",
+          "value": "agents.creativesparks.pl/free-website-planning-skill/, a w wersji angielskiej /en/free-website-planning-skill/ z tym samym układem."
         },
         {
           "label": "Opis",
-          "value": "Podstrona, z której można pobrać darmowy Website Planning Skill: dwa etapy pełnego UX Design Skill, czyli rozmowę o projekcie i plan strony z mapą sekcji poszczególnych podstron. Ta sama jakość co w pełnej paczce."
+          "value": "Strona, z której odbiera się darmowy Website Planning Skill: dwa pierwsze etapy pełnego UX Design Skill, czyli rozmowę o projekcie i plan strony z mapą stron i sekcjami każdej podstrony. Oba etapy działają tak samo jak w pełnej wersji."
         },
         {
           "label": "Model biznesowy",
-          "value": "Pobranie za 0 zł przez koszyk, mail z linkiem, pobranie od razu. Darmowa wersja prowadzi do zakupu pełnej paczki UX Design Skill (licencja jednorazowa w trzech pakietach). Pobierający dostają newslettery promocyjne i lepszą ofertę w nadchodzącej przedsprzedaży."
+          "value": "Skill za 0 zł, bez opłat później. Odwiedzający zostawia adres email w formularzu na stronie i w ciągu minuty dostaje mailem osobisty link do instalacji. Zapisani dostają też wiadomości o produktach i usługach Creative Sparks. Darmowa wersja prowadzi do płatnego UX Design Skill (licencja jednorazowa w trzech pakietach: Founder, Solo Designer, Studio)."
         }
       ]
     },
@@ -1658,14 +1675,19 @@
       "kv": [
         {
           "label": "Główny cel",
-          "value": "Pobrania darmowego skilla i przejście pobierających do zakupu pełnej paczki. Podstrona to jedna z dwóch darmowych ścieżek w teście, obok darmowego audytu. Zostanie ta, która lepiej konwertuje."
+          "value": "Zapisy po darmowy skill. Skill przychodzi mailem jako osobisty link do instalacji."
+        },
+        {
+          "label": "Drugie zadanie",
+          "value": "Prowadzić do płatnego UX Design Skill: przez blok „co dalej”, który skill pokazuje po gotowym planie, i przez link strony do pełnej wersji."
         },
         {
           "label": "Miara sukcesu",
-          "value": "Do ustalenia przy teście dwóch darmowych ścieżek."
+          "value": "Zapisy na wyświetlenie strony: liczba zapisów podzielona przez wyświetlenia tej strony, osobno dla wersji polskiej i angielskiej. Obok niej liczba zapisów i odsetek wyświetleń, w których ktoś otworzył przykładowy plan albo wideo."
         }
       ],
-      "rationale": "Właściciel testuje dwie równoległe darmowe ścieżki i nie przesądza, która zostanie. Miara porównania nie wpływa na układ podstrony, więc zostaje do ustalenia."
+      "rationale": "Cel, drugie zadanie i miarę potwierdził właściciel. Miara to główna liczba każdej darmowej strony w definicjach analityki witryny; formularz w hero i formularz na końcu strony liczą się osobno, więc widać, który zbiera zapisy. Drugie zadanie nie konkuruje z zapisem: strona nie ma cen ani przycisku zakupu, tylko linki do pełnej wersji.",
+      "alternatives": "Sama liczba zapisów jako główna miara: odrzucone, rośnie razem z ruchem z reklam i nie mówi, czy strona działa lepiej. Zakupy pełnej wersji jako miara tej strony: odrzucone, to główna liczba strony płatnej, a zakupów jest za mało, by liczyć z nich odsetek."
     },
     {
       "id": "context-id-audience",
@@ -1678,28 +1700,28 @@
       ],
       "kv": [
         {
-          "label": "Główna persona — Designer",
+          "label": "Odbiorca",
+          "value": "Każdy, kto planuje nową stronę albo przebudowę istniejącej. Wiedza o UX pomaga, ale nie jest wymagana."
+        },
+        {
+          "label": "W praktyce: designer",
           "value": "Freelance albo małe studio (2–8 osób), 3–15 lat doświadczenia, projektuje strony klientom i każda decyzja strukturalna idzie pod recenzję klienta lub kolegi. Główny trigger: klient wraca z danymi konwersji po wdrożeniu i pyta „dlaczego strona nie konwertuje\". Decyzję zakupową podejmuje samodzielnie albo z lekkim wsparciem właściciela studia."
         },
         {
-          "label": "Drugi odbiorca — Twórca cyfrowy",
+          "label": "W praktyce: twórca cyfrowy",
           "value": "Vibe coder, indie hacker, autor kursu, założyciel budujący własną stronę z AI. Buduje sam w generatorach (Bolt, v0, Lovable) — strona wygląda jak każda inna sklejka z domyślnymi sekcjami. Główny trigger: produkt nie sprzedaje, a brakuje narzędzi diagnostycznych, żeby wskazać co konkretnie zmienić. Decyduje sam, krótka ścieżka."
         },
         {
-          "label": "Trzeci odbiorca — Założyciel z konwersją",
+          "label": "W praktyce: założyciel z konwersją",
           "value": "Właściciel e-commerce albo SaaS-u prowadzący płatny ruch na stronę, która nie konwertuje. Stronę traktuje jak kanał reklamowy, który ma się zwrócić w ROAS. Główny trigger: dane kampanii pokazują niski wskaźnik konwersji albo inwestor warunkuje kolejną rundę jakością strony. Decyzja często wymaga wewnętrznego wytłumaczenia (wspólnik, dyrektor techniczny)."
         },
         {
           "label": "Anty-persona",
           "value": "Enterprise z zespołem 20+, własnym researchem UX, budżetem na konsultantów z nazwiska — wymaga sprzedaży bezpośredniej, umów, customizacji. Sprzedaż self-serve do takiego odbiorcy nie zamknie się."
-        },
-        {
-          "label": "Dla kogo jest darmowa wersja",
-          "value": "Dla osób ze stroną i bez strony. Wiedza o tym, jak się robi strony, pomaga, ale nie jest wymagana."
         }
       ],
-      "rationale": "Priorytet odbiorców (Designer → Twórca cyfrowy → Założyciel) zatwierdzony przez właściciela projektu. Designer ma najczystszy i najbardziej powtarzalny trigger zakupowy w wywiadach symulowanych, najwyższą gotowość zapłacenia (etap planowania może sfakturować klientowi) i najkrótszą ścieżkę decyzji. Twórca cyfrowy i Założyciel kandydują na wiodące persony przy launchu wersji angielskiej.",
-      "alternatives": "Założyciel z konwersją jako persona główna (silniejszy trigger mierzalny w pieniądzach, ale dłuższa ścieżka decyzji z wewnętrznymi blokerami — segment globalnie większy niż polski rynek designerski, dlatego rezerwujemy pod wersję angielską); Twórca cyfrowy jako persona główna (większość ruchu w tej grupie to wersja angielska, polski segment vibe coderów wąski)."
+      "rationale": "Odbiorcę potwierdził właściciel: każdy, kto planuje nową stronę albo przebudowę. Tak samo mówi strona: pierwszy punkt w hero („Sprawdzi się przy nowej stronie i przy przebudowie istniejącej”) i pierwsze pytanie w FAQ (nie trzeba znać UX, doświadczenie pomaga). Trzy persony pochodzą z planu pełnej wersji i opisują, kim ci ludzie są w praktyce; strona nie mówi do żadnej z nich osobno.",
+      "alternatives": "Kolejność person z pełnej wersji, z designerem na czele: odrzucone dla tej strony, bo darmowa wersja ma zbierać zapisy od każdego, kto planuje stronę, a pełna wersja ma pakiety i dla właścicieli firm (Founder), i dla designerów (Solo Designer, Studio)."
     },
     {
       "id": "context-id-alternative",
@@ -1736,15 +1758,15 @@
       "layout": "ranked-list",
       "ranked": [
         {
-          "text": "Sprawdzić, co robi darmowy skill i jaki plik dostanę",
+          "text": "Sprawdzić, co robi darmowy skill i co dostanę na końcu",
           "priority": "Rekomendowane"
         },
         {
-          "text": "Zobaczyć przykładowy plan strony",
+          "text": "Zobaczyć przykładowy plan: brief, mapę strony i wytyczne zawartości",
           "priority": "Rekomendowane"
         },
         {
-          "text": "Sprawdzić, czy to dla mnie, bez względu na to, czy mam stronę i czy znam się na UX",
+          "text": "Sprawdzić, czy to dla mnie: przy nowej stronie, przy przebudowie i bez znajomości UX",
           "priority": "Rekomendowane"
         },
         {
@@ -1752,19 +1774,23 @@
           "priority": "Rekomendowane"
         },
         {
-          "text": "Zobaczyć, jak wygląda instalacja",
+          "text": "Zobaczyć, jak wygląda instalacja i praca ze skillem",
           "priority": "Rekomendowane"
         },
         {
-          "text": "Pobrać skill za 0 zł",
+          "text": "Odebrać skill za 0 zł i wiedzieć, co przyjdzie mailem",
           "priority": "Rekomendowane"
         },
         {
-          "text": "Dowiedzieć się, czego darmowa wersja nie robi i co daje pełna paczka",
+          "text": "Dowiedzieć się, czego darmowa wersja nie robi i co daje pełna",
           "priority": "Rekomendowane"
         },
         {
-          "text": "Przejść do pełnej paczki UX Design Skill",
+          "text": "Przeczytać, co mówią kupujący pełną wersję",
+          "priority": "Do rozważenia"
+        },
+        {
+          "text": "Przejść do pełnej wersji UX Design Skill",
           "priority": "Do rozważenia"
         },
         {
@@ -1781,15 +1807,18 @@
       "layout": "scope-split",
       "scope_split": {
         "included": [
-          "Podstrona darmowej wersji Website Planning Skill (siedem sekcji)",
-          "Pobranie za 0 zł przez koszyk i mail z linkiem",
-          "Przykładowe pliki: opis projektu, plan strony i mapa sekcji tego projektu",
-          "Przejście do pełnej paczki UX Design Skill"
+          "Strona darmowej wersji Website Planning Skill (osiem sekcji), po polsku i po angielsku",
+          "Zapis przez formularz z adresem email, w hero i na końcu strony",
+          "Osobisty link do instalacji wysyłany mailem",
+          "Przykładowy plan tej strony: brief, mapa strony i wytyczne zawartości",
+          "Opinie kupujących pełną wersję UX Design Skill",
+          "Linki do pełnej wersji UX Design Skill",
+          "Historia zmian darmowego skilla na osobnej podstronie"
         ],
         "excluded": [
-          "Przejście do darmowego audytu (dwie ścieżki w teście)",
+          "Przejście do darmowego audytu strony głównej",
+          "Ceny i przycisk zakupu pełnej wersji",
           "Osobna sekcja o tym, dla kogo jest skill",
-          "Opinie użytkowników (brak cytatów o darmowej wersji)",
           "Projektowanie wizualne (kolory, typografia, pixel layout)",
           "Implementacja front-endu strony"
         ]
@@ -1808,17 +1837,18 @@
         },
         {
           "label": "Słowa preferowane",
-          "value": "„to narzędzie\", „pliki\", „plan strony\", „mapa strony\", „uzasadnienia obok decyzji\", „etap pracy\", „przystanek\", „odbiorcy\""
+          "value": "„skill”, „plan strony”, „brief”, „mapa strony”, „wytyczne zawartości”, „uzasadnienie i odrzucone warianty”, „poziom pewności”, „pełna wersja”, „odbierz za darmo”"
         },
         {
           "label": "Słowa zakazane",
-          "value": "„agent\" (1/16 akceptacji w wywiadach), „AI-powered\", „cutting-edge\", „innovative\", „dynamicznie\", „kompleksowe\", em-dashy, rhetorical triads, ramki „to nie X, to Y\", forced enthusiasm"
+          "value": "„agent\" jako nazwa produktu (1/16 akceptacji w wywiadach), „AI-powered\", „cutting-edge\", „innovative\", „dynamicznie\", „kompleksowe\", em-dashy, rhetorical triads, ramki „to nie X, to Y\", forced enthusiasm"
         },
         {
           "label": "Ton w różnych kontekstach",
-          "value": "Hero i sekcje sprzedażowe: bezpośredni, pewny siebie. Warstwa ucząca: analityczny, cierpliwy. Dowód z procesu: fakt bez autopromocji. FAQ: współpracujący, empatyczny. Pakiety i cennik: transakcyjny, konkretny. Instalacja: instrukcyjny, krok po kroku."
+          "value": "Hero i formularze: bezpośredni, pewny siebie. Dowód i opinie: fakt bez autopromocji. Sekcja „Pod maską”: analityczny, cierpliwy. Granice: uczciwy, krótki. FAQ: współpracujący, empatyczny. Instalacja: instrukcyjny, krok po kroku."
         }
-      ]
+      ],
+      "rationale": "Atrybuty i zakazy przeniesione z planu pełnej wersji. Słowa preferowane i ton dopasowane do tego, czego używa żywa strona: „skill”, „brief”, „mapa strony z wytycznymi zawartości”, „odbierz za darmo”. Jedna rozbieżność z zakazami: nagłówek sekcji „Pod maską” używa ramki „to nie X, tylko Y” („To nie jest jeden prompt, tylko fragment systemu UX Design Skill”), żeby odpowiedzieć wprost na obawę, że skill to kolejny prompt."
     },
     {
       "id": "context-id-free-planning-skill",
@@ -1829,7 +1859,7 @@
       "kv": [
         {
           "label": "Co to jest",
-          "value": "Darmowa wersja tego samego narzędzia z dwoma etapami pełnej paczki UX Design Skill: rozmową o projekcie i planem strony, czyli mapą strony z zawartością poszczególnych podstron. Ta sama jakość i ten sam plik z planem projektu na wyjściu."
+          "value": "Darmowa wersja z dwoma pierwszymi etapami pełnego UX Design Skill: rozmową o projekcie i planem strony, czyli mapą stron, menu, stopką i sekcjami każdej podstrony z wytycznymi zawartości. Oba etapy działają tak samo jak w pełnej wersji. Wynik zapisuje w jednym pliku HTML, który otwierasz w przeglądarce."
         },
         {
           "label": "Nazwa",
@@ -1837,30 +1867,38 @@
         },
         {
           "label": "Dla kogo",
-          "value": "Ci sami odbiorcy co pełna paczka. Dla osób ze stroną i bez strony. Wiedza o tym, jak się robi strony, pomaga, ale nie jest wymagana."
+          "value": "Dla każdego, kto planuje nową stronę albo przebudowę istniejącej. Wiedza o UX pomaga, ale nie jest wymagana."
+        },
+        {
+          "label": "Gdzie działa",
+          "value": "Claude Code, Codex i Cursor, w ramach planu, który użytkownik ma w tym narzędziu."
         },
         {
           "label": "Skąd ruch",
           "value": "Reklamy i newsletter, później wyszukiwarka."
         },
         {
-          "label": "Pobranie",
-          "value": "0 zł przez koszyk, mail z linkiem, pobranie od razu."
+          "label": "Odbiór",
+          "value": "Adres email w formularzu na stronie. W ciągu minuty mail z osobistym linkiem do instalacji. Jeden adres odbiera skill raz."
         },
         {
           "label": "Instalacja",
-          "value": "Wystarczy wskazać plik INSTALL.md narzędziu AI do kodu (np. Claude Code), które samo instaluje skilla."
+          "value": "Instrukcję z maila wklejasz do Claude Code, Codex albo Cursora, a narzędzie samo instaluje skill."
         },
         {
-          "label": "Droga do pełnej paczki",
-          "value": "Na podstronie: sekcja o tym, że darmowa wersja jest częścią płatnego produktu. Po pobraniu: newslettery promocyjne i lepsza oferta dla pobierających w nadchodzącej przedsprzedaży."
+          "label": "Aktualizacje",
+          "value": "Skill działa bez ograniczeń czasowych. Przez pierwsze 60 dni sam instaluje nowe wersje, potem działa dalej w wersji, którą masz."
+        },
+        {
+          "label": "Droga do pełnej wersji",
+          "value": "W skillu: po gotowym planie skill raz pokazuje blok „co dalej”: co zaplanował (strony i sekcje), czego darmowa wersja nie robi, że pełna wersja czyta zapisany plan i pracuje dalej w tym samym folderze projektu, i link do strony UX Design Skill. Na stronie: karta pełnej wersji z przyciskiem w sekcji „Pod maską”, link w pytaniu o różnice i pozycja „UX Design Skill” w pasku u góry."
         },
         {
           "label": "Stan",
-          "value": "Skill działa."
+          "value": "Skill działa, strona jest na żywo po polsku i po angielsku."
         }
       ],
-      "rationale": "Darmowe planowanie i darmowy audyt to dwie równoległe darmowe ścieżki w teście. Właściciel nie przesądza, która zostanie, więc obie podstrony są samodzielne i nie odsyłają do siebie nawzajem."
+      "rationale": "Darmowa wersja to dwa pierwsze etapy pełnego produktu, więc strona może pokazać prawdziwy wynik (ten plan) i uczciwie powiedzieć, gdzie się kończy. Blok „co dalej” pojawia się po gotowym planie, kiedy użytkownik ma już wynik w ręku; link na stronie daje drogę tym, którzy chcą porównać wersje przed zapisem."
     },
     {
       "id": "context-id-conversion-path",
@@ -1871,17 +1909,22 @@
       "kv": [
         {
           "label": "Główna akcja",
-          "value": "Pobranie darmowego skilla za 0 zł przez koszyk"
+          "value": "Zapis po darmowy skill: adres email w formularzu w hero albo na końcu strony"
+        },
+        {
+          "label": "Po zapisie",
+          "value": "Mail z osobistym linkiem do instalacji, w ciągu minuty"
         },
         {
           "label": "Druga akcja",
-          "value": "Przejście do pełnej paczki UX Design Skill, bez konkurowania z pobraniem"
+          "value": "Przejście do pełnej wersji UX Design Skill, bez konkurowania z zapisem: linki, bez cen i bez przycisku zakupu"
         },
         {
           "label": "Bez przejścia do audytu",
-          "value": "Podstrona nie odsyła do darmowego audytu, bo to druga ścieżka w teście"
+          "value": "Strona nie odsyła do darmowego audytu strony głównej"
         }
-      ]
+      ],
+      "rationale": "Każda darmowa strona ma własną główną liczbę, zapisy na wyświetlenie, i jest czytana osobno. Link między dwiema darmowymi stronami mieszałby oba wyniki, więc ta strona prowadzi tylko do zapisu i do pełnej wersji."
     }
   ]
 }
@@ -1898,79 +1941,124 @@
     "confidence": "high"
   },
   "main_menu_meta": {
-    "rationale": "Pasek u góry ograniczony do logo i linku do pełnej paczki, jak na stronie audytu: jedna akcja na stronie, bez wyjść do reszty witryny.",
-    "alternatives": "Pełne menu witryny: odrzucone, daje więcej wyjść i rozmywa test dwóch darmowych ścieżek."
+    "rationale": "Pasek u góry ma logo i trzy linki: do pełnej wersji, do opinii na tej stronie i do instrukcji pracy ze skillem. Nie ma przycisku i nie przykleja się przy przewijaniu, więc jedyną akcją na stronie zostaje zapis w formularzu. Link do pełnej wersji to druga droga strony, a opinie i instrukcja odpowiadają na pytania przed zapisem: czy to działa u innych i jak się z tym pracuje. Na telefonie linki są ukryte i zostaje samo logo. Taki sam pasek ma strona darmowego audytu.",
+    "alternatives": "Samo logo i link do pełnej paczki, jak w pierwszej wersji planu: zmienione na żywej stronie, która dodała opinie i instrukcję. Pełne menu witryny (Cennik, Darmowe skille, Baza wiedzy) z przyciskiem „Sprawdź ceny”: odrzucone, daje więcej wyjść i przycisk, który konkuruje z formularzem. Koszt wybranej opcji: „Jak pracować” prowadzi do instrukcji pełnej wersji, czyli poza tę stronę."
   },
   "main_menu": [
     {
       "id": "menu-logo",
-      "name": "Logo",
+      "name": "Logo (→ strona UX Design Skill)",
       "children": []
     },
     {
-      "id": "menu-full-package",
-      "name": "Pełna paczka UX Design Skill (link)",
+      "id": "menu-full-version",
+      "name": "UX Design Skill",
+      "children": []
+    },
+    {
+      "id": "menu-reviews",
+      "name": "Opinie (→ opinie na tej stronie)",
+      "children": []
+    },
+    {
+      "id": "menu-how-to-work",
+      "name": "Jak pracować (→ instrukcja UX Design Skill)",
       "children": []
     }
   ],
   "sitemap_meta": {
-    "rationale": "Jedna samodzielna strona docelowa poza menu głównym witryny. Ruch przychodzi z reklam i newslettera, później z wyszukiwarki.",
-    "alternatives": "Podstrona w menu witryny albo sekcja na stronie głównej: odrzucone, więcej wyjść i rozmyty test."
+    "rationale": "Mapa pokazuje witrynę agents.creativesparks.pl tak, jak działa dziś, w wersji polskiej; angielska ma te same strony pod /en/. Adres główny witryny przekierowuje na stronę UX Design Skill, więc to ona jest korzeniem. Dwie darmowe strony stoją obok niej jako samodzielne strony docelowe poza menu witryny: ruch przychodzi na nie z reklam i newslettera, później z wyszukiwarki. Każda darmowa strona ma własną historię zmian.",
+    "alternatives": "Darmowe strony jako pozycje menu witryny: odrzucone, więcej wyjść i rozmyta główna liczba każdej strony. Darmowe skille tylko jako sekcja strony UX Design Skill: odrzucone, reklama musi lądować na stronie o jednym temacie; ta sekcja („wypróbuj za darmo”) istnieje, ale tylko odsyła do obu darmowych stron. Koszt wybranej opcji: jedna krótka strona ma mało treści dla wyszukiwarki, do rewizji, gdy wyszukiwarka zacznie się liczyć."
   },
   "sitemap": [
     {
-      "id": "page-website-planning-skill",
-      "name": "Website Planning Skill",
-      "children": []
-    }
-  ],
-  "footer_meta": {
-    "rationale": "Stopka jak na stronie audytu: link do pełnej paczki i do przewodnika instalacji, kontakt, dokumenty prawne. Bez linku do darmowego audytu.",
-    "alternatives": "Pełna stopka witryny: odrzucone z tego samego powodu co pełne menu."
-  },
-  "footer": [
-    {
-      "id": "footer-produkt",
-      "name": "Produkt",
+      "id": "page-ux-design-skill",
+      "name": "UX Design Skill (pełna wersja, adres główny witryny)",
       "children": [
         {
-          "id": "footer-full-package",
-          "name": "Pełna paczka UX Design Skill",
+          "id": "page-jak-pracowac",
+          "name": "Jak pracować",
           "children": []
         },
         {
-          "id": "footer-jak-pracowac",
-          "name": "Jak pracować",
+          "id": "page-baza-wiedzy",
+          "name": "Baza wiedzy",
           "children": []
-        }
-      ]
-    },
-    {
-      "id": "footer-kontakt",
-      "name": "Kontakt",
-      "children": [
+        },
         {
-          "id": "footer-email",
-          "name": "[adres e-mail]",
+          "id": "page-uxd-changelog",
+          "name": "Changelog",
           "children": []
-        }
-      ]
-    },
-    {
-      "id": "footer-legal",
-      "name": "Legal",
-      "children": [
+        },
         {
-          "id": "footer-privacy",
+          "id": "page-polityka-prywatnosci",
           "name": "Polityka prywatności",
           "children": []
         },
         {
-          "id": "footer-terms",
-          "name": "Regulamin",
+          "id": "page-regulamin",
+          "name": "Regulamin sprzedaży",
           "children": []
         }
       ]
+    },
+    {
+      "id": "page-free-homepage-ux-audit-skill",
+      "name": "Darmowy skill do audytu UX strony głównej",
+      "children": [
+        {
+          "id": "page-audit-changelog",
+          "name": "Historia zmian",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "page-website-planning-skill",
+      "name": "Website Planning Skill (ta strona)",
+      "children": [
+        {
+          "id": "page-wps-changelog",
+          "name": "Historia zmian",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "footer_meta": {
+    "rationale": "Stopka jest wspólna dla całej witryny: logo, dokumenty prawne, ustawienia cookies, historia zmian i kontakt mailowy, w jednym rzędzie linków. Na tej stronie „Changelog” prowadzi do historii zmian darmowego skilla, a nie pełnej wersji. Strona docelowa nie potrzebuje w stopce drugiej nawigacji: pełna wersja ma linki w pasku u góry, w sekcji „Pod maską” i w pytaniach. Taką samą stopkę ma strona darmowego audytu.",
+    "alternatives": "Stopka z kolumnami (Produkt, Kontakt, Legal) i linkiem do pełnej paczki, jak w pierwszej wersji planu: zmienione na żywej stronie, zostały same linki, bez kolumn. Pełna stopka z wszystkimi stronami witryny: odrzucone z tego samego powodu co pełne menu."
+  },
+  "footer": [
+    {
+      "id": "footer-logo",
+      "name": "Logo (→ strona UX Design Skill)",
+      "children": []
+    },
+    {
+      "id": "footer-privacy",
+      "name": "Polityka prywatności",
+      "children": []
+    },
+    {
+      "id": "footer-cookies",
+      "name": "Ustawienia cookies",
+      "children": []
+    },
+    {
+      "id": "footer-terms",
+      "name": "Regulamin sprzedaży",
+      "children": []
+    },
+    {
+      "id": "footer-changelog",
+      "name": "Changelog (→ historia zmian darmowego skilla)",
+      "children": []
+    },
+    {
+      "id": "footer-contact",
+      "name": "Kontakt (mail)",
+      "children": []
     }
   ],
   "labels": {},
@@ -1981,9 +2069,9 @@
     "confidence": "high"
   },
   "differentiator": {
-    "value": "Plik z planem strony, w którym przy każdej decyzji stoi uzasadnienie oparte na wiedzy o danym typie strony. Czat daje listę stron do przepisania, bez powodów.",
+    "value": "Plik z planem strony, w którym przy każdej decyzji stoi uzasadnienie i odrzucone warianty, oparte na wiedzy o danym typie strony. Czat daje listę stron do przepisania, bez powodów.",
     "confidence": "high",
-    "rationale": "Potwierdzone przez właściciela przy planowaniu podstrony Website Planning Skill. Zgodne z pierwszym filarem hierarchii komunikatów (plan strony z uzasadnieniem każdej decyzji)."
+    "rationale": "Potwierdzone przez właściciela przy planowaniu podstrony Website Planning Skill. Zgodne z pierwszym filarem hierarchii komunikatów (plan strony z uzasadnieniem każdej decyzji). Na żywej stronie mówią to hero („Każda decyzja ma uzasadnienie i odrzucone warianty”, „Zna 16 typów stron”) i sekcja „Pod maską”."
   },
   "items": [
     {
@@ -1994,8 +2082,8 @@
       "name": "Format strony",
       "layout": "simple-meta",
       "lead": "Jedna strona docelowa",
-      "body": "Jedna akcja, czyli pobranie za 0 zł. U góry tylko logo i link do pełnej paczki.",
-      "rationale": "Cały ruch przychodzi z linków (reklamy, newsletter), a jedna akcja bez bocznych wyjść daje czysty wynik testu dwóch darmowych ścieżek.",
+      "body": "Jedna akcja: zapis po skill za 0 zł, w formularzu w hero i na końcu strony. U góry logo i trzy linki, bez przycisku.",
+      "rationale": "Ruch przychodzi z linków (reklamy, newsletter), a jedna akcja bez przycisków obok daje czystą główną liczbę strony: zapisy na wyświetlenie.",
       "alternatives": "Zwykła podstrona w menu witryny: odrzucone, więcej wyjść. Koszt wybranej opcji: jedna krótka strona ma mało treści dla wyszukiwarki, do rewizji, gdy wyszukiwarka zacznie się liczyć."
     },
     {
@@ -2006,9 +2094,9 @@
       "name": "Sposób prowadzenia strony",
       "layout": "simple-meta",
       "lead": "Najpierw dowód",
-      "body": "Przykładowe pliki zaraz po otwarciu strony, wyjaśnienia dopiero po nich.",
-      "rationale": "Darmowa wersja daje trzy pliki, które można pokazać. Designer, główny odbiorca, ocenia wynik szybciej niż obietnice. Tak samo działa strona pełnego skilla.",
-      "alternatives": "Kolejność strony audytu z opisem korzyści w drugiej sekcji: odrzucone, trzy pliki lepiej pokazać jako galerię. Najpierw rozmowa ze skillem: odrzucone, designer długo czekałby na to, co dostaje."
+      "body": "Przykładowy plan tej strony zaraz po hero, wyjaśnienia i opinie dopiero po nim.",
+      "rationale": "Darmowa wersja daje plan, który można pokazać: brief, mapę strony i wytyczne zawartości tej właśnie strony. Odwiedzający ocenia wynik szybciej niż obietnice. Tak samo działa strona pełnego skilla.",
+      "alternatives": "Kolejność strony audytu z opisem korzyści w drugiej sekcji: odrzucone, trzy części planu lepiej pokazać jako galerię. Najpierw rozmowa ze skillem: odrzucone, odwiedzający długo czekałby na to, co dostaje."
     },
     {
       "id": "strategy-id-positioning",
@@ -2024,7 +2112,7 @@
           "value": "ChatGPT albo Claude w trybie ad hoc i generatory stron z domyślną strukturą"
         }
       ],
-      "rationale": "Odbiorca, który dziś prosi czat o mapę strony albo przyjmuje strukturę z generatora, nie ma etapu planowania. Narzędzie zajmuje właśnie ten etap, przed pierwszym ekranem w Figmie i przed generatorem, zamiast konkurować z nimi.",
+      "rationale": "Odbiorca, który dziś prosi czat o mapę strony albo przyjmuje strukturę z generatora, nie ma etapu planowania. Narzędzie zajmuje właśnie ten etap, przed pierwszym ekranem w Figmie i przed generatorem, zamiast konkurować z nimi. Na żywej stronie mówi to nagłówek końcowy („Zaplanuj stronę, zanim zaczniesz ją budować”).",
       "alternatives": "Atak wprost na czat jako narzędzie gorsze w ogóle: odrzucone, odbiorca i tak używa czatu, a narzędzie działa w tych samych środowiskach. Porównanie z freelancerem UX: odrzucone dla darmowej wersji, bo cena 0 zł nie wymaga argumentu kosztowego."
     },
     {
@@ -2034,8 +2122,8 @@
       "title": "Wyróżnik",
       "name": "Wyróżnik",
       "layout": "simple-meta",
-      "lead": "Plik z planem strony, w którym przy każdej decyzji stoi uzasadnienie oparte na wiedzy o danym typie strony. Czat daje listę stron do przepisania, bez powodów.",
-      "rationale": "Potwierdzone przez właściciela przy planowaniu podstrony Website Planning Skill. Zgodne z pierwszym filarem hierarchii komunikatów (plan strony z uzasadnieniem każdej decyzji)."
+      "lead": "Plik z planem strony, w którym przy każdej decyzji stoi uzasadnienie i odrzucone warianty, oparte na wiedzy o danym typie strony. Czat daje listę stron do przepisania, bez powodów.",
+      "rationale": "Potwierdzone przez właściciela przy planowaniu podstrony Website Planning Skill. Zgodne z pierwszym filarem hierarchii komunikatów (plan strony z uzasadnieniem każdej decyzji). Na żywej stronie mówią to hero („Każda decyzja ma uzasadnienie i odrzucone warianty”, „Zna 16 typów stron”) i sekcja „Pod maską”."
     },
     {
       "id": "strategy-id-messaging-hierarchy",
@@ -2044,19 +2132,19 @@
       "title": "Hierarchia komunikatów",
       "name": "Hierarchia komunikatów",
       "layout": "ranked-list",
-      "lead": "Plan strony z uzasadnieniem każdej decyzji, zanim zaczniesz budować. Za 0 zł.",
+      "lead": "Zaplanuj stronę, zanim zaczniesz ją budować: brief i mapa strony z wytycznymi zawartości, za 0 zł.",
       "ranked": [
         {
-          "text": "P1: Plan strony z uzasadnieniem każdej decyzji"
+          "text": "P1: Brief i mapa strony z wytycznymi zawartości, każda decyzja z uzasadnieniem. Dowód: publiczny plan tej strony"
         },
         {
-          "text": "P2: Wiedza o danym typie strony, decyzja Twoja"
+          "text": "P2: Wiedza o 16 typach stron, decyzja zostaje po Twojej stronie. Dowód: pakiet wiedzy ładowany po wykryciu typu strony"
         },
         {
-          "text": "P3: Dwa etapy pełnego procesu UX, za darmo"
+          "text": "P3: Dwa pierwsze etapy pełnego UX Design Skill, za darmo. Dowód: schemat folderów skilla i opinie kupujących pełną wersję"
         }
       ],
-      "rationale": "Filary pochodzą z hierarchii pełnej paczki (pierwszy i trzeci filar), trzeci dochodzi jako most do pełnej paczki. Pewność średnia, bo osobna praca nad przekazem dla darmowej wersji została odłożona.",
+      "rationale": "Filary pochodzą z hierarchii pełnej paczki (pierwszy i trzeci filar), trzeci dochodzi jako most do pełnej wersji. Każdy filar ma na żywej stronie swoje miejsce: pierwszy hero i dowód, drugi hero i „Pod maską”, trzeci „Pod maską” i opinie. Pewność średnia, bo osobna praca nad przekazem dla darmowej wersji została odłożona.",
       "alternatives": "Przejęcie hierarchii pełnej paczki bez zmian: odrzucone, jej drugi filar (gotowe pliki dla Ciebie i klienta) obiecuje więcej, niż daje darmowa wersja."
     },
     {
@@ -2074,7 +2162,7 @@
         "Bez hedge'owania",
         "Decydent po stronie odbiorcy"
       ],
-      "rationale": "Trzy atrybuty osobowości plus dwa modyfikatory tonowe przeniesione wprost z kanwy. Słowa preferowane ('to narzędzie', 'pliki', 'plan strony', 'uzasadnienia obok decyzji') i zakazane ('agent', 'AI-powered', 'cutting-edge', em-dashy, ramki to-nie-X-to-Y) dyscyplinują mikrokopię na każdej sekcji.",
+      "rationale": "Trzy atrybuty osobowości plus dwa modyfikatory tonowe przeniesione wprost z kanwy. Słowa preferowane („skill”, „plan strony”, „brief”, „mapa strony”, „wytyczne zawartości”, „uzasadnienie i odrzucone warianty”) i zakazane („agent” jako nazwa produktu, „AI-powered”, „cutting-edge”, em-dashy, ramki to-nie-X-to-Y) dyscyplinują mikrokopię na każdej sekcji.",
       "alternatives": "Cieplejszy ton 'mentor / coach' — odrzucone, kojarzy się z autorytatywnym partnerem, którego designer odrzuca (1/16 akceptacji w wywiadach). Cool-corporate ton — odrzucone, sprzeczne z 'współpracującym'."
     },
     {
@@ -2082,20 +2170,20 @@
       "scope": "ia",
       "confidence": "high",
       "title": "Darmowe skille jako samodzielne strony docelowe poza menu",
-      "element": "Free UX Audit Skill i Website Planning Skill",
+      "element": "Darmowy audyt UX strony głównej i Website Planning Skill",
       "decision_status": "confirmed",
-      "rationale": "Ruch na obie strony przychodzi z reklam i newslettera, nie z nawigacji. Każda ma jedną akcję (pobranie za 0 zł), a u góry tylko logo i link do pełnej paczki. Strony nie odsyłają do siebie nawzajem: to dwie równoległe ścieżki w teście i linki między nimi zamazałyby wynik. Strona audytu powstała w maju od razu jako szkic, do planu dopisana teraz.",
-      "alternatives": "Zwykła podstrona w menu głównym: odrzucone, daje więcej wyjść i rozmywa test. Sekcja na stronie głównej: odrzucone, reklama musi lądować na stronie o jednym temacie. Koszt wybranej opcji: jedna krótka strona ma mało treści dla wyszukiwarki, do rewizji, gdy wyszukiwarka zacznie się liczyć."
+      "rationale": "Ruch na obie strony przychodzi z reklam i newslettera, nie z nawigacji. Każda ma jedną akcję (zapis po skill za 0 zł) i własną główną liczbę: zapisy na wyświetlenie. Obie mają ten sam pasek u góry (logo, UX Design Skill, Opinie, Jak pracować) i tę samą stopkę. Strony nie odsyłają do siebie nawzajem, bo link między nimi mieszałby oba wyniki. Do obu prowadzi sekcja „wypróbuj za darmo” na stronie UX Design Skill, a menu witryny ma do niej link „Darmowe skille”.",
+      "alternatives": "Zwykła podstrona w menu głównym: odrzucone, daje więcej wyjść i rozmywa główną liczbę. Tylko sekcja na stronie UX Design Skill: odrzucone, reklama musi lądować na stronie o jednym temacie. Koszt wybranej opcji: jedna krótka strona ma mało treści dla wyszukiwarki, do rewizji, gdy wyszukiwarka zacznie się liczyć."
     },
     {
       "id": "strategy-id-ia-decision-free-planning-order",
       "scope": "ia",
       "confidence": "high",
-      "title": "Website Planning Skill: przykładowe pliki w drugiej sekcji",
-      "element": "Układ podstrony Website Planning Skill",
+      "title": "Website Planning Skill: przykładowy plan w drugiej sekcji",
+      "element": "Układ strony Website Planning Skill",
       "decision_status": "confirmed",
-      "rationale": "Darmowa wersja daje trzy rzeczy do pokazania (opis projektu, plan strony, mapa sekcji), więc druga sekcja to galeria trzech przykładów, tak jak galeria plików na stronie pełnego skilla. Reszta kolejności wzorowana na stronie audytu: co jest pod spodem i co daje pełna paczka, granice, pytania, pobranie na koniec. Bez osobnej sekcji o tym, dla kogo jest skill: odpowiedź trafia do faktów w pierwszej sekcji i do pytań.",
-      "alternatives": "Kolejność strony audytu (opis tego, co dostajesz, z linkami do przykładu w drugiej sekcji): odrzucone, trzy pliki lepiej pokazać jako galerię. Najpierw rozmowa ze skillem: odrzucone, designer długo czekałby na to, co dostaje. Osobna sekcja o tym, dla kogo jest skill: odrzucone, żadna z dwóch istniejących stron jej nie ma."
+      "rationale": "Kolejność na żywej stronie: hero z formularzem, dowód (trzy części planu tej strony), „Pod maską” z kartą pełnej wersji, opinie, jak to działa, granice, pytania i formularz na koniec. Druga sekcja to galeria trzech części planu (brief, mapa strony, wytyczne zawartości), tak jak galeria plików na stronie pełnego skilla. Opinie stoją zaraz po „Pod maską”: najpierw system, którego częścią jest skill, potem ludzie, którzy z niego korzystają. Reszta wzorowana na stronie audytu: granice, pytania, zapis na koniec. Bez osobnej sekcji o tym, dla kogo jest skill: odpowiedź jest w hero i w pierwszym pytaniu.",
+      "alternatives": "Kolejność strony audytu (opis tego, co dostajesz, z linkami do przykładu w drugiej sekcji): odrzucone, trzy części planu lepiej pokazać jako galerię. Najpierw rozmowa ze skillem: odrzucone, odwiedzający długo czekałby na to, co dostaje. Osobna sekcja o tym, dla kogo jest skill: odrzucone, żadna z dwóch darmowych stron jej nie ma."
     }
   ],
   "canvas": {
@@ -2154,23 +2242,24 @@
     {
       "page_id": "page-website-planning-skill",
       "name": "Website Planning Skill",
-      "goal": "Pobranie darmowego skilla do planowania za 0 zł przez ruch z reklam i newslettera, z otwartą drogą do pełnej paczki UX Design Skill.",
+      "goal": "Zapis po darmowy skill, który przychodzi mailem jako osobisty link do instalacji (główna liczba: zapisy na wyświetlenie strony), a w drugiej kolejności droga do pełnej wersji UX Design Skill.",
       "top_tasks_served": [
-        "Sprawdzić, co robi darmowy skill i jaki plik dostanę",
-        "Zobaczyć przykładowy plan strony",
-        "Sprawdzić, czy to dla mnie, bez względu na to, czy mam stronę i czy znam się na UX",
+        "Sprawdzić, co robi darmowy skill i co dostanę na końcu",
+        "Zobaczyć przykładowy plan: brief, mapę strony i wytyczne zawartości",
+        "Sprawdzić, czy to dla mnie: przy nowej stronie, przy przebudowie i bez znajomości UX",
         "Sprawdzić, czy działa w moim narzędziu",
-        "Zobaczyć, jak wygląda instalacja",
-        "Pobrać skill za 0 zł",
-        "Dowiedzieć się, czego darmowa wersja nie robi i co daje pełna paczka",
-        "Przejść do pełnej paczki UX Design Skill",
+        "Zobaczyć, jak wygląda instalacja i praca ze skillem",
+        "Odebrać skill za 0 zł i wiedzieć, co przyjdzie mailem",
+        "Dowiedzieć się, czego darmowa wersja nie robi i co daje pełna",
+        "Przeczytać, co mówią kupujący pełną wersję",
+        "Przejść do pełnej wersji UX Design Skill",
         "Sprawdzić, co dzieje się z danymi o moim projekcie"
       ]
     },
     {
       "page_id": "global",
       "name": "Globalne: pasek u góry i stopka",
-      "goal": "Wspólny pasek u góry i stopka podstrony, bez wyjść do reszty witryny poza pełną paczką.",
+      "goal": "Wspólny pasek u góry i stopka: marka, trzy linki pomocne przed zapisem i dokumenty, bez przycisku, który konkurowałby z formularzem.",
       "top_tasks_served": []
     }
   ],
@@ -2191,33 +2280,55 @@
       "id": "section-map-id-wps-hero",
       "scope": "section",
       "confidence": "high",
-      "title": "Co to jest i pobranie",
-      "name": "Co to jest i pobranie",
+      "title": "Hero: co to jest i zapis",
+      "name": "Hero",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Potwierdzić odwiedzającemu z reklamy albo newslettera, że trafił na darmowy skill do planowania strony, i dać pobranie od razu.",
+      "goal": "Potwierdzić odwiedzającemu z reklamy albo newslettera, że trafił na darmowy skill do planowania strony, i dać zapis od razu.",
       "question": "Czy to darmowy skill, który zaplanuje moją stronę, i co dokładnie dostanę?",
-      "content_description": "Etykieta dla użytkowników Claude Code i podobnych narzędzi. Nagłówek z nazwą Website Planning Skill i tym, co robi, w jednym zdaniu. Akapit: rozmowa o projekcie, potem plan strony w pliku. Cztery krótkie fakty, w tym: działa, czy masz już stronę, czy dopiero ją planujesz; w jakich narzędziach działa. Przycisk pobrania za 0 zł z mikrotekstem (bez karty, mail z linkiem). Obok obraz planu strony.",
-      "content_status": "tbd",
-      "rationale": "Układ jak na stronie audytu, żeby obie strony w teście różniły się ofertą, a nie układem. Fakt o stronie albo jej braku zastępuje osobną sekcję o tym, dla kogo jest skill.",
-      "alternatives": "Osobna sekcja o tym, dla kogo jest skill: odrzucone, żadna z dwóch istniejących stron jej nie ma."
+      "key_message": "Skill do planowania stron daje za darmo brief i mapę strony z wytycznymi zawartości, a przy każdej decyzji uzasadnienie.",
+      "must_cover": [
+        "Co dostajesz: brief i mapę strony z wytycznymi zawartości",
+        "Jak skill do tego dochodzi: pyta o kontekst projektu, planuje mapę strony i rozpisuje sekcje każdej podstrony",
+        "Że sprawdzi się przy nowej stronie i przy przebudowie istniejącej",
+        "Każda decyzja z uzasadnieniem i odrzuconymi wariantami",
+        "Wiedza o 16 typach stron, od portfolio po SaaS i marketplace",
+        "Wynik w jednym pliku HTML, który otwierasz w przeglądarce",
+        "W jakich narzędziach działa: Claude Code, Codex, Cursor",
+        "Co się stanie po zapisie: osobisty link do instalacji przychodzi mailem"
+      ],
+      "doubt": "Że to kolejne narzędzie AI, które da ogólny szablon zamiast planu dla mojej strony.",
+      "proof": "Licznik pobrań darmowych skilli w etykiecie nad nagłówkiem i demo wideo pełnego skilla UX Design obok nagłówka.",
+      "action": "Zostaw adres email i odbierz skill za darmo.",
+      "leave_out": "Drugi przycisk obok formularza, także do pełnej wersji: w pierwszym ekranie jest jedna akcja.",
+      "rationale": "Układ jak na stronie audytu, żeby obie darmowe strony różniły się ofertą, a nie układem. Fakt o nowej stronie i przebudowie zastępuje osobną sekcję o tym, dla kogo jest skill. Panel wideo pokazuje demo pełnego UX Design Skill; jego pierwszy etap, rozmowa o projekcie, to ten sam etap, który ma darmowa wersja. Formularz w hero analityka liczy osobno od formularza na końcu strony.",
+      "alternatives": "Osobna sekcja o tym, dla kogo jest skill: odrzucone, żadna z dwóch darmowych stron jej nie ma."
     },
     {
       "id": "section-map-id-wps-files",
       "scope": "section",
       "confidence": "high",
-      "title": "Przykładowe pliki",
-      "name": "Przykładowe pliki",
+      "title": "Dowód: plan tej strony",
+      "name": "Dowód",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "evidence",
       "goal": "Pokazać, co dostaje się na wyjściu, zanim odwiedzający przeczyta jakiekolwiek obietnice.",
       "question": "Jak wygląda to, co dostanę?",
-      "content_description": "Nagłówek i krótki wstęp. Trzy karty: opis projektu, plan strony, mapa sekcji. Każda karta: co zawiera, w jednym zdaniu, i link do przykładu otwierany w nowej karcie.",
-      "content_status": "tbd",
-      "rationale": "Darmowa wersja daje trzy rzeczy do pokazania, więc galeria jak na stronie pełnego skilla. Karty prowadzą linkami do przykładowych plików, cele linków ustala właściciel przy wdrożeniu.",
-      "alternatives": "Opis korzyści z linkami do przykładu, jak na stronie audytu: odrzucone przez właściciela, trzy pliki lepiej pokazać jako galerię."
+      "key_message": "Tę stronę zaplanowaliśmy tym skillem, a cały plan jest publiczny: każdą z trzech części otwierasz w przeglądarce.",
+      "must_cover": [
+        "Że ta strona powstała z planu zrobionego tym skillem, a plan jest publiczny",
+        "Brief: dla kogo jest strona, jaki ma cel, z czym konkuruje i jakim głosem mówi, przy każdym punkcie uzasadnienie i poziom pewności",
+        "Mapa strony: mapa podstron, menu i stopka, przy każdej decyzji uzasadnienie i odrzucone warianty",
+        "Wytyczne zawartości: sekcje każdej podstrony, pytanie odwiedzającego, na które odpowiada każda z nich, jej cel i to, co ma się w niej znaleźć",
+        "Że cały plik ma też wersję markdown do pobrania"
+      ],
+      "doubt": "Że wynik będzie ogólnikowy, a nie planem, z którego da się korzystać.",
+      "proof": "Plan tej strony w trzech częściach: brief, mapa strony i wytyczne zawartości, każda otwierana w przeglądarce.",
+      "action": "Otwórz wybraną część planu.",
+      "rationale": "Darmowa wersja daje plan w trzech częściach, więc galeria trzech kart, jak galeria plików na stronie pełnego skilla. Każda karta otwiera ten sam plik na swojej części. Najmocniejszy dowód to plan strony, którą odwiedzający właśnie czyta: może porównać plan z tym, co widzi. Analityka liczy kliknięcia kart jako oznakę zainteresowania.",
+      "alternatives": "Opis korzyści z linkami do przykładu, jak na stronie audytu: odrzucone przez właściciela, trzy części planu lepiej pokazać jako galerię."
     },
     {
       "id": "section-map-id-wps-under-the-hood",
@@ -2228,12 +2339,50 @@
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "evidence",
-      "goal": "Pokazać, że skill to fragment systemu, i otworzyć drogę do pełnego pakietu.",
+      "goal": "Pokazać, że skill to fragment systemu, a nie jeden prompt, i otworzyć drogę do pełnej wersji.",
       "question": "Co siedzi pod maską i co dalej, jeśli będę chciał więcej?",
-      "content_description": "Etykieta „Pod maską”, nagłówek i akapit: skill to dwa pierwsze etapy pełnego UX Design Skill i korzysta z tej samej architektury (plik z instrukcją działania, pakiety wiedzy ładowane po wykryciu typu strony). Niżej schemat folderów skilla i cztery numerowane punkty: wiedza oddzielona od instrukcji, pakiet wiedzy ładowany po wykryciu typu, każde założenie z poziomem pewności, skill dostarcza plan. Pod nimi wyróżniona karta z tym, co daje pełny pakiet, i drugi przycisk prowadzący do pełnej paczki.",
-      "content_status": "tbd",
-      "rationale": "Zastępuje dwie sekcje z pierwszej wersji planu: porównanie z czatem i część pełnego procesu. Właściciel uznał, że porównanie z czatem nie dawało nic ponad otwarcie i przykładowe pliki. Wyróżniona karta z pełnym pakietem i przycisk przeszły do tej sekcji, więc osobna sekcja o pełnym procesie byłaby powtórzeniem. To jedyne miejsce na stronie poza paskiem u góry, które prowadzi do pełnej paczki.",
+      "key_message": "To nie jest jeden prompt: Website Planning Skill to dwa pierwsze etapy pełnego UX Design Skill, zbudowane tak samo jak cały system.",
+      "must_cover": [
+        "Website Planning Skill to dwa pierwsze etapy pełnego UX Design Skill: rozmowa o projekcie i plan strony",
+        "Wiedza oddzielona od instrukcji: plik z instrukcją działania prowadzi rozmowę i plan, a folder references/ przechowuje wzorce dla każdego typu strony",
+        "Pakiet wiedzy ładowany po wykryciu typu strony, zamiast ogólnej listy dobrych praktyk",
+        "Każde założenie z poziomem pewności (wysoki, średni, niski); tam, gdzie AI zgaduje, plik mówi to wprost",
+        "Skill dostarcza plan: każda decyzja z uzasadnieniem i odrzuconymi wariantami, wybór zostaje po Twojej stronie",
+        "Schemat folderów skilla: SKILL.md, references/ z etapami rozmowy i planu, folderami wspólnymi i typami stron",
+        "Co daje pełna wersja: przekaz, lista szablonów stron, makiety z treściami i przegląd, każda decyzja z uzasadnieniem",
+        "Link do historii zmian darmowego skilla"
+      ],
+      "doubt": "Że to kolejny prompt, który wygeneruje ogólniki.",
+      "proof": "Schemat folderów skilla i cztery zasady jego działania.",
+      "action": "Zobacz pełną wersję UX Design Skill.",
+      "leave_out": "Ceny i pakiety pełnej wersji: karta mówi, co pełna wersja robi dalej, a ceny są na jej stronie.",
+      "rationale": "Zastępuje dwie sekcje z pierwszej wersji planu: porównanie z czatem i część pełnego procesu. Właściciel uznał, że porównanie z czatem nie dawało nic ponad otwarcie i przykładowe pliki. Wyróżniona karta z pełną wersją i przycisk przeszły do tej sekcji, więc osobna sekcja o pełnym procesie byłaby powtórzeniem. To główne miejsce na stronie, które prowadzi do pełnej wersji; poza nim prowadzą tam pasek u góry i link w pytaniu o różnice.",
       "alternatives": "Osobna sekcja o pełnym procesie obok sekcji „Pod maską”: odrzucone, bo dawała dwie sekcje z rzędu o tym samym systemie."
+    },
+    {
+      "id": "section-map-id-wps-reviews",
+      "scope": "section",
+      "confidence": "medium",
+      "title": "Opinie",
+      "name": "Opinie",
+      "page_id": "page-website-planning-skill",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Pokazać, że z systemu, którego częścią jest ten skill, korzystają designerzy, studia i osoby spoza branży.",
+      "question": "Czy to działa u innych i w czym im pomogło?",
+      "key_message": "Poukładany proces i szybsza praca: tak mówią kupujący UX Design Skill, którego dwa pierwsze etapy dostajesz za darmo.",
+      "must_cover": [
+        "Że to opinie kupujących pełną wersję UX Design Skill",
+        "Co mówią: porządkuje proces i przyspiesza pracę, najbardziej pomaga na wstępnym etapie, przy założeniach, wywiadzie i strukturze strony",
+        "Kto mówi: imię i nazwisko, zdjęcie i studio albo forma pracy (Pozioma, The Sunray Studio, Modela Studio, freelancer)",
+        "Głos osoby, która nie jest web designerem i mówi, że ze skillem wszystko jest łatwiejsze",
+        "Opinia osoby, która po przetestowaniu UX Audit następnego dnia kupiła pełny pakiet"
+      ],
+      "doubt": "Że skill dobrze brzmi na stronie, ale nikt z niego naprawdę nie korzysta.",
+      "proof": "Pięć podpisanych opinii z imieniem, zdjęciem i nazwą studia albo formą pracy.",
+      "leave_out": "Opinie przedstawione jako opinie o darmowej wersji: cytaty dotyczą pełnego UX Design Skill i nagłówek tak je podpisuje.",
+      "rationale": "Pierwsza wersja planu wykluczała opinie, bo nie było cytatów o samej darmowej wersji. Żywa strona je ma, a nagłówek mówi wprost, że to kupujący UX Design Skill. Trzy z pięciu opinii mówią o wstępnym etapie (założenia, wywiad, struktura i strategia strony), czyli o tym, co daje darmowa wersja. Sekcja stoi zaraz po „Pod maską”: najpierw system, potem ludzie, którzy z niego korzystają. Pasek u góry ma do niej link „Opinie”. Sekcja nie ma przycisku, więc bez części Działanie: jedyną akcją strony zostaje zapis. Pewność średnia, bo żadna opinia nie dotyczy samej darmowej wersji.",
+      "alternatives": "Bez sekcji opinii, jak w pierwszej wersji planu: zmienione, bo opinie o pełnej wersji mówią w większości o tych samych etapach, które daje darmowy skill."
     },
     {
       "id": "section-map-id-wps-how",
@@ -2246,54 +2395,78 @@
       "narrative": "evidence",
       "goal": "Zdjąć obawę, że instalacja i praca ze skillem są trudne.",
       "question": "Ile pracy mnie to kosztuje i czy poradzę sobie z instalacją?",
-      "content_description": "Kroki: pobierasz; wskazujesz narzędziu AI do kodu plik INSTALL.md, a ono instaluje skilla; rozmawiasz o projekcie (skill sam stawia założenia i pyta tylko tam, gdzie nie jest pewny); dostajesz plan strony w pliku. Lista narzędzi, w których działa.",
-      "content_status": "tbd",
-      "rationale": "Instalacja przez INSTALL.md to najprostszy argument dla mniej technicznych osób, a lista narzędzi odpowiada na pytanie, czy skill działa u mnie."
+      "key_message": "Trzy kroki od instalacji do planu strony: instalujesz raz, a każdy kolejny projekt zaczynasz od rozmowy.",
+      "must_cover": [
+        "Krok 1, instalujesz: wklejasz instrukcję z maila do Claude Code, Codex albo Cursora, a narzędzie samo instaluje skill",
+        "Krok 2, rozmawiasz o projekcie: skill pyta o cel, odbiorcę i kontekst, a tam, gdzie zgaduje, oznacza założenie tagiem pewności",
+        "Krok 3, dostajesz plan: plik otwierasz w przeglądarce i na jego podstawie tworzysz makiety i projekt strony",
+        "Że instalujesz raz, a każdy kolejny projekt zaczynasz od rozmowy"
+      ],
+      "doubt": "Że instalacja wymaga wiedzy technicznej.",
+      "rationale": "Instalacja przez wklejenie instrukcji z maila to najprostszy argument dla mniej technicznych osób, a nazwy trzech narzędzi odpowiadają na pytanie, czy skill działa u mnie. Sekcja nie ma osobnego dowodu łatwości, na przykład nagrania instalacji, więc bez części Dowód: obawę zdejmuje sam opis kroków."
     },
     {
       "id": "section-map-id-wps-boundaries",
       "scope": "section",
       "confidence": "high",
-      "title": "Czego skill nie robi",
-      "name": "Czego skill nie robi",
+      "title": "Granice narzędzia",
+      "name": "Granice",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "tension",
-      "goal": "Uczciwie postawić granice przed decyzją o pobraniu.",
+      "goal": "Uczciwie postawić granice przed decyzją o zapisie.",
       "question": "Gdzie kończy się darmowa wersja i co nadal muszę zrobić sam?",
-      "content_description": "Krótka lista w formacie „Nie X. Y.”: nie robi szkiców stron ani gotowych tekstów (to pełna paczka), nie projektuje wyglądu, nie podejmuje decyzji za Ciebie.",
-      "content_status": "tbd",
-      "rationale": "Taki sam sygnał uczciwości jak na stronie audytu i stronie pełnego skilla."
+      "key_message": "Skill planuje, ale nie decyduje za Ciebie, nie robi makiet ani gotowych treści i nie projektuje wyglądu.",
+      "must_cover": [
+        "Nie podejmuje decyzji za Ciebie: pokazuje warianty z konsekwencjami, wybierasz Ty",
+        "Nie tworzy makiet ani nie pisze gotowych treści: to kolejne etapy, które ma pełna wersja UX Design Skill",
+        "Nie tworzy projektów graficznych"
+      ],
+      "rationale": "Taki sam sygnał uczciwości jak na stronie audytu i stronie pełnego skilla. Druga granica przy okazji wskazuje pełną wersję, bez linku i bez przycisku."
     },
     {
       "id": "section-map-id-wps-faq",
       "scope": "section",
       "confidence": "high",
-      "title": "Pytania i odpowiedzi",
-      "name": "Pytania i odpowiedzi",
+      "title": "Pytania przed pobraniem",
+      "name": "FAQ",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "tension",
-      "goal": "Zamknąć ostatnie obiekcje przed pobraniem.",
+      "goal": "Zamknąć ostatnie obiekcje przed zapisem.",
       "question": "Co jeszcze muszę wiedzieć przed pobraniem?",
-      "content_description": "Rozwijane pytania: czy trzeba znać się na UX; co dzieje się z danymi o moim projekcie; czym to się różni od pełnej paczki; jak zainstalować i w jakich narzędziach działa; czy to naprawdę 0 zł i co przyjdzie mailem.",
-      "content_status": "tbd",
-      "rationale": "Pytanie o znajomość UX przejmuje rolę usuniętej sekcji o tym, dla kogo jest skill."
+      "key_message": "Nie musisz znać UX, plik z planem zostaje u Ciebie, a skill kosztuje 0 zł i działa bez ograniczeń czasowych.",
+      "must_cover": [
+        "Czy trzeba znać UX: nie, ale doświadczenie w projektowaniu stron pomaga, a plan to dobry punkt wyjścia do dyskusji",
+        "Co dzieje się z danymi o projekcie: rozmowa podlega zasadom Claude Code, Codex albo Cursora na Twoim koncie, plik z planem zostaje u Ciebie, a przy starcie skill wysyła tylko identyfikator klienta, nazwę pakietu i numer wersji",
+        "Czym różni się od pełnej wersji: darmowa kończy się na planie strony, pełna prowadzi dalej (przekaz, lista szablonów stron, makiety z treściami, przegląd), z linkiem do pełnej wersji",
+        "Jak wygląda instalacja: instrukcję z maila wklejasz do Claude Code, Codex albo Cursora",
+        "Jak długo można używać: bez ograniczeń czasowych, a przez pierwsze 60 dni skill sam instaluje nowe wersje",
+        "Ile kosztuje i co przyjdzie mailem: 0 zł bez opłat później, w ramach Twojego planu w narzędziu; osobisty link do instalacji w ciągu minuty i wiadomości o produktach i usługach"
+      ],
+      "doubt": "Że darmowa wersja ma haczyk: ukryte opłaty, dane o projekcie wysyłane dalej albo limit czasu.",
+      "rationale": "Pytanie o znajomość UX przejmuje rolę usuniętej sekcji o tym, dla kogo jest skill, dlatego jest otwarte od razu. Pytanie o różnice z pełną wersją daje link do niej w miejscu, w którym odwiedzający porównuje wersje. Sekcja odpowiada na obawy konkretnymi faktami, więc bez osobnej części Dowód."
     },
     {
       "id": "section-map-id-wps-final-cta",
       "scope": "section",
       "confidence": "high",
-      "title": "Pobranie na koniec",
-      "name": "Pobranie na koniec",
+      "title": "Zapis na koniec",
+      "name": "Zapis na koniec",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Dać drugi moment pobrania osobom, które przeczytały całą stronę.",
+      "goal": "Dać drugi moment zapisu osobom, które przeczytały całą stronę.",
       "question": "Jak zacząć?",
-      "content_description": "Nagłówek z wezwaniem, jedno zdanie o tym, co się stanie po kliknięciu (koszyk za 0 zł, mail z linkiem, instalacja), przycisk pobrania, mikrotekst bez karty i bez subskrypcji.",
-      "content_status": "tbd",
-      "rationale": "Ten sam domykający moment co na stronie audytu."
+      "key_message": "Zaplanuj stronę, zanim zaczniesz ją budować: odbierasz skill mailem za 0 zł i zaczynasz pierwszą rozmowę o projekcie.",
+      "must_cover": [
+        "Wezwanie: zaplanuj stronę, zanim zaczniesz ją budować",
+        "Co się stanie: odbierasz skill mailem za 0 zł, instalujesz go i zaczynasz pierwszą rozmowę o projekcie",
+        "Formularz z adresem email i informacja, że osobisty link do instalacji przyjdzie mailem",
+        "Zgoda na wiadomości o produktach i usługach, z linkiem do polityki prywatności"
+      ],
+      "action": "Zostaw adres email i odbierz darmowy skill.",
+      "rationale": "Ten sam domykający moment co na stronie audytu. Formularz jest taki sam jak w hero, a analityka liczy go osobno, więc widać, ile zapisów daje koniec strony. Żywy tekst mówi tu „instalujesz jedną komendą”, a sekcja „Jak to działa” mówi o wklejeniu instrukcji z maila; brief trzyma się wspólnego faktu, że instalację robi narzędzie."
     },
     {
       "id": "section-map-id-wps-global-nav",
@@ -2304,11 +2477,17 @@
       "page_id": "global",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Pokazać markę i dać jedno wyjście: do pełnej paczki.",
+      "goal": "Pokazać markę i dać trzy wyjścia pomocne przed zapisem: pełną wersję, opinie i instrukcję pracy.",
       "question": "Gdzie jestem i czy mogę zobaczyć pełny produkt?",
-      "content_description": "Logo i jeden link do pełnej paczki UX Design Skill. Bez pozostałych pozycji menu witryny.",
-      "content_status": "content-ready",
-      "rationale": "Taki sam pasek jak na stronie audytu."
+      "key_message": "Ten skill należy do UX Design Skill: logo i pierwszy link prowadzą do pełnej wersji.",
+      "must_cover": [
+        "Logo Creative Sparks z linkiem do strony UX Design Skill",
+        "Link „UX Design Skill” do pełnej wersji",
+        "Link „Opinie” do opinii na tej stronie",
+        "Link „Jak pracować” do instrukcji UX Design Skill"
+      ],
+      "leave_out": "Przycisk w pasku i pozostałe pozycje menu witryny (Cennik, Darmowe skille, Baza wiedzy).",
+      "rationale": "Taki sam pasek jak na stronie audytu. Nie przykleja się przy przewijaniu i nie ma przycisku, żeby nie konkurować z formularzem. Na telefonie linki są ukryte i zostaje samo logo."
     },
     {
       "id": "section-map-id-wps-global-footer",
@@ -2319,11 +2498,17 @@
       "page_id": "global",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Dać dostęp do pełnej paczki, instrukcji, kontaktu i dokumentów prawnych.",
+      "goal": "Dać dostęp do dokumentów prawnych, ustawień cookies, historii zmian i kontaktu.",
       "question": "Gdzie znajdę resztę informacji?",
-      "content_description": "Kolumny: Produkt (pełna paczka, Jak pracować), Kontakt ([adres e-mail]), Legal (polityka prywatności, regulamin). Linia praw autorskich.",
-      "content_status": "needs-content",
-      "rationale": "Taka sama stopka jak na stronie audytu. Adres e-mail do uzupełnienia."
+      "key_message": "Dokumenty, ustawienia cookies, historia zmian tego skilla i kontakt są zawsze pod ręką.",
+      "must_cover": [
+        "Logo z linkiem do strony UX Design Skill",
+        "Polityka prywatności i Regulamin sprzedaży",
+        "Ustawienia cookies, które otwierają okno zgód",
+        "Changelog z historią zmian darmowego skilla",
+        "Kontakt mailowy"
+      ],
+      "rationale": "Taka sama stopka jak na stronie audytu, wspólna dla całej witryny; na tej stronie „Changelog” prowadzi do historii zmian darmowego skilla. Adres kontaktowy, który pierwsza wersja planu miała do uzupełnienia, jest już na stronie."
     }
   ]
 }
@@ -2377,7 +2562,6 @@
         "{All pages}"
       ],
       "goal": "{Global nav goal — what the main menu has to surface on every page.}",
-      "key_message": "{Core message the nav must land across the site.}",
       "atoms": [
         "{logo}",
         "{nav-items}",
@@ -2390,7 +2574,6 @@
       ],
       "question": "{User question the nav answers at a glance.}",
       "narrative": "{hook}",
-      "content_status": "content-ready",
       "rationale": "{Why this nav architecture globally.}",
       "alternatives": "{Alternative nav patterns considered.}"
     },
@@ -2404,7 +2587,6 @@
         "{Product A}"
       ],
       "goal": "{Section goal — what this section accomplishes on the page.}",
-      "key_message": "{Core message the section must land.}",
       "atoms": [
         "{heading}",
         "{subhead}",
@@ -2417,7 +2599,6 @@
       ],
       "question": "{User question this section answers.}",
       "narrative": "{hook}",
-      "content_status": "content-ready",
       "rationale": "{Priority rationale — anchored to a top task or strategic pillar.}",
       "alternatives": "{Other section treatments considered; why this one was chosen.}"
     },
@@ -2430,7 +2611,6 @@
         "{Home}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{heading}",
         "{grid}",
@@ -2442,7 +2622,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{evidence}",
-      "content_status": "needs-content",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2458,7 +2637,6 @@
         "{Product C}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{heading}",
         "{subhead}",
@@ -2471,7 +2649,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{resolution}",
-      "content_status": "tbd",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2485,7 +2662,6 @@
         "{Product B}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{table}",
         "{note}"
@@ -2495,7 +2671,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{evidence}",
-      "content_status": "needs-content",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2509,7 +2684,6 @@
         "{Product C}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{quote}",
         "{avatar}",
@@ -2520,7 +2694,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{evidence}",
-      "content_status": "tbd",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2537,7 +2710,6 @@
         "{Summer campaign}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{columns}",
         "{legal}",
@@ -2548,7 +2720,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{resolution}",
-      "content_status": "content-ready",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     }
@@ -2746,14 +2917,17 @@
     pp_strategy_messaging_voice: '{Messaging & Voice}',
     pp_strategy_messaging:       '{Messaging Hierarchy}',
     pp_strategy_voice:           '{Voice Brief}',
-    // Content-readiness pill short labels
-    pp_content_ready: '{Content ready}',
-    pp_needs_content: '{Needs content}',
-    pp_tbd_status:    '{TBD}',
-    pp_section_card_goal:       '{Goal:}',
-    pp_section_card_message:    '{Message:}',
-    pp_section_card_content:    '{Content:}',
-    pp_section_card_readiness:  '{Readiness:}',
+    // Section card rows + content brief (layout A). `_content` labels the
+    // older-shape items' content row only.
+    pp_section_card_goal:        '{Goal:}',
+    pp_section_card_question:    '{Question:}',
+    pp_section_card_key_message: '{Key message:}',
+    pp_section_card_must_cover:  '{Must cover:}',
+    pp_section_card_doubt:       '{Doubt it removes:}',
+    pp_section_card_proof:       '{Proof:}',
+    pp_section_card_action:      '{Action:}',
+    pp_section_card_leave_out:   '{Leave out:}',
+    pp_section_card_content:     '{Content:}',
     // Detail block headings
     detail_rationale:      '{Rationale}',
     detail_alternatives:   '{Alternatives considered}',
@@ -2764,7 +2938,6 @@
     detail_goal:           '{Goal}',
     detail_question:       '{Question}',
     detail_content:        '{Content description}',
-    detail_content_status: '{Content readiness}',
     // Scope group headers
     group_scope_page:    '{Page-level}',
     group_scope_section: '{Sections}',
@@ -2774,16 +2947,13 @@
     // Design plan canvas labels
     pp_inventory_total_templates:          '{Unique templates}',
     pp_inventory_unique_sections:          '{Unique sections}',
-    pp_inventory_sections_needing_content: '{Sections needing content}',
     // Section Index card field labels (Design plan) — translatable overrides.
     pp_inventory_field_narrative:    '{Narrative}',
     pp_inventory_field_goal:         '{Goal}',
     pp_inventory_field_question:     '{Question}',
-    pp_inventory_field_key_message:  '{Key message}',
     pp_inventory_field_used_in:      '{Used in}',
     pp_inventory_field_atoms:        '{Atoms}',
     pp_inventory_field_variants:     '{Variants}',
-    pp_inventory_field_readiness:    '{Readiness}',
     pp_inventory_field_usage:        '{Usage}',
     pp_inventory_template_map:    '{Unique templates}',
     pp_inventory_usage_single:    '{Single page}',
@@ -2798,7 +2968,6 @@
     group_kind_section:  '{Sections}',
     group_kind_template: '{Templates}',
     detail_used_in:      '{Used in}',
-    detail_key_message:  '{Key message}',
     detail_atoms:        '{Atoms}',
     detail_variants:     '{Variants}',
     detail_pages_using:  '{Pages using}',
@@ -2844,8 +3013,12 @@
     md_question:             '{Question}',
     md_content_description:  '{Content}',
     md_key_message:          '{Key message}',
+    md_must_cover:           '{Must cover}',
+    md_doubt:                '{Doubt it removes}',
+    md_proof:                '{Proof}',
+    md_action:               '{Action}',
+    md_leave_out:            '{Leave out}',
     md_narrative:            '{Narrative}',
-    md_content_status:       '{Content readiness}',
     md_top_tasks_served:     '{Top tasks served}',
     md_element:              '{Element}',
     md_decision_status:      '{Decision status}',
@@ -2865,7 +3038,6 @@
     md_inventory_section_template_arch:             '{Per-template architecture}',
     md_inventory_summary_total_templates:           '{Templates}',
     md_inventory_summary_unique_sections:           '{Unique sections}',
-    md_inventory_summary_sections_needing_content:  '{Sections needing content}',
     md_inventory_template_arch_corp_pool_shared:    '{Shared sections}',
     md_inventory_template_arch_corp_pool_variants:  '{Pool variants}',
     md_inventory_template_arch_modular_atoms:       '{Atom palette}'
@@ -2942,17 +3114,6 @@
   // synthesized `_kind` marker.
   // ============================================================
 
-  const CONTENT_STATUS_MAP = {
-    'content-ready': { cls: 'ui-badge--content-ready', labelKey: 'pp_content_ready' },
-    'needs-content': { cls: 'ui-badge--needs-content', labelKey: 'pp_needs_content' },
-    'tbd':           { cls: 'ui-badge--tbd-status',    labelKey: 'pp_tbd_status' }
-  };
-  function contentStatusPill(status) {
-    const m = CONTENT_STATUS_MAP[status];
-    if (!m) return '';
-    const label = LABELS[m.labelKey] != null ? LABELS[m.labelKey] : status;
-    return '<span class="ui-badge ' + m.cls + '">' + label + '</span>';
-  }
   function narrativeTag(narrative) {
     if (!narrative) return '';
     // Strip placeholder braces so `{hook}` renders as `hook` in the pill
@@ -3234,7 +3395,7 @@
   }
 
   function rowHtml(row, byId, data) {
-    if (row.type === 'summary')       return summaryHtml(data.summary, data);
+    if (row.type === 'summary')       return summaryHtml(data.summary);
     if (row.type === 'heading')       return '<h2 class="ui-card-row-title">' + (row.title || '') + '</h2>';
     if (row.type === 'tree')          return treeRowHtml(resolveTreeRow(row, data));
     if (row.type === 'sitemap')       return treeRowHtml(resolveTreeRow(Object.assign({ kind: 'sitemap', title: row.title || 'Sitemap' }, row), data));
@@ -3286,9 +3447,13 @@
       : '';
     // bullets[] — free-form placeholder list (each entry is a unified `{...}` string
     // rendered verbatim inside <li>). Used by the Alternatives card for behavior
-    // clusters — agent keeps/drops/renames clusters per project.
+    // clusters — agent keeps/drops/renames clusters per project. On that card each
+    // bullet reads "Cluster: what buyers do", so the cluster name renders in bold.
+    const boldName = /^\x7B?context-id-alternative\x7D?$/.test(item.id || '');
     const bulletsHtml = (item.bullets && item.bullets.length)
-      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul>'
+      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) {
+          return '<li>' + (boldName ? String(b).replace(/^(\x7B?)([^:\x7B\x7D<]+):/, '$1<strong>$2</strong>:') : b) + '</li>';
+        }).join('') + '</ul>'
       : '';
     const metaPillsHtml = (item.meta_pills || []).map(plainChip).join('');
     const confPill = item.confidence
@@ -3350,25 +3515,63 @@
       + '</article>';
   }
 
-  // Six-field section card — Name + narrative tag (inline in h4);
-  // then labeled rows for Goal / Message / Content; readiness pill labeled
-  // in .ui-card__meta. Confidence is NOT rendered on the card —
-  // rationale + confidence live in the left panel.
+  // Section card, layout A (schema §Section card (layout A)) — Name +
+  // narrative tag (inline in h4); labeled Goal and Question rows; then the
+  // content brief as one labeled list (Key message, Must cover as a bulleted
+  // sub-list, then Doubt it removes / Proof / Action / Leave out, each only
+  // when present). An older-shape item (no key_message, no must_cover —
+  // written before 4.7) shows its Content row in place of the brief; its
+  // legacy readiness field is ignored. Confidence is NOT rendered on the
+  // card — rationale + confidence live in the left panel.
   function sectionCardHtml(item) {
     const heading = item.name || item.title || '';
     const narrInline = item.narrative ? ' ' + narrativeTag(item.narrative) : '';
-    const readinessPill = contentStatusPill(item.content_status);
-    const fields = [
-      sectionFieldRow(LABELS.pp_section_card_goal      || 'Goal:',      item.goal),
-      sectionFieldRow(LABELS.pp_section_card_message   || 'Message:',   item.question),
-      sectionFieldRow(LABELS.pp_section_card_readiness || 'Readiness:', readinessPill),
-      sectionFieldRow(LABELS.pp_section_card_content   || 'Content:',   sectionContentValue(item.content_description))
-    ].join('');
+    const mustCover = sectionListEntries(item.must_cover);
+    const rows = [
+      sectionFieldRow(LABELS.pp_section_card_goal     || 'Goal:',     item.goal),
+      sectionFieldRow(LABELS.pp_section_card_question || 'Question:', item.question)
+    ];
+    if (item.key_message || mustCover.length) {
+      const mustCoverList = mustCover.length
+        ? '<ul>' + mustCover.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
+        : '';
+      rows.push(sectionBriefList([
+        sectionBriefPart(LABELS.pp_section_card_key_message || 'Key message:',      item.key_message),
+        sectionBriefPart(LABELS.pp_section_card_must_cover  || 'Must cover:',       mustCoverList),
+        sectionBriefPart(LABELS.pp_section_card_doubt       || 'Doubt it removes:', item.doubt),
+        sectionBriefPart(LABELS.pp_section_card_proof       || 'Proof:',            item.proof),
+        sectionBriefPart(LABELS.pp_section_card_action      || 'Action:',           item.action),
+        sectionBriefPart(LABELS.pp_section_card_leave_out   || 'Leave out:',        item.leave_out)
+      ]));
+    } else {
+      rows.push(sectionFieldRow(LABELS.pp_section_card_content || 'Content:', sectionContentValue(item.content_description)));
+    }
     return ''
       + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
       +   '<h4>' + heading + narrInline + '</h4>'
-      +   fields
+      +   rows.join('')
       + '</article>';
+  }
+
+  // The content brief list. Its top border (CSS) is the divider between the
+  // Goal / Question rows and the brief. Parts that rendered empty drop out.
+  function sectionBriefList(parts) {
+    const html = parts.join('');
+    return html ? '<ul class="pp-section-card__brief">' + html + '</ul>' : '';
+  }
+
+  // One labeled part of the brief. An empty value (missing, null or '')
+  // prints no <li> and no label.
+  function sectionBriefPart(label, value) {
+    if (!value) return '';
+    return '<li><span class="pp-section-card__field-label">' + label + '</span>' + value + '</li>';
+  }
+
+  // List-valued section field → non-empty entries. An array keeps its order;
+  // a lone string is one entry; anything else is none.
+  function sectionListEntries(value) {
+    const items = Array.isArray(value) ? value : (value ? [value] : []);
+    return items.filter(function(c) { return c != null && c !== ''; });
   }
 
   // One labeled row inside a section card. Value can be a string (inline
@@ -3435,8 +3638,8 @@
     // longer render on Design plan, so the field is dead signal on the card.
     // Priority moves to .ui-card__meta at the bottom as a labeled colored
     // pill (red/amber/green via PRIORITY_MAP) with top separator.
-    // Readiness uses the colored pill (matches Section map's labeled-row
-    // treatment) instead of plain text.
+    // No readiness and no key message: an older entry that still carries
+    // either shows without it.
     const L = function(key, fallback) {
       const v = LABELS[key];
       if (v == null) return fallback;
@@ -3447,11 +3650,9 @@
       item.narrative           ? metaSeg(L('pp_inventory_field_narrative',    'Narrative'),    item.narrative)                        : '',
       item.goal                ? metaSeg(L('pp_inventory_field_goal',         'Goal'),         item.goal)                             : '',
       item.question            ? metaSeg(L('pp_inventory_field_question',     'Question'),     item.question)                         : '',
-      item.key_message         ? metaSeg(L('pp_inventory_field_key_message',  'Key message'),  item.key_message)                      : '',
       listSeg(L('pp_inventory_field_used_in', 'Used in'), item.used_in),
       listChipsSeg(L('pp_inventory_field_atoms',    'Atoms'),    item.atoms),
-      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants),
-      item.content_status      ? metaSeg(L('pp_inventory_field_readiness',    'Readiness'),    contentStatusPill(item.content_status)) : ''
+      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants)
     ].join('');
     const priorityMeta = item.priority_tier
       ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_priority + ':</span>' + pill(PRIORITY_MAP, item.priority_tier) + '</div>'
@@ -3525,7 +3726,7 @@
       return it.scope === 'section' && it.page_id === row.page_id;
     });
     // Section cards stack vertically on Section map — one column, section cards
-    // carry multi-line content (Goal + Message + bullets + readiness pill).
+    // carry multi-line content (Goal + Question rows + the content brief).
     const variant = 'one';
     const cardsHtml = sectionItems.map(cardHtml).join('');
     return ''
@@ -3535,23 +3736,17 @@
       + '</section>';
   }
 
-  function summaryHtml(summary, data) {
+  // Two figures. A legacy summary.sections_needing_content (plans written
+  // before 4.7) is ignored — readiness is gone.
+  function summaryHtml(summary) {
     if (!summary) return '';
     function stat(n, labelKey, fallback) {
       return '<div class="pp-summary__stat"><div class="pp-summary__n">' + (n != null ? n : '') + '</div><div class="pp-summary__label">' + (LABELS[labelKey] || fallback) + '</div></div>';
     }
-    // Sections needing content = count of section_index entries whose
-    // content_status is NOT content-ready. Derived (not persisted) because
-    // it's a view over data the agent already wrote.
-    const sections = (data && data.section_index) || [];
-    const needingContent = summary.sections_needing_content != null
-      ? summary.sections_needing_content
-      : sections.filter(function(s) { return s.content_status && s.content_status !== 'content-ready'; }).length;
     return ''
       + '<div class="pp-summary">'
-      +   stat(summary.total_templates,  'pp_inventory_total_templates',          'Unique templates')
-      +   stat(summary.unique_sections,  'pp_inventory_unique_sections',          'Unique sections')
-      +   stat(needingContent,           'pp_inventory_sections_needing_content', 'Sections needing content')
+      +   stat(summary.total_templates,  'pp_inventory_total_templates', 'Unique templates')
+      +   stat(summary.unique_sections,  'pp_inventory_unique_sections', 'Unique sections')
       + '</div>';
   }
 
@@ -4009,7 +4204,7 @@
   }
 
   // ---- Section map detail — rationale + alternatives only. Section card
-  // fields (Goal / Message / Readiness / Content) are already on the canvas
+  // fields (Goal / Question / content brief) are already on the canvas
   // card; repeating them in the panel is redundant. ----
   function renderSectionMapDetail(id) {
     view = 'detail';
@@ -4079,7 +4274,7 @@
   }
 
   // ---- Design plan detail — rationale + alternatives only. Priority /
-  // usage / used-in / atoms / variants / goal / key_message / narrative
+  // usage / used-in / atoms / variants / goal / narrative
   // all live on the canvas card already. Panel surfaces only the "why". ----
   function renderInventoryDetail(id) {
     view = 'detail';
@@ -4297,12 +4492,6 @@
     if (t === 'modular')        return LABELS.template_modular;
     return t || '';
   }
-  function _md_contentStatusLabel(s) {
-    if (s === 'content-ready') return LABELS.pp_content_ready;
-    if (s === 'needs-content') return LABELS.pp_needs_content;
-    if (s === 'tbd')           return LABELS.pp_tbd_status;
-    return s || '';
-  }
   function _md_joinChips(arr) {
     if (!arr || !arr.length) return '';
     return arr.map(_md_stripBraces).join(', ');
@@ -4471,17 +4660,32 @@
       var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
       pageSections.forEach(function(s) {
         // Heading shape per schema's MD export contract:
-        // ### {Title} — {narrative} ({confidence}, {content_status})
+        // ### {Title} — {narrative} ({confidence})
         var heading = '### ' + _md_stripBraces(s.title || s.id || '');
         if (s.narrative) heading += ' — ' + _md_stripBraces(s.narrative);
         var pillBits = [];
         if (s.confidence)     pillBits.push(_md_confidenceLabel(s.confidence));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.goal)                parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)            parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.content_description) parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        // Content brief, in the card's order; Must cover nests its entries
+        // two spaces in. An older-shape item (no key_message, no must_cover)
+        // keeps its content line in place of the brief.
+        var mustCover = sectionListEntries(s.must_cover);
+        if (s.key_message || mustCover.length) {
+          if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
+          if (mustCover.length) {
+            parts.push('- **' + LABELS.md_must_cover + ':**');
+            mustCover.forEach(function(c) { parts.push('  - ' + _md_stripBraces(c)); });
+          }
+          if (s.doubt)     parts.push('- **' + LABELS.md_doubt + ':** ' + _md_stripBraces(s.doubt));
+          if (s.proof)     parts.push('- **' + LABELS.md_proof + ':** ' + _md_stripBraces(s.proof));
+          if (s.action)    parts.push('- **' + LABELS.md_action + ':** ' + _md_stripBraces(s.action));
+          if (s.leave_out) parts.push('- **' + LABELS.md_leave_out + ':** ' + _md_stripBraces(s.leave_out));
+        } else if (s.content_description) {
+          parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        }
         if (s.rationale)           parts.push('- **' + LABELS.md_rationale + ':** ' + _md_stripBraces(s.rationale));
         if (s.alternatives)        parts.push('- **' + LABELS.md_alternatives + ':** ' + _md_stripBraces(s.alternatives));
         parts.push('');
@@ -4495,13 +4699,9 @@
     data = data || INVENTORY;
     var parts = ['# ' + LABELS.md_pp_inventory_title, ''];
     var summary = data.summary || {};
-    var sectionsNeeding = (typeof summary.sections_needing_content === 'number')
-      ? summary.sections_needing_content
-      : (data.section_index || []).filter(function(s) { return s.content_status !== 'content-ready'; }).length;
     parts.push('## ' + LABELS.md_inventory_section_summary, '');
     parts.push('- **' + LABELS.md_inventory_summary_total_templates + ':** ' + (summary.total_templates || 0));
     parts.push('- **' + LABELS.md_inventory_summary_unique_sections + ':** ' + (summary.unique_sections || 0));
-    parts.push('- **' + LABELS.md_inventory_summary_sections_needing_content + ':** ' + sectionsNeeding);
     parts.push('', '---', '');
     var templateMap = data.template_map || [];
     if (templateMap.length) {
@@ -4528,7 +4728,6 @@
         var pillBits = [];
         if (s.priority_tier)  pillBits.push(_md_priorityLabel(s.priority_tier));
         if (s.template_type)  pillBits.push(_md_templateTypeLabel(s.template_type));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.narrative)   parts.push('- **' + LABELS.md_narrative + ':** ' + _md_stripBraces(s.narrative));
@@ -4537,7 +4736,6 @@
         }
         if (s.goal)        parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)    parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
         if (s.atoms && s.atoms.length) {
           parts.push('- **' + LABELS.md_atoms + ':** ' + _md_joinChips(s.atoms));
         }

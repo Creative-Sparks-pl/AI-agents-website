@@ -2,6 +2,16 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.7.1 — 2026-11-22
+
+### Changed
+- The example project plan and wireframes behind the UX Design Skill page (`/examples/uxd-product-website-v3_*`, PL and EN) now show the page as it is live: the wireframes draw its 17 sections in order with the live copy and list prices, and the plan's context and strategy describe today's three packages and purpose. The plan uses UX Design Skill 4.7's format: every section carries a content brief (key message, what it must cover, and the doubt, proof, action or leave-out where needed), with no readiness labels.
+- The Website Planning example plan (`/examples/website-planning-skill_project_plan*`, PL and EN) gets the same 4.7 content brief, matched to the live free planning page (reviews section included), and states that page's purpose.
+- The English example files are written as English, not translated from the Polish, and quote the English pages' own copy.
+- The proof gallery's wireframes card says what the file shows ("Makieta tej strony sekcja po sekcji…" / "This page, sketched section by section…") instead of promising before-and-after wireframes.
+- File names and links are unchanged, so every page and email link still opens the same address. The sources live in UX-UXD-Agent-website, with the previous versions archived there.
+- `docs/testing.md`: a test-map row for example files changed in place (build + cookie check).
+
 ## 1.7.0 — 2026-11-22
 
 ### Added

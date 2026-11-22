@@ -15,7 +15,7 @@ cards:
       label: Otwórz Fundamenty komunikacji
       href: /examples/uxd-product-website-v3_messaging_canvas.html
   - title: Makiety
-    description: Szkice sekcji z prawdziwym copy, makieta przed i po audycie istniejącej strony.
+    description: Makieta tej strony sekcja po sekcji, z tym samym copy, które właśnie czytasz.
     shape: bars
     link:
       label: Otwórz Makiety

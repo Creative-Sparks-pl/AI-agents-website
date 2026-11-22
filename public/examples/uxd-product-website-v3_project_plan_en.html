@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uxd-product-website-v3 — Project Plan</title>
+  <title>ux-design-skill — Project Plan</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -101,11 +101,6 @@
     .ui-badge--red    { background: #f8d7da; color: #721c24; }
     .ui-badge--gray   { background: #e9ecef; color: #495057; }
 
-    /* Content-readiness pill variants — compose with .ui-badge. */
-    .ui-badge--content-ready  { background: #d4edda; color: #155724; }
-    .ui-badge--needs-content  { background: #fff3cd; color: #856404; }
-    .ui-badge--tbd-status     { background: #e9ecef; color: #495057; }
-
     /* ---- Content-label modifiers on .ui-badge ----
        `--plain` neutralizes the status-pill styling (uppercase / bold / 9px) so
        the base class can carry mixed-case prose labels like "Trial signup".
@@ -137,7 +132,7 @@
       display: grid;
       gap: var(--wf-gap);
     }
-    .ui-card-row--three { grid-template-columns: 1fr 1fr 1fr; }
+    .ui-card-row--three { grid-template-columns: 1fr 1fr; }
     .ui-card-row--two   { grid-template-columns: 1fr 1fr; }
     .ui-card-row--one   { grid-template-columns: 1fr; }
     .ui-card-row-title {
@@ -725,8 +720,8 @@
     /* ============================================================ */
     /* === PROJECT-PLAN-SPECIFIC — class prefix .pp-*            === */
     /* === Sub-page containers, canvas rows (selective port from === */
-    /* === messaging-canvas-template.html), content-readiness    === */
-    /* === pills. Composes with UNIVERSAL shell chrome above.    === */
+    /* === messaging-canvas-template.html), section cards.       === */
+    /* === Composes with UNIVERSAL shell chrome above.           === */
     /* ============================================================ */
 
     /* Sub-page containers — one active at a time via page switcher.
@@ -1005,7 +1000,7 @@
     }
 
     /* Section card supplemental primitives. Base class is .ui-card;
-       these children hold the narrative tag + question line + readiness pill. */
+       these children hold the narrative tag + question line. */
     .pp-cell-tags {
       display: flex;
       flex-wrap: wrap;
@@ -1029,8 +1024,9 @@
       font-size: 0.8125rem;
       margin: 0;
     }
-    /* Section card — labeled field row. One pattern reused for Goal /
-       Message / Content rows. Content bullets render inside
+    /* Section card — labeled field row. One pattern reused for the Goal /
+       Question rows, and for the Content row of older-shape items (plans
+       written before 4.7). Content bullets render inside
        .pp-section-card__field (label on first line, <ul> below). */
     .pp-section-card__field {
       font-size: 0.8125rem;
@@ -1049,6 +1045,25 @@
     }
     .pp-section-card__field ul li,
     .pp-section-card__content-list li { padding: 2px 0; }
+    /* Section card — content brief (layout A). One labeled list after the
+       Question row; its top border is the thin divider between the rows
+       and the brief. Each <li> opens with a .pp-section-card__field-label;
+       Must cover nests a bulleted <ul> under its label. Reads at the same
+       size and color as the field rows above. */
+    .ui-card > .pp-section-card__brief {
+      margin: 0;
+      padding: 8px 0 0;
+      border-top: 1px solid var(--wf-line);
+      list-style: none;
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+    }
+    .ui-card .pp-section-card__brief ul {
+      margin: 2px 0 0;
+      padding-left: 18px;
+      list-style: disc;
+      color: inherit;
+    }
     /* Section map — per-page button list. Sits below the page header; one
        button per page (Home / Product / Global...). Active button shows
        which page-map is visible below. Shares the 600px centered column
@@ -1105,10 +1120,10 @@
 
     /* ---- Design plan sub-page primitives (formerly "Inventory") ---- */
 
-    /* Summary stat block — three big numbers, their labels underneath. */
+    /* Summary stat block — two big numbers, their labels underneath. */
     .pp-summary {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin: 12px 0 24px;
       padding: 20px 24px;
@@ -1269,8 +1284,6 @@
 
     /* === Responsive — page-width steps (container set on .pp-main) === */
     @container pp-main (width <= 900px) {
-      .ui-card-row--three { grid-template-columns: 1fr 1fr; }
-      .pp-summary { grid-template-columns: 1fr 1fr; }
       .pp-header h1 { font-size: 1.75rem; }
     }
     @container pp-main (width < 600px) {
@@ -1437,43 +1450,9 @@
      ============================================================ -->
 <script type="application/json" id="context-data">
 {
-  "namespace": "ux-designer-project-plan-uxd-product-website-v3-2026-04-26",
-  "labels": {
-    "group_project_specific": "For this project",
-    "pp_context_subtitle": "Discovery: who, what, why",
-    "pp_strategy_title": "Strategy",
-    "pp_strategy_subtitle": "Format, archetype, sitemap, messaging, voice",
-    "pp_section_map_subtitle": "Section map per page (including the virtual Global page)",
-    "pp_inventory_title": "Template inventory",
-    "pp_context_row_project_specific": "For this project",
-    "pp_scope_included": "In scope",
-    "pp_scope_excluded": "Out of scope",
-    "pp_strategy_site_format": "Site format",
-    "pp_strategy_messaging_voice": "Messaging and voice",
-    "pp_strategy_messaging": "Messaging hierarchy",
-    "pp_strategy_voice": "Voice brief",
-    "detail_narrative": "Narrative function",
-    "group_scope_page": "Page level",
-    "pp_inventory_field_narrative": "Narrative function",
-    "pp_inventory_section_index": "Section index",
-    "bar_page_strategy": "Strategy",
-    "bar_page_inventory": "Template inventory",
-    "bar_download": "Download:",
-    "bar_download_html": "Project Plan (HTML)",
-    "bar_download_context_md": "Project Context (MD)",
-    "bar_download_strategy_md": "Strategy (MD)",
-    "bar_download_section_map_md": "Section Map (MD)",
-    "bar_download_inventory_md": "Template Inventory (MD)",
-    "bar_download_context_md_title": "Download Project Context as Markdown",
-    "bar_download_strategy_md_title": "Download Strategy as Markdown",
-    "bar_download_section_map_md_title": "Download Section Map as Markdown",
-    "bar_download_inventory_md_title": "Download Template Inventory as Markdown",
-    "md_included": "In scope",
-    "md_excluded": "Out of scope",
-    "md_narrative": "Narrative function",
-    "md_pp_strategy_title": "Strategy",
-    "md_pp_inventory_title": "Template inventory"
-  },
+  "namespace": "ux-designer-project-plan-ux-design-skill-2026-04-26",
+  "labels": {},
+  "project_language": "en",
   "canvas": {
     "rows": [
       {
@@ -1512,15 +1491,15 @@
       "kv": [
         {
           "label": "Name",
-          "value": "UX Design Skill, product website v3. A planning tool for site structure and copy."
+          "value": "UX Design Skill: the product page (agents.creativesparks.pl/en/ux-design-skill/), in English and Polish"
         },
         {
           "label": "Description",
-          "value": "A planning tool for site structure and copy with UX expertise built in. It helps you decide what belongs on the page and why, plus what to write and how to order it, at the stage before Figma and before any site generator."
+          "value": "The page sells UX Design Skill, a skill for Claude Code, Codex and Cursor that takes a site project from brief to wireframes. It asks for project context, plans the page structure, writes the actual copy and draws the wireframes. Inside are 110 knowledge files: 16 page types, 13 UX frameworks and 50+ section patterns."
         },
         {
           "label": "Business model",
-          "value": "One-time license, pay once and own forever, in three tiers (Solo / Studio / Agency). Pre-sale runs at lower prices; after that, global launch at higher prices. Twelve months of updates included with each tier."
+          "value": "A one-time license with 12 months of updates included, then a renewal at about half the package price. Three packages for two groups: Founder ($149) for business owners planning their own company's site; Solo Designer ($229) and Studio ($379, up to 5 users) for designers and teams doing client work. Prices are + VAT where applicable. 14-day refund. Alongside them, two free skills taken from the full version (a homepage audit and website planning), claimed with an email address."
         }
       ]
     },
@@ -1533,15 +1512,14 @@
       "kv": [
         {
           "label": "Primary goal",
-          "value": "Sell licenses during the pre-sale window, plus build a lead pipeline through the free site audit and the NGO edition."
+          "value": "Sell UX Design Skill licenses in one of three packages. Sign-ups for the free skills from the “Try it for free” cards are a second route, not this page's goal."
         },
         {
           "label": "Success metric",
-          "value": "Number of licenses sold during the pre-sale (target value to be set by the owner). Secondary metric: number of free audits started, as a pre-conversion signal."
+          "value": "Number of purchases: the page's main number, counted separately for the English and Polish versions. Revenue sits next to it, kept separate per currency. Sign-ups from the free skill cards count toward the free skills' own result; here they're only context. Clicks on the buy buttons are not a success metric, because they can rise without a single sale."
         }
       ],
-      "rationale": "Sales goal takes priority over category building. The skill already exists, the pay-once model needs a pre-sale as the main monetization moment, and prices rise after that with the global launch. Lead-gen through the audit is subordinated to this goal, not a goal in itself.",
-      "alternatives": "Lead-gen as the primary goal (rejected: pay-once means we need revenue now, not a list); category-building campaign (rejected: the skill exists, no need to invent a market when one decision drives the quarter)."
+      "rationale": "There are too few purchases to report them as a share of visits, so the page reports their number. Free skill sign-ups aren't added to purchases: a purchase can't be linked to a sign-up, so a combined number would suggest a connection nobody measures. The path from landing on the page through pricing to a buy click explains why the number of purchases changes."
     },
     {
       "id": "context-id-audience",
@@ -1550,28 +1528,28 @@
       "title": "Target audience",
       "layout": "simple-meta",
       "meta_pills": [
-        "Awareness: problem-aware (primary), unaware (category education layer)"
+        "Awareness: knows the problem and compares solutions (main); some already know the product from a free skill"
       ],
       "kv": [
         {
-          "label": "Primary persona: Designer",
-          "value": "Freelance or small studio (2 to 8 people), 3 to 15 years of experience, designs websites for clients, where every structural decision goes back to a client or peer for review. Primary trigger: a client comes back with conversion data after launch and asks why the site isn't converting. Buying decision is made solo, or with light backing from the studio owner."
+          "label": "Primary audience: designers doing client work",
+          "value": "A freelancer or a small studio that designs sites for clients. Every structural decision goes in front of the client, so what counts is a plan with its reasoning and files they can show. Packages: Solo Designer (1 user) and Studio (up to 5 users), with a commercial license and the extras for client work: the template and section list for quoting a project, the full UX audit and a wireframe of an existing site. They decide alone or with the studio head."
         },
         {
-          "label": "Secondary persona: Digital creator",
-          "value": "Vibe coder, indie hacker, course author, founder building their own site with AI. Builds solo with generators (Bolt, v0, Lovable), and the site ends up looking like every other patchwork of default sections. Primary trigger: the product isn't selling and they lack the diagnostic tools to pinpoint what to change. Decides solo, short path."
+          "label": "Secondary audience: business owners",
+          "value": "A business owner who plans their own company's site, alone or with someone on the team, instead of outsourcing the project. Often not a designer by trade, so they need step-by-step guidance. Package: Founder (1 user, a license for your own business's sites). They decide alone."
         },
         {
-          "label": "Third persona: Conversion-focused founder",
-          "value": "E-commerce or SaaS owner running paid traffic to a site that doesn't convert. Treats the site like an ad channel that must pay back ROAS. Primary trigger: campaign data shows a weak conversion rate, or an investor conditions the next round on site quality. The decision often needs internal justification (co-founder, CTO)."
+          "label": "Where they come from",
+          "value": "English-speaking and Polish visitors; each language has its own version of the page. Part of the traffic comes from Meta ads."
         },
         {
           "label": "Anti-persona",
-          "value": "Enterprise with a 20-plus team, in-house UX research, and a budget for name-brand consultants. They need direct sales, contracts, customization. Self-serve won't close them."
+          "value": "A large company with a team of 20+, its own UX research and a budget for consultants. It needs contracts, customization and direct sales, while the page sells a checkout purchase with no conversation. A team larger than five gets a license only on request by email."
         }
       ],
-      "rationale": "Persona priority (Designer, then Digital creator, then Founder) confirmed by the project owner. Designer has the cleanest and most repeatable purchase trigger in simulated interviews, the highest willingness to pay (the planning stage is billable to the client), and the shortest decision path. Digital creator and Founder are candidates for primary persona at the English launch.",
-      "alternatives": "Conversion-focused founder as primary (stronger trigger measured in dollars, but a longer decision path with internal blockers, and the segment is globally larger than the local designer market, so we reserve it for the English version). Digital creator as primary (most traffic in that group is English-speaking, the local vibe-coder segment is narrow)."
+      "rationale": "The owner confirmed the two audience groups when the pricing changed: designers and studios doing client work, and business owners planning their own company's site. Designers stay the primary audience: Solo Designer is the package people buy, which is why pricing highlights it. Founder opens the page to the second group with one package, with no separate page and no switch: the question in the pricing heading points each visitor to their cards.",
+      "alternatives": "A separate page for business owners, or an audience switch in pricing: rejected for this stage; one pricing section with a question in the heading is enough, and a separate page waits for the December test. Business owners as the primary audience: rejected, because mostly designers buy. A risk accepted knowingly: a Polish local business owner may not see themselves in the name “Founder”; if the Polish campaign targets mainly that group, the Polish name will change to “Firma”."
     },
     {
       "id": "context-id-alternative",
@@ -1581,24 +1559,28 @@
       "layout": "simple-meta",
       "kv": [
         {
-          "label": "Status quo (I figure it out myself, no process)",
-          "value": "intuition straight from the brief into Figma, audits by gut feel with no criteria, pen and paper. This cluster shows up across all three personas as a universal baseline."
+          "label": "I ask the AI model on its own (no methodology)",
+          "value": "they ask Claude Code, ChatGPT or another chat for a sitemap and copy, step by step. They get an answer with no UX methodology and no decision trail, and the context disappears with the chat history."
         },
         {
-          "label": "Internal DIY (I cobble it together)",
-          "value": "ChatGPT or Claude used ad hoc, prompt collections for UX, Figma Community UI kits, WordPress or Shopify themes, site generators (Bolt, v0, Lovable, Cursor) with default structures accepted as-is."
+          "label": "I take free skills from GitHub",
+          "value": "they install free UX skills: style and component generators for their stack, references (WCAG, Nielsen), prompt libraries or research skills. Each does its own job; none runs a project from brief to wireframes."
         },
         {
-          "label": "General-purpose tools",
-          "value": "Figma, FigJam, Miro, design tools without a structural layer. The skill owns the stage before the first frame, it doesn't compete with Figma, it feeds Figma context."
+          "label": "I write my own skill",
+          "value": "they build their own skill or set of prompts for their process. That's 80 to 160 hours of writing and testing, and a risk of inconsistency."
         },
         {
-          "label": "Direct competition",
-          "value": "freelance UX, consultant, agency, design sprint (recognized but rejected because of the $500 to $8000 cost and the multi-day timeline). Courses (Udemy, Interaction Design Foundation, NN/g, Baymard, Smashing Magazine) and peer feedback from fellow designers or in communities (Discord, IndieHackers)."
+          "label": "I skip planning",
+          "value": "they go from the brief straight to Figma or a site builder (vibe coding) and accept the default structure. The client asks “why like this?”, and there's nothing to answer with."
+        },
+        {
+          "label": "I outsource the project",
+          "value": "mostly business owners: they hire an outside UX specialist or a design studio for the plan and wireframes. It costs more and takes longer than working with the skill."
         }
       ],
-      "rationale": "Four clusters cover every alternative named in the simulated interviews with the three personas, described from the buyer's behavior (inside-out) rather than from the product offer. Every alternative named in the brief (chatbots, prompts, templates, consultants) lands in one of the four clusters.",
-      "alternatives": "Google Analytics, Hotjar, Mixpanel as a separate cluster (rejected, these are diagnostic tools at an earlier stage, not an alternative for producing UX documentation). 'I skip UX entirely, ship straight to dev' as a separate cluster (rejected, fits inside cluster 1 already as no-process)."
+      "rationale": "The clusters describe what visitors do instead of buying the skill, and they cover the alternatives the page itself names: the AI model alone and your own skill in the comparison table, free skills from GitHub in their own section, Figma and vibe coding in the value props, outsourcing in the Founder card.",
+      "alternatives": "Figma and site builders as a separate competitor cluster: rejected, because the skill doesn't replace them, it prepares the plan before them, so they belong in the “I skip planning” cluster. UX courses as a separate cluster: rejected, because they aren't a choice at the moment of purchase and the page doesn't mention them."
     },
     {
       "id": "context-id-top-tasks",
@@ -1608,40 +1590,48 @@
       "layout": "ranked-list",
       "ranked": [
         {
-          "text": "Figure out if the skill is for me (Designer / Digital creator / Conversion-focused founder)",
+          "text": "Work out whether the skill is for me: do I design sites for clients or for my own business",
           "priority": "Recommended"
         },
         {
-          "text": "Run a free audit on my own site",
+          "text": "See the real files the skill produces",
           "priority": "Recommended"
         },
         {
-          "text": "See real example files from the process",
+          "text": "Understand what working with the skill looks like, step by step",
           "priority": "Recommended"
         },
         {
-          "text": "Understand how the process works (six connected stages)",
+          "text": "Check how the skill differs from Claude Code alone, free skills and a skill of my own",
           "priority": "Recommended"
         },
         {
-          "text": "Compare tiers and pricing",
+          "text": "Read buyer reviews",
           "priority": "Recommended"
         },
         {
-          "text": "Check what installation looks like before I buy",
+          "text": "Compare packages and prices",
           "priority": "Recommended"
         },
         {
-          "text": "Pick a tier and complete the purchase",
+          "text": "Choose a package and buy",
           "priority": "Recommended"
         },
         {
-          "text": "Download the skill files after purchase",
+          "text": "Try a free skill before buying",
           "priority": "Recommended"
         },
         {
-          "text": "Apply for the NGO edition",
-          "priority": "Consider"
+          "text": "Check whether the skill works in my tool and how to install it",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Make sure about the license, the refund and my project data",
+          "priority": "Recommended"
+        },
+        {
+          "text": "Find out who's behind the skill",
+          "priority": "Worth considering"
         }
       ]
     },
@@ -1653,29 +1643,25 @@
       "layout": "scope-split",
       "scope_split": {
         "included": [
-          "Home page in long-form sales page format",
-          "Two supporting subpages: Knowledge base, How it works",
-          "License purchase in three tiers with pre-sale and regular pricing",
-          "Download the skill files after purchase (plug-in style distribution)",
-          "Free site audit (Reverse Wireframing + Review + change proposals) as a pre-conversion lever",
-          "NGO edition: free license in exchange for a public case study",
-          "Sample artifacts preview (gallery of files from this site's own build)",
-          "CTA hierarchy: purchase (primary), audit (secondary), NGO (tertiary)"
+          "The product page as a long sales page, in English and Polish",
+          "Purchase in three packages (Founder, Solo Designer, Studio), each with its own checkout link",
+          "A gallery of the files used to plan this page: project plan, messaging canvas, wireframes and the audit of the previous version",
+          "A demo video of the skill",
+          "Buyer reviews and a 4.52 rating (23 ratings)",
+          "Two free skill cards, claimed with an email address, each linking to its skill's page",
+          "Supporting pages: Knowledge base, How it works, Changelog, Privacy policy, Terms of sale",
+          "Install from a personal link in the email, with no accounts and no backend",
+          "A refund within 14 days"
         ],
         "excluded": [
-          "Localized versions beyond English (require re-authoring, not translation)",
-          "Blog as a standalone content marketing surface (sample artifacts cover that role)",
-          "Persona-specific pages per Designer / Creator / Founder",
-          "Comparison pages (vs Figma, Bolt, ChatGPT)",
-          "Deep workflow documentation (separate subpages per stage)",
-          "About / history / team",
-          "Visual design (color, typography, pixel layout): hard boundary",
-          "Front-end implementation of the site",
-          "In-product onboarding, dashboard, auth flow (no SaaS backend)",
-          "Live interactive AI demo on the page (API cost, abuse risk, 'canned demo' feel)",
-          "Hosted audit web app (revisit if pre-sale shows high drop-off)",
-          "Quick Mode (3-question speedrun): the audit already serves as the fast lane",
-          "Backend subscription enforcement (contradicts pay-once)"
+          "A separate page for business owners, an audience switch or a second set of pricing cards",
+          "Paid add-ons: teamwork, comments on files, resuming a project online",
+          "Accounts, logins, a customer dashboard and subscriptions",
+          "Checkout purchase for teams larger than five (license on request only)",
+          "An interactive AI model demo on the page (API cost, risk of abuse)",
+          "Visual design (colors, typography) and building the site: the skill stops at wireframes",
+          "A blog and content marketing",
+          "A section-by-section plan for the free skill pages, Knowledge base and How it works: these pages exist, but this plan doesn't lay them out"
         ]
       }
     },
@@ -1687,20 +1673,20 @@
       "layout": "simple-meta",
       "kv": [
         {
-          "label": "Three personality attributes",
-          "value": "Analytical: explains why, cites evidence, patterns, and numbers from research, no hedging, surfaces uncertainty directly. Collaborative: treats the reader as the decision-maker, presents options with trade-offs, doesn't lecture or assign motives. Direct: 'do this' or 'don't do this' with a reason, no preambles, no statements of intent."
+          "label": "Three personality traits",
+          "value": "Analytical: explains why, leans on numbers and patterns, and says plainly when it's unsure. Collaborative: treats the reader as the decision-maker and shows options with their trade-offs, without lecturing. Direct: says “do this” or “don't do that”, with the reason, and no preamble."
         },
         {
           "label": "Preferred words",
-          "value": "'the skill', 'files', 'site plan', 'sitemap', 'rationale next to each decision', 'work stage', 'checkpoint', 'audience'"
+          "value": "“skill”, “site plan”, “wireframes with real copy”, “reasoning next to every decision”, “files”, “the decision stays yours”, “pay once”"
         },
         {
           "label": "Banned words",
-          "value": "'agent' (1 of 16 acceptance in interviews), 'AI-powered', 'cutting-edge', 'innovative', 'dynamically', 'comprehensive', em dashes, rhetorical triads, 'it's not X, it's Y' framings, forced enthusiasm"
+          "value": "“AI-powered”, “cutting-edge”, “innovative”, “comprehensive”, “dynamic”, “agent” as the product name (1 in 16 accepted it in interviews; the word is kept only for the tool the skill runs in), forced enthusiasm"
         },
         {
-          "label": "Tone across contexts",
-          "value": "Hero and sales sections: direct, confident. Educational layer: analytical, patient. Process evidence: facts without self-promotion. FAQ: collaborative, empathetic. Pricing and tiers: transactional, concrete. Installation: instructional, step-by-step."
+          "label": "Tone by context",
+          "value": "Hero and sales sections: direct, confident. Proof from the process: facts without self-promotion. Comparisons: matter-of-fact, fair to the competition. The skill's boundaries: candid. Pricing: transactional, specific. FAQ: collaborative, empathetic. Install: instructional, step by step. Author: personal, in the first person."
         }
       ]
     },
@@ -1713,50 +1699,50 @@
       "kv": [
         {
           "label": "Mode",
-          "value": "Hybrid. Self-serve (purchase from the page, short path) plus sales-led through the freemium audit as a case-study pipeline from agencies."
+          "value": "Self-serve purchase from the page: each pricing card leads straight to its package's checkout, with no sales conversation. Alongside it, a second route: free skills for an email address, a test on your own project before buying."
         },
         {
-          "label": "Decision pace",
-          "value": "Fast. Designer and Digital creator decide solo within their own budget (Solo and Studio tiers fit a personal call). The Conversion-focused founder may need a co-founder or a small committee (the CTO can be a blocker)."
+          "label": "Decision speed",
+          "value": "Fast. Designers and business owners decide alone, from their own budget: Founder ($149) and Solo Designer ($229) fit a decision made alone. For Studio ($379), the studio head decides."
         },
         {
           "label": "Buying committee",
-          "value": "None. The pre-sale tiers fit a freelancer's solo budget or a small studio owner's discretionary call."
+          "value": "None. The packages fit the budget of a freelancer, a business owner or the head of a small studio."
         },
         {
           "label": "Proof strategy",
-          "value": "Radical transparency. The site is its own case study. With no real customers in pre-sale, every process artifact (Project Plan, Communication Foundations, Messaging Draft, wireframes) is published as proof of the skill's output."
+          "value": "The page shows its own process: the project plan, messaging canvas, wireframes and audit used to plan it, each file opening in the browser. Next to them, buyer reviews, a 4.52 rating (23 ratings), a demo video and a 14-day refund."
         }
       ],
-      "rationale": "Hybrid sales motion reconciles two things. Pay-once needs a fast self-serve path for the short-cycle personas (Designer, Creator), while the Conversion-focused founder and agencies need proof of value, which the freemium audit delivers without forcing a classic product demo.",
-      "alternatives": "Pure self-serve without the audit (rejected: no case studies during pre-sale means no proof for the Founder on a real site). Pure sales-led with demo (rejected: contradicts pay-once and is unnecessary for short-cycle personas)."
+      "rationale": "A self-serve purchase fits a one-time license and prices the buyer can decide on alone. The process files and the reviews answer the quality question together: the files show what the skill does, the reviews that it works for other people. The free skills give skeptics a test on their own project without a sales conversation.",
+      "alternatives": "Selling through a call or a live demo: rejected, because it contradicts a one-time license and isn't needed when one person decides. Purchase only, with no free skills: rejected, because a skeptic wants to test the skill on their own project before paying."
     },
     {
       "id": "context-id-pricing-tier",
       "group": "project-specific",
       "confidence": "high",
-      "title": "Tiers and pricing",
+      "title": "Packages and prices",
       "layout": "simple-meta",
       "kv": [
         {
-          "label": "Solo",
-          "value": "Pre-sale price (lower tier, single-seat)"
+          "label": "Founder",
+          "value": "$149. For your own business, 1 user: plan, copy and wireframes for your company's sites; a license for your own business's sites."
+        },
+        {
+          "label": "Solo Designer",
+          "value": "$229. For client work, 1 user: a commercial license, plus the template and section list for quoting a project, the full UX audit and a wireframe of an existing site. Highlighted in pricing."
         },
         {
           "label": "Studio",
-          "value": "Pre-sale price (mid tier, small studio)"
-        },
-        {
-          "label": "Agency",
-          "value": "Pre-sale price (top tier, larger team, no user cap)"
+          "value": "$379. For client work, up to 5 users: everything in Solo Designer, with a commercial license for the team."
         },
         {
           "label": "Updates",
-          "value": "Twelve months included with every tier"
+          "value": "12 months included in every package, then a renewal for another year at about half the price. Without a renewal, the installed version keeps working."
         },
         {
-          "label": "Urgency",
-          "value": "Pre-sale runs now, before the global launch raises prices. This is the only urgency frame on the site. No 'notify me at launch' signup, because buyers can already lock in the lower price today."
+          "label": "Prices and refund",
+          "value": "Prices are + VAT where applicable. A 14-day refund, no questions asked."
         }
       ]
     },
@@ -1769,26 +1755,26 @@
       "kv": [
         {
           "label": "Primary CTA",
-          "value": "Pick a tier and complete checkout during the pre-sale window."
+          "value": "“See pricing” in the hero, in the menu and at the end of the page leads to pricing; there, “Buy Founder”, “Buy Solo Designer” or “Buy Studio” opens the checkout for that package."
         },
         {
           "label": "Secondary CTA",
-          "value": "Run the free audit on your own site. Works as a value demo of the skill on a real site the buyer cares about. Paid ads land here directly."
+          "value": "“Try it for free” in the hero and “Or try it for free” at the end of the page lead to the cards of two free skills: the Homepage UX Audit Skill and the Website Planning Skill. You claim one with an email address, and the install link arrives by email."
         },
         {
-          "label": "Tertiary CTA",
-          "value": "Apply for the NGO edition. Pipeline of case studies for the global launch."
+          "label": "Side paths",
+          "value": "The skill's demo video, the process files that open in the browser, the full knowledge map on the Knowledge base page and the guide on the How it works page."
         },
         {
-          "label": "No free trial",
-          "value": "No free trial or freemium on the skill itself (contradicts pay-once). The audit serves as the fast value demo, and sample artifacts serve as passive proof."
+          "label": "Free skills",
+          "value": "A second route, not this page's goal. Sign-ups from the cards count toward the free skills' own result. Each card also links to its skill's page."
         }
       ],
-      "rationale": "The three-CTA hierarchy follows from: (1) monetization model. License sales are the goal, so purchase gets visual and positional priority. (2) Audit as paid-traffic landing page, where a value demo on the buyer's real site converts harder than a generic product demo. (3) NGO edition as case-study source, which is otherwise missing in pre-sale.",
-      "alternatives": "Audit as the primary CTA on home (rejected: pulls visibility from the purchase CTA, even though paid traffic still lands on its own audit subpage). Newsletter / launch signup (rejected outright by the owner: pre-sale is happening now, signing up for an alert would cannibalize sales)."
+      "rationale": "The purchase is the goal, so “See pricing” comes first in the hero, in the menu and in the closing call to action. The free skills stay a second route for people who want to test the skill on their own project; their cards sit right under pricing, so they don't hide the purchase, and they catch people who saw the prices and haven't bought yet.",
+      "alternatives": "A free skill as the primary CTA: rejected, because it takes visibility away from the purchase, and a sign-up isn't this page's goal. A newsletter or notification sign-up: rejected, because people who want to buy can buy right away, and people who want to try get a free skill."
     }
   ],
-  "messaging_routing": "sufficient-skipped"
+  "messaging_routing": "deferred"
 }
 </script>
 
@@ -1803,124 +1789,181 @@
     "value": "Authority-Led (proof-first)",
     "confidence": "high"
   },
+  "positioning": {
+    "strategy": "wedge",
+    "statement": "The only skill that runs a whole site project from brief to wireframes, with the reasoning behind every decision. It works in Claude Code, Codex and Cursor, the tools you already use.",
+    "against": "Claude Code alone with no methodology, free UX skills from GitHub that each do one piece of the work, and a skill you write yourself",
+    "confidence": "high"
+  },
+  "differentiator": {
+    "value": "It runs the whole site project from brief to wireframes and records the reasoning, the confidence level and the rejected options for every decision. Claude Code alone answers with no methodology and no trail, and free skills each do one piece of the work.",
+    "confidence": "high",
+    "rationale": "It comes from two sections of the page: the free skills overview (“This is the only skill that runs the whole site project from brief to wireframes”) and the comparison with Claude Code alone and your own skill (reasoning and rejected alternatives next to every decision). It matches the first pillar of the messaging hierarchy (a site plan with the reasoning behind every decision)."
+  },
   "main_menu_meta": {
-    "rationale": "Minimal menu. Logo to home, two anchors on home (Pricing, Audit) absorb the main CTAs without forcing navigation to subpages, two subpages (Knowledge base, How it works) for depth, primary CTA 'See pricing' as the far-right call to action. A skeptical Designer should find both proof (Knowledge base) and pricing in one click.",
-    "alternatives": "Expanded menu linking to every home section (rejected: duplicates the scroll). Hamburger on desktop (rejected: four items fit in the bar, hamburger adds friction). 'Resources' dropdown (rejected: only two resources, grouping adds no value)."
+    "rationale": "A minimal menu. Four of the five links (Pricing, Reviews, Free skills, Knowledge base) jump to sections of the product page, so visitors check what they need before buying without leaving the page. The only link off the page is How it works, the guide for people who want to know whether they'll manage. The “See pricing” button on the right is the same call to action as in the hero. The menu links show from tablet width up. In English the guide's link reads “How it works”, the same words as the label of the process section; it leads to the guide page, not to that section.",
+    "alternatives": "A menu with a link to every section: rejected, because it duplicates scrolling. Knowledge base as a link to the subpage: rejected, because the section on the page summarizes the knowledge and carries its own link to the full map. A “Resources” dropdown: rejected, because grouping adds nothing with five items."
   },
   "main_menu": [
     {
       "id": "menu-logo",
-      "name": "Logo (→ Home)",
+      "name": "Logo (→ UX Design Skill)",
       "children": []
     },
     {
-      "id": "menu-pricing",
+      "id": "menu-cennik",
       "name": "Pricing (#pricing)",
       "children": []
     },
     {
-      "id": "menu-audit",
-      "name": "Audit (#audit)",
+      "id": "menu-opinie",
+      "name": "Reviews (#reviews)",
       "children": []
     },
     {
-      "id": "menu-knowledge-base",
-      "name": "Knowledge base (/knowledge-base)",
+      "id": "menu-darmowe-skille",
+      "name": "Free skills (#try-for-free)",
       "children": []
     },
     {
-      "id": "menu-how-it-works",
-      "name": "How it works (/how-it-works)",
+      "id": "menu-baza-wiedzy",
+      "name": "Knowledge base (#knowledge-base)",
+      "children": []
+    },
+    {
+      "id": "menu-jak-pracowac",
+      "name": "How it works (/en/ux-design-skill/how-it-works/)",
       "children": []
     },
     {
       "id": "menu-cta",
-      "name": "See pricing (CTA)",
+      "name": "See pricing (CTA → #pricing)",
       "children": []
     }
   ],
   "sitemap_meta": {
-    "rationale": "Flat hierarchy: Home plus two subpages. All three main CTAs (purchase, audit, NGO) are reachable in one click. Top tasks (persona qualification, file inspection, tier comparison, installation) all live on home as sections or direct links into the subpages.",
-    "alternatives": "Deeper hierarchy with separate /pricing, /audit, /methodology subpages (rejected: unnecessary for this scope, adds friction to purchase without content gain)."
+    "rationale": "A flat hierarchy. The product page is the domain's start page (the main address redirects to it) and the only page with a section map in this plan. Under it sit the supporting pages: Knowledge base and How it works (the pages exist, with no section map in this plan), plus the Changelog and the legal documents. Next to it stand the two free skill pages, standalone and outside the menu, for traffic from ads and the newsletter; the product page links to them from the “Try it for free” cards. The map shows the English pages under /en/; the Polish version has the same pages at Polish addresses. The product page handles every visitor task before a purchase, and pricing is one click from every page.",
+    "alternatives": "A deeper hierarchy with separate pricing and free skill subpages in the menu: rejected, because it adds steps before the purchase with nothing gained. A separate page for business owners: rejected for this stage, because one pricing section with a question in the heading points both groups to their cards."
   },
   "sitemap": [
     {
       "id": "page-home",
-      "name": "Home",
+      "name": "UX Design Skill",
       "children": [
         {
-          "id": "page-knowledge-base",
-          "name": "Knowledge base",
+          "id": "page-baza-wiedzy",
+          "name": "Knowledge base (the page exists, no section map in this plan)",
           "children": []
         },
         {
-          "id": "page-how-it-works",
-          "name": "How it works",
+          "id": "page-jak-pracowac",
+          "name": "How it works (the page exists, no section map in this plan)",
+          "children": []
+        },
+        {
+          "id": "page-changelog",
+          "name": "Changelog",
+          "children": []
+        },
+        {
+          "id": "page-polityka-prywatnosci",
+          "name": "Privacy policy",
+          "children": []
+        },
+        {
+          "id": "page-regulamin",
+          "name": "Terms of sale",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "page-free-homepage-ux-audit-skill",
+      "name": "Homepage UX Audit Skill, free (the page exists, no section map in this plan)",
+      "children": [
+        {
+          "id": "page-free-homepage-ux-audit-skill-changelog",
+          "name": "Changelog",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "page-free-website-planning-skill",
+      "name": "Website Planning Skill, free (the page exists, no section map in this plan; its plan is in a separate file)",
+      "children": [
+        {
+          "id": "page-free-website-planning-skill-changelog",
+          "name": "Changelog",
           "children": []
         }
       ]
     }
   ],
   "footer_meta": {
-    "rationale": "Minimal footer. Three columns: Product (links to the main home sections plus both subpages), Company (contact), Legal (privacy policy, terms). No newsletter signup, per the pre-sale decision. Final purchase CTA lives in the 'Final CTA' section above the footer, not in the footer itself.",
-    "alternatives": "Fat footer with newsletter signup (rejected: would compete with purchase during pre-sale). Footer with social links (rejected for this scope, add once there are active marketing channels)."
+    "rationale": "A minimal footer in one row: the logo and five links. The required documents (privacy policy, cookie settings, terms of sale), the changelog for people checking whether the skill is still being developed, and an email to the author. No newsletter sign-up: people who want to buy buy right away, and people who want to try get a free skill from the cards on the page. The call to buy lives in the closing section above the footer, not in the footer itself.",
+    "alternatives": "A large footer with columns of links to sections and subpages: rejected, because there are few pages, and the menu and the calls to action in the content already lead to them. A newsletter sign-up in the footer: rejected outright by the owner. Social media links: rejected for now; the author's LinkedIn is in the author section."
   },
   "footer": [
     {
-      "id": "footer-product",
-      "name": "Product",
-      "children": [
-        {
-          "id": "footer-pricing",
-          "name": "Pricing",
-          "children": []
-        },
-        {
-          "id": "footer-audit",
-          "name": "Free audit",
-          "children": []
-        },
-        {
-          "id": "footer-knowledge-base",
-          "name": "Knowledge base",
-          "children": []
-        },
-        {
-          "id": "footer-how-it-works",
-          "name": "How it works",
-          "children": []
-        }
-      ]
+      "id": "footer-logo",
+      "name": "Logo (→ UX Design Skill)",
+      "children": []
     },
     {
-      "id": "footer-company",
-      "name": "Company",
-      "children": [
-        {
-          "id": "footer-contact",
-          "name": "Contact",
-          "children": []
-        }
-      ]
+      "id": "footer-privacy",
+      "name": "Privacy policy",
+      "children": []
     },
     {
-      "id": "footer-legal",
-      "name": "Legal",
-      "children": [
-        {
-          "id": "footer-privacy",
-          "name": "Privacy policy",
-          "children": []
-        },
-        {
-          "id": "footer-terms",
-          "name": "Terms",
-          "children": []
-        }
-      ]
+      "id": "footer-cookies",
+      "name": "Cookie settings",
+      "children": []
+    },
+    {
+      "id": "footer-terms",
+      "name": "Terms of sale",
+      "children": []
+    },
+    {
+      "id": "footer-changelog",
+      "name": "Changelog",
+      "children": []
+    },
+    {
+      "id": "footer-kontakt",
+      "name": "Contact (email to the author)",
+      "children": []
     }
   ],
   "items": [
+    {
+      "id": "strategy-id-positioning",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Positioning",
+      "name": "Positioning",
+      "layout": "simple-meta",
+      "lead": "The only skill that runs a whole site project from brief to wireframes, with the reasoning behind every decision. It works in Claude Code, Codex and Cursor, the tools you already use.",
+      "kv": [
+        {
+          "label": "Against",
+          "value": "Claude Code alone with no methodology, free UX skills from GitHub that each do one piece of the work, and a skill you write yourself"
+        }
+      ],
+      "rationale": "Visitors already work with an AI model in Claude Code, Codex or Cursor, and some know the free UX skills on GitHub. The page doesn't fight these tools: the skill works inside them, and what sets it apart is that it runs the whole process and records the reasons for each decision. The free skills section and the comparison table with Claude Code alone and your own skill play this out directly.",
+      "alternatives": "A comparison with an outside UX specialist or design studio as the main axis: rejected for the page as a whole, because the primary audience are designers themselves; only the Founder card carries this argument (plan, copy and wireframes without outsourcing the project). Attacking chat as a worse tool in general: rejected, because visitors use it anyway, and the skill works in the same tools."
+    },
+    {
+      "id": "strategy-id-differentiator",
+      "scope": "page",
+      "confidence": "high",
+      "title": "Differentiator",
+      "name": "Differentiator",
+      "layout": "simple-meta",
+      "lead": "It runs the whole site project from brief to wireframes and records the reasoning, the confidence level and the rejected options for every decision. Claude Code alone answers with no methodology and no trail, and free skills each do one piece of the work.",
+      "rationale": "It comes from two sections of the page: the free skills overview (“This is the only skill that runs the whole site project from brief to wireframes”) and the comparison with Claude Code alone and your own skill (reasoning and rejected alternatives next to every decision). It matches the first pillar of the messaging hierarchy (a site plan with the reasoning behind every decision)."
+    },
     {
       "id": "strategy-id-site-format",
       "scope": "page",
@@ -1929,9 +1972,9 @@
       "name": "Site format",
       "layout": "simple-meta",
       "lead": "Landing + subpages",
-      "body": "Home as a long-form sales page (primary CTA = purchase), plus two supporting subpages: Knowledge base and How it works.",
-      "rationale": "The goal is pre-sale revenue, so the hero with the main CTA has to live on home. Audit lives as a `#audit` anchor, pricing as a section, installation as a short summary linking out to /how-it-works. Subpages carry the depth (expertise inventory, full workflow runbook) that doesn't belong in a sales page.",
-      "alternatives": "One-pager without subpages (rejected: /how-it-works needs depth that doesn't fit a sales-page rhythm). Multi-page split (rejected: dilutes the purchase CTA)."
+      "body": "The product page as a long sales page (primary call to action: purchase), plus supporting subpages: Knowledge base, How it works, Changelog and the legal documents.",
+      "rationale": "The goal is a purchase, so pricing and the primary call to action have to be on the product page, not behind the navigation. Pricing, the free skills and a short install guide are sections of this page. The subpages carry the depth that isn't worth squeezing into the rhythm of a sales page: the full knowledge map, the guide to working with the skill and the changelog.",
+      "alternatives": "One page with no subpages: rejected, because the guide and the full knowledge map need depth that isn't worth squeezing into a sales page. Many pages of equal weight: rejected, because they scatter the call to buy."
     },
     {
       "id": "strategy-id-archetype",
@@ -1940,10 +1983,10 @@
       "title": "Archetype",
       "name": "Archetype",
       "layout": "simple-meta",
-      "lead": "Authority-Led (proof-first)",
-      "body": "The proof, a clickable gallery of process files, opens the narrative right after the hero, before the reader has read any value claim. The pillars then read as interpretation of what you've already seen.",
-      "rationale": "Designer is a skeptical analyst. Immediate proof ('this site is its own case study') hooks harder than pain empathy or a plain product demo. Radical transparency fits Authority-Led perfectly. Pillar P1 from the messaging canvas ('a plan with rationale next to each decision') is meta-consistent: the site proves P1 with its own structure, not just by talking about it.",
-      "alternatives": "Problem-Led (hero + problem statement + audience qualifier up front, rejected: Designers arrive problem-aware in 80% of cases, so a problem statement risks redundancy). Outcome-Led (hero + 6 expected outcomes up front, rejected: outcomes without a mechanism risk sounding generic, would need very concrete anchoring in real files)."
+      "lead": "Proof first, promises second",
+      "body": "The gallery of files used to plan this page opens the story right after the hero, before visitors read the value props. They then read the value props as a description of what they've already seen.",
+      "rationale": "A designer is a skeptical analyst: a file they can open convinces them more than a description of pain or a promised result. The page itself is the proof of the first pillar (a plan with the reasoning behind every decision): it shows the plan instead of only talking about it. Buyer reviews and the 4.52 rating add proof from other people right before pricing.",
+      "alternatives": "Problem first (a description of the pain and qualifying the visitor at the opening): rejected, because visitors usually arrive already knowing the problem, so describing it would repeat it. Results first (a list of outcomes at the opening): rejected, because results without the mechanism sound generic."
     },
     {
       "id": "strategy-id-messaging-hierarchy",
@@ -1952,20 +1995,20 @@
       "title": "Messaging hierarchy",
       "name": "Messaging hierarchy",
       "layout": "ranked-list",
-      "lead": "A site plan with rationale next to every decision, before you open Figma or kick off vibe coding. UX expertise built in, the decision stays with you.",
+      "lead": "UX Design Skill plans, writes and wireframes your site: it asks for project context, plans your page structure and writes the actual copy.",
       "ranked": [
         {
-          "text": "P1: A site plan with rationale next to every decision"
+          "text": "P1 — A site plan with the reasoning behind every decision, before Figma or vibe coding"
         },
         {
-          "text": "P2: Files ready for you and your client"
+          "text": "P2 — Files that move straight into Figma AI, Cursor and Claude"
         },
         {
-          "text": "P3: UX expertise built in, the decision is yours"
+          "text": "P3 — Built-in UX expertise, and you still make every call"
         }
       ],
-      "rationale": "Hierarchy is taken directly from the approved messaging canvas. The pillars are ordered trigger → mechanism → control: first 'there's a plan' (P1), then 'the files keep working downstream' (P2), then 'you stay in control' (P3). That covers the Designer's most common questions in that order.",
-      "alternatives": "Different ordering (P3 → P1 → P2 as 'expertise first, then mechanism, then distribution') (rejected: the canvas hierarchy was already tested in messaging and works under the proof-first archetype)."
+      "rationale": "The promise and the three pillars sit on the page as they are: the promise in the hero, the pillars as the three value props. The order: first “there's a plan” (P1), then “the files carry on” (P2), then “the decision stays yours” (P3), which is the order designers usually ask in. The emphasis per group: designers get files to show the client and a commercial license, business owners get the plan, copy and wireframes for their own company's sites without outsourcing the project.",
+      "alternatives": "A different pillar order (expertise first, then mechanism, then files): rejected, because the approved order fits a story that starts with proof. Separate pillars for each audience group: rejected, because the same page serves both groups, and pricing carries the difference."
     },
     {
       "id": "strategy-id-voice-brief",
@@ -1974,86 +2017,96 @@
       "title": "Voice brief",
       "name": "Voice brief",
       "layout": "chip-list",
-      "lead": "Analytical, collaborative, direct. Explains why, shows options with trade-offs, says 'do this' or 'don't do this' with a reason.",
+      "lead": "Analytical, collaborative, direct: it explains why, shows options with their trade-offs and says plainly what the skill doesn't do.",
       "chips": [
         "Analytical",
         "Collaborative",
         "Direct",
         "No hedging",
-        "Reader is the decision-maker"
+        "The decision stays with the reader"
       ],
-      "rationale": "Three personality attributes plus two tone modifiers ported straight from the canvas. Preferred words ('the skill', 'files', 'site plan', 'rationale next to each decision') and banned words ('agent', 'AI-powered', 'cutting-edge', em dashes, 'it's not X, it's Y' framings) discipline microcopy across every section.",
-      "alternatives": "Warmer 'mentor / coach' tone (rejected: reads as an authoritative partner, which Designers reject, 1 of 16 acceptance in interviews). Cool corporate tone (rejected: contradicts 'collaborative')."
+      "rationale": "Three personality traits and two notes on tone, carried over from the messaging canvas. On the page they show in the boundaries section (“What this skill doesn't do”), in the value props (“You still make every call”) and in the FAQ. Preferred words (skill, site plan, wireframes with real copy, reasoning next to every decision) and banned words (AI-powered, cutting-edge, innovative, forced enthusiasm) keep the copy in check in every section.",
+      "alternatives": "A warmer mentor tone: rejected, because it reads as the authoritative partner designers turn down (1 in 16 accepted it in interviews). A cold corporate tone: rejected, because it contradicts collaborative."
     },
     {
       "id": "strategy-id-ia-decision-home-format",
       "scope": "ia",
       "confidence": "high",
-      "title": "Home as a long-form sales page",
-      "element": "Home page",
+      "title": "The product page as a long sales page",
+      "element": "Product page",
       "decision_status": "confirmed",
-      "rationale": "Goal is pre-sale revenue, so the main CTA has to live on home, not get scattered across navigation. A long-form sales page carries the narrative from hero through proof, pillars, comparison, pricing, audit, installation, FAQ, to the final CTA.",
-      "alternatives": "One-pager without subpages (rejected: audit needs its own surface, and Knowledge base + How it works need depth). Multi-page split (rejected: dilutes the purchase CTA)."
+      "rationale": "The goal is a purchase, so the primary call to action lives on the product page, not behind the navigation. A long page holds the whole story: hero, proof from the files, value props, process, knowledge base, the free skills overview, comparison, the skill's boundaries, reviews, pricing, free skills, the skill's architecture, platforms, install, FAQ, author and the closing call to action.",
+      "alternatives": "One page with no subpages: rejected, because the guide and the full knowledge map need depth. Many pages of equal weight: rejected, because they scatter the call to buy."
     },
     {
-      "id": "strategy-id-ia-decision-audit-anchor",
+      "id": "strategy-id-ia-decision-try-free-section",
       "scope": "ia",
       "confidence": "high",
-      "title": "Audit as a `#audit` anchor section on home",
-      "element": "Free audit",
+      "title": "Free skills as a section under pricing (#try-for-free)",
+      "element": "Free skills",
       "decision_status": "confirmed",
-      "rationale": "Audit is a secondary CTA already in the hero and the second pre-conversion pillar. Ads can link to `#audit` on home, so visitors land on the section that closes the flow. Less surface to maintain, narrative stays coherent.",
-      "alternatives": "Dedicated /audit subpage as a paid-traffic landing (rejected in this pass, but worth revisiting if post-launch data shows the long scroll is killing ad conversion)."
+      "rationale": "Two free skill cards (the homepage UX audit and website planning) sit right under pricing: visitors who saw the prices and aren't ready to pay get a test on their own project before they leave the page. The hero and the closing call to action link to them as the second route. Old links to #audyt still lead to this section.",
+      "alternatives": "Free skills before pricing: rejected, because they'd hide the purchase, which is the page's goal. Only links to the free skill pages, with no sign-up on the spot: rejected, because signing up from the card saves a trip to another page."
     },
     {
       "id": "strategy-id-ia-decision-pricing-strip",
       "scope": "ia",
       "confidence": "high",
-      "title": "Pricing as a section on home, no separate subpage",
-      "element": "Tiers and pricing",
+      "title": "Pricing as a section on the product page, with no separate subpage",
+      "element": "Packages and prices",
       "decision_status": "confirmed",
-      "rationale": "Three tiers (Solo / Studio / Agency) fit a pricing strip on home. Per-tier 'who it's for' segments the buyer without forcing a full comparison table. Buying redirects to checkout, so no separate surface needed.",
-      "alternatives": "Dedicated /pricing subpage with a full comparison table (rejected: the home section is enough, less friction toward purchase)."
+      "rationale": "The three packages (Founder, Solo Designer, Studio) fit in one row of cards, cheapest first. A heading with the question “Do you design sites for your own business or for clients?” points both groups to their cards without a switch and without a full comparison table. Each card opens the checkout for its package, so buyers don't have to choose again at checkout.",
+      "alternatives": "A separate pricing subpage with a full comparison table: rejected, because a section on the page shortens the path to purchase. An audience switch or a second set of cards: rejected for this stage, because the question in the heading does the same job more simply."
     },
     {
       "id": "strategy-id-ia-decision-knowledge-subpage",
       "scope": "ia",
       "confidence": "high",
-      "title": "Subpage /knowledge-base instead of /methodology or /ux-expertise",
-      "element": "Expertise inventory subpage",
+      "title": "Knowledge base: a section on the page and the full map on the /knowledge-base subpage",
+      "element": "Knowledge base",
       "decision_status": "confirmed",
-      "rationale": "Designer is a skeptical analyst. Transparency ('I'll show you exactly what's in here') works harder than the promise ('we're experts'). The name 'Knowledge base' fits the radical-transparency strategy. It describes the actual contents (16 page types, 13 UX frameworks, 50+ patterns, sources).",
-      "alternatives": "UX Expertise (mirror of pillar P3, rejected: sounds marketing-y to a skeptic). Methodology / Process (rejected: process lives in the 'How it works' section on home)."
+      "rationale": "A designer is a skeptical analyst: “I'll show you exactly what's inside” works better than “we're experts”. The section on the page summarizes the knowledge (110 files, 16 page types, 13 UX frameworks, 50+ section patterns), and the link “The skill's knowledge map” leads to the full list on the subpage. The name Knowledge base says plainly what it contains.",
+      "alternatives": "UX expertise: rejected, because it sounds like marketing to a skeptic. Methodology: rejected, because the process has its own section (“Four steps from brief to a finished wireframe with real copy”). The subpage alone, with no section: rejected, because most visitors won't leave a sales page to check the knowledge."
     },
     {
       "id": "strategy-id-ia-decision-work-guide-subpage",
       "scope": "ia",
       "confidence": "high",
-      "title": "/how-it-works as a broader user guide, not just install",
-      "element": "User-guide subpage",
+      "title": "The How it works subpage (/how-it-works) as a guide wider than install",
+      "element": "User guide subpage",
       "decision_status": "confirmed",
-      "rationale": "Install is one element. The full subpage also covers the first project, workflow navigation, working with the files. Pre-purchase: removes the 'will I figure this out?' fear. Post-purchase: reference document.",
-      "alternatives": "/install only, narrowly about installation (rejected: post-purchase users also need orientation in the workflow and files). Section on home instead of a subpage (rejected: per-platform install plus troubleshooting needs depth)."
+      "rationale": "Install is one part of it. The subpage also covers updates, what's in the package, choosing a platform, starting a project, making decisions, working with the files and across many sessions. Before a purchase it removes the “will I manage?” worry; after a purchase it works as the manual. The product page keeps a three-step install summary with a link to the subpage.",
+      "alternatives": "A narrow subpage about install only: rejected, because buyers also need to find their way around working with the skill and its files. A section on the product page instead of a subpage: rejected, because the full guide needs depth."
     },
     {
       "id": "strategy-id-ia-decision-merged-proof",
       "scope": "ia",
       "confidence": "high",
-      "title": "Merge 'Social proof' with 'File gallery' into one section",
-      "element": "Proof-by-transparency section",
+      "title": "Claim and proof in one section: the gallery of process files",
+      "element": "Proof section",
       "decision_status": "confirmed",
-      "rationale": "The claim 'this site is its own case study' should be clickable in the same section where the claim appears. In a proof-first archetype, tell + show works harder together. The split version left the claim hanging through 3 pillar sections with sealing proof arriving too late.",
-      "alternatives": "Split version like the copy doc (claim in prose early + 4 cards later, rejected: worked under a different rhythm of claim → pillar context → sealing proof, but in proof-first the context arrives the other way around)."
+      "rationale": "The claim “We planned this site using our UX Design Skill” is clickable in the same section: four files that open in the browser and a demo video button. In a story that starts with proof, “tell and show” together work better than a claim that waits several sections for its proof.",
+      "alternatives": "The claim in prose at the top and the file gallery further down: rejected, because the claim would hang for several sections before visitors got the proof."
     },
     {
       "id": "strategy-id-ia-decision-no-newsletter",
       "scope": "ia",
       "confidence": "high",
-      "title": "No 'notify me at launch' signup",
-      "element": "Footer lead capture",
+      "title": "No newsletter or notification sign-up",
+      "element": "List sign-up",
       "decision_status": "confirmed",
-      "rationale": "Pre-sale is happening now, prices rise at the global launch. A 'notify me' signup would compete with sales. Whoever wants to buy should buy at the lower price now, not register for an alert.",
-      "alternatives": "Footer newsletter signup (rejected outright by the owner). General newsletter (updates, content marketing, rejected for this scope, blog/content marketing is out of scope)."
+      "rationale": "People who want to buy can buy right away from pricing, and people who want to try get a free skill for an email address. A separate newsletter sign-up would compete with both routes.",
+      "alternatives": "A newsletter in the footer: rejected outright by the owner. A general content newsletter: out of scope, because the site has no blog."
+    },
+    {
+      "id": "strategy-id-ia-decision-free-landing-pages",
+      "scope": "ia",
+      "confidence": "high",
+      "title": "Free skills as standalone landing pages outside the menu",
+      "element": "Free skill pages",
+      "decision_status": "confirmed",
+      "rationale": "The pages of both free skills, the Homepage UX Audit Skill and the Website Planning Skill, are standalone and outside the product page's menu. Their traffic comes from ads and the newsletter, and each has one action: getting the skill for an email address. The product page leads to them with the “Learn more” link on the “Try it for free” cards. This plan doesn't lay them out section by section; the planning page's plan is in a separate file.",
+      "alternatives": "Ordinary subpages in the main menu: rejected, because they add exits and blur each page's single action. Free skills only as a section of the product page: rejected, because an ad has to land on a page with one topic."
     }
   ],
   "canvas": {
@@ -2064,7 +2117,9 @@
         "variant": "two",
         "card_ids": [
           "strategy-id-site-format",
-          "strategy-id-archetype"
+          "strategy-id-archetype",
+          "strategy-id-positioning",
+          "strategy-id-differentiator"
         ]
       },
       {
@@ -2109,38 +2164,29 @@
   "page_sections": [
     {
       "page_id": "page-home",
-      "name": "Home",
-      "goal": "Sell licenses during pre-sale. Offer the free audit as pre-conversion alternative.",
+      "name": "UX Design Skill",
+      "goal": "Sell a UX Design Skill license in one of three packages: Founder for business owners, Solo Designer and Studio for designers and teams doing client work. The page's main number is purchases, with revenue next to it. The free skills from the “Try it for free” cards are a second route, not the page's goal.",
       "top_tasks_served": [
-        "Figure out if the skill is for me",
-        "Run a free audit on my own site",
-        "See real example files from the process",
-        "Understand how the process works",
-        "Compare tiers and pricing",
-        "Check what installation looks like before I buy",
-        "Pick a tier and complete the purchase"
-      ]
-    },
-    {
-      "page_id": "page-knowledge-base",
-      "name": "Knowledge base",
-      "goal": "Show the depth of expertise built into the skill: 16 page types with dedicated reference packs, 13 UX frameworks, 50+ patterns, source list (NN/g, Baymard, Smashing, Interaction Design Foundation). Function: proof for pillar P3 for the skeptical Designer, plus SEO surface.",
-      "top_tasks_served": []
-    },
-    {
-      "page_id": "page-how-it-works",
-      "name": "How it works",
-      "goal": "Full user guide: install per platform (Claude Code, Cursor, ChatGPT, Claude Projects), first project, workflow navigation, working with files and their integration into Figma/Cursor/Claude. Pre-purchase function: remove the 'will I figure this out?' fear. Post-purchase function: reference document.",
-      "top_tasks_served": [
-        "Check what installation looks like before I buy",
-        "Download the skill files after purchase"
+        "Work out whether the skill is for me: do I design sites for clients or for my own business",
+        "See the real files the skill produces",
+        "Understand what working with the skill looks like, step by step",
+        "Check how the skill differs from Claude Code alone, free skills and a skill of my own",
+        "Read buyer reviews",
+        "Compare packages and prices",
+        "Choose a package and buy",
+        "Try a free skill before buying",
+        "Check whether the skill works in my tool and how to install it",
+        "Make sure about the license, the refund and my project data",
+        "Find out who's behind the skill"
       ]
     },
     {
       "page_id": "global",
       "name": "Global: navigation and footer",
-      "goal": "Provide consistent navigation and footer across every subpage.",
-      "top_tasks_served": []
+      "goal": "Give every page of the skill the same menu with a route to pricing and the same footer with the documents and contact.",
+      "top_tasks_served": [
+        "Compare packages and prices"
+      ]
     }
   ],
   "canvas": {
@@ -2148,14 +2194,6 @@
       {
         "type": "page-map",
         "page_id": "page-home"
-      },
-      {
-        "type": "page-map",
-        "page_id": "page-knowledge-base"
-      },
-      {
-        "type": "page-map",
-        "page_id": "page-how-it-works"
       },
       {
         "type": "page-map",
@@ -2173,44 +2211,72 @@
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Grab attention and name the moment the reader is in (before Figma, before any site generator). Time anchor plus a three-pillar promise.",
-      "question": "Is this for me, and is this my moment?",
-      "content_description": "Headline with an action verb ('Plan the structure and copy of your site, before you open Figma or kick off vibe coding, no UX expert required'). Subhead with the three promises (plan with rationale, files ready to use, UX expertise built in, decision stays with the reader). Primary CTA to pricing. Secondary CTA to the free audit (anchor `#audit`). Visual cue: a project folder screenshot showing HTML+MD files side by side.",
-      "content_status": "content-ready",
-      "rationale": "Hero anchors in the Designer's working moment ('before Figma, before vibe coding') instead of in a category name. The reader recognizes the moment, not a shelf label. Primary CTA leads to pricing. Secondary gives skeptics a real test without forcing a decision. Headline reflects the recommended canvas (16 words, within the 25-word limit).",
-      "alternatives": "Hero with a product category ('AI tool for planning site structure', rejected: the 'AI UX' category doesn't exist in the buyer's head, the time anchor works harder). Hero with persona pain as the opener (rejected in archetype A in favor of proof-first)."
+      "goal": "Say in the first screen what the skill is and what you get with it, and offer two routes on: to pricing or to the free version.",
+      "question": "What is this, and will it help with my site project?",
+      "rationale": "The headline names the product and promises the whole job (“plans, writes, and wireframes your site”), because a visitor from an ad needs to know within seconds what they're buying and what they'll get out of it. The primary call to action, “See pricing”, leads to pricing, because the page's goal is a purchase; the second, “Try it for free”, gives the undecided a test without paying. The 4.52 rating from 23 ratings and the demo video sit next to the promise, to answer the doubt that this is just another prompt right away. The English headline names the three jobs the skill does, where the Polish one says it runs the site project from brief to wireframes; the brief-to-wireframe span shows in the process section's heading.",
+      "alternatives": "A headline set in the moment of work (“before you open Figma or start vibe coding”): rejected in favor of the product name and the full scope, because ad traffic doesn't know the product yet. The free version as the primary call to action: rejected, because the page's goal is a purchase and the free skills are the second route.",
+      "key_message": "UX Design Skill plans, writes and wireframes your site: it asks for project context, plans your page structure and writes the actual copy.",
+      "must_cover": [
+        "What the skill does: it plans, writes and wireframes your site",
+        "What you get: a full site plan with sitemap, section structure and narrative, the actual copy and wireframes",
+        "Where it works: Claude Code, Codex and Cursor, built on the open SKILL.md spec",
+        "Built-in knowledge: 16 page types, 13 UX frameworks and 50+ section patterns",
+        "Every decision shows its reasoning, confidence level and what it ruled out",
+        "No backend, no accounts, no subscription: pay once"
+      ],
+      "doubt": "That it's just another prompt that churns out generic advice instead of a plan I can use.",
+      "proof": "The 4.52 rating from 23 ratings and a demo video of the skill in action.",
+      "action": "See pricing; second route: try it for free."
     },
     {
       "id": "section-map-id-home-pliki-z-procesu",
       "scope": "section",
       "confidence": "high",
-      "title": "Files from the process: see for yourself",
-      "name": "Files from the process: see for yourself",
+      "title": "Proof: files from the process",
+      "name": "Process files",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "evidence",
-      "goal": "Show immediately after the hero that this site is its own case study, with clickable proof through four process artifacts.",
-      "question": "Show me the proof, not testimonials, real output.",
-      "content_description": "Lead copy: 'The site you're on is itself an example of working with this skill. The whole build process is public, click and see.' Four link cards, each with a one-sentence description: Project Plan (context, strategy, template inventory). Communication Foundations (ICP, category, alternatives, pillars). Key Messaging Draft (hero, value props, FAQ, CTA). Wireframes (sketches with real copy + before/after audit mockup). Each card opens the file in a new tab.",
-      "content_status": "content-ready",
-      "rationale": "Proof-first archetype demands proof in the second section, before the reader sees any claim. Merging 'Social proof' (prose claim) and 'File gallery' (4 cards) into one section removes redundancy. The 'this site is its own case study' claim becomes clickable in the same beat.",
-      "alternatives": "Split version: Social proof in prose early + File gallery later (as in the copy doc, rejected: the claim hung through 3 pillar sections before the reader got sealing proof, and proof-first 'tell + show' together works harder)."
+      "goal": "Right after the hero, show that this page was planned with the skill and let visitors check it: four process files that open in the browser, and a demo video.",
+      "question": "What does the skill's real output look like?",
+      "key_message": "We planned this site using our UX Design Skill, and the whole trail is public: every file opens in your browser.",
+      "must_cover": [
+        "The claim: this site was planned with UX Design Skill, and the whole trail is public",
+        "Project plan: project context, strategy and a template inventory in one file, the file each session starts from",
+        "Messaging canvas: ICP, category, alternatives, pillars, narrative, headlines and first-draft copy for the hero, value props, FAQ and CTAs",
+        "Wireframes: this page, sketched section by section, with the same copy the visitor is reading",
+        "Pre-redesign UX audit: a wireframe of the previous site with diagnosis notes on every section and benchmarks against industry standards",
+        "Every file opens in the browser and has a markdown source to download",
+        "A demo video of the skill in action"
+      ],
+      "doubt": "It's all promises: I don't know what the skill's output really looks like.",
+      "proof": "Four real files used to plan this page, and a demo video of the skill.",
+      "action": "Open a process file or watch the skill in action.",
+      "rationale": "A story that starts with proof needs it in the second section, before visitors read the promises. The claim and the files sit in one section, so the claim is clickable right away. The fourth file, the audit of the previous version of the page, shows where the redesign started. The video gives a route to people who'd rather see the skill at work than read files.",
+      "alternatives": "The claim in prose at the top and the file gallery further down: rejected, because the claim would wait several sections for its proof. Buyer reviews as the first proof: rejected, because a skeptical designer wants to see the output, not just other people's words; the reviews sit closer to pricing."
     },
     {
       "id": "section-map-id-home-filary",
       "scope": "section",
       "confidence": "high",
-      "title": "Value propositions: 3 pillars",
-      "name": "3 pillars",
+      "title": "Value: three features of the skill",
+      "name": "Three features",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "evidence",
-      "goal": "Unfold the three canvas pillars (plan with rationale, ready-to-use files, UX expertise built in) as an interpretation of what the reader already saw in the process files.",
+      "goal": "Break the three pillars into three features that visitors read as a description of what they've just seen in the files, each with a link to its proof.",
       "question": "What exactly do I get, and how does it work?",
-      "content_description": "Three blocks in order P1 → P2 → P3. Each one: pillar name, mechanism paragraph from the copy, proof hypothesis linked to a concrete artifact (P1 → sample file gallery, P2 → sample artifacts, P3 → /knowledge-base). Every pillar anchors its claim in a visible, clickable artifact.",
-      "content_status": "content-ready",
-      "rationale": "Pillars ordered trigger → mechanism → control: first 'there's a plan' (P1), then 'files keep working downstream' (P2), then 'you stay in control' (P3). Covers the Designer's most common questions in that order. Proof hypotheses (instead of testimonials) keep the brand voice honest during a pre-sale with no customers yet.",
-      "alternatives": "Different pillar order (rejected: the approved canvas hierarchy already tested in messaging). Pillars without proof hypotheses (rejected: every claim needs a linked artifact per the radical-transparency strategy)."
+      "key_message": "Three features make this skill different: a plan with reasoning before Figma, files that carry on into other tools, and built-in UX expertise where you still make every call.",
+      "must_cover": [
+        "A site plan with reasoning, before Figma or vibe coding: sitemap, section structure and narrative in one file, with the reasoning and rejected alternatives for every decision",
+        "Markdown and HTML files that move straight into Figma AI, Cursor and Claude without conversion; the plan lives in your project files, not in a chat history",
+        "Built-in UX expertise (16 page types, 13 frameworks, 50+ patterns), and at every checkpoint the options with their trade-offs, with the decision staying yours",
+        "A link to the proof with each feature: the project plan, example files, the knowledge base"
+      ],
+      "doubt": "It's yet another AI tool that gives me the same as an ordinary chat.",
+      "proof": "Links to the project plan, to the process files and to the Knowledge base section.",
+      "rationale": "The order follows the messaging hierarchy: first “there's a plan” (P1), then “the files carry on” (P2), then “the decision stays yours” (P3), which is the order designers usually ask in. Each feature ends with a link to the artifact that shows it, so every claim has proof to click.",
+      "alternatives": "A different pillar order: rejected, because the approved order fits a story that starts with proof. Features without links to proof: rejected, because every claim needs an artifact to check."
     },
     {
       "id": "section-map-id-home-jak-to-dziala",
@@ -2221,76 +2287,260 @@
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Show the user's operational path through the skill in four steps, second person. The Designer sees themselves in the loop, not an observer watching an AI.",
-      "question": "What does the work look like from my side?",
-      "content_description": "Four steps in second person: (1) Tell the skill what you're building. (2) Pick a site format and archetype. (3) Lock in positioning and copy. (4) Generate wireframes with real copy. Each step uses an action verb + consequence + output sketch, no internal skill terminology (Discovery, Strategy, etc.).",
-      "content_status": "content-ready",
-      "rationale": "Four steps instead of six workflow stages. Describes the user's path, not internal architecture. Each step starts with an action verb in second person, so the Designer sees themselves in the loop rather than an observer watching an AI.",
-      "alternatives": "Six stages from internal architecture (Discovery, Strategy, Inventory, Wireframing, Review, Messaging, rejected: that's the tool's perspective, not the user's). Three steps (rejected: drops visibility of the messaging stage (P1) as a separate beat)."
+      "goal": "Show the visitor's path through the skill in four second-person steps, from brief to a finished wireframe with real copy, so designers see themselves in the loop rather than watching an AI model work.",
+      "question": "What does working with it look like from my side?",
+      "key_message": "Four steps from brief to a finished wireframe with real copy, and at every step the decision stays yours.",
+      "must_cover": [
+        "Step 1, you brief the skill on what you're building: it asks about your goal, your audience and the context, then writes a hypothesis file with confidence tags on anything it had to guess",
+        "Step 2, you pick the page format and archetype from two or three options with their consequences; the site plan lands in a file with reasoning under every choice",
+        "Step 3, you lock the positioning and the copy: value, proof and headlines on a messaging canvas, and a finished copy doc in your audience's language",
+        "Step 4, you generate wireframes with real copy: an HTML sketch, section by section, with design notes and rejected alternatives",
+        "A video of the skill in action next to the steps"
+      ],
+      "leave_out": "The skill's internal stage names (Discovery, Strategy, Inventory and the like).",
+      "rationale": "Four steps instead of six internal stages describe the visitor's path, not how the tool is built. Each step starts with “You” and a verb, so designers see themselves in the loop rather than watching an AI model.",
+      "alternatives": "The six stages from the skill's internals: rejected, because that's the tool's view, not the visitor's. Three steps: rejected, because positioning and copy would lose their own step (P1)."
     },
     {
-      "id": "section-map-id-home-dlaczego-my",
+      "id": "section-map-id-home-baza-wiedzy",
       "scope": "section",
       "confidence": "high",
-      "title": "Why us / Comparison",
-      "name": "Why us",
+      "title": "Knowledge base",
+      "name": "Knowledge base",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Show concretely, by name, what UX knowledge sits underneath, so a skeptic can check that the skill understands UX design and doesn't just generate text.",
+      "question": "How does the skill know how to design good sites?",
+      "key_message": "This skill understands UX design through built-in processes and a UX knowledge base: 110 files, 16 page types, 13 UX frameworks and 50+ section patterns.",
+      "must_cover": [
+        "Scale: 110 knowledge files covering methodology, patterns and worked examples, from design psychology to conversion patterns",
+        "16 page types by name, from B2B SaaS and e-commerce to government and documentation",
+        "13 UX frameworks with their authors or source, e.g. Nielsen's usability heuristics, the LIFT model, the narrative arc",
+        "50+ section patterns, e.g. hero, pricing, comparison, FAQ and objections, social proof",
+        "A link to the skill's full knowledge map on the Knowledge base page"
+      ],
+      "doubt": "An AI model knows only what's on the internet about UX, so the advice will be generic.",
+      "proof": "Lists of page types, frameworks with their authors' names and section patterns, plus the full knowledge map on its own page.",
+      "action": "Open the skill's full knowledge map.",
+      "rationale": "The section proves the third pillar (built-in UX expertise) the way a skeptic likes it: with a list of names to check. The full list lives on its own page, and the “Knowledge base” link in the menu leads here, so visitors see the scale of the knowledge without leaving the page.",
+      "alternatives": "Only a link to the subpage, with no section: rejected, because most visitors won't leave a sales page to check the knowledge. The full list of every pattern on the page: rejected, because it makes the page longer; the section shows some of the patterns and points to the rest."
+    },
+    {
+      "id": "section-map-id-home-darmowe-skille",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Free skills on GitHub",
+      "name": "Free skills on GitHub",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "tension",
-      "goal": "Contrast the skill with the Designer's existing tools (Figma) and AI generators (Bolt/v0). Show it doesn't replace them, it owns a stage nobody else covers.",
-      "question": "Won't this replace the tools I'm already using?",
-      "content_description": "Lead: 'Without a planning layer you're left with a patchwork of intuition, a template, and one-off prompts. The client asks why, and you have nothing to answer with.' Two parallel cards: 'Your design tool stays' (Figma, FigJam, Miro, the skill owns the stage before the first frame, feeds Figma a ready-made brief). 'Your AI generator stays' (Bolt, v0, Lovable, Cursor, the skill feeds the generator a plan and copy in markdown as context).",
-      "content_status": "content-ready",
-      "rationale": "Section addresses the two biggest competitive worries from research: 'will this replace Figma?' and 'I already have Bolt/Cursor.' Parallel cards instead of a table. The category positioning 'owns a stage nobody else covers' from the canvas closes the tension.",
-      "alternatives": "Full comparison table vs ChatGPT, Figma, consultant (rejected: narrows the audience to the segment already considering a consultant, parallel cards target the natural 'will it replace' worry). Move the section earlier (before pillars, rejected: tension before evidence pillar would hurt the proof-first rhythm)."
+      "goal": "Get ahead of the question about free UX skills on GitHub: show honestly what their four buckets do, and that none of them runs a project from brief to wireframes.",
+      "question": "What about the free skills on GitHub?",
+      "key_message": "Free UX skills do their jobs well, but this is the only skill that runs the whole site project from brief to wireframes.",
+      "must_cover": [
+        "Four buckets of popular free UX skills for Claude Code: styles and components for your stack, UX references (WCAG, Nielsen, accessibility), UX prompts you can copy and run, UX research",
+        "For each bucket, what it gives you and a named example (e.g. ui-ux-pro-max-skill, ux-mcp-server)",
+        "An honest verdict: each one does its job well",
+        "The difference: only this skill takes you through every stage, from discovery and an audit of your current site, through the site plan and information architecture, to wireframes with real copy"
+      ],
+      "doubt": "Why pay when there are free UX skills on GitHub?",
+      "proof": "An overview of the ecosystem, naming popular skills in each of the four buckets.",
+      "rationale": "Visitors who use Claude Code, Codex or Cursor know the free skills on GitHub and compare the paid skill with them. The section answers this before the comparison table: first it says honestly what the free skills do, then it shows what none of them does. A fair assessment of the competition fits the brand's analytical voice.",
+      "alternatives": "Leaving the free skills out: rejected, because visitors know them anyway, and no answer leaves the question open. Free skills as a column in the comparison table: rejected, because four different types don't fit in one column."
+    },
+    {
+      "id": "section-map-id-home-porownanie",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Comparison",
+      "name": "Comparison",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "tension",
+      "goal": "Set the skill against the visitor's two real alternatives, Claude Code alone and a skill you write yourself, across five dimensions, so the difference shows in one table.",
+      "question": "Why isn't Claude Code alone enough, and why not write my own skill?",
+      "key_message": "Claude Code alone has no UX methodology and no decision trail, and your own skill takes 80 to 160 hours of work; this skill gives you both from $149, as a one-time payment.",
+      "must_cover": [
+        "Three columns: this skill (recommended), Claude Code alone, your own skill",
+        "UX methodology: built in here; none in Claude Code alone; in your own skill you write it yourself, at a cost in time and a risk of inconsistency",
+        "Time to launch: 5 minutes from the instruction in the email, against 80 to 160 hours of writing and testing your own skill",
+        "Reasoning and rejected alternatives next to every recommendation; Claude Code alone answers without a trail",
+        "Cross-model: Claude Code, Codex and Cursor, and in Cursor you pick the model",
+        "Cost: from $149, one-time payment, against a Claude Pro / Max subscription or your time"
+      ],
+      "doubt": "I already have Claude Code, and I could write a skill myself.",
+      "proof": "A five-row table with specifics: 5 minutes against 80 to 160 hours, reasoning next to every decision against answers with no trail.",
+      "rationale": "Visitors to this page already work in Claude Code, Codex or Cursor, so their real alternatives are “the model alone is enough” and “I'll write the skill myself”. The table shows the difference in the dimensions where both alternatives lose: methodology, time and a decision trail. The price, from $149, closes the cost comparison against a subscription and hours of your own work.",
+      "alternatives": "“Your tool stays” cards (Figma, site builders) instead of a table: rejected, because visitors working in Claude Code compare the skill mainly with the model alone and with their own skill, and the first value prop carries the relationship with Figma. A comparison with an outside UX consultant: rejected for this section, because it narrows the audience to people who had considered a consultant."
+    },
+    {
+      "id": "section-map-id-home-granice",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Boundaries: what the skill doesn't do",
+      "name": "Skill boundaries",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "tension",
+      "goal": "Say honestly what stays with the visitor, to remove the fear that the AI decides for them or fakes certainty.",
+      "question": "Won't the skill make decisions for me, and can I trust it?",
+      "key_message": "The decisions stay yours: the skill shows the options, flags uncertainty and shortens the path to a first version, but it doesn't replace experience.",
+      "must_cover": [
+        "It doesn't make strategic decisions for you: it shows the options with trade-offs, and you make the call",
+        "It doesn't pretend to know everything: every decision flags its confidence level wherever the AI is guessing",
+        "It doesn't replace experience: it shortens the path to a first version that you develop your own way"
+      ],
+      "doubt": "The AI will do the project for me with no control on my side, or make things up with a straight face.",
+      "rationale": "Designers fear two things: that the tool will take the decision away from them, and that the AI model makes things up. The section answers directly, in an analytical and direct voice, and supports the third pillar (the decision stays yours). Honest boundaries before the reviews and pricing build more trust than another promise.",
+      "alternatives": "Boundaries only in the FAQ: rejected, because this doubt comes up before the pricing decision, not after it. No section: rejected, because a page of nothing but promises sounds like every AI ad."
+    },
+    {
+      "id": "section-map-id-home-opinie",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Buyer reviews",
+      "name": "Reviews",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Show before pricing that the skill works for other people: buyer reviews with a name and a studio that confirm an organized process and faster work.",
+      "question": "Does it work for other people like me?",
+      "key_message": "Buyers talk about an organized process and faster work, and there's nothing like it on the market.",
+      "must_cover": [
+        "Five reviews with a name and a photo, some with a studio name and link (Pozioma, The Sunray Studio, Modela Studio) or a role (Freelancer)",
+        "Different buyers: designers and studios, and someone who isn't a web designer by trade",
+        "Specific uses: a first step in setting a site's structure and strategy, a bridge between the strategy document and the work in Figma, a starting point and a way to check different versions, building assumptions and the interview",
+        "The route from a free skill to a purchase: after testing the audit, one buyer bought the full package the next day"
+      ],
+      "doubt": "Nobody has used this in real work yet.",
+      "proof": "Five reviews with a name, a photo and a studio name; the 4.52 rating (23 ratings) in the hero leads to this section.",
+      "rationale": "The reviews come after the comparison and the skill's boundaries, right before pricing: anyone who has got this far is considering a purchase and wants to hear from other buyers. Names, photos and studios with links make the reviews checkable. The review about moving from the free audit to the full package ties the second route to the purchase.",
+      "alternatives": "Reviews right after the hero: rejected, because the opening belongs to the process files, which show the output, and the reviews add other voices closer to the decision. Studio logos alone, with no quotes: rejected, because they don't say what the skill gives you."
     },
     {
       "id": "section-map-id-home-pakiety",
       "scope": "section",
       "confidence": "high",
-      "title": "Pricing (3-tier strip)",
+      "title": "Pricing (3 packages)",
       "name": "Pricing",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Show three tiers with pre-sale and regular pricing side by side. Segment the buyer without forcing a full comparison table. Price contrast drives urgency.",
-      "question": "How much does it cost, which tier is for me?",
-      "content_description": "Three cards: Solo (pre-sale / regular, freelancer designing client sites), Studio (pre-sale / regular, small studios up to 5 people), Agency (pre-sale / regular, larger team with no user cap). Each card has 'who it's for' and a CTA to checkout. The pre-sale price contrasts with regular, time pressure is already there. Twelve months of free updates included.",
-      "content_status": "content-ready",
-      "rationale": "Pricing strip on home instead of a separate subpage, decision confirmed by the owner. Per-tier 'who it's for' segments the buyer without forcing a comparison table. Price contrast (pre-sale vs regular) drives urgency without forcing an urgency bar.",
-      "alternatives": "Dedicated Pricing subpage with a full comparison table (rejected in discovery, home section is enough). Single-tier pricing (rejected, the model needs segmentation). Pricing without regular prices shown (rejected, the contrast is the urgency mechanism)."
+      "goal": "Show the three packages side by side and help visitors choose with one question, whether they design for their own business or for clients; each card leads straight to its package's checkout.",
+      "question": "How much does it cost, and which package is for me?",
+      "key_message": "A one-time license in three packages: Founder for your own business, Solo Designer and Studio for client work, with 12 months of updates included.",
+      "must_cover": [
+        "The question that points to a package: do you design sites for your own business or for clients?",
+        "Founder, for your own business, 1 user, $149: plan, copy and wireframes for your company's sites, no agency needed; a license for your own business's sites",
+        "Solo Designer, for client work, 1 user, $229, highlighted: costs less than a day of your work and pays for itself on your first project; a commercial license for client work",
+        "Studio, for client work, up to 5 users, $379: one process for your whole team, at a third of the price per person; a commercial license for a team of up to 5 people",
+        "In every package: the site plan (discovery, strategy, information architecture), messaging and copy, wireframes with real copy, 16 page types; Solo Designer and Studio add the template and section list for quoting a project, the full UX audit and a wireframe of an existing site",
+        "Terms: a one-time license, 12 months of updates, then renewal at about half the price",
+        "A 14-day refund: not a fit? Return it",
+        "Prices + VAT where applicable; a “Buy” button with the package name on every card"
+      ],
+      "doubt": "I don't know which package to choose, and I'm afraid of paying for something that won't help me.",
+      "proof": "A 14-day refund, and 12 months of updates with a public changelog to check.",
+      "action": "Buy the package you've chosen: Founder, Solo Designer or Studio.",
+      "leave_out": "An audience switch, a second set of cards and a full package comparison table.",
+      "rationale": "Pricing is a section of the page, not a separate subpage: one row of three cards, cheapest first. The question in the heading splits visitors into two groups without a switch. Solo Designer is highlighted because it's the package people buy. Each card carries one sentence about value instead of a file count. Each card has its own checkout link for its package, so buyers don't choose twice. Unlike the Polish page, the English section has no line about free updates with a changelog link under the heading: the updates show in the cards and in the terms line under them, and the changelog is linked from the architecture section and the footer.",
+      "alternatives": "A separate pricing subpage with a full comparison table: rejected, because a section on the page shortens the path to purchase. A separate page for business owners or an audience switch: rejected for this stage; they wait for the December test. The Polish name “Firma” instead of “Founder”: postponed; it comes back if the Polish campaign targets mainly local business owners."
     },
     {
-      "id": "section-map-id-home-audyt",
+      "id": "section-map-id-home-wyprobuj-za-darmo",
       "scope": "section",
       "confidence": "high",
-      "title": "Free audit (#audit)",
-      "name": "Free audit",
+      "title": "Try it for free",
+      "name": "Try it for free",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Offer 'test on yourself before you buy' as a secondary CTA and a landing anchor for paid traffic. Absorb ad traffic through `#audit`.",
-      "question": "Can I try this before I buy?",
-      "content_description": "Lead: 'Test on yourself before you buy.' Description of the free audit package: Reverse Wireframing of your own site as lo-fi HTML, six-dimension quality audit (completeness, consistency, quality, language, cognitive load, site-wide coherence), concrete change proposals section by section. Hard differentiator: 'No account. No email. No limits. Decide to buy after a real test on your own project.' CTA: Try the free audit.",
-      "content_status": "content-ready",
-      "rationale": "Section is an escape hatch for skeptics plus a landing anchor for paid traffic. 'No account, no email' is a hard signal of zero barriers, the counterweight to typical SaaS gates, consistent with pay-once-own-forever. FAQ #5 moved from defensive framing to positive narrative.",
-      "alternatives": "Audit as a separate /audit subpage with a dedicated landing (rejected in this pass, the anchor is enough, revisit if paid traffic suffers). Audit with an email gate (rejected, contradicts the 'no friction' positioning)."
+      "goal": "Give visitors who aren't ready to buy a second route: two free skills taken from the full version, claimed right on the page with an email address.",
+      "question": "Can I try it before I buy?",
+      "key_message": "Try it for free before you buy the full version: pick the audit or the planning skill, depending on whether you already have a site.",
+      "must_cover": [
+        "Two free skills taken from the full version, and how many times they've been downloaded",
+        "Already have a site? The Homepage UX Audit Skill: a wireframe with audit findings pinned to specific elements of the page (up to 5 pages per day)",
+        "Planning a site? The Website Planning Skill: it asks about your project, plans the sitemap and lays out the sections of every page",
+        "Claimed right on the page with an email address; a personal install link arrives by email",
+        "A link to each skill's page with the details"
+      ],
+      "doubt": "I don't want to pay before I've tested the skill on my own project.",
+      "proof": "The free skills' download count in the sentence that opens the section.",
+      "action": "Get a free skill with your email address, or learn more on its page.",
+      "rationale": "The section sits right under pricing: visitors who saw the prices and didn't buy get a test on their own project before they leave the page. The question on each card (“Already have a site?”, “Planning a site?”) points to the right skill without spelling out the differences. Sign-ups here count toward the free skills' own result; for this page they're context, not the goal. Old links to #audyt still lead to this section.",
+      "alternatives": "Free skills before pricing or as the first call to action in the hero: rejected, because they'd hide the purchase, which is the page's goal. One free skill instead of two: rejected, because the second card serves people who are only planning a site."
+    },
+    {
+      "id": "section-map-id-home-architektura",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Under the hood: the skill's architecture",
+      "name": "Under the hood",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Show the technical skeptic that this is a designed system, not a single prompt: its scale, its folder structure and eight design decisions.",
+      "question": "Isn't this just one long prompt?",
+      "key_message": "Not just a prompt: underneath are ~25,000 lines of code and a real system architecture, an operating playbook plus 110 knowledge files loaded on demand, now in its third iteration.",
+      "must_cover": [
+        "Scale: ~25,000 lines of code, an operating playbook and 110 knowledge files loaded on demand",
+        "History: months of work; what ships is the third iteration, and the first two missed the bar",
+        "The skill's folder structure: SKILL.md, orchestrator, workflows, shared knowledge, domain packs, templates, scripts",
+        "Eight design decisions: knowledge separated from instructions, files loaded on demand, one skill for the full cycle, checkpoints at every stage, assumptions first and questions second, copy drives design, files as project memory, the audit gives you the diagnosis",
+        "A link to the changelog and updates"
+      ],
+      "doubt": "It's probably one prompt in nice packaging that I could write myself.",
+      "proof": "The skill's folder tree, eight architecture decisions and a public changelog.",
+      "rationale": "Visitors who know Claude Code know how easy it is to wrap a prompt in a skill, and that's exactly what they suspect. The section answers with specifics they can check: the line count, the folder structure, the decisions and the changelog. It sits after the free skills, for those still hesitating, and backs up the comparison with your own skill (80 to 160 hours).",
+      "alternatives": "The architecture on a separate subpage: rejected, because a short section is enough and the full history is in the changelog. No section: rejected, because the “it's just a prompt” objection would go unanswered."
+    },
+    {
+      "id": "section-map-id-home-platformy",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Platforms and package contents",
+      "name": "Platforms",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "resolution",
+      "goal": "Confirm that the skill works in the tools visitors already use, and show exactly what's in the package.",
+      "question": "Will it work in my tool, and what exactly do I get?",
+      "key_message": "The skill runs in Claude Code, Codex, Cursor and in IDEs through extensions, and the package gives you the skill, a UX knowledge base, document templates and an install guide.",
+      "must_cover": [
+        "Four platforms: Claude Code (full file access, direct deliverable writes), Codex (started with $ux-design), Cursor (started with /ux-design), VS Code and other IDEs through the Claude Code or Codex extension",
+        "What's in the package: the skill (rules in SKILL.md, plus the orchestrator and workflows), the UX knowledge base (110 files: 16 page types, 19 general topics), one skill for three tools, document templates (project plan, messaging canvas, wireframes, audit report), the INSTALL.md guide",
+        "No extra dependencies: you install from the link in your email, open your tool and start your first project"
+      ],
+      "doubt": "I work in a tool other than Claude Code, so the skill might not work for me.",
+      "rationale": "Before buying, visitors check whether the skill fits their tool. The section names the platforms together with the commands that start the skill, and lists the package contents so buyers know what they're paying for. The requirements list in the section's content file isn't shown on the page, so the brief leaves it out.",
+      "alternatives": "Platforms only in the hero: rejected, because the hero covers them in one sentence, and a skeptic wants the details before buying. Package contents in pricing: rejected, because the pricing cards show the differences between packages, not what they share."
     },
     {
       "id": "section-map-id-home-instalacja",
       "scope": "section",
       "confidence": "high",
-      "title": "Installation (short version, link to /how-it-works)",
-      "name": "Installation (short)",
+      "title": "Install (short version, link to How it works)",
+      "name": "Install (short version)",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Remove the post-purchase technical worry ('can I do this?') with a short install summary plus a link to the full guide on /how-it-works.",
-      "question": "How do I install this? Can I handle it?",
-      "content_description": "Lead: 'Install it like a WordPress plugin.' Three steps: (1) Download the folder after purchase. (2) Drop it into your AI environment (Claude Code, Cursor, ChatGPT, Claude Projects). (3) Use it in your next conversation with the model. List of supported environments as visual icons / chip list. CTA: 'See the full install guide' → /how-it-works.",
-      "content_status": "content-ready",
-      "rationale": "Section addresses post-purchase install anxiety, the worst moment for failure in file-based distribution. 'No backend, no accounts' is a hard signal that separates this from standard SaaS, central to the wedge positioning. Summary on home plus full guide on the subpage.",
-      "alternatives": "No install section on home, only a link to /how-it-works (rejected: a skeptic stalls at the buying decision and needs an early signal that install is simple). Full install guide on home (rejected: lengthens the scroll and duplicates the subpage)."
+      "goal": "Remove the technical worry “will I manage?” with three install steps and a link to the full guide on the How it works page.",
+      "question": "How do I install it? Will I manage?",
+      "key_message": "You install with one command: paste the instruction from the email into your tool, and your agent installs the skill.",
+      "must_cover": [
+        "An email with your personal install link; no backend, no accounts, no onboarding queue",
+        "Step 1: open the email with your link from tomasz@creativesparks.pl; not there? Check Spam or Promotions",
+        "Step 2: paste the link and the sentence below it into Claude Code, Codex or Cursor; your agent shows you the plan and asks before copying anything",
+        "Step 3: start the skill with the command from the email, like any other skill",
+        "A link to the full install guide on the How it works page"
+      ],
+      "doubt": "Installing will be hard, and I'll break something in my project.",
+      "proof": "Your agent shows you the plan and asks before copying anything.",
+      "action": "See the full install guide.",
+      "rationale": "The section answers the fear of installing, the worst moment to fail for a product delivered as files. “No backend, no accounts” sets the skill apart from ordinary cloud software. The product page has a three-step summary; the full guide is on its own page.",
+      "alternatives": "Only a link to the guide, with no section: rejected, because a skeptic stops at the purchase decision and needs a sign that installing is simple. The full guide on the product page: rejected, because it makes the page longer and duplicates the subpage."
     },
     {
       "id": "section-map-id-home-faq",
@@ -2301,28 +2551,70 @@
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "tension",
-      "goal": "Close the loop with the five most common objections from research before the reader makes a purchase decision.",
-      "question": "What else should I know before buying?",
-      "content_description": "Five questions in an accordion: (1) How is this different from ChatGPT or Claude? (2) Do I need to know UX to use this? (3) What exactly am I buying, is this a subscription? (4) What does install look like? (5) Can I test before buying? Each answer closes the loop with a concrete mechanism (files vs chat, 16 expertise packs, pay once, install like a plugin, free audit), not a marketing promise.",
-      "content_status": "content-ready",
-      "rationale": "Five objections pulled straight from research and product context. Order: from most frequent (difference from chatbot) to most operational (test before buy). Every answer closes the loop with a concrete mechanism, not a marketing promise.",
-      "alternatives": "Shorter FAQ (3 questions, rejected: 5 objections is the validated minimum). Longer FAQ with pricing/legacy questions (rejected: those live in other sections)."
+      "goal": "Settle the seven questions that usually come up before a purchase, each with a concrete mechanism instead of a promise.",
+      "question": "What else should I know before I buy?",
+      "key_message": "Every question before a purchase has a concrete answer: how the skill differs from a chat, what you're buying, how you install it, how you can test it and what happens to your project data.",
+      "must_cover": [
+        "What makes this different from ChatGPT or Claude: project files in one folder, a UX methodology, confidence tags and two or three options at every step instead of a chat history",
+        "Do I need to know UX: no, the knowledge is built in, and your role is the strategic decisions and the final pick at every checkpoint; UX knowledge helps you pick the best option",
+        "What am I buying, is it a subscription: a one-time license with 12 months of updates, then a renewal at about half the price, or you stay on your version; no accounts, the skill only checks its license",
+        "How install works: an email with your personal install link, the instruction pasted into your tool, and your agent installs the skill",
+        "Can I test it before buying: two free skills, for an audit or for planning, no account, just your email",
+        "What if the skill doesn't help me: 14 days to return it, no questions asked, full refund",
+        "What happens to my project data: your project files stay with you; at the license check the skill sends only your customer ID, the package name and the version number"
+      ],
+      "doubt": "Something will catch me out after I buy: a subscription, a hard install or a leak of my project data.",
+      "proof": "Concrete terms: a 14-day refund, a one-time license and a list of what the skill sends when it checks its license.",
+      "rationale": "Seven questions that usually come up before a purchase. The order runs from the most common doubt (how it differs from a chat) through the license and install to risk (the refund) and data. Each answer closes the topic with a concrete mechanism, not a promise.",
+      "alternatives": "A shorter FAQ (3 questions): rejected, because the refund and data are questions that come up right before a purchase. Questions about price in the FAQ: rejected, because pricing answers them."
+    },
+    {
+      "id": "section-map-id-home-autor",
+      "scope": "section",
+      "confidence": "high",
+      "title": "Author: who's behind this",
+      "name": "Author",
+      "page_id": "page-home",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Show the person behind the skill and his experience, with direct contact, so buyers know who answers for the product.",
+      "question": "Who's behind this, and can I trust him?",
+      "key_message": "Tomasz Maciąg, 15 years in UX, built the skill because he needed a process he could repeat across every client project; he uses it every day.",
+      "must_cover": [
+        "The author's name and photo",
+        "Role: founder of Fuse Collective, a branding agency",
+        "15+ years in UX: strategy, research and design",
+        "Why the skill exists: the author needed a process he could repeat across client projects, and he uses it every day",
+        "Contact: the email tomasz@creativesparks.pl and LinkedIn"
+      ],
+      "doubt": "There's nobody behind the product who really knows UX.",
+      "proof": "15+ years of experience, his own agency and a direct email to the author.",
+      "action": "Email the author or connect with him on LinkedIn.",
+      "rationale": "You buy the skill from one person, not a corporation, so the author's face and experience stand in for a company brand. A direct email gives a route to people with a question the FAQ doesn't answer. The section sits right before the closing call to action, as the last trust signal.",
+      "alternatives": "The author at the top of the page: rejected, because the opening belongs to the proof from the files, and the author convinces the people who read to the end. No section: rejected, because contact details in the footer alone are easy to miss."
     },
     {
       "id": "section-map-id-home-final-cta",
       "scope": "section",
       "confidence": "high",
-      "title": "Final CTA",
-      "name": "Final CTA",
+      "title": "Final call to action",
+      "name": "Final call to action",
       "page_id": "page-home",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Close the page by repeating the main CTA (purchase) with a pre-sale urgency reminder.",
-      "question": "How do I move forward?",
-      "content_description": "Repeat the main CTA ('See pricing') with an anchor to the Pricing section, or a direct checkout redirect. Short urgency reminder: 'Pre-sale runs through the launch, then prices rise.' Secondary call: 'Or start with the free audit' (link to `#audit`).",
-      "content_status": "content-ready",
-      "rationale": "Repeat CTA at the end of a long sales page, standard pattern. A reader who reached the end should have one more shot at purchase without scrolling back to Pricing. Urgency reminder as a natural beat, not a countdown timer.",
-      "alternatives": "No final CTA (rejected: a long sales page without a close loses conversion on late readers). Countdown timer for urgency (rejected: contradicts the 'analytical, no forced enthusiasm' brand voice)."
+      "goal": "Close the page by repeating the primary call to action (to pricing) and the second route (free skills), with no scrolling back.",
+      "question": "How do I get started?",
+      "key_message": "Design your page with a solid plan, real copy and clear decisions. Pay once, no subscription.",
+      "must_cover": [
+        "The promise in one sentence: a solid plan, real copy and clear decisions",
+        "Pay once, no subscription",
+        "Primary call to action: See pricing, leading to pricing",
+        "Second route: Or try it for free, leading to the free skill cards"
+      ],
+      "action": "See pricing; second route: try it for free.",
+      "leave_out": "A countdown timer and artificial urgency in this section.",
+      "rationale": "A repeated call to action at the end of a long sales page: anyone who has read to the end gets one last chance to go to pricing without scrolling back. The same two calls to action as in the hero close the story like bookends.",
+      "alternatives": "No closing call to action: rejected, because a long page with no close loses the people who read to the end. A countdown timer for urgency: rejected, because it contradicts the brand's analytical voice."
     },
     {
       "id": "section-map-id-global-nav",
@@ -2333,12 +2625,17 @@
       "page_id": "global",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Provide one-click access to two main home sections (Pricing, Audit) and two subpages (Knowledge base, How it works). Primary CTA on the right.",
-      "question": "Where am I and what's available?",
-      "content_description": "Top bar with logo (left, link to home), 4 nav items (Pricing #pricing, Audit #audit, Knowledge base /knowledge-base, How it works /how-it-works), primary CTA 'See pricing' (right, contrast). Sticky on scroll. Mobile: hamburger with the same items plus the CTA at the bottom of the expanded list.",
-      "content_status": "content-ready",
-      "rationale": "Minimal menu. 4 items fit in the bar without dropdowns. Anchors on home (Pricing, Audit) absorb the main CTAs without forcing navigation to subpages. A skeptical Designer finds proof (Knowledge base) and pricing in one click.",
-      "alternatives": "Expanded menu linking to every home section (rejected: duplicates the scroll). Hamburger on desktop (rejected: 4 items fit in the bar)."
+      "goal": "Give every page of the skill a one-click route to pricing and shortcuts to what visitors check before buying: reviews, free skills, the knowledge base and the guide.",
+      "question": "Where am I, and what can I do here?",
+      "key_message": "You're on the UX Design Skill page, and pricing is one click away.",
+      "must_cover": [
+        "The Creative Sparks logo, linking to the UX Design Skill page",
+        "Primary call to action: See pricing, leading to pricing",
+        "Five links: Pricing, Reviews, Free skills, Knowledge base (sections of the product page) and How it works (the guide subpage)"
+      ],
+      "action": "See pricing.",
+      "rationale": "A minimal menu: four of the five links jump to sections of the product page, so visitors don't have to leave it, and the only subpage is the guide for people who want to know whether they'll manage. “See pricing” on the right is the same call to action as in the hero. The menu links show from tablet width up. In English the guide's link reads “How it works”, the same words as the process section's label; it leads to the guide page.",
+      "alternatives": "A menu with a link to every section: rejected, because it duplicates scrolling. A “Resources” dropdown: rejected, because grouping adds nothing with five items."
     },
     {
       "id": "section-map-id-global-footer",
@@ -2349,12 +2646,19 @@
       "page_id": "global",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Close the page with product links (Pricing, Audit, Knowledge base, How it works), company info (Contact), and mandatory Legal (Privacy policy, Terms).",
-      "question": "What else might I need when I reach the bottom?",
-      "content_description": "Three columns: Product (Pricing #pricing, Free audit #audit, Knowledge base /knowledge-base, How it works /how-it-works), Company (Contact: owner email address), Legal (Privacy policy /privacy-policy, Terms /terms). No newsletter signup. Copyright + year at the bottom.",
-      "content_status": "content-ready",
-      "rationale": "Minimal footer. Product + company + legal is enough. No newsletter signup, per the pre-sale decision: whoever wants to buy buys now at the lower price, doesn't register for an alert. Final purchase CTA lives in the 'Final CTA' section above the footer, not in the footer itself.",
-      "alternatives": "Fat footer with newsletter signup (rejected outright by the owner). Footer with social links (rejected for this scope, add once there are active channels)."
+      "goal": "Close every page with the required documents, the changelog and contact with the author.",
+      "question": "What else might I need once I've scrolled to the bottom?",
+      "key_message": "At the bottom you'll find the documents, cookie settings, the changelog and an email to the author.",
+      "must_cover": [
+        "The logo, linking to the UX Design Skill page",
+        "Privacy policy and Terms of sale",
+        "Cookie settings, which open the consent window",
+        "Changelog with the skill's history of changes",
+        "Contact: an email to the author"
+      ],
+      "leave_out": "A newsletter sign-up.",
+      "rationale": "A minimal footer: the documents the law and sales require, the changelog for people checking whether the skill is still being developed, and an email to the author. No newsletter sign-up: people who want to buy buy right away, and people who want to try get a free skill. The call to buy lives in the closing section above the footer.",
+      "alternatives": "A large footer with columns of links: rejected, because there are few pages, and the menu already leads to them. A newsletter in the footer: rejected outright by the owner. Social media links: rejected, because the author's LinkedIn is in the author section."
     }
   ]
 }
@@ -2362,41 +2666,20 @@
 
 <script type="application/json" id="inventory-data">
 {
-  "_template_stock": true,
   "labels": {},
   "summary": {
-    "total_templates": 3,
-    "unique_sections": 7
+    "total_templates": 1,
+    "unique_sections": 19
   },
   "template_map": [
     {
-      "id": "template-home",
-      "name": "{Home}",
+      "id": "template-product-page",
+      "name": "Product page",
       "template_type": "standard",
       "pages_using": [
-        "{Home}"
+        "UX Design Skill"
       ],
-      "goal": "{What this template accomplishes — one-liner on the card.}"
-    },
-    {
-      "id": "template-product",
-      "name": "{Product / Feature}",
-      "template_type": "corporate-pool",
-      "pages_using": [
-        "{Product A}",
-        "{Product B}",
-        "{Product C}"
-      ],
-      "goal": "{Template goal — shared shell with pool variants per page.}"
-    },
-    {
-      "id": "template-landing",
-      "name": "{Campaign Landing}",
-      "template_type": "modular",
-      "pages_using": [
-        "{Summer campaign}"
-      ],
-      "goal": "{Template goal — atom palette for one-off campaign composition.}"
+      "goal": "A long sales page: from the hero through the proof from the files and pricing to the closing call to action; the menu and footer are shared by every page."
     }
   ],
   "section_index": [
@@ -2407,233 +2690,494 @@
       "used_in": [
         "All pages"
       ],
-      "goal": "{Global nav goal — what the main menu has to surface on every page.}",
-      "key_message": "{Core message the nav must land across the site.}",
+      "goal": "Give every page of the skill a one-click route to pricing and shortcuts to what visitors check before buying: reviews, free skills, the knowledge base and the guide.",
       "atoms": [
-        "{logo}",
-        "{nav-items}",
-        "{cta}",
-        "{mega-menu}"
+        "logo",
+        "menu links",
+        "button"
       ],
       "variants": [
-        "{default}",
-        "{sticky}"
+        "Wide screen: logo, five links and a button",
+        "Narrow screen: no menu links"
       ],
-      "question": "{User question the nav answers at a glance.}",
-      "narrative": "{hook}",
-      "content_status": "content-ready",
-      "rationale": "{Why this nav architecture globally.}",
-      "alternatives": "{Alternative nav patterns considered.}"
+      "question": "Where am I, and what can I do here?",
+      "narrative": "hook",
+      "rationale": "critical: the fixed “See pricing” button leads to pricing from every page (task 6: compare packages and prices).",
+      "alternatives": "A menu with a link to every section: rejected, because it duplicates scrolling. A “Resources” dropdown: rejected, because grouping adds nothing with five items.",
+      "kind": "none"
     },
     {
       "id": "section-hero",
-      "name": "{Hero}",
+      "name": "Hero",
       "priority_tier": "critical",
       "template_type": "standard",
       "used_in": [
-        "{Home}",
-        "{Product A}"
+        "UX Design Skill"
       ],
-      "goal": "{Section goal — what this section accomplishes on the page.}",
-      "key_message": "{Core message the section must land.}",
+      "goal": "Say in the first screen what the skill is and what you get with it, and offer two routes on: to pricing or to the free version.",
       "atoms": [
-        "{heading}",
-        "{subhead}",
-        "{cta}",
-        "{bg-image}"
+        "label",
+        "headline",
+        "subheading",
+        "list",
+        "star rating",
+        "button",
+        "link",
+        "video"
       ],
       "variants": [
-        "{default}",
-        "{video}"
+        "–"
       ],
-      "question": "{User question this section answers.}",
-      "narrative": "{hook}",
-      "content_status": "content-ready",
-      "rationale": "{Priority rationale — anchored to a top task or strategic pillar.}",
-      "alternatives": "{Other section treatments considered; why this one was chosen.}"
+      "question": "What is this, and will it help with my site project?",
+      "narrative": "hook",
+      "rationale": "critical: answers task 1 (is the skill for me) and carries the primary call to action to pricing (task 6).",
+      "alternatives": "A hero built on the product category (“AI tool for planning site structure”): rejected, because buyers have no “AI UX” category in their heads, and a time anchor works better. A hero that opens with the persona's pain: rejected under archetype A in favor of proof-first.",
+      "kind": "none"
     },
     {
-      "id": "section-features",
-      "name": "{Features}",
-      "priority_tier": "significant",
-      "template_type": "standard",
-      "used_in": [
-        "{Home}"
-      ],
-      "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
-      "atoms": [
-        "{heading}",
-        "{grid}",
-        "{icon}",
-        "{copy-block}"
-      ],
-      "variants": [
-        "{default}"
-      ],
-      "question": "{User question.}",
-      "narrative": "{evidence}",
-      "content_status": "needs-content",
-      "rationale": "{Priority rationale.}",
-      "alternatives": "Alternatives considered."
-    },
-    {
-      "id": "section-cta",
-      "name": "{CTA band}",
+      "id": "section-pliki-z-procesu",
+      "name": "Process files",
       "priority_tier": "critical",
       "template_type": "standard",
       "used_in": [
-        "{Home}",
-        "{Product A}",
-        "{Product B}",
-        "{Product C}"
+        "UX Design Skill"
       ],
-      "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
+      "goal": "Right after the hero, show that this page was planned with the skill and let visitors check it: four process files that open in the browser, and a demo video.",
       "atoms": [
-        "{heading}",
-        "{subhead}",
-        "{primary-cta}",
-        "{secondary-cta}"
+        "label",
+        "headline",
+        "paragraph",
+        "cards with a link",
+        "video button"
       ],
       "variants": [
-        "{default}",
-        "{inverse}"
+        "–"
       ],
-      "question": "{User question.}",
-      "narrative": "{resolution}",
-      "content_status": "tbd",
-      "rationale": "{Priority rationale.}",
-      "alternatives": "Alternatives considered."
+      "question": "What does the skill's real output look like?",
+      "narrative": "evidence",
+      "rationale": "critical: the main route for task 2 (see the real files the skill produces).",
+      "alternatives": "The claim in prose at the top and the file gallery further down: rejected, because the claim would wait several sections for its proof. Buyer reviews as the first proof: rejected, because a skeptical designer wants to see the output, not just other people's words; the reviews sit closer to pricing.",
+      "kind": "none"
     },
     {
-      "id": "section-specs",
-      "name": "{Specs}",
+      "id": "section-filary",
+      "name": "Three features",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Break the three pillars into three features that visitors read as a description of what they've just seen in the files, each with a link to its proof.",
+      "atoms": [
+        "label",
+        "headline",
+        "numbered cards",
+        "link"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "What exactly do I get, and how does it work?",
+      "narrative": "evidence",
+      "rationale": "critical: breaks down pillars P1–P3 of the messaging hierarchy; supports task 1.",
+      "alternatives": "A different pillar order: rejected, because the approved order fits a story that starts with proof. Features without links to proof: rejected, because every claim needs an artifact to check.",
+      "kind": "none"
+    },
+    {
+      "id": "section-jak-to-dziala",
+      "name": "How it works",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Show the visitor's path through the skill in four second-person steps, from brief to a finished wireframe with real copy, so designers see themselves in the loop rather than watching an AI model work.",
+      "atoms": [
+        "label",
+        "headline",
+        "step cards",
+        "video"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "What does working with it look like from my side?",
+      "narrative": "resolution",
+      "rationale": "critical: the main route for task 3 (understand what working with the skill looks like).",
+      "alternatives": "The six stages from the skill's internals: rejected, because that's the tool's view, not the visitor's. Three steps: rejected, because positioning and copy would lose their own step (P1).",
+      "kind": "none"
+    },
+    {
+      "id": "section-baza-wiedzy",
+      "name": "Knowledge base",
       "priority_tier": "significant",
-      "template_type": "corporate-pool",
+      "template_type": "standard",
       "used_in": [
-        "{Product A}",
-        "{Product B}"
+        "UX Design Skill"
       ],
-      "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
+      "goal": "Show concretely, by name, what UX knowledge sits underneath, so a skeptic can check that the skill understands UX design and doesn't just generate text.",
       "atoms": [
-        "{table}",
-        "{note}"
+        "label",
+        "headline",
+        "paragraph",
+        "page type list",
+        "framework list",
+        "pattern list",
+        "link"
       ],
       "variants": [
-        "{default}"
+        "–"
       ],
-      "question": "{User question.}",
-      "narrative": "{evidence}",
-      "content_status": "needs-content",
-      "rationale": "{Priority rationale.}",
-      "alternatives": "Alternatives considered."
+      "question": "How does the skill know how to design good sites?",
+      "narrative": "evidence",
+      "rationale": "significant: proof of pillar P3 and support for task 2; it isn't the main route for any task.",
+      "alternatives": "Only a link to the subpage, with no section: rejected, because most visitors won't leave a sales page to check the knowledge. The full list of every pattern on the page: rejected, because it makes the page longer; the section shows some of the patterns and points to the rest.",
+      "kind": "none"
     },
     {
-      "id": "section-reviews",
-      "name": "{Reviews}",
-      "priority_tier": "minor",
-      "template_type": "corporate-pool",
+      "id": "section-darmowe-skille",
+      "name": "Free skills on GitHub",
+      "priority_tier": "significant",
+      "template_type": "standard",
       "used_in": [
-        "{Product B}",
-        "{Product C}"
+        "UX Design Skill"
       ],
-      "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
+      "goal": "Get ahead of the question about free UX skills on GitHub: show honestly what their four buckets do, and that none of them runs a project from brief to wireframes.",
       "atoms": [
-        "{quote}",
-        "{avatar}",
-        "{star-rating}"
+        "label",
+        "headline",
+        "paragraph",
+        "cards",
+        "highlighted card with a list"
       ],
       "variants": [
-        "{default}"
+        "–"
       ],
-      "question": "{User question.}",
-      "narrative": "{evidence}",
-      "content_status": "tbd",
-      "rationale": "{Priority rationale.}",
-      "alternatives": "Alternatives considered."
+      "question": "What about the free skills on GitHub?",
+      "narrative": "tension",
+      "rationale": "significant: supports task 4 (how the skill differs from free skills); the comparison is that task's main route.",
+      "alternatives": "Leaving the free skills out: rejected, because visitors know them anyway, and no answer leaves the question open. Free skills as a column in the comparison table: rejected, because four different types don't fit in one column.",
+      "kind": "none"
+    },
+    {
+      "id": "section-porownanie",
+      "name": "Comparison",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Set the skill against the visitor's two real alternatives, Claude Code alone and a skill you write yourself, across five dimensions, so the difference shows in one table.",
+      "atoms": [
+        "label",
+        "headline",
+        "comparison table"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Why isn't Claude Code alone enough, and why not write my own skill?",
+      "narrative": "tension",
+      "rationale": "critical: the main route for task 4 (how the skill differs from Claude Code alone and from a skill of my own).",
+      "alternatives": "“Your tool stays” cards (Figma, site builders) instead of a table: rejected, because visitors working in Claude Code compare the skill mainly with the model alone and with their own skill, and the first value prop carries the relationship with Figma. A comparison with an outside UX consultant: rejected for this section, because it narrows the audience to people who had considered a consultant.",
+      "kind": "none"
+    },
+    {
+      "id": "section-granice",
+      "name": "Skill boundaries",
+      "priority_tier": "significant",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Say honestly what stays with the visitor, to remove the fear that the AI decides for them or fakes certainty.",
+      "atoms": [
+        "label",
+        "headline",
+        "cards with an icon"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Won't the skill make decisions for me, and can I trust it?",
+      "narrative": "tension",
+      "rationale": "significant: lowers the risk before a purchase and supports pillar P3 (the decision stays yours).",
+      "alternatives": "Boundaries only in the FAQ: rejected, because this doubt comes up before the pricing decision, not after it. No section: rejected, because a page of nothing but promises sounds like every AI ad.",
+      "kind": "none"
+    },
+    {
+      "id": "section-opinie",
+      "name": "Reviews",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Show before pricing that the skill works for other people: buyer reviews with a name and a studio that confirm an organized process and faster work.",
+      "atoms": [
+        "label",
+        "headline",
+        "subheading",
+        "reviews (quote, name, photo, company)"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Does it work for other people like me?",
+      "narrative": "evidence",
+      "rationale": "critical: the main route for task 5 (read buyer reviews).",
+      "alternatives": "Reviews right after the hero: rejected, because the opening belongs to the process files, which show the output, and the reviews add other voices closer to the decision. Studio logos alone, with no quotes: rejected, because they don't say what the skill gives you.",
+      "kind": "testimonial"
+    },
+    {
+      "id": "section-pakiety",
+      "name": "Pricing",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Show the three packages side by side and help visitors choose with one question, whether they design for their own business or for clients; each card leads straight to its package's checkout.",
+      "atoms": [
+        "headline",
+        "paragraph",
+        "link",
+        "package cards (group, name, price, value sentence, list, button)",
+        "small print"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "How much does it cost, and which package is for me?",
+      "narrative": "resolution",
+      "rationale": "critical: the main route for tasks 6 and 7 (compare packages and prices, choose a package and buy).",
+      "alternatives": "A separate pricing subpage with a full comparison table: rejected, because a section on the page shortens the path to purchase. A separate page for business owners or an audience switch: rejected for this stage; they wait for the December test. The Polish name “Firma” instead of “Founder”: postponed; it comes back if the Polish campaign targets mainly local business owners.",
+      "kind": "none"
+    },
+    {
+      "id": "section-wyprobuj-za-darmo",
+      "name": "Try it for free",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Give visitors who aren't ready to buy a second route: two free skills taken from the full version, claimed right on the page with an email address.",
+      "atoms": [
+        "label",
+        "headline",
+        "paragraph",
+        "cards (question, name, description, email field, button, link)"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Can I try it before I buy?",
+      "narrative": "resolution",
+      "rationale": "critical: the main route for task 8 (try a free skill before buying).",
+      "alternatives": "Free skills before pricing or as the first call to action in the hero: rejected, because they'd hide the purchase, which is the page's goal. One free skill instead of two: rejected, because the second card serves people who are only planning a site.",
+      "kind": "none"
+    },
+    {
+      "id": "section-architektura",
+      "name": "Under the hood",
+      "priority_tier": "significant",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Show the technical skeptic that this is a designed system, not a single prompt: its scale, its folder structure and eight design decisions.",
+      "atoms": [
+        "label",
+        "headline",
+        "paragraph",
+        "link",
+        "folder tree",
+        "decision cards"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Isn't this just one long prompt?",
+      "narrative": "evidence",
+      "rationale": "significant: builds trust before a purchase and supports task 4 (the comparison with a skill of my own).",
+      "alternatives": "The architecture on a separate subpage: rejected, because a short section is enough and the full history is in the changelog. No section: rejected, because the “it's just a prompt” objection would go unanswered.",
+      "kind": "none"
+    },
+    {
+      "id": "section-platformy",
+      "name": "Platforms",
+      "priority_tier": "significant",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Confirm that the skill works in the tools visitors already use, and show exactly what's in the package.",
+      "atoms": [
+        "label",
+        "headline",
+        "platform cards",
+        "package contents list",
+        "requirements list",
+        "small print"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Will it work in my tool, and what exactly do I get?",
+      "narrative": "resolution",
+      "rationale": "significant: supports task 9 (does the skill work in my tool); the Install section carries the install steps.",
+      "alternatives": "Platforms only in the hero: rejected, because the hero covers them in one sentence, and a skeptic wants the details before buying. Package contents in pricing: rejected, because the pricing cards show the differences between packages, not what they share.",
+      "kind": "none"
+    },
+    {
+      "id": "section-instalacja",
+      "name": "Install (short version)",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Remove the technical worry “will I manage?” with three install steps and a link to the full guide on the How it works page.",
+      "atoms": [
+        "label",
+        "headline",
+        "paragraph",
+        "step cards",
+        "link"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "How do I install it? Will I manage?",
+      "narrative": "resolution",
+      "rationale": "critical: the main route for task 9 (how to install the skill).",
+      "alternatives": "Only a link to the guide, with no section: rejected, because a skeptic stops at the purchase decision and needs a sign that installing is simple. The full guide on the product page: rejected, because it makes the page longer and duplicates the subpage.",
+      "kind": "none"
+    },
+    {
+      "id": "section-faq",
+      "name": "FAQ",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Settle the seven questions that usually come up before a purchase, each with a concrete mechanism instead of a promise.",
+      "atoms": [
+        "label",
+        "headline",
+        "question accordion"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "What else should I know before I buy?",
+      "narrative": "tension",
+      "rationale": "critical: the main route for task 10 (make sure about the license, the refund and my project data).",
+      "alternatives": "A shorter FAQ (3 questions): rejected, because the refund and data are questions that come up right before a purchase. Questions about price in the FAQ: rejected, because pricing answers them.",
+      "kind": "accordion"
+    },
+    {
+      "id": "section-autor",
+      "name": "Author",
+      "priority_tier": "significant",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Show the person behind the skill and his experience, with direct contact, so buyers know who answers for the product.",
+      "atoms": [
+        "label",
+        "headline",
+        "photo",
+        "name",
+        "role",
+        "paragraph",
+        "years of experience",
+        "email",
+        "link"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "Who's behind this, and can I trust him?",
+      "narrative": "evidence",
+      "rationale": "significant: task 11 is “Worth considering”; the section builds the trust a purchase needs.",
+      "alternatives": "The author at the top of the page: rejected, because the opening belongs to the proof from the files, and the author convinces the people who read to the end. No section: rejected, because contact details in the footer alone are easy to miss.",
+      "kind": "none"
+    },
+    {
+      "id": "section-final-cta",
+      "name": "Final call to action",
+      "priority_tier": "critical",
+      "template_type": "standard",
+      "used_in": [
+        "UX Design Skill"
+      ],
+      "goal": "Close the page by repeating the primary call to action (to pricing) and the second route (free skills), with no scrolling back.",
+      "atoms": [
+        "headline",
+        "paragraph",
+        "button",
+        "link"
+      ],
+      "variants": [
+        "–"
+      ],
+      "question": "How do I get started?",
+      "narrative": "resolution",
+      "rationale": "critical: repeats the primary call to action to pricing (tasks 6 and 7) at the end of the page.",
+      "alternatives": "No closing call to action: rejected, because a long page with no close loses the people who read to the end. A countdown timer for urgency: rejected, because it contradicts the brand's analytical voice.",
+      "kind": "none"
     },
     {
       "id": "section-footer",
       "name": "Footer",
       "priority_tier": "minor",
-      "template_type": "standard",
       "used_in": [
-        "{Home}",
-        "{Product A}",
-        "{Product B}",
-        "{Product C}",
-        "{Summer campaign}"
+        "All pages"
       ],
-      "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
+      "goal": "Close every page with the required documents, the changelog and contact with the author.",
       "atoms": [
-        "{columns}",
-        "{legal}",
-        "{social}"
+        "logo",
+        "links"
       ],
       "variants": [
-        "{default}"
+        "–"
       ],
-      "question": "{User question.}",
-      "narrative": "{resolution}",
-      "content_status": "content-ready",
-      "rationale": "{Priority rationale.}",
-      "alternatives": "Alternatives considered."
+      "question": "What else might I need once I've scrolled to the bottom?",
+      "narrative": "resolution",
+      "rationale": "minor: legal documents, the changelog and contact, not tied to any visitor task.",
+      "alternatives": "A large footer with columns of links: rejected, because there are few pages, and the menu already leads to them. A newsletter in the footer: rejected outright by the owner. Social media links: rejected, because the author's LinkedIn is in the author section.",
+      "kind": "none"
     }
   ],
   "templates": [
     {
-      "id": "template-home",
-      "name": "{Home}",
+      "id": "template-product-page",
+      "name": "Product page",
       "template_type": "standard",
       "sections": [
+        "section-main-menu",
         "section-hero",
-        "section-features",
-        "section-cta",
+        "section-pliki-z-procesu",
+        "section-filary",
+        "section-jak-to-dziala",
+        "section-baza-wiedzy",
+        "section-darmowe-skille",
+        "section-porownanie",
+        "section-granice",
+        "section-opinie",
+        "section-pakiety",
+        "section-wyprobuj-za-darmo",
+        "section-architektura",
+        "section-platformy",
+        "section-instalacja",
+        "section-faq",
+        "section-autor",
+        "section-final-cta",
         "section-footer"
-      ]
-    },
-    {
-      "id": "template-product",
-      "name": "{Product / Feature}",
-      "template_type": "corporate-pool",
-      "shared_sections": [
-        "section-hero",
-        "section-cta",
-        "section-footer"
-      ],
-      "pool_sections": [
-        {
-          "id": "section-specs",
-          "name": "{Specs}",
-          "used_by": [
-            "{Product A}",
-            "{Product B}"
-          ]
-        },
-        {
-          "id": "section-reviews",
-          "name": "{Reviews}",
-          "used_by": [
-            "{Product B}",
-            "{Product C}"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "template-landing",
-      "name": "{Campaign Landing}",
-      "template_type": "modular",
-      "atoms": [
-        "{hero}",
-        "{testimonial}",
-        "{feature-grid}",
-        "{cta-band}",
-        "{faq}"
       ]
     }
   ],
@@ -2647,9 +3191,7 @@
         "title": "Unique templates",
         "variant": "two",
         "card_ids": [
-          "template-home",
-          "template-product",
-          "template-landing"
+          "template-product-page"
         ]
       },
       {
@@ -2659,12 +3201,28 @@
         "card_ids": [
           "section-main-menu",
           "section-hero",
-          "section-features",
-          "section-cta",
-          "section-specs",
-          "section-reviews",
+          "section-pliki-z-procesu",
+          "section-filary",
+          "section-jak-to-dziala",
+          "section-baza-wiedzy",
+          "section-darmowe-skille",
+          "section-porownanie",
+          "section-granice",
+          "section-opinie",
+          "section-pakiety",
+          "section-wyprobuj-za-darmo",
+          "section-architektura",
+          "section-platformy",
+          "section-instalacja",
+          "section-faq",
+          "section-autor",
+          "section-final-cta",
           "section-footer"
         ]
+      },
+      {
+        "type": "template-arch",
+        "template_id": "template-product-page"
       }
     ]
   }
@@ -2777,14 +3335,17 @@
     pp_strategy_messaging_voice: 'Messaging & Voice',
     pp_strategy_messaging:       'Messaging Hierarchy',
     pp_strategy_voice:           'Voice Brief',
-    // Content-readiness pill short labels
-    pp_content_ready: 'Content ready',
-    pp_needs_content: 'Needs content',
-    pp_tbd_status:    'TBD',
-    pp_section_card_goal:       'Goal:',
-    pp_section_card_message:    'Message:',
-    pp_section_card_content:    'Content:',
-    pp_section_card_readiness:  'Readiness:',
+    // Section card rows + content brief (layout A). `_content` labels the
+    // older-shape items' content row only.
+    pp_section_card_goal:        'Goal:',
+    pp_section_card_question:    'Question:',
+    pp_section_card_key_message: 'Key message:',
+    pp_section_card_must_cover:  'Must cover:',
+    pp_section_card_doubt:       'Doubt it removes:',
+    pp_section_card_proof:       'Proof:',
+    pp_section_card_action:      'Action:',
+    pp_section_card_leave_out:   'Leave out:',
+    pp_section_card_content:     'Content:',
     // Detail block headings
     detail_rationale:      'Rationale',
     detail_alternatives:   'Alternatives considered',
@@ -2795,7 +3356,6 @@
     detail_goal:           'Goal',
     detail_question:       'Question',
     detail_content:        'Content description',
-    detail_content_status: 'Content readiness',
     // Scope group headers
     group_scope_page:    'Page-level',
     group_scope_section: 'Sections',
@@ -2805,16 +3365,13 @@
     // Design plan canvas labels
     pp_inventory_total_templates:          'Unique templates',
     pp_inventory_unique_sections:          'Unique sections',
-    pp_inventory_sections_needing_content: 'Sections needing content',
     // Section Index card field labels (Design plan) — translatable overrides.
     pp_inventory_field_narrative:    'Narrative',
     pp_inventory_field_goal:         'Goal',
     pp_inventory_field_question:     'Question',
-    pp_inventory_field_key_message:  'Key message',
     pp_inventory_field_used_in:      'Used in',
     pp_inventory_field_atoms:        'Atoms',
     pp_inventory_field_variants:     'Variants',
-    pp_inventory_field_readiness:    'Readiness',
     pp_inventory_field_usage:        'Usage',
     pp_inventory_template_map:    'Unique templates',
     pp_inventory_usage_single:    'Single page',
@@ -2829,7 +3386,6 @@
     group_kind_section:  'Sections',
     group_kind_template: 'Templates',
     detail_used_in:      'Used in',
-    detail_key_message:  'Key message',
     detail_atoms:        'Atoms',
     detail_variants:     'Variants',
     detail_pages_using:  'Pages using',
@@ -2875,8 +3431,12 @@
     md_question:             'Question',
     md_content_description:  'Content',
     md_key_message:          'Key message',
+    md_must_cover:           'Must cover',
+    md_doubt:                'Doubt it removes',
+    md_proof:                'Proof',
+    md_action:               'Action',
+    md_leave_out:            'Leave out',
     md_narrative:            'Narrative',
-    md_content_status:       'Content readiness',
     md_top_tasks_served:     'Top tasks served',
     md_element:              'Element',
     md_decision_status:      'Decision status',
@@ -2896,7 +3456,6 @@
     md_inventory_section_template_arch:             'Per-template architecture',
     md_inventory_summary_total_templates:           'Templates',
     md_inventory_summary_unique_sections:           'Unique sections',
-    md_inventory_summary_sections_needing_content:  'Sections needing content',
     md_inventory_template_arch_corp_pool_shared:    'Shared sections',
     md_inventory_template_arch_corp_pool_variants:  'Pool variants',
     md_inventory_template_arch_modular_atoms:       'Atom palette'
@@ -2973,17 +3532,6 @@
   // synthesized `_kind` marker.
   // ============================================================
 
-  const CONTENT_STATUS_MAP = {
-    'content-ready': { cls: 'ui-badge--content-ready', labelKey: 'pp_content_ready' },
-    'needs-content': { cls: 'ui-badge--needs-content', labelKey: 'pp_needs_content' },
-    'tbd':           { cls: 'ui-badge--tbd-status',    labelKey: 'pp_tbd_status' }
-  };
-  function contentStatusPill(status) {
-    const m = CONTENT_STATUS_MAP[status];
-    if (!m) return '';
-    const label = LABELS[m.labelKey] != null ? LABELS[m.labelKey] : status;
-    return '<span class="ui-badge ' + m.cls + '">' + label + '</span>';
-  }
   function narrativeTag(narrative) {
     if (!narrative) return '';
     // Strip placeholder braces so `{hook}` renders as `hook` in the pill
@@ -3265,7 +3813,7 @@
   }
 
   function rowHtml(row, byId, data) {
-    if (row.type === 'summary')       return summaryHtml(data.summary, data);
+    if (row.type === 'summary')       return summaryHtml(data.summary);
     if (row.type === 'heading')       return '<h2 class="ui-card-row-title">' + (row.title || '') + '</h2>';
     if (row.type === 'tree')          return treeRowHtml(resolveTreeRow(row, data));
     if (row.type === 'sitemap')       return treeRowHtml(resolveTreeRow(Object.assign({ kind: 'sitemap', title: row.title || 'Sitemap' }, row), data));
@@ -3317,9 +3865,13 @@
       : '';
     // bullets[] — free-form placeholder list (each entry is a unified `{...}` string
     // rendered verbatim inside <li>). Used by the Alternatives card for behavior
-    // clusters — agent keeps/drops/renames clusters per project.
+    // clusters — agent keeps/drops/renames clusters per project. On that card each
+    // bullet reads "Cluster: what buyers do", so the cluster name renders in bold.
+    const boldName = /^\x7B?context-id-alternative\x7D?$/.test(item.id || '');
     const bulletsHtml = (item.bullets && item.bullets.length)
-      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul>'
+      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) {
+          return '<li>' + (boldName ? String(b).replace(/^(\x7B?)([^:\x7B\x7D<]+):/, '$1<strong>$2</strong>:') : b) + '</li>';
+        }).join('') + '</ul>'
       : '';
     const metaPillsHtml = (item.meta_pills || []).map(plainChip).join('');
     const confPill = item.confidence
@@ -3381,25 +3933,63 @@
       + '</article>';
   }
 
-  // Six-field section card — Name + narrative tag (inline in h4);
-  // then labeled rows for Goal / Message / Content; readiness pill labeled
-  // in .ui-card__meta. Confidence is NOT rendered on the card —
-  // rationale + confidence live in the left panel.
+  // Section card, layout A (schema §Section card (layout A)) — Name +
+  // narrative tag (inline in h4); labeled Goal and Question rows; then the
+  // content brief as one labeled list (Key message, Must cover as a bulleted
+  // sub-list, then Doubt it removes / Proof / Action / Leave out, each only
+  // when present). An older-shape item (no key_message, no must_cover —
+  // written before 4.7) shows its Content row in place of the brief; its
+  // legacy readiness field is ignored. Confidence is NOT rendered on the
+  // card — rationale + confidence live in the left panel.
   function sectionCardHtml(item) {
     const heading = item.name || item.title || '';
     const narrInline = item.narrative ? ' ' + narrativeTag(item.narrative) : '';
-    const readinessPill = contentStatusPill(item.content_status);
-    const fields = [
-      sectionFieldRow(LABELS.pp_section_card_goal      || 'Goal:',      item.goal),
-      sectionFieldRow(LABELS.pp_section_card_message   || 'Message:',   item.question),
-      sectionFieldRow(LABELS.pp_section_card_readiness || 'Readiness:', readinessPill),
-      sectionFieldRow(LABELS.pp_section_card_content   || 'Content:',   sectionContentValue(item.content_description))
-    ].join('');
+    const mustCover = sectionListEntries(item.must_cover);
+    const rows = [
+      sectionFieldRow(LABELS.pp_section_card_goal     || 'Goal:',     item.goal),
+      sectionFieldRow(LABELS.pp_section_card_question || 'Question:', item.question)
+    ];
+    if (item.key_message || mustCover.length) {
+      const mustCoverList = mustCover.length
+        ? '<ul>' + mustCover.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
+        : '';
+      rows.push(sectionBriefList([
+        sectionBriefPart(LABELS.pp_section_card_key_message || 'Key message:',      item.key_message),
+        sectionBriefPart(LABELS.pp_section_card_must_cover  || 'Must cover:',       mustCoverList),
+        sectionBriefPart(LABELS.pp_section_card_doubt       || 'Doubt it removes:', item.doubt),
+        sectionBriefPart(LABELS.pp_section_card_proof       || 'Proof:',            item.proof),
+        sectionBriefPart(LABELS.pp_section_card_action      || 'Action:',           item.action),
+        sectionBriefPart(LABELS.pp_section_card_leave_out   || 'Leave out:',        item.leave_out)
+      ]));
+    } else {
+      rows.push(sectionFieldRow(LABELS.pp_section_card_content || 'Content:', sectionContentValue(item.content_description)));
+    }
     return ''
       + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
       +   '<h4>' + heading + narrInline + '</h4>'
-      +   fields
+      +   rows.join('')
       + '</article>';
+  }
+
+  // The content brief list. Its top border (CSS) is the divider between the
+  // Goal / Question rows and the brief. Parts that rendered empty drop out.
+  function sectionBriefList(parts) {
+    const html = parts.join('');
+    return html ? '<ul class="pp-section-card__brief">' + html + '</ul>' : '';
+  }
+
+  // One labeled part of the brief. An empty value (missing, null or '')
+  // prints no <li> and no label.
+  function sectionBriefPart(label, value) {
+    if (!value) return '';
+    return '<li><span class="pp-section-card__field-label">' + label + '</span>' + value + '</li>';
+  }
+
+  // List-valued section field → non-empty entries. An array keeps its order;
+  // a lone string is one entry; anything else is none.
+  function sectionListEntries(value) {
+    const items = Array.isArray(value) ? value : (value ? [value] : []);
+    return items.filter(function(c) { return c != null && c !== ''; });
   }
 
   // One labeled row inside a section card. Value can be a string (inline
@@ -3466,8 +4056,8 @@
     // longer render on Design plan, so the field is dead signal on the card.
     // Priority moves to .ui-card__meta at the bottom as a labeled colored
     // pill (red/amber/green via PRIORITY_MAP) with top separator.
-    // Readiness uses the colored pill (matches Section map's labeled-row
-    // treatment) instead of plain text.
+    // No readiness and no key message: an older entry that still carries
+    // either shows without it.
     const L = function(key, fallback) {
       const v = LABELS[key];
       if (v == null) return fallback;
@@ -3478,11 +4068,9 @@
       item.narrative           ? metaSeg(L('pp_inventory_field_narrative',    'Narrative'),    item.narrative)                        : '',
       item.goal                ? metaSeg(L('pp_inventory_field_goal',         'Goal'),         item.goal)                             : '',
       item.question            ? metaSeg(L('pp_inventory_field_question',     'Question'),     item.question)                         : '',
-      item.key_message         ? metaSeg(L('pp_inventory_field_key_message',  'Key message'),  item.key_message)                      : '',
       listSeg(L('pp_inventory_field_used_in', 'Used in'), item.used_in),
       listChipsSeg(L('pp_inventory_field_atoms',    'Atoms'),    item.atoms),
-      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants),
-      item.content_status      ? metaSeg(L('pp_inventory_field_readiness',    'Readiness'),    contentStatusPill(item.content_status)) : ''
+      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants)
     ].join('');
     const priorityMeta = item.priority_tier
       ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_priority + ':</span>' + pill(PRIORITY_MAP, item.priority_tier) + '</div>'
@@ -3556,7 +4144,7 @@
       return it.scope === 'section' && it.page_id === row.page_id;
     });
     // Section cards stack vertically on Section map — one column, section cards
-    // carry multi-line content (Goal + Message + bullets + readiness pill).
+    // carry multi-line content (Goal + Question rows + the content brief).
     const variant = 'one';
     const cardsHtml = sectionItems.map(cardHtml).join('');
     return ''
@@ -3566,23 +4154,17 @@
       + '</section>';
   }
 
-  function summaryHtml(summary, data) {
+  // Two figures. A legacy summary.sections_needing_content (plans written
+  // before 4.7) is ignored — readiness is gone.
+  function summaryHtml(summary) {
     if (!summary) return '';
     function stat(n, labelKey, fallback) {
       return '<div class="pp-summary__stat"><div class="pp-summary__n">' + (n != null ? n : '') + '</div><div class="pp-summary__label">' + (LABELS[labelKey] || fallback) + '</div></div>';
     }
-    // Sections needing content = count of section_index entries whose
-    // content_status is NOT content-ready. Derived (not persisted) because
-    // it's a view over data the agent already wrote.
-    const sections = (data && data.section_index) || [];
-    const needingContent = summary.sections_needing_content != null
-      ? summary.sections_needing_content
-      : sections.filter(function(s) { return s.content_status && s.content_status !== 'content-ready'; }).length;
     return ''
       + '<div class="pp-summary">'
-      +   stat(summary.total_templates,  'pp_inventory_total_templates',          'Unique templates')
-      +   stat(summary.unique_sections,  'pp_inventory_unique_sections',          'Unique sections')
-      +   stat(needingContent,           'pp_inventory_sections_needing_content', 'Sections needing content')
+      +   stat(summary.total_templates,  'pp_inventory_total_templates', 'Unique templates')
+      +   stat(summary.unique_sections,  'pp_inventory_unique_sections', 'Unique sections')
       + '</div>';
   }
 
@@ -4040,7 +4622,7 @@
   }
 
   // ---- Section map detail — rationale + alternatives only. Section card
-  // fields (Goal / Message / Readiness / Content) are already on the canvas
+  // fields (Goal / Question / content brief) are already on the canvas
   // card; repeating them in the panel is redundant. ----
   function renderSectionMapDetail(id) {
     view = 'detail';
@@ -4110,7 +4692,7 @@
   }
 
   // ---- Design plan detail — rationale + alternatives only. Priority /
-  // usage / used-in / atoms / variants / goal / key_message / narrative
+  // usage / used-in / atoms / variants / goal / narrative
   // all live on the canvas card already. Panel surfaces only the "why". ----
   function renderInventoryDetail(id) {
     view = 'detail';
@@ -4328,12 +4910,6 @@
     if (t === 'modular')        return LABELS.template_modular;
     return t || '';
   }
-  function _md_contentStatusLabel(s) {
-    if (s === 'content-ready') return LABELS.pp_content_ready;
-    if (s === 'needs-content') return LABELS.pp_needs_content;
-    if (s === 'tbd')           return LABELS.pp_tbd_status;
-    return s || '';
-  }
   function _md_joinChips(arr) {
     if (!arr || !arr.length) return '';
     return arr.map(_md_stripBraces).join(', ');
@@ -4502,17 +5078,32 @@
       var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
       pageSections.forEach(function(s) {
         // Heading shape per schema's MD export contract:
-        // ### {Title} — {narrative} ({confidence}, {content_status})
+        // ### {Title} — {narrative} ({confidence})
         var heading = '### ' + _md_stripBraces(s.title || s.id || '');
         if (s.narrative) heading += ' — ' + _md_stripBraces(s.narrative);
         var pillBits = [];
         if (s.confidence)     pillBits.push(_md_confidenceLabel(s.confidence));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.goal)                parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)            parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.content_description) parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        // Content brief, in the card's order; Must cover nests its entries
+        // two spaces in. An older-shape item (no key_message, no must_cover)
+        // keeps its content line in place of the brief.
+        var mustCover = sectionListEntries(s.must_cover);
+        if (s.key_message || mustCover.length) {
+          if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
+          if (mustCover.length) {
+            parts.push('- **' + LABELS.md_must_cover + ':**');
+            mustCover.forEach(function(c) { parts.push('  - ' + _md_stripBraces(c)); });
+          }
+          if (s.doubt)     parts.push('- **' + LABELS.md_doubt + ':** ' + _md_stripBraces(s.doubt));
+          if (s.proof)     parts.push('- **' + LABELS.md_proof + ':** ' + _md_stripBraces(s.proof));
+          if (s.action)    parts.push('- **' + LABELS.md_action + ':** ' + _md_stripBraces(s.action));
+          if (s.leave_out) parts.push('- **' + LABELS.md_leave_out + ':** ' + _md_stripBraces(s.leave_out));
+        } else if (s.content_description) {
+          parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        }
         if (s.rationale)           parts.push('- **' + LABELS.md_rationale + ':** ' + _md_stripBraces(s.rationale));
         if (s.alternatives)        parts.push('- **' + LABELS.md_alternatives + ':** ' + _md_stripBraces(s.alternatives));
         parts.push('');
@@ -4526,13 +5117,9 @@
     data = data || INVENTORY;
     var parts = ['# ' + LABELS.md_pp_inventory_title, ''];
     var summary = data.summary || {};
-    var sectionsNeeding = (typeof summary.sections_needing_content === 'number')
-      ? summary.sections_needing_content
-      : (data.section_index || []).filter(function(s) { return s.content_status !== 'content-ready'; }).length;
     parts.push('## ' + LABELS.md_inventory_section_summary, '');
     parts.push('- **' + LABELS.md_inventory_summary_total_templates + ':** ' + (summary.total_templates || 0));
     parts.push('- **' + LABELS.md_inventory_summary_unique_sections + ':** ' + (summary.unique_sections || 0));
-    parts.push('- **' + LABELS.md_inventory_summary_sections_needing_content + ':** ' + sectionsNeeding);
     parts.push('', '---', '');
     var templateMap = data.template_map || [];
     if (templateMap.length) {
@@ -4559,7 +5146,6 @@
         var pillBits = [];
         if (s.priority_tier)  pillBits.push(_md_priorityLabel(s.priority_tier));
         if (s.template_type)  pillBits.push(_md_templateTypeLabel(s.template_type));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.narrative)   parts.push('- **' + LABELS.md_narrative + ':** ' + _md_stripBraces(s.narrative));
@@ -4568,7 +5154,6 @@
         }
         if (s.goal)        parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)    parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
         if (s.atoms && s.atoms.length) {
           parts.push('- **' + LABELS.md_atoms + ':** ' + _md_joinChips(s.atoms));
         }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>uxd-product-website-v3 — Wireframes</title>
+  <title>ux-design-skill — Wireframes</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1400,7 +1400,7 @@
      ============================================================ -->
 <script type="application/json" id="wireframes-findings-data">
 {
-  "namespace": "wireframes-uxd-product-website-v3",
+  "namespace": "wireframes-ux-design-skill",
   "labels": {
     "confidence_high": "Wysoka",
     "confidence_medium": "Średnia",
@@ -1469,24 +1469,30 @@
     "bar_view": "Widok",
     "badge_aria": "Decyzja projektowa"
   },
+  "customStyles": ".wf-ext-process-step { border-left: 3px solid var(--wf-accent); } .wf-ext-process-step::before { display: none; }",
   "chrome": {
     "nav": {
       "brand": {
         "kind": "label",
-        "text": "[Logo — narzędzie UX]"
+        "text": "[Logo Creative Sparks]",
+        "href": "/ux-design-skill/"
       },
       "links": [
         {
-          "text": "Pakiety",
-          "href": "#pakiety"
+          "text": "Cennik",
+          "href": "/ux-design-skill/#cennik"
         },
         {
-          "text": "Audyt",
-          "href": "#audyt"
+          "text": "Opinie",
+          "href": "/ux-design-skill/#opinie"
+        },
+        {
+          "text": "Darmowe skille",
+          "href": "/ux-design-skill/#wyprobuj-za-darmo"
         },
         {
           "text": "Baza wiedzy",
-          "href": "/ux-design-skill/baza-wiedzy/"
+          "href": "/ux-design-skill/#baza-wiedzy"
         },
         {
           "text": "Jak pracować",
@@ -1495,302 +1501,212 @@
       ],
       "cta": {
         "kind": "button",
-        "label": "Zobacz pakiety",
+        "label": "Sprawdź ceny",
         "variant": "primary",
-        "href": "#pakiety"
+        "href": "/ux-design-skill/#cennik"
       }
     },
     "footer": {
       "columns": [
         {
-          "title": "Produkt",
-          "links": [
-            {
-              "text": "Pakiety",
-              "href": "#pakiety"
-            },
-            {
-              "text": "Darmowy audyt",
-              "href": "#audyt"
-            },
-            {
-              "text": "Baza wiedzy",
-              "href": "/ux-design-skill/baza-wiedzy/"
-            },
-            {
-              "text": "Jak pracować",
-              "href": "/ux-design-skill/instrukcja/"
-            }
-          ]
+          "title": "[Logo Creative Sparks]",
+          "links": []
         },
         {
-          "title": "Firma",
-          "links": [
-            {
-              "text": "Kontakt",
-              "href": "mailto:kontakt@example.pl"
-            }
-          ]
-        },
-        {
-          "title": "Legal",
+          "title": "",
           "links": [
             {
               "text": "Polityka prywatności",
-              "href": "/polityka-prywatnosci"
+              "href": "/ux-design-skill/polityka-prywatnosci/"
             },
             {
-              "text": "Regulamin",
-              "href": "/regulamin"
+              "text": "Ustawienia cookies",
+              "href": "#cookie-settings"
+            },
+            {
+              "text": "Regulamin sprzedaży",
+              "href": "/ux-design-skill/regulamin/"
+            },
+            {
+              "text": "Changelog",
+              "href": "/ux-design-skill/changelog/"
+            },
+            {
+              "text": "Kontakt",
+              "href": "mailto:tomasz@creativesparks.pl?subject=Pytanie%20w%20sprawie%20asystenta"
             }
           ]
         }
-      ],
-      "legal": "© 2026 — Plan strony z uzasadnieniem każdej decyzji"
+      ]
     }
   },
   "wireframes": [
     {
-      "slug": "home",
-      "title": "Strona główna",
-      "purpose": "Sprzedać licencję narzędzia w okresie polskiej przedsprzedaży; alternatywnie zaproponować darmowy audyt jako pre-konwersję.",
+      "slug": "ux-design-skill",
+      "title": "UX Design Skill",
+      "purpose": "Sprzedać licencję UX Design Skill w jednym z trzech pakietów (Founder, Solo Designer, Studio); darmowe skille to druga ścieżka.",
       "navOverride": null,
       "footerOverride": null,
       "pageDeliberations": [
         {
-          "id": "page-archetype",
-          "summary": "Authority-Led (proof-first) jako archetyp narracji strony głównej",
-          "reasoning": "Designer to skeptyczny analityk; natychmiastowy dowód ('ta strona jest case study siebie') to mocniejszy hak niż empatia bólu lub goła demonstracja produktu. Strategia radykalnej transparencji wpisuje się w Authority-Led idealnie — pillar P1 z kanwy ('plan z uzasadnieniem każdej decyzji') jest meta-spójny: udowadniamy P1 strukturą strony, nie tylko o nim mówimy.",
+          "id": "page-live-snapshot",
+          "summary": "Makieta pokazuje żywą stronę /ux-design-skill/: 17 sekcji w kolejności strony, z copy z plików treści",
+          "reasoning": "Galeria dowodów obiecuje „makietę tej strony sekcja po sekcji, z tym samym copy, które właśnie czytasz”. Dlatego kolejność sekcji i każdy nagłówek, tytuł karty, przycisk, pakiet, cena i pytanie są wzięte ze strony, a cel, pytanie odwiedzającego i rola w narracji każdej sekcji z mapy sekcji planu.",
           "alternatives": [
             {
-              "desc": "Problem-Led (hero + problem statement + audience qualif na otwarciu)",
-              "rejected": "Designer już wszedł na stronę będąc problem-aware, problem statement byłby redundantny."
-            },
-            {
-              "desc": "Outcome-Led (hero + 6 oczekiwanych rezultatów na froncie)",
-              "rejected": "Outcomes bez mechanizmu ryzykują brzmienie ogólne; lista wymagałaby bardzo konkretnego zakorzenienia w plikach, co dubluje galerię plików."
+              "desc": "Makieta jako propozycja zmian strony",
+              "rejected": "Nie spełniłaby obietnicy z karty „Makiety”."
             }
           ],
-          "confidence": "high",
-          "inputSource": {
-            "kind": "strategy",
-            "ref": "strategy-id-archetype"
-          }
+          "confidence": "high"
         },
         {
-          "id": "page-section-count",
-          "summary": "Dziesięć sekcji home plus chrome (nav + stopka) — bez osobnej sekcji problem statement, bez sekcji outcomes",
-          "reasoning": "Sekwencja: Hero → Pliki z procesu → 3 filary → Jak to działa → Dlaczego my → Pakiety → Audyt → Instalacja → FAQ → Final CTA. Problem statement implicit w hero subhead i lead sekcji 'Dlaczego my'. Outcomes implicit w hero subhead i copy filarów.",
-          "alternatives": [
-            {
-              "desc": "Dodanie sekcji problem statement po hero",
-              "rejected": "Designer problem-aware, redundantne."
-            },
-            {
-              "desc": "Dodanie sekcji outcomes po hero",
-              "rejected": "Outcomes bez mechanizmu brzmiałyby ogólnie; pliki z procesu i filary konkretyzują wartość."
-            },
-            {
-              "desc": "Logo bar / testimonial bar po hero",
-              "rejected": "Brak realnych klientów w przedsprzedaży; klikalna galeria plików zastępuje to."
-            }
-          ],
-          "confidence": "high",
-          "inputSource": {
-            "kind": "strategy",
-            "ref": "section-map"
-          }
+          "id": "page-no-promo-state",
+          "summary": "Stan strony poza promocją: plakietka zamiast licznika, ceny katalogowe",
+          "reasoning": "W oknie promocji strona podmienia plakietkę w hero na licznik, przycisk w menu i w hero na przycisk promocji, a w cenniku pokazuje ceny promocyjne. Makieta rysuje stan, który obowiązuje przez większość roku, żeby nie zestarzała się po końcu promocji.",
+          "alternatives": [],
+          "confidence": "high"
+        },
+        {
+          "id": "page-chrome-live",
+          "summary": "Menu i stopka jak na stronie",
+          "reasoning": "Menu: logo, pięć linków (Cennik, Opinie, Darmowe skille, Baza wiedzy, Jak pracować) i przycisk „Sprawdź ceny”. Stopka: logo i jeden rząd linków (dokumenty, ustawienia cookies, changelog, kontakt), bez zapisu na newsletter.",
+          "alternatives": [],
+          "confidence": "high"
         }
       ],
       "sections": [
         {
           "type": "hero",
-          "purpose": "Nazwać moment pracy designera i poprowadzić do dwóch CTA: zakupu albo darmowego audytu.",
-          "userQuestion": "Czy to dla mnie i czy mam ten moment?",
-          "narrative": "opening",
-          "layout": "Banner pełnej szerokości na samej górze, niżej 2-col 55/45 — copy left (label, H1 duży, tagline mid-weight muted, lista 3 punktów P1/P2/P3, dwie akcje), media right (cover height). Lista zastępuje subhead-prozę dla szybszego skanowania trzech filarów.",
+          "id": "hero",
+          "purpose": "W pierwszym ekranie powiedzieć, czym jest skill i co z nim dostajesz, i dać dwie drogi dalej: do cen albo do darmowej wersji.",
+          "userQuestion": "Co to jest i czy rozwiąże mój problem z projektem strony?",
+          "narrative": "hook",
+          "layout": "2-col 7/5. Lewa kolumna: plakietka, ocena z gwiazdkami (link do opinii), H1, zdanie wprowadzające, 5 punktów z ikoną check, dwa przyciski obok siebie. Prawa kolumna: kafel wideo (okno terminala z przykładową rozmową discovery i przyciskiem odtwarzania), pod nim podpis z ikoną play.",
           "elements": [
-            {
-              "kind": "banner",
-              "text": "Przedsprzedaż do 30 maja 2026. Potem rusza globalna sprzedaż i wchodzą wyższe ceny w euro.",
-              "dismissible": false
-            },
             {
               "kind": "grid",
               "columns": [
-                55,
-                45
+                7,
+                5
               ],
               "children": [
                 {
                   "kind": "card",
-                  "variant": "default",
                   "children": [
                     {
                       "kind": "label",
-                      "text": "DLA DESIGNERA Z KLIENTEM"
+                      "text": "Skill dla Claude Code, Codex, Cursor..."
+                    },
+                    {
+                      "kind": "link",
+                      "label": "★★★★★ 4,52 (23 oceny)",
+                      "variant": "plain",
+                      "href": "#opinie"
                     },
                     {
                       "kind": "heading",
                       "level": 1,
-                      "text": "Zaplanuj strukturę i treści strony, zanim ruszysz w Figmę albo do vibe codingu."
+                      "text": "UX Design Skill prowadzący projekt strony od briefu po makiety."
                     },
                     {
                       "kind": "paragraph",
-                      "text": "Bez eksperta UX, bez zgadywania."
+                      "text": "Pyta o kontekst projektu, planuje strukturę strony, pisze prawdziwe copy."
                     },
                     {
                       "kind": "list",
                       "ordered": false,
                       "items": [
                         "Plan strony z mapą stron, strukturą sekcji i narracją.",
-                        "Makiety sekcji z prawdziwym copy, gotowe do Figmy lub generatora AI.",
-                        "Każda decyzja z uzasadnieniem i odrzuconymi opcjami.",
-                        "Decyzje są oznaczone poziomem pewności, więc wiesz, gdzie AI zgaduje.",
-                        "Wbudowana wiedza UX: 16 typów stron, 13 frameworków, 50+ wzorców."
+                        "Rozumie 16 typów stron, używa 13 frameworków UX i 50+ wzorców projektowych.",
+                        "Każda decyzja z uzasadnieniem, poziomem pewności i odrzuconymi wariantami.",
+                        "Bez backendu, bez kont, bez abonamentu. Płacisz raz, działa wszędzie.",
+                        "Dzięki otwartej specyfikacji SKILL.md działa w Claude Code, Codex i Cursor."
                       ]
                     },
                     {
                       "kind": "button",
-                      "label": "Zobacz pakiety",
+                      "label": "Sprawdź ceny",
                       "variant": "primary",
-                      "href": "#pakiety"
+                      "href": "#cennik"
                     },
                     {
                       "kind": "button",
-                      "label": "Pobierz darmowy audyt",
+                      "label": "Wypróbuj za darmo",
                       "variant": "secondary",
-                      "href": "#audyt"
+                      "href": "#wyprobuj-za-darmo"
                     }
                   ]
                 },
                 {
-                  "kind": "media",
-                  "label": "[Zrzut folderu projektu — Plan projektu w HTML otwarty w przeglądarce obok HTML canvasa pozycjonowania, plus pliki markdown w edytorze obok]",
-                  "height": "cover"
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "media",
+                      "label": "[Kafel wideo: okno terminala „// ASYSTENT UX: DISCOVERY”. [INPUT] „Tworzę stronę dla kancelarii prawnej z Wrocławia, specjalizacja prawo pracy”. [ODPOWIEDŹ AGENTA]: typ strony, branża, cel, persona, świadomość, wyróżnik, każdy z tagiem pewności 🟢 albo 🟡. PYTANIA: dwa pytania do użytkownika. Na środku przycisk odtwarzania demo.]",
+                      "height": "cover",
+                      "id": "hero-video"
+                    },
+                    {
+                      "kind": "link",
+                      "label": "▶ Demo możliwości skilla UX design",
+                      "variant": "plain",
+                      "href": "#"
+                    }
+                  ]
                 }
               ]
             }
           ],
           "deliberations": [
             {
-              "id": "hero-anchor-time",
-              "summary": "Hero kotwiczy w czasie pracy designera, nie w nazwie kategorii",
-              "reasoning": "Kategoria 'AI UX' nie istnieje w głowie nabywcy — anchor czasowy ('zanim Figma, zanim vibe coding') prowadzi przez moment, który odbiorca rozpoznaje. Headline REC z kanwy (16 słów, w limicie 25) plus dwa CTA równolegle: Zobacz pakiety (primary) + Pobierz darmowy audyt (secondary).",
+              "id": "hero-video-as-terminal",
+              "summary": "Kafel wideo jako zrzut terminala z rozmową discovery, nie jako pusty odtwarzacz",
+              "reasoning": "Na stronie kafel to statyczna scena rozmowy ze skillem (wpis, odpowiedź z tagami pewności, pytania), a wideo otwiera się dopiero po kliknięciu. Opis w placeholderze oddaje tę scenę, bo to ona odpowiada na obawę „to tylko prompt”, zanim ktoś kliknie play.",
               "alternatives": [
                 {
-                  "desc": "Hero z kategorią produktową ('Narzędzie AI do planowania struktury strony')",
-                  "rejected": "Kategoria 'AI UX' nie istnieje spontanicznie u nabywcy — etykieta wymagałaby budowania kategorii, czego strona nie robi w hero."
-                },
-                {
-                  "desc": "Hero z bólem persony jako otwarciem",
-                  "rejected": "Designer już jest problem-aware (po to wszedł na stronę); proof-first archetyp wymaga dowodu blisko hero, nie problem statementu."
+                  "desc": "Placeholder „[Wideo demo]”",
+                  "rejected": "Gubi to, co odwiedzający widzi bez klikania: przykład pytań i tagów pewności."
                 }
               ],
               "confidence": "high",
-              "inputSource": {
-                "kind": "messaging-canvas",
-                "ref": "hero-rec"
-              }
-            },
-            {
-              "id": "hero-three-part",
-              "summary": "Hero w trzech warstwach typograficznych: H1 + tagline + subhead",
-              "reasoning": "Strip differentiatora z H1 zostawia tylko akcję + moment ('Zaplanuj X, zanim ruszysz Y'). Tagline 'Bez eksperta UX, bez zgadywania' elevuje oba differentiators do scannable mid-line między H1 a subheadem. Subhead absorbuje 'tagi pewności tam gdzie model zgaduje' jako referencję do P3 pillar. 'Treści' zastępuje 'copy' (better Polish, plain language).",
-              "alternatives": [
-                {
-                  "desc": "Single-line H1 z 'bez eksperta UX' inline (wcześniejszy REC z kanwy)",
-                  "rejected": "Upakowuje action + moment + differentiator w jedną linię; H1 mniej klarowny, brak miejsca na 'bez zgadywania'."
-                },
-                {
-                  "desc": "Wariant kompaktowy ('Zaplanuj co ma być na stronie i dlaczego. Bez eksperta UX, bez zgadywania.')",
-                  "rejected": "Zawęża ICP do Designera, Twórca cyfrowy nie dostaje sygnału (brak anchor 'vibe coding')."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": {
-                "kind": "messaging-canvas",
-                "ref": "hero-rec-revision"
-              }
-            },
-            {
-              "id": "hero-subhead-bullets",
-              "summary": "Subhead jako 3 bullety mapujące 1-do-1 na P1/P2/P3 z kanwy",
-              "reasoning": "Proza z trzema przecinkami ('Plan + pliki + wiedza + tagi + decyzja') jest gęsta dla skanowania. Bullety atomizują filary i pozwalają oku przelecieć trzy claimy w sekundę. Każdy bullet = jeden filar z hierarchii komunikatów (P1 plan, P2 pliki, P3 ekspertyza z kontrolą).",
-              "alternatives": [
-                {
-                  "desc": "4 bullety (atomizacja: plan, pliki, wiedza+tagi, decyzja)",
-                  "rejected": "Rozdziela P3 (wiedza + decyzja) na dwa punkty — traci canvas mapping 1-do-1; 'decyzja po Twojej stronie' jako standalone bullet brzmi pusto bez kontekstu wiedzy."
-                },
-                {
-                  "desc": "Subhead jako proza (poprzednia wersja)",
-                  "rejected": "Trzy claimy w jednym akapicie wymagają od odbiorcy dłuższego skanowania niż lista; w hero, gdzie kompozycja konkuruje o uwagę z H1 i tagliną, gęsta proza traci."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": {
-                "kind": "messaging-canvas",
-                "ref": "pillars-p1-p2-p3"
-              }
-            },
-            {
-              "id": "hero-bullets-final",
-              "summary": "Pięć bulletów hero zatwierdzonych z mappingiem 1-do-1 na Wyróżniające zdolności z canvasa",
-              "reasoning": "Bullety mapują na capabilities z canvasa: #1 (warstwa planowania), #3+#5 (pliki + realny copy), #4 (uzasadnienie + odrzucone warianty), #7 (tagi pewności), #6 (wiedza domenowa 16/13/50+). Multi-language oszczędzony do późniejszych sekcji (Pakiety, FAQ). Bullet 1 wzbogacony o 'narracja' zamiast 'archetyp' — bliżej tego, co odbiorca skanuje.",
-              "alternatives": [
-                {
-                  "desc": "3 bullety mapujące 1-do-1 na P1/P2/P3 z poprzedniej iteracji",
-                  "rejected": "Sklejało uzasadnienie z planem (sugerowało, że makiety i copy uzasadnień nie mają) i nie wyciągało tagów pewności i bazy wiedzy jako standalone wyróżników."
-                },
-                {
-                  "desc": "4 bullety z cross-cutting bundle (Decyzja po Twojej stronie: uzasadnienie, wiedza UX, tagi pewności)",
-                  "rejected": "Rozdzielenie do osobnych bulletów daje mocniejsze wyróżniki — każdy claim dostaje swoją scenę."
-                },
-                {
-                  "desc": "Bullet o multi-language copy",
-                  "rejected": "W hero za mocno; przeniesione do sekcji Pakiety albo FAQ na późniejszym etapie."
-                },
-                {
-                  "desc": "6. bullet o checkpointach z opcjami",
-                  "rejected": "Implicitnie obecne w tagline ('bez zgadywania') i w bullecie 4 (tagi pewności = decyzja informowana). 5 bulletów to sweet spot."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": {
-                "kind": "messaging-canvas",
-                "ref": "wyrozniajace-zdolnosci"
-              }
+              "attached_to": "hero-video"
             }
-          ]
+          ],
+          "interactionNotes": []
         },
         {
           "type": "proof-gallery",
-          "purpose": "Pokazać klikalny dowód: cztery pliki z procesu tworzenia tej strony.",
-          "userQuestion": "Pokaż dowód — nie testymoniale, realny output.",
+          "id": "dowod",
+          "purpose": "Zaraz po hero pokazać, że tę stronę zaplanowano tym skillem, i dać to sprawdzić: cztery pliki z procesu do otwarcia w przeglądarce i demo wideo.",
+          "userQuestion": "Jak wygląda prawdziwy wynik pracy tego skilla?",
           "narrative": "evidence",
-          "layout": "Sekcja 1-col: heading + lead paragraph nad gridem 4-col z czterema kartami (Plan projektu, Fundamenty komunikacji [zawiera draft komunikatów], Makiety, Audyt poprzedniej wersji), każda otwiera artefakt w nowej zakładce.",
+          "layout": "Nagłówek sekcji (plakietka, H2, lead) nad siatką 2×2 czterech kart pliku (numer, H3, opis, link do pliku otwierany w nowej karcie). Pod siatką przycisk z ikoną play, który otwiera demo wideo w okienku.",
           "elements": [
             {
               "kind": "label",
-              "text": "DOWÓD"
+              "text": "Dowód"
             },
             {
               "kind": "heading",
               "level": 2,
-              "text": "Tę stronę zaplanowaliśmy tym narzędziem, a cały proces jest publiczny."
+              "text": "Tę stronę zaplanowaliśmy tym skillem, a cały proces jest publiczny."
             },
             {
               "kind": "paragraph",
-              "text": "Każdy z plików otwierasz w przeglądarce, każdy ma wersję markdown do pobrania. Kliknij i sprawdź."
+              "text": "Każdy z plików otwierasz w przeglądarce, każdy ma wersję markdown do pobrania."
             },
             {
               "kind": "grid",
-              "columns": 4,
+              "columns": 2,
               "children": [
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
+                    {
+                      "kind": "label",
+                      "text": "01"
+                    },
                     {
                       "kind": "heading",
                       "level": 3,
@@ -1804,14 +1720,18 @@
                       "kind": "link",
                       "label": "Otwórz Plan projektu",
                       "variant": "arrow",
-                      "href": "uxd-product-website-v3_project_plan.html"
+                      "href": "/examples/uxd-product-website-v3_project_plan.html"
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
+                    {
+                      "kind": "label",
+                      "text": "02"
+                    },
                     {
                       "kind": "heading",
                       "level": 3,
@@ -1825,14 +1745,18 @@
                       "kind": "link",
                       "label": "Otwórz Fundamenty komunikacji",
                       "variant": "arrow",
-                      "href": "uxd-product-website-v3_messaging_canvas.html"
+                      "href": "/examples/uxd-product-website-v3_messaging_canvas.html"
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
+                    {
+                      "kind": "label",
+                      "text": "03"
+                    },
                     {
                       "kind": "heading",
                       "level": 3,
@@ -1840,20 +1764,24 @@
                     },
                     {
                       "kind": "paragraph",
-                      "text": "Szkice sekcji z prawdziwym copy, makieta przed i po audycie istniejącej strony."
+                      "text": "Makieta tej strony sekcja po sekcji, z tym samym copy, które właśnie czytasz."
                     },
                     {
                       "kind": "link",
                       "label": "Otwórz Makiety",
                       "variant": "arrow",
-                      "href": "uxd-product-website-v3_wireframes.html"
+                      "href": "/examples/uxd-product-website-v3_wireframes.html"
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
+                    {
+                      "kind": "label",
+                      "text": "04"
+                    },
                     {
                       "kind": "heading",
                       "level": 3,
@@ -1861,202 +1789,98 @@
                     },
                     {
                       "kind": "paragraph",
-                      "text": "Szkic poprzedniej wersji strony, audyt jakości w sześciu wymiarach i propozycje zmian sekcja po sekcji. Punkt wyjścia całego redesignu."
+                      "text": "Makieta poprzedniej wersji strony z anotacjami diagnozy na każdej sekcji i benchmarkiem vs standardy branżowe. Punkt wyjścia całego redesignu."
                     },
                     {
                       "kind": "link",
                       "label": "Otwórz audyt",
                       "variant": "arrow",
-                      "href": "#audyt-poprzedniej-wersji"
+                      "href": "/examples/creativesparks-ux-designer_audit.html"
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 }
               ]
+            },
+            {
+              "kind": "button",
+              "label": "Obejrzyj demo skilla",
+              "variant": "secondary"
             }
           ],
           "deliberations": [
             {
-              "id": "merged-proof-gallery",
-              "summary": "Połączenie 'Dowód społeczny' z 'Galerią plików' w jedną sekcję",
-              "reasoning": "W proof-first archetypie 'tell + show' razem działa silniej niż rozdzielone sekcje. Claim 'ta strona jest case study siebie' staje się natychmiast klikalny przez 4 karty z linkami do artefaktów.",
-              "alternatives": [
-                {
-                  "desc": "Rozdzielenie jak w copy doc (claim prozą early + 4 karty later)",
-                  "rejected": "Claim wisiał przez 3 sekcje filarów zanim odbiorca dostawał sealing proof; rytm proof-first wymaga 'tell + show' razem."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": {
-                "kind": "strategy",
-                "ref": "ia-decision-merged-proof"
-              }
-            },
-            {
-              "id": "proof-add-audit-card",
-              "summary": "Dodanie 5. karty 'Audyt strony przed redesignem' do galerii dowodów",
-              "reasoning": "Audyt poprzedniej wersji strony jest realnym artefaktem z procesu i punktem wyjścia całego redesignu — bez niego galeria nie pokazuje pełnego flow (audyt → plan → messaging → makiety). Card linkuje do audytu z poprzedniej wersji (nie audytu obecnej, której jeszcze nie ma).",
-              "alternatives": [
-                {
-                  "desc": "Pominąć audyt w galerii (4 karty)",
-                  "rejected": "Tracimy widoczność jednego z głównych deliverables narzędzia (audyt = secondary CTA na home, więc artefakt powinien być widoczny w galerii dowodów)."
-                },
-                {
-                  "desc": "Wstawić audyt do osobnej sekcji obok galerii",
-                  "rejected": "Audyt jako oddzielna sekcja powiela strukturę — galeria proof-by-transparency to naturalne miejsce."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": null
-            },
-            {
-              "id": "proof-heading-rephrased",
-              "summary": "Rephrase headlinu z 'Strona, na której jesteś, jest case study siebie' na 'Tę stronę zbudowaliśmy tym narzędziem'",
-              "reasoning": "Poprzednia wersja brzmiała kulawo przez reflexive 'siebie' (case study siebie). Nowy headline jest deklaratywnym faktem, krótszy (5 słów), bez reflexive awkwardness. Lead paragraph poniżej rozwija claim o publiczności wszystkich plików.",
-              "alternatives": [
-                {
-                  "desc": "'Pliki z procesu tworzenia tej strony — sprawdź sam'",
-                  "rejected": "Action-led, ale dubluje 'kliknij i sprawdź' z lead paragraphu poniżej; redundancja."
-                },
-                {
-                  "desc": "'Tę stronę zaplanowaliśmy tym narzędziem. Wszystkie pliki są publiczne.'",
-                  "rejected": "Dwa zdania w headline tracą skanowalność; drugie zdanie powiela lead paragraph."
-                },
-                {
-                  "desc": "'Strona, na której jesteś, jest case study siebie' (poprzednia)",
-                  "rejected": "Reflexive 'siebie' brzmi kulawo; mniej naturalna polszczyzna."
-                }
-              ],
-              "confidence": "medium",
-              "inputSource": null
-            },
-            {
-              "id": "proof-merge-fundamenty-draft",
-              "summary": "Połączenie kart 'Fundamenty komunikacji' i 'Draft kluczowych komunikatów' w jedną",
-              "reasoning": "Oba pliki to w istocie jeden deliverable z procesu messagingu — kanwa zawiera strategiczne ramy (ICP, alternatywy, filary, pozycjonowanie), draft to ich operacyjna konsekwencja (hero, value props, FAQ, CTA). Rozdzielenie na dwie karty sugerowało, że to dwa niezależne artefakty. Po merge: jedna karta z linkiem do messaging_canvas.html, opis nazywa zawartość obu warstw.",
-              "alternatives": [
-                {
-                  "desc": "Zachować dwie karty z osobnymi linkami",
-                  "rejected": "Sugeruje dwie niezależne ścieżki konsumpcji — w rzeczywistości buyer otwiera jedno, dostaje drugie w komplecie."
-                },
-                {
-                  "desc": "Karta z dwoma linkami (canvas + copy)",
-                  "rejected": "Heavier wizualnie, łamie wzorzec 'jedna karta = jeden link arrow' z innych kart galerii."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": null
-            },
-            {
-              "id": "proof-headline-synthesis",
-              "summary": "Headline jako synteza A+D: 'Tę stronę zaplanowaliśmy tym narzędziem, a cały proces jest publiczny.'",
-              "reasoning": "Synteza dokładnego czasownika ('zaplanowaliśmy' zamiast 'zbudowaliśmy') z claimem transparencji ('cały proces jest publiczny'). Headline w jednej linii pokrywa fact + transparency. Paragraph poniżej skrócony, żeby uniknąć dublowania claimu transparency.",
-              "alternatives": [
-                {
-                  "desc": "'Tę stronę zaplanowaliśmy tym narzędziem' (sam fact)",
-                  "rejected": "Brak transparency claimu; pojedyncza dimension, słabszy hook."
-                },
-                {
-                  "desc": "'Plan, copy i makiety tej strony, z tego narzędzia' (artifact-listing)",
-                  "rejected": "Skupia się na konkretach, ale traci transparency frame; karty galerii już pokazują artefakty."
-                },
-                {
-                  "desc": "Headline + pełny lead paragraph z 'cały proces publiczny'",
-                  "rejected": "Dublowanie tego samego claimu w headline i paragrafie; redundancja."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": null
+              "id": "proof-makiety-desc",
+              "summary": "Karta Makiety opisuje tę makietę jako szkic tej strony z tym samym copy",
+              "reasoning": "Wydanie zmienia opis karty, bo makiety pokazują teraz żywą stronę sekcja po sekcji. Opis z poprzedniego wydania („makieta przed i po audycie”) nie zgadzałby się z plikiem, który karta otwiera.",
+              "alternatives": [],
+              "confidence": "high"
             }
-          ]
+          ],
+          "interactionNotes": []
         },
         {
           "type": "value-props",
-          "purpose": "Rozłożyć trzy filary wartości na mechanizm i dowód, na który można kliknąć.",
+          "id": "value-props",
+          "purpose": "Rozłożyć trzy filary na trzy cechy, które odbiorca czyta jako opis tego, co przed chwilą zobaczył w plikach, każdą z linkiem do dowodu.",
           "userQuestion": "Co konkretnie dostaję, jakie są mechanizmy?",
           "narrative": "evidence",
-          "layout": "Label + heading na górze, niżej grid 3-col z trzema kartami (każda: heading H3, paragraph z mechanizmem, paragraph z hipotezą dowodu, link arrow do konkretnego artefaktu).",
+          "layout": "Nagłówek sekcji (plakietka, H2) nad listą trzech rozwijanych wierszy. Zamknięty wiersz: numer, H3, pierwsza linijka opisu, etykieta „Rozwiń”. Rozwinięty: pełny opis i link do dowodu na jasnym tle.",
           "elements": [
+            {
+              "kind": "label",
+              "text": "Wartość"
+            },
             {
               "kind": "heading",
               "level": 2,
-              "text": "Trzy konkretne zmiany w tym, jak pracujesz nad stroną"
+              "text": "Trzy kluczowe cechy, które wyróżniają ten skill."
             },
             {
-              "kind": "grid",
-              "columns": 3,
-              "children": [
+              "kind": "accordion",
+              "items": [
                 {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Plan strony z uzasadnieniem, zanim ruszysz w Figmę lub do vibe codingu"
-                    },
+                  "label": "01 · Plan strony z uzasadnieniem, zanim ruszysz w Figmę albo do vibe codingu.",
+                  "body": [
                     {
                       "kind": "paragraph",
-                      "text": "Narzędzie prowadzi od pierwszej rozmowy o projekcie do gotowego planu sekcji z prawdziwym copy. Sześć różnych workflow dowozi różne elementy planu: kontekst, strategię, fundamenty komunikacji, draft, szkice. Każda istotna decyzja zapisana z uzasadnieniem i odrzuconymi wariantami. Klient pyta „dlaczego tak”, masz odpowiedź z pliku. Z wykonawcy stajesz się partnerem strategicznym."
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Hipoteza dowodu: Ta strona powstała w tym workflow — Plan projektu, Fundamenty komunikacji, Draft komunikatów i szkice z uzasadnieniem każdej decyzji obok niej, publicznie dostępne."
+                      "text": "Sitemap, struktura sekcji i narracja w jednym pliku. Każda decyzja z uzasadnieniem i odrzuconymi wariantami obok. Trafia do twojego workflow zanim otworzysz Figmę."
                     },
                     {
                       "kind": "link",
                       "label": "Zobacz Plan projektu",
                       "variant": "arrow",
-                      "href": "uxd-product-website-v3_project_plan.html"
+                      "href": "/examples/uxd-product-website-v3_project_plan.html"
                     }
                   ]
                 },
                 {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Gotowe pliki dla Ciebie, dla klienta i innych narzędzi AI"
-                    },
+                  "label": "02 · Gotowe pliki, które pracują dalej w Figma AI, Cursor i Claude.",
+                  "body": [
                     {
                       "kind": "paragraph",
-                      "text": "Plan projektu, Fundamenty komunikacji, Draft komunikatów i szkice. Wszystko jako pliki HTML w przeglądarce. Jednym kliknięciem eksportujesz pliki MD (markdown) dla innych narzędzi AI. Realny copy powstaje przed layoutem, więc wireframe testujesz na odbiorcach od razu, a klient otwiera pakiet bez Photoshopa."
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Hipoteza dowodu: Galeria przykładowych plików (Fundamenty komunikacji, Draft komunikatów, szkice) — wszystko publicznie dostępne, format demonstrowany na żywo."
+                      "text": "Markdown i HTML. Każdy artefakt wchodzi do kolejnego narzędzia w workflow bez konwersji. Plan żyje w plikach projektu, nie w historii czatu."
                     },
                     {
                       "kind": "link",
-                      "label": "Zobacz galerię plików",
+                      "label": "Zobacz przykłady plików",
                       "variant": "arrow",
-                      "href": "#pliki-z-procesu"
+                      "href": "#dowod"
                     }
                   ]
                 },
                 {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Wbudowana ekspertyza UX, decyzja Twoja"
-                    },
+                  "label": "03 · Wbudowana ekspertyza UX, decyzja zostaje po twojej stronie.",
+                  "body": [
                     {
                       "kind": "paragraph",
-                      "text": "16 pakietów wiedzy domenowej, 13 frameworków, 50+ wzorców. Narzędzie ładuje właściwy zestaw po wykryciu typu strony, więc bierzesz projekt z domeny, której nie znasz na pamięć. Każdy strategiczny krok kończy się 2-3 opcjami z opisanym kosztem każdej. Narzędzie oznacza pewność każdej decyzji, więc wiesz, gdzie model zgaduje, a decyzje zostają u Ciebie."
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Hipoteza dowodu: Pakiety wiedzy publicznie dostępne w referencjach narzędzia. Tagi pewności widoczne w tych Fundamentach komunikacji — żółte i czerwone z obowiązkowym uzasadnieniem."
+                      "text": "16 typów stron, 13 frameworków, 50+ wzorców wbudowane. Skill stosuje metodologię, ale każdy checkpoint pokazuje opcje z trade-offami. Decyzja zawsze twoja."
                     },
                     {
                       "kind": "link",
                       "label": "Zobacz Bazę wiedzy",
                       "variant": "arrow",
-                      "href": "/ux-design-skill/baza-wiedzy/"
+                      "href": "#baza-wiedzy"
                     }
                   ]
                 }
@@ -2065,57 +1889,31 @@
           ],
           "deliberations": [
             {
-              "id": "filary-cards-change-led-refresh",
-              "summary": "Refresh 3 kart filarów na change-led copy, spójny z H2 'Trzy konkretne zmiany w tym, jak pracujesz nad stroną'",
-              "reasoning": "Headingi kart przesunięte z opisu mechanizmu (Plan strony z uzasadnieniem / Pliki, które czyta Figma / Wiedza UX i tagi pewności) na opis zmiany w pracy odbiorcy (Każdą decyzję obronisz / Klient otwiera pakiet / Bierzesz projekt z domeny). Paragraph kart zachowuje mechanizm, ale otwiera bridge'em do zmiany albo łączy mechanism z konsekwencją w pracy. Em-dashy zamienione na kropki/parentezy zgodnie z brand voice canvasa.",
+              "id": "vp-accordion-like-live",
+              "summary": "Trzy cechy jako rozwijane wiersze, wszystkie zamknięte, jak na stronie",
+              "reasoning": "Strona pokazuje cechy jako wiersze typu details: tytuł i pierwsza linijka opisu widoczne, reszta i link do dowodu po rozwinięciu. Makieta trzyma ten układ zamiast kart obok siebie, bo pokazuje stronę, jaką widzi odwiedzający.",
               "alternatives": [
                 {
-                  "desc": "Tylko H2 zmienić, karty mechanism-led as-is",
-                  "rejected": "Drobny disconnect: H2 obiecuje 'zmianę', karty pokazują 'mechanizm'."
-                },
-                {
-                  "desc": "Pattern 'X, nie Y' w headingach",
-                  "rejected": "Bliski zakazanego przez canvas patternu 'to nie X, to Y'."
+                  "desc": "Trzy karty w kolumnach z pełnym opisem",
+                  "rejected": "Taki był szkic sprzed wydania; strona już tak nie wygląda."
                 }
               ],
-              "confidence": "high",
-              "inputSource": {
-                "kind": "messaging-canvas",
-                "ref": "wyrozniajace-zdolnosci"
-              }
-            },
-            {
-              "id": "filary-canvas-aligned-headings",
-              "summary": "Headingi kart wracają do kanonicznych form pillarów z canvasa (A1+A2+A3), paragraphs przeszywają mechanizm na change w pracy odbiorcy",
-              "reasoning": "Trzy warstwy spójności: H2 sekcji ('Trzy konkretne zmiany w tym, jak pracujesz nad stroną') ustawia outcome lens. Headingi kart to pure canvas pillar names ('Plan strony z uzasadnieniem, zanim ruszysz w Figmę lub do vibe codingu' / 'Gotowe pliki dla Ciebie i klienta' / 'Wbudowana ekspertyza UX, decyzja Twoja') — odbiorca rozpoznaje rodzinę słów z hero plus tagline plus bullety. Paragraphs robią bridge: opisują mechanizm i zamykają konsekwencją w pracy ('a Ty masz odpowiedź z pliku' / 'klient otwiera pakiet bez Photoshopa' / 'a decyzja zostaje u Ciebie'). Em-dashy zastąpione przez kropki/parentezy.",
-              "alternatives": [
-                {
-                  "desc": "Change-led headingi (poprzednia iteracja)",
-                  "rejected": "Odeszły zbyt daleko od canvas pillar names; odbiorca tracił rozpoznawalność messagingu z reszty strony."
-                },
-                {
-                  "desc": "Skompresowana forma B1+A2+A3 (5/6/5)",
-                  "rejected": "Zwarte headingi, ale tracą anchor czasowy 'zanim Figma / vibe coding' z P1, który jest jednym z mocniejszych wyróżników canvasa."
-                }
-              ],
-              "confidence": "high",
-              "inputSource": {
-                "kind": "messaging-canvas",
-                "ref": "filary-p1-p2-p3"
-              }
+              "confidence": "high"
             }
-          ]
+          ],
+          "interactionNotes": []
         },
         {
           "type": "process",
-          "purpose": "Pokazać operacyjną drogę odbiorcy przez narzędzie w drugiej osobie.",
+          "id": "proces",
+          "purpose": "Pokazać drogę odbiorcy przez skill w czterech krokach w drugiej osobie, od briefu do gotowej makiety z treściami, tak by projektant widział siebie w pętli, a nie obserwował model AI.",
           "userQuestion": "Jak wygląda praca z tym z mojej strony?",
           "narrative": "resolution",
-          "layout": "Label + heading na górze, niżej grid 2x2 z czterema kartami (numerowany krok + heading + paragraph z konsekwencją).",
+          "layout": "Nagłówek sekcji (plakietka, H2 w dwóch liniach) nad siatką 2-col: cztery kroki (kształt, numer, H3, opis), w piątej komórce kafel wideo z etykietą, H3 i odtwarzaczem.",
           "elements": [
             {
               "kind": "label",
-              "text": "JAK TO DZIAŁA"
+              "text": "Jak to działa"
             },
             {
               "kind": "heading",
@@ -2124,15 +1922,15 @@
             },
             {
               "kind": "grid",
-              "columns": 4,
+              "columns": 2,
               "children": [
                 {
-                  "kind": "card",
-                  "variant": "default",
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
                   "children": [
                     {
                       "kind": "label",
-                      "text": "KROK 1"
+                      "text": "01"
                     },
                     {
                       "kind": "heading",
@@ -2143,15 +1941,16 @@
                       "kind": "paragraph",
                       "text": "Narzędzie zadaje pytania o cel, odbiorcę i kontekst, syntetyzuje plik z hipotezami i tagami pewności tam, gdzie zgaduje."
                     }
-                  ]
+                  ],
+                  "fallbackMd": "**01. Opowiadasz, co budujesz** · Narzędzie zadaje pytania o cel, odbiorcę i kontekst, syntetyzuje plik z hipotezami i tagami pewności tam, gdzie zgaduje."
                 },
                 {
-                  "kind": "card",
-                  "variant": "default",
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
                   "children": [
                     {
                       "kind": "label",
-                      "text": "KROK 2"
+                      "text": "02"
                     },
                     {
                       "kind": "heading",
@@ -2162,15 +1961,16 @@
                       "kind": "paragraph",
                       "text": "Dwa albo trzy warianty z konsekwencjami. Decyzja zostaje po Twojej stronie, a plan strony spada do pliku z uzasadnieniem każdego wyboru."
                     }
-                  ]
+                  ],
+                  "fallbackMd": "**02. Wybierasz format strony i archetyp** · Dwa albo trzy warianty z konsekwencjami. Decyzja zostaje po Twojej stronie, a plan strony spada do pliku z uzasadnieniem każdego wyboru."
                 },
                 {
-                  "kind": "card",
-                  "variant": "default",
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
                   "children": [
                     {
                       "kind": "label",
-                      "text": "KROK 3"
+                      "text": "03"
                     },
                     {
                       "kind": "heading",
@@ -2181,15 +1981,16 @@
                       "kind": "paragraph",
                       "text": "Wartości, dowody i nagłówki w canvasie messagingu. Gotowy dokument tekstów dla strony, w języku odbiorcy, nie w marketingowej papce."
                     }
-                  ]
+                  ],
+                  "fallbackMd": "**03. Domykasz pozycjonowanie i copy** · Wartości, dowody i nagłówki w canvasie messagingu. Gotowy dokument tekstów dla strony, w języku odbiorcy, nie w marketingowej papce."
                 },
                 {
-                  "kind": "card",
-                  "variant": "default",
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
                   "children": [
                     {
                       "kind": "label",
-                      "text": "KROK 4"
+                      "text": "04"
                     },
                     {
                       "kind": "heading",
@@ -2200,34 +2001,66 @@
                       "kind": "paragraph",
                       "text": "Szkic strony w HTML do podglądu w przeglądarce, sekcja po sekcji, z notatkami projektowymi i odrzuconymi alternatywami obok każdej decyzji."
                     }
-                  ]
+                  ],
+                  "fallbackMd": "**04. Generujesz makiety z prawdziwym copy** · Szkic strony w HTML do podglądu w przeglądarce, sekcja po sekcji, z notatkami projektowymi i odrzuconymi alternatywami obok każdej decyzji."
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Wideo"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Zobacz skill UX Design w akcji"
+                    },
+                    {
+                      "kind": "media",
+                      "label": "[Odtwarzacz wideo: demo skilla UX Design, otwiera się w okienku]",
+                      "height": "md"
+                    }
+                  ],
+                  "variant": "tile"
                 }
               ]
             }
           ],
-          "deliberations": []
+          "deliberations": [
+            {
+              "id": "process-video-fifth-cell",
+              "summary": "Wideo jako piąta komórka siatki kroków",
+              "reasoning": "Na stronie kafel wideo stoi w tej samej siatce co cztery kroki, zaraz po kroku 4, więc makieta trzyma go w tej samej siatce. Kroki używają rozszerzenia process-step, bo to sekwencja, a nie zestaw równorzędnych kart.",
+              "alternatives": [],
+              "confidence": "high"
+            }
+          ],
+          "interactionNotes": []
         },
         {
           "type": "knowledge-base",
-          "purpose": "Pokazać głębię wiedzy UX wbudowanej w narzędzie.",
-          "userQuestion": "Co konkretnie siedzi pod spodem? Skąd narzędzie wie, jak doradzać?",
+          "id": "baza-wiedzy",
+          "purpose": "Pokazać konkretnie i z nazwy, jaka wiedza UX siedzi pod spodem, żeby sceptyk mógł sprawdzić, że skill rozumie UX design, a nie tylko generuje tekst.",
+          "userQuestion": "Skąd skill wie, jak projektować dobre strony?",
           "narrative": "evidence",
-          "layout": "Label + heading na górze, link 'Mapa wiedzy narzędzia →' pod nagłówkiem. Niżej grid 3-col z trzema kartami: Typy stron (16), Frameworki UX (13), Wzorce sekcji (50+). Każda karta to lista bold-name + opis.",
+          "layout": "Nagłówek sekcji (plakietka, H2, link z ikoną książki do mapy wiedzy) nad siatką 3-col: typy stron, frameworki UX, wzorce sekcji, każda kolumna jako lista nazwa + dopisek. Pod siatką wyśrodkowane małe zdanie o skali bazy.",
           "elements": [
             {
               "kind": "label",
-              "text": "BAZA WIEDZY"
+              "text": "Baza wiedzy"
             },
             {
               "kind": "heading",
               "level": 2,
-              "text": "Pod spodem siedzi 16 typów stron, 13 frameworków UX i 50+ wzorców sekcji."
+              "text": "Ten skill rozumie UX design dzięki wbudowanym procesom i bazie wiedzy UX.",
+              "id": "kb-heading"
             },
             {
               "kind": "link",
-              "label": "Mapa wiedzy narzędzia",
+              "label": "Mapa wiedzy skilla",
               "variant": "arrow",
-              "href": "#mapa-wiedzy"
+              "href": "/ux-design-skill/baza-wiedzy/"
             },
             {
               "kind": "grid",
@@ -2235,7 +2068,6 @@
               "children": [
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
                     {
                       "kind": "heading",
@@ -2246,29 +2078,29 @@
                       "kind": "list",
                       "ordered": false,
                       "items": [
-                        "B2B SaaS: produkty subskrypcyjne",
-                        "B2B Services: agencje, konsulting",
-                        "B2B Industrial: producenci, dystrybutorzy",
-                        "E-commerce: sklepy online, DTC",
-                        "Portfolio: studia, freelancerzy",
-                        "Local Business: usługi lokalne",
-                        "Marketplace: platformy dwustronne",
-                        "Community: grupy, fora",
-                        "Course: kursy, szkolenia",
-                        "Media: wydawcy, blogi",
-                        "Event: konferencje",
-                        "Nonprofit: fundacje, NGO",
-                        "Enterprise: narzędzia korporacyjne",
-                        "Government: instytucje publiczne",
-                        "Documentation: bazy wiedzy",
-                        "Service Utility: narzędzia online"
+                        "B2B SaaS — Produkty subskrypcyjne",
+                        "B2B Services — Agencje, konsulting",
+                        "B2B Industrial — Producenci, dystrybutorzy",
+                        "E-commerce — Sklepy online, DTC",
+                        "Portfolio — Studia, freelancerzy",
+                        "Local Business — Usługi lokalne",
+                        "Marketplace — Platformy dwustronne",
+                        "Community — Grupy, fora",
+                        "Course — Kursy, szkolenia",
+                        "Media — Wydawcy, blogi",
+                        "Event — Konferencje",
+                        "Nonprofit — Fundacje, NGO",
+                        "Enterprise — Narzędzia korporacyjne",
+                        "Government — Instytucje publiczne",
+                        "Documentation — Bazy wiedzy",
+                        "Service Utility — Narzędzia online"
                       ]
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
                     {
                       "kind": "heading",
@@ -2279,26 +2111,26 @@
                       "kind": "list",
                       "ordered": false,
                       "items": [
-                        "Design Psychology: Don Norman",
-                        "Hierarchy of User Needs: Aarron Walter",
-                        "Usability Heuristics: Jakob Nielsen",
-                        "Conversion Optimization: Chris Goward",
-                        "Customer Centric Design: Oli Gardner",
-                        "Emotional Targeting: Talia Wolf",
-                        "Buyer Legends Narrative: Bryan Eisenberg",
-                        "FAST Persuasion: Patrick Campbell",
-                        "Narrative Arc: Hook, tension, evidence, resolution",
-                        "ResearchXL: Peep Laja",
-                        "Messaging Hierarchy: B2B 5-layer",
-                        "Awareness Model: 5 poziomów",
-                        "Funnel Psychology: Awareness, consideration, decision"
+                        "Design Psychology — Don Norman",
+                        "Hierarchy of User Needs — Aarron Walter",
+                        "Usability Heuristics — Jakob Nielsen",
+                        "LIFT Model — Conversion Optimization",
+                        "CCD — Customer Centric Design",
+                        "Emotional Targeting — 223 triggers",
+                        "Buyer Legends — Narrative framing",
+                        "FAST Architecture — Persuasion sequencing",
+                        "Narrative Arc — Hook, tension, evidence, resolution",
+                        "ResearchXL — Structured UX research",
+                        "Messaging Hierarchy — B2B 5-layer model",
+                        "Awareness Model — 5 poziomów świadomości",
+                        "Funnel Psychology — Awareness, consideration, decision"
                       ]
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
                     {
                       "kind": "heading",
@@ -2309,391 +2141,65 @@
                       "kind": "list",
                       "ordered": false,
                       "items": [
-                        "Hero: warianty otwarcia strony",
-                        "Nawigacja: sticky, mega menu, mobile",
-                        "Social proof: testimoniale, loga, case study",
-                        "FAQ / obiekcje: accordion, 4 bariery",
-                        "Formularze: lead capture, kontakt, RFQ",
-                        "Cennik: tiery, anchor pricing, decoy",
-                        "Porównanie: tabele vs konkurencja",
-                        "Case study: wynik, cytat, metryki",
-                        "Pricing page: psychologia cen, tiery",
-                        "Trust bar: loga, badges, certyfikaty",
-                        "Stats block: metryki, skala, impact",
-                        "Sticky CTA: floating, bottom bar",
-                        "Mid-page CTA: kontekstowe wezwanie",
-                        "+ 35 kolejnych wzorców"
+                        "Hero — Warianty otwarcia strony",
+                        "Nawigacja — Sticky, mega menu, mobile",
+                        "Social proof — Testimoniale, loga, case study",
+                        "FAQ / obiekcje — Accordion, 4 bariery zakupowe",
+                        "Formularze — Lead capture, kontakt, RFQ",
+                        "Cennik — Tiery, anchor pricing, decoy",
+                        "Porównanie — Tabele vs. konkurencja",
+                        "Case study — Wynik + cytat + metryki",
+                        "Pricing page — Psychologia cen, tiery",
+                        "Comparison — vs. pages, switcher proof",
+                        "Trust bar — Loga, badges, certyfikaty",
+                        "Stats block — Metryki, skala, impact",
+                        "Sticky CTA — Floating, bottom bar",
+                        "Mid-page CTA — Kontekstowe wezwanie",
+                        "+ 35 kolejnych"
                       ]
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 }
               ]
+            },
+            {
+              "kind": "micro",
+              "text": "110 plików wiedzy z metodologią, gotowymi wzorcami i przykładami. Od psychologii projektowania po wzorce konwersji."
             }
           ],
           "deliberations": [
             {
-              "id": "kb-source-from-v1",
-              "summary": "Treść przeniesiona z poprzedniej wersji strony (v1 sekcja 11), z poprawkami diakrytyków i słownika v3.",
-              "reasoning": "Sekcja realizuje brakujący twardy dowód do filaru P3 z kanwy (wbudowana wiedza UX, 17 paczek domenowych, 13 frameworków, znaczniki pewności). Bez tego P3 zostaje 🟡 Soft. v1 miała tę sekcję skompletowaną, więc odtworzona dokładnie z dwoma adaptacjami: przywrócone polskie diakrytyki (akcydens pliku v1) i 'agent' zamienione na 'narzędzie' zgodnie ze słownikiem strategii v3.",
-              "alternatives": []
+              "id": "kb-heading-from-page",
+              "summary": "Nagłówek z pliku strony, nie z pliku treści bazy wiedzy",
+              "reasoning": "Strona produktu podaje sekcji własny nagłówek („Ten skill rozumie UX design…”), który zastępuje nagłówek z pliku treści („Pod spodem siedzi 16 typów stron…”). Makieta pokazuje ten, który widzi odwiedzający.",
+              "alternatives": [],
+              "confidence": "high",
+              "attached_to": "kb-heading"
             }
-          ]
+          ],
+          "interactionNotes": []
         },
         {
-          "type": "comparison",
-          "purpose": "Pokazać, czym narzędzie różni się od trzech sposobów, którymi designerzy zwykle planują.",
-          "userQuestion": "Jak wypada vs to, co już próbuję? Czemu nie wystarczą szkice, ChatGPT albo konsultant?",
+          "type": "comparison-free-skills",
+          "id": "darmowe-skille",
+          "purpose": "Uprzedzić pytanie o darmowe skille UX z GitHuba: uczciwie pokazać, co robią cztery ich typy, i że żaden nie prowadzi projektu od briefu po makiety.",
+          "userQuestion": "A co z darmowymi skillami z GitHuba?",
           "narrative": "tension",
-          "layout": "Label + heading + lead micro-paragraph na górze. Niżej grid 4-col z czterema kartami, jedna na alternatywę: TO NARZĘDZIE (highlight via label '★ POLECANE', pierwsza kolumna), ZRÓB SAM, DORAŹNE NARZĘDZIA, WYNAJMIJ KOGOŚ. Każda karta: heading + opcjonalna mikro-podetykieta z opisem klastra + lista 6 wymiarów ('Wymiar: ✓/✗ wartość'). Forma 4-card zamiast natywnej tabeli, bo renderer cap'uje integer columns na 2|3|4 — 5 kolumn rozsypywało układ.",
+          "layout": "Nagłówek sekcji (plakietka, H2, lead) nad układem 2/3 + 1/3: po lewej siatka 2×2 czterech typów darmowych skilli (numer, H3, opis, przykład), po prawej wyróżniona karta 05 z tym skillem (H3, opis, cztery punkty z ikoną check).",
           "elements": [
             {
               "kind": "label",
-              "text": "PORÓWNANIE"
+              "text": "Darmowe skille"
             },
             {
               "kind": "heading",
               "level": 2,
-              "text": "Czym to się różni od własnych szkiców, doraźnych narzędzi i konsultanta UX?"
-            },
-            {
-              "kind": "micro",
-              "text": "Twoje Figma, FigJam i generatory zostają. Pytanie nie brzmi „czy zastąpi\", tylko „jak planujesz, zanim w nie wejdziesz\". Trzy ścieżki, którymi designerzy zwykle planują strony klienta. Każda zostawia lukę, którą to narzędzie obsadza."
-            },
-            {
-              "kind": "grid",
-              "columns": 4,
-              "children": [
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "label",
-                      "text": "★ POLECANE"
-                    },
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "TO NARZĘDZIE"
-                    },
-                    {
-                      "kind": "list",
-                      "ordered": false,
-                      "items": [
-                        "Pełen proces UX: ✓ 6 etapów pracy end-to-end",
-                        "Realne pliki: ✓ .md, .xlsx, .html",
-                        "Kontekst między sesjami: ✓ pliki trwałe",
-                        "Przystanki i decyzje: ✓ opcje z trade-off",
-                        "Realny copy: ✓ w języku projektu",
-                        "Koszt: jednorazowo"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "ZRÓB SAM"
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Szkice, intuicja, samodzielny audyt"
-                    },
-                    {
-                      "kind": "list",
-                      "ordered": false,
-                      "items": [
-                        "Pełen proces UX: ✗ ad-hoc, bez systemu",
-                        "Realne pliki: ✗ luźne notatki",
-                        "Kontekst między sesjami: ✗ pamięć projektanta",
-                        "Przystanki i decyzje: ✗ decyzje intuicyjne",
-                        "Realny copy: ✗ albo brak, albo lorem",
-                        "Koszt: czas własny"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "DORAŹNE NARZĘDZIA"
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "ChatGPT, prompty, szablony, generatory stron"
-                    },
-                    {
-                      "kind": "list",
-                      "ordered": false,
-                      "items": [
-                        "Pełen proces UX: ✗ fragmenty bez procesu",
-                        "Realne pliki: ✗ czaty, prompty, pliki graficzne",
-                        "Kontekst między sesjami: ✗ każda sesja od zera",
-                        "Przystanki i decyzje: ✗ brak struktury",
-                        "Realny copy: ~ generyczny lub szablonowy",
-                        "Koszt: ~100 zł/mies. + 50–500 zł jednorazowo"
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "WYNAJMIJ KOGOŚ"
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Konsultant UX, kurs, peer feedback"
-                    },
-                    {
-                      "kind": "list",
-                      "ordered": false,
-                      "items": [
-                        "Pełen proces UX: ✓ pełen cykl",
-                        "Realne pliki: ✓ dokumenty",
-                        "Kontekst między sesjami: ✓ w głowie konsultanta",
-                        "Przystanki i decyzje: ✓ spotkania",
-                        "Realny copy: ✓ profesjonalny",
-                        "Koszt: 5 000–20 000 zł/projekt"
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "deliberations": [
-            {
-              "id": "comparison-3-canvas-clusters",
-              "summary": "Zwężone do 3 klastrów alternatyw z kanwy (Zrób sam, Doraźne narzędzia, Wynajmij kogoś). Treści wierszy z v1.",
-              "reasoning": "Kanwa definiuje alternatywy jako 3 klastry zachowań, nie pojedyncze narzędzia. v1 miał 4 kolumny (ChatGPT, prompty, szablony, konsultant); pierwsze trzy są wariantami klastra 'patch from tools'. Scalenie wzmacnia hierarchię z kanwy, zachowuje kotwicę cenową konsultanta i upraszcza skanowanie tabeli. Etykieta klastra 'Doraźne narzędzia' (forma rzeczownikowa) zamiast imperatywu 'Załataj narzędziami': neutralny ton, nie ocenia użytkownika ('łatać' niesie sens 'naprawiać coś popsutego').",
-              "alternatives": [
-                {
-                  "desc": "Zachować 4 kolumny v1 (ChatGPT, prompty, szablony, konsultant)",
-                  "tradeoff": "Bliżej v1 dosłownie, ale gubi hierarchię klastrów z kanwy i mnoży kolumny do 6."
-                },
-                {
-                  "desc": "Imperatyw 'Składaj z narzędzi' jako etykieta klastra",
-                  "tradeoff": "Zachowuje paralelę imperatywną z 'Zrób sam' / 'Wynajmij kogoś', ale operatywny ton mniej pasuje do nagłówka kolumny."
-                }
-              ]
-            },
-            {
-              "id": "comparison-cost-source",
-              "summary": "Koszt konsultanta z v1 (5 000–20 000 zł/projekt), niezgodny z kotwicą cenową kanwy (500–8 000 zł za 3-dniowy sprint).",
-              "reasoning": "v1 podał 5 000–20 000 zł/projekt dla konsultanta UX. Kanwa definiuje kotwicę pozycjonującą na 500–8 000 zł (3-dniowy sprint). Obie liczby mogą być prawdziwe (różne miary: cały projekt vs sprint), ale niespójne. Zostawione zgodnie z wytyczną 'dosłowne treści z v1'; do podmiany jednym ruchem, jeśli decyzja przejdzie na figurę z kanwy.",
-              "alternatives": []
-            },
-            {
-              "id": "comparison-layout-4-cards",
-              "summary": "Przełączone z grid 5-col x 7-row (35 cell) na grid 4-col x 4 karty po 6 wierszy listy.",
-              "reasoning": "Renderer (interactive shell) cap'uje integer 'columns' na 2/3/4 — 5 padło do default 3 i tabela rozsypała się sekwencyjnie. Forma tablicowa columns: [1,1,1,1,1] działa, ale bardziej Pythonowo: 4 karty, każda jako kolumna, dim-labels embedded w list-items ('Wymiar: wartość'). Zalety: TO NARZĘDZIE jako pierwsza kolumna (zgodnie z konwencją porównawczą i intuicją odbiorcy), brak osobnej kolumny dla nazw wymiarów (oszczędność miejsca), dim-name + value razem w jednej linii (mniejsza waga skanowania).",
-              "alternatives": [
-                {
-                  "desc": "columns: [1,1,1,1,1] (forma tablicowa)",
-                  "tradeoff": "Zachowuje matrix layout 5x7, ale renderer może mieć inne ograniczenia szerokości w 5 kol (czytelność na desktop). Nie testowane."
-                },
-                {
-                  "desc": "Zostawić 5-col grid i naprawić renderer (rozszerzyć cap do 5)",
-                  "tradeoff": "Czysta naprawa źródła, ale wymaga edycji adapter JS (nieobjęte tym wireframem) i dotyka kontraktu shellu."
-                }
-              ]
-            }
-          ]
-        },
-        {
-          "type": "pricing",
-          "purpose": "Pokazać trzy pakiety z cenami przedsprzedażowymi i regularnymi, budując kontrast i pilność.",
-          "userQuestion": "Ile to kosztuje, dla kogo każdy pakiet?",
-          "narrative": "resolution",
-          "layout": "Label + heading + paragraph na górze, niżej grid 3-col z trzema kartami pakietów (każda: heading, cena przedsprzedaż / regularna jako stat, paragraph 'dla kogo', primary CTA).",
-          "elements": [
-            {
-              "kind": "label",
-              "text": "PAKIETY"
-            },
-            {
-              "kind": "heading",
-              "level": 2,
-              "text": "Trzy pakiety, jednorazowa licencja"
+              "text": "A co z darmowymi skillami z GitHuba?"
             },
             {
               "kind": "paragraph",
-              "text": "Sześć miesięcy darmowych aktualizacji w cenie (dwanaście w przedsprzedaży)."
-            },
-            {
-              "kind": "grid",
-              "columns": 3,
-              "children": [
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Solo"
-                    },
-                    {
-                      "kind": "stat",
-                      "value": "599 zł",
-                      "label": "Przedsprzedaż / 369 EUR regularnie",
-                      "detail": "Freelancer projektujący strony klientom"
-                    },
-                    {
-                      "kind": "paragraph",
-                      "text": "Jeden użytkownik. Fakturowalny na klienta jako etap projektu — koszt strony rozkłada się na faktury, nie tylko na własny budżet."
-                    },
-                    {
-                      "kind": "button",
-                      "label": "Kup pakiet Solo",
-                      "variant": "primary"
-                    }
-                  ]
-                },
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Studio"
-                    },
-                    {
-                      "kind": "stat",
-                      "value": "799 zł",
-                      "label": "Przedsprzedaż / 669 EUR regularnie",
-                      "detail": "Małe studio do 5 osób"
-                    },
-                    {
-                      "kind": "paragraph",
-                      "text": "Cały zespół z własną kopią, jeden klient pokrywa licencję jedną fakturą. Wspólne standardy decyzji w studiu."
-                    },
-                    {
-                      "kind": "button",
-                      "label": "Kup pakiet Studio",
-                      "variant": "primary"
-                    }
-                  ]
-                },
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Agencja"
-                    },
-                    {
-                      "kind": "stat",
-                      "value": "1499 zł",
-                      "label": "Przedsprzedaż / 1269 EUR regularnie",
-                      "detail": "Większy zespół albo agencja bez limitu użytkowników"
-                    },
-                    {
-                      "kind": "paragraph",
-                      "text": "Bez limitu użytkowników, jeden zakup. Wspólne standardy procesu i pliki spójne między projektantami."
-                    },
-                    {
-                      "kind": "button",
-                      "label": "Kup pakiet Agencja",
-                      "variant": "primary"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "deliberations": [
-            {
-              "id": "pricing-no-highlight",
-              "summary": "Trzy pakiety bez wyróżnionego (highlight) tieru",
-              "reasoning": "Bez wskazania 'najpopularniejszy' albo 'rekomendowany' — wszystkie trzy karty równe wizualnie. Per-package 'dla kogo' segmentuje odbiorcę po kontekście pracy, nie po opinii narzędzia o wyborze.",
-              "alternatives": [
-                {
-                  "desc": "Highlight na Studio jako 'najpopularniejszy'",
-                  "rejected": "Brak danych w przedsprzedaży, żeby uzasadnić; force'owanie wyboru sprzeczne z brand voice 'decyzja po stronie odbiorcy'."
-                }
-              ],
-              "confidence": "medium",
-              "inputSource": {
-                "kind": "strategy",
-                "ref": "ia-decision-pricing-strip"
-              }
-            }
-          ]
-        },
-        {
-          "type": "free-trial",
-          "purpose": "Zaproponować test na własnej stronie i wpiąć anchor dla ruchu z reklam.",
-          "userQuestion": "Mogę spróbować zanim kupię?",
-          "narrative": "resolution",
-          "layout": "1-col z anchor `#audyt`. Eyebrow + heading + paragraph + lista 3 punktów + micro (no-friction signal) + primary CTA.",
-          "elements": [
-            {
-              "kind": "label",
-              "text": "DARMOWY AUDYT — TEST ON YOURSELF BEFORE YOU BUY"
-            },
-            {
-              "kind": "heading",
-              "level": 2,
-              "text": "Pobierz pakiet darmowego audytu i uruchom na własnej stronie"
-            },
-            {
-              "kind": "paragraph",
-              "text": "Dostajesz konkret, zanim podejmiesz decyzję o zakupie pełnej wersji. Wystarczy, że podasz adres URL, a narzędzie zrobi wszystko samo dalej."
-            },
-            {
-              "kind": "list",
-              "ordered": false,
-              "items": [
-                "Makieta Twojej obecnej strony jako HTML do podglądu",
-                "Wnioski w formie adnotacji sekcji i elementów bezpośrednio na makiecie",
-                "Każdy wniosek prezentuje stan obecny, standard branżowy dla tego typu strony z oznaczonym poziomem pewności",
-                "Wyniki audytu możesz wykorzystać podczas redesignu strony"
-              ]
-            },
-            {
-              "kind": "micro",
-              "text": "Bez konta. Bez maila. Audyt dla stron studia, freelancera, produktów cyfrowych. Decyzja o zakupie po realnej próbie na własnym projekcie."
-            },
-            {
-              "kind": "button",
-              "label": "Pobierz darmowy audyt",
-              "variant": "primary"
-            }
-          ],
-          "deliberations": []
-        },
-        {
-          "type": "platforms",
-          "purpose": "Pokazać, na jakich platformach narzędzie działa, i co jest w paczce.",
-          "userQuestion": "Gdzie to działa? Na której z platform, których już używam?",
-          "narrative": "evidence",
-          "layout": "Label + heading na górze. Niżej grid 2x2 czterech kart platform (Claude/ChatGPT, Custom GPTs/Gemini Gems, Claude Code CLI, VS Code/IDE) na całą szerokość, pod nim karta z listą zawartości paczki (agent.md, references/, scripts/, dokumentacja) + mikro-copy na dole.",
-          "elements": [
-            {
-              "kind": "label",
-              "text": "PLATFORMY"
-            },
-            {
-              "kind": "heading",
-              "level": 2,
-              "text": "Jeden folder. Działa na platformach, których już używasz."
+              "text": "Sprawdziliśmy ekosystem. Najpopularniejsze darmowe skille UX dla Claude Code'a dzielą się na cztery typy. Każdy z nich robi swoje zadanie dobrze. Żaden nie prowadzi projektu od briefu po makiety."
             },
             {
               "kind": "grid",
@@ -2701,132 +2207,468 @@
               "children": [
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
+                    {
+                      "kind": "label",
+                      "text": "01"
+                    },
                     {
                       "kind": "heading",
                       "level": 3,
-                      "text": "Claude / ChatGPT w przeglądarce"
+                      "text": "Style i komponenty — generatory pod stack"
                     },
                     {
-                      "kind": "micro",
-                      "text": "Jako instrukcja projektu"
+                      "kind": "paragraph",
+                      "text": "Dostajesz gotową stylizację i komponenty dla twojego frameworka: React, Vue, SwiftUI lub Flutter."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Np. ui-ux-pro-max-skill"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "02"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Referencje UX — WCAG, Nielsen, accessibility"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Pytasz o normę albo wzorzec w trakcie pracy z modelem AI, dostajesz odpowiedź ze źródłem."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Np. ux-mcp-server"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "03"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Prompty UX — gotowe do skopiowania"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Bierzesz prompt z biblioteki, dostosowujesz pod swój projekt, wpinasz we własny flow."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Np. claude-code-ui-agents, LibreUIUX"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "04"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Research UX — formalna metodologia"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Prowadzi cię przez badania użytkowników z bezstronną metodologią."
+                    },
+                    {
+                      "kind": "label",
+                      "text": "Np. VoltAgent ux-researcher"
+                    }
+                  ],
+                  "variant": "tile"
+                }
+              ]
+            },
+            {
+              "kind": "card",
+              "children": [
+                {
+                  "kind": "label",
+                  "text": "05"
+                },
+                {
+                  "kind": "heading",
+                  "level": 3,
+                  "text": "Tylko ten skill prowadzi cały projekt strony od briefu po makiety"
+                },
+                {
+                  "kind": "paragraph",
+                  "text": "Prowadzi przez wszystkie etapy, od pierwszego pytania o kontekst klienta po makiety gotowe do przekazania."
+                },
+                {
+                  "kind": "list",
+                  "ordered": false,
+                  "items": [
+                    "Discovery (rozpoznanie kontekstu)",
+                    "Audyt istniejącej strony",
+                    "Plan strony i architektura informacji",
+                    "Wireframe'y z prawdziwym copy"
+                  ]
+                }
+              ],
+              "variant": "highlight"
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "landscape-highlight-below",
+              "summary": "Wyróżniona karta tego skilla pod siatką czterech typów, nie obok",
+              "reasoning": "Na stronie karta 05 stoi w prawej jednej trzeciej, obok siatki 2×2. Schemat makiet nie pozwala na siatkę w siatce, więc karta schodzi pod spód; kolejność czytania (cztery typy, potem ten skill) zostaje ta sama.",
+              "alternatives": [
+                {
+                  "desc": "Pięć kart w jednej siatce 3-col",
+                  "rejected": "Zrównałoby kartę tego skilla z czterema typami, a strona celowo ją wyróżnia."
+                }
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "comparison",
+          "id": "porownanie",
+          "purpose": "Zestawić skill z dwiema realnymi alternatywami odbiorcy, samym Claude Code i własnoręcznym skillem, w pięciu wymiarach, tak by różnica była widoczna w jednej tabeli.",
+          "userQuestion": "Czemu nie wystarczy samo Claude Code i czemu nie napisać sobie skilla?",
+          "narrative": "tension",
+          "layout": "Nagłówek sekcji (plakietka, H2 w dwóch liniach) nad tabelą 4-col: pusta komórka, kolumna tego skilla wyróżniona (REKOMENDACJA), dwie alternatywy. Pięć wierszy; każda komórka to ikona stanu (tak / nie / częściowo) i krótki tekst, w wierszu Koszt same kwoty.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Porównanie"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Czemu nie wystarczy samo Claude Code i czemu nie napisać sobie skilla."
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": ""
                     }
                   ]
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
                     {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Custom GPTs / Gemini Gems"
+                      "kind": "label",
+                      "text": "REKOMENDACJA"
                     },
                     {
-                      "kind": "micro",
-                      "text": "Kompatybilny jako knowledge + instruction set"
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "UX skill (ten produkt)"
+                    }
+                  ],
+                  "variant": "highlight"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "ALTERNATYWA"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Samo Claude Code"
                     }
                   ]
                 },
                 {
                   "kind": "card",
-                  "variant": "tile",
                   "children": [
                     {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Claude Code (CLI)"
+                      "kind": "label",
+                      "text": "ALTERNATYWA"
                     },
                     {
-                      "kind": "micro",
-                      "text": "Pełny dostęp do plików, bezpośredni zapis plików deliverable"
-                    }
-                  ]
-                },
-                {
-                  "kind": "card",
-                  "variant": "tile",
-                  "children": [
-                    {
                       "kind": "heading",
-                      "level": 3,
-                      "text": "VS Code / IDE"
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Zintegrowane z Twoim środowiskiem pracy"
+                      "level": 4,
+                      "text": "Własnoręczny skill"
                     }
                   ]
                 }
               ]
             },
             {
-              "kind": "card",
-              "variant": "default",
+              "kind": "grid",
+              "columns": 4,
               "children": [
                 {
-                  "kind": "heading",
-                  "level": 3,
-                  "text": "W paczce kupujesz kompletne narzędzie."
-                },
-                {
-                  "kind": "list",
-                  "ordered": false,
-                  "items": [
-                    "agent.md: pełna definicja narzędzia z 6 etapami pracy",
-                    "references/: 92 pliki wiedzy domenowej (16 typów stron, 14 obszarów)",
-                    "scripts/: skrypt Python do generowania Excel",
-                    "Dokumentacja: instalacja i konfiguracja"
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Metodologia UX"
+                    }
                   ]
                 },
                 {
-                  "kind": "micro",
-                  "text": "Brak dodatkowych zależności. Wgrywasz folder, otwierasz platformę i zaczynasz pierwszy projekt."
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ 16 typów stron, 13 frameworków, 50+ wzorców wbudowane."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✕ Brak. Stosujesz to, co podpowiadasz w promptach."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "– Sam piszesz. Czas + ryzyko niespójności."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Czas do uruchomienia"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ 5 minut. Wklejasz instrukcję z maila, a agent instaluje skill."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "– 0 minut, ale 0 metodologii."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✕ 80 - 160 godzin pisania i testowania."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Cross-model (Claude, GPT, Gemini)"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Tak. Działa w Claude Code, Codex i Cursorze, a w Cursorze wybierasz model."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✕ Tylko Claude w Claude Code. Bez wyboru modelu."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "– Tak, jeśli sam zaprojektujesz pod otwartą specyfikację."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Dowód decyzji obok każdej rekomendacji"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✓ Tak, uzasadnienie i odrzucone warianty obok każdej decyzji."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "✕ Nie. Model odpowiada bez śladu."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "– Trzeba samemu zaprojektować mechanizm zapisu decyzji."
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "kind": "grid",
+              "columns": 4,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 4,
+                      "text": "Koszt"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Od 449 zł, jednorazowo."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Subskrypcja Claude Pro / Max."
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "paragraph",
+                      "text": "Twój cenny czas."
+                    }
+                  ]
                 }
               ]
             }
           ],
           "deliberations": [
             {
-              "id": "platforms-source-from-v1",
-              "summary": "Treść przeniesiona z v1 sekcja 6, z adaptacjami słownika v3.",
-              "reasoning": "Sekcja realizuje twardy dowód do filaru P2 z kanwy (pliki w markdown i HTML, gotowe do wysłania). Sygnał 'files not chat' z badań (9/16). v1 miał tę sekcję skompletowaną. Adaptacje: 'workflow' do 'etap pracy' (słownik v3), 'agenta' do 'narzędzia' (zakaz słowa 'agent' na sales page poza nazwami plików), polskie diakrytyki przywrócone.",
-              "alternatives": []
-            },
-            {
-              "id": "platforms-full-width-tiles",
-              "summary": "Karty platform na całą szerokość w dwóch kolumnach, zawartość paczki pod nimi",
-              "reasoning": "Karty platform siedziały w siatce wewnątrz lewej połowy, więc każda miała jedną czwartą szerokości sekcji. Na całej szerokości w dwóch kolumnach mają dwa razy więcej miejsca. Lista zawartości paczki przechodzi pod karty. Kosztem jest dłuższa sekcja.",
+              "id": "comparison-status-glyphs",
+              "summary": "Ikony stanu w komórkach oddane znakami ✓ / ✕ / –",
+              "reasoning": "Strona stawia przed tekstem komórki ikonę (check, krzyżyk, kreska). Znak przed tekstem zachowuje tę ocenę w szarej makiecie bez dopisywania słów, których na stronie nie ma.",
               "alternatives": [
                 {
-                  "desc": "Zostawić karty platform i listę paczki obok siebie",
-                  "rejected": "Karty zostają zbyt wąskie, nazwy platform łamią się na kilka linii."
+                  "desc": "Sam tekst komórek",
+                  "rejected": "Gubi szybkie porównanie wzrokiem, które daje ikona."
                 }
               ],
               "confidence": "high"
             }
-          ]
+          ],
+          "interactionNotes": []
         },
         {
-          "type": "install",
-          "purpose": "Znieść obawę techniczną krótkim skrótem instalacji plus link do pełnej instrukcji.",
-          "userQuestion": "Jak to wgrywam, czy ogarnę?",
-          "narrative": "resolution",
-          "layout": "Label + heading + paragraph na górze, niżej grid 3-col z 3 krokami (numerowane), niżej micro (lista środowisk) + link arrow do podstrony.",
+          "type": "boundaries",
+          "id": "granice",
+          "purpose": "Powiedzieć uczciwie, co zostaje po stronie odbiorcy, żeby zdjąć obawę, że AI decyduje za niego albo udaje pewność.",
+          "userQuestion": "Czy skill nie podejmie decyzji za mnie i czy mogę mu ufać?",
+          "narrative": "tension",
+          "layout": "Nagłówek sekcji (plakietka, H2) nad siatką 3-col trzech kart: ikona, H3 z granicą, jedno zdanie o tym, co zostaje po stronie użytkownika.",
           "elements": [
             {
               "kind": "label",
-              "text": "INSTALACJA"
+              "text": "Co zostaje po twojej stronie"
             },
             {
               "kind": "heading",
               "level": 2,
-              "text": "Instalujesz jak wtyczkę WordPressa"
-            },
-            {
-              "kind": "paragraph",
-              "text": "Folder z plikami markdown trafia do Twojego środowiska AI — Claude Code, Cursor, ChatGPT, Claude Projects albo Alice. Brak backendu, brak kont, brak czekania na onboarding."
+              "text": "Czego ten skill nie robi",
+              "id": "boundaries-heading"
             },
             {
               "kind": "grid",
@@ -2834,66 +2676,937 @@
               "children": [
                 {
                   "kind": "card",
-                  "variant": "default",
                   "children": [
-                    {
-                      "kind": "label",
-                      "text": "KROK 1"
-                    },
                     {
                       "kind": "heading",
                       "level": 3,
-                      "text": "Pobierz folder"
+                      "text": "Nie podejmuje decyzji strategicznych za Ciebie."
                     },
                     {
                       "kind": "paragraph",
-                      "text": "Po zakupie dostajesz spakowany folder z plikami narzędzia."
+                      "text": "Pokazuje opcje z trade-off, wybierasz Ty."
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "default",
                   "children": [
-                    {
-                      "kind": "label",
-                      "text": "KROK 2"
-                    },
                     {
                       "kind": "heading",
                       "level": 3,
-                      "text": "Wrzuć do swojego środowiska"
+                      "text": "Nie udaje, że wie wszystko."
                     },
                     {
                       "kind": "paragraph",
-                      "text": "Folder ląduje w katalogu projektu (np. .claude/agents/ dla Claude Code), zgodnie z instrukcją per środowisko."
+                      "text": "Każda decyzja oznaczona poziomem pewności tam, gdzie AI zgaduje."
                     }
-                  ]
+                  ],
+                  "variant": "tile"
                 },
                 {
                   "kind": "card",
-                  "variant": "default",
                   "children": [
-                    {
-                      "kind": "label",
-                      "text": "KROK 3"
-                    },
                     {
                       "kind": "heading",
                       "level": 3,
-                      "text": "Uruchom przy kolejnej rozmowie"
+                      "text": "Nie zastępuje doświadczenia."
                     },
                     {
                       "kind": "paragraph",
-                      "text": "Narzędzie startuje samo przy następnej sesji z modelem — zero dodatkowej konfiguracji."
+                      "text": "Skraca drogę do pierwszej wersji, którą rozwijasz po swojemu."
                     }
-                  ]
+                  ],
+                  "variant": "tile"
+                }
+              ]
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "boundaries-heading-from-page",
+              "summary": "Nagłówek „Czego ten skill nie robi” z pliku strony",
+              "reasoning": "Plik treści ma nagłówek „Czego to narzędzie nie robi”, ale strona produktu podaje własny. Makieta pokazuje nagłówek ze strony.",
+              "alternatives": [],
+              "confidence": "high",
+              "attached_to": "boundaries-heading"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "testimonials",
+          "id": "opinie",
+          "purpose": "Pokazać przed cennikiem, że skill działa u innych: opinie kupujących z imieniem, nazwiskiem i studiem, które potwierdzają poukładany proces i szybszą pracę.",
+          "userQuestion": "Czy to działa u innych, takich jak ja?",
+          "narrative": "evidence",
+          "layout": "Nagłówek sekcji (plakietka, H2 w dwóch liniach, podtytuł) nad karuzelą: jeden slajd naraz, duży cytat wyróżniony i rozwinięcie po lewej, pionowe zdjęcie po prawej, pod cytatem imię i studio z linkiem. Pod slajdem strzałki i licznik 1/5. Makieta rozpisuje slajdy 2–5 pod karuzelą.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Opinie"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Poukładany proces. Szybsza praca. Tak mówią kupujący UX Design Skill."
+            },
+            {
+              "kind": "paragraph",
+              "text": "A podobnego produktu nie ma na rynku!"
+            },
+            {
+              "kind": "grid",
+              "columns": [
+                1
+              ],
+              "children": [
+                {
+                  "kind": "testimonial",
+                  "quote": "To jest gamechanger! Po przetestowaniu UX Audit kupiłem następnego dnia pełen pakiet i jest to mega narzędzie, które będzie moim pierwszym krokiem do ustalenia struktury i strategii strony.",
+                  "author": "Natan Domnik",
+                  "photo": {
+                    "label": "[Zdjęcie: Natan Domnik]"
+                  },
+                  "company": "Pozioma"
+                }
+              ]
+            },
+            {
+              "kind": "grid",
+              "columns": "auto",
+              "children": [
+                {
+                  "kind": "button",
+                  "label": "←",
+                  "variant": "secondary"
+                },
+                {
+                  "kind": "paragraph",
+                  "text": "1/5"
+                },
+                {
+                  "kind": "button",
+                  "label": "→",
+                  "variant": "secondary"
                 }
               ]
             },
             {
               "kind": "micro",
-              "text": "Wspierane środowiska: Claude Code, Cursor, ChatGPT, Claude Projects, Alice."
+              "text": "[Slajdy 2–5 karuzeli, widoczne po kliknięciu strzałki]"
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "testimonial",
+                  "quote": "Jest świetnym narzędziem do prototypowania. Jest fajnym uzupełnieniem procesu. Daje szybkie rezultaty w oparciu o dostarczoną strategię. Występuje jako pomost między dokumentem strategicznym a pracą w Figmie.",
+                  "author": "Jan Kanty Janiszewski",
+                  "photo": {
+                    "label": "[Zdjęcie: Jan Kanty Janiszewski]"
+                  },
+                  "company": "The Sunray Studio"
+                },
+                {
+                  "kind": "testimonial",
+                  "quote": "Bardzo dobre i przydatne narzędzie, usprawnia i przyspiesza prace. Pomaga najbardziej na wstępnym etapie, sprawdza się bardzo dobrze jako punkt początkowy oraz sprawdzanie różnych wersji.",
+                  "author": "Karol Bednarczyk",
+                  "photo": {
+                    "label": "[Zdjęcie: Karol Bednarczyk]"
+                  },
+                  "company": "Modela Studio"
+                },
+                {
+                  "kind": "testimonial",
+                  "quote": "Świetnie prowadzi przez proces. Nie jestem web designerem by trade, więc właściwie wszystko jest łatwiejsze z tym skillem. Wykorzystuję głównie na etapie budowania założeń i wywiadu.",
+                  "author": "Karol Janus",
+                  "photo": {
+                    "label": "[Zdjęcie: Karol Janus]"
+                  }
+                },
+                {
+                  "kind": "testimonial",
+                  "quote": "Bardzo przydatny. Uporządkował proces projektowy, to było zawsze trudne u mnie.",
+                  "author": "Magda G.",
+                  "photo": {
+                    "label": "[Zdjęcie: Magda G.]"
+                  },
+                  "company": "Freelancer"
+                }
+              ]
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "testimonials-carousel-unrolled",
+              "summary": "Karuzela pokazana jako pierwszy slajd ze strzałkami, a pozostałe cztery opinie rozpisane pod nią",
+              "reasoning": "Na stronie widać jedną opinię naraz. Brief sekcji wymaga wszystkich pięciu osób i ich zastosowań, więc makieta zachowuje wygląd karuzeli (slajd, strzałki, licznik) i dopisuje pod nią slajdy 2–5 z adnotacją, że pojawiają się po kliknięciu.",
+              "alternatives": [
+                {
+                  "desc": "Tylko pierwszy slajd",
+                  "rejected": "Ukrywa cztery z pięciu opinii, które brief każe pokazać."
+                },
+                {
+                  "desc": "Pięć opinii w siatce",
+                  "rejected": "Udaje układ, którego strona nie ma."
+                }
+              ],
+              "confidence": "medium"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "pricing",
+          "id": "cennik",
+          "purpose": "Pokazać trzy pakiety obok siebie i pomóc wybrać jednym pytaniem, czy projektujesz dla swojej firmy, czy dla klientów; każda karta prowadzi wprost do koszyka swojego pakietu.",
+          "userQuestion": "Ile to kosztuje i który pakiet jest dla mnie?",
+          "narrative": "resolution",
+          "layout": "Nagłówek sekcji (H2 jako pytanie, zdanie o aktualizacjach z linkiem do changelogu) nad siatką 3-col: Founder, Solo Designer (wyróżnione tło), Studio. Karta: liczba użytkowników, nazwa, cena netto, zdanie o wartości, lista z ikoną check, przycisk „Kup …” na dole. Pod siatką wyśrodkowane warunki licencji i linijka o 14 dniach z ikoną.",
+          "elements": [
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Projektujesz strony dla swojej firmy czy dla klientów?"
+            },
+            {
+              "kind": "paragraph",
+              "text": "12 miesięcy darmowych aktualizacji w cenie."
+            },
+            {
+              "kind": "link",
+              "label": "Zobacz changelog",
+              "variant": "arrow",
+              "href": "/ux-design-skill/changelog/"
+            },
+            {
+              "kind": "grid",
+              "columns": 3,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "1 użytkownik"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Founder"
+                    },
+                    {
+                      "kind": "stat",
+                      "value": "449 zł",
+                      "label": "netto + VAT 23%"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Plan, copy i makiety stron Twojej firmy, bez zatrudniania agencji. Korzystasz Ty lub ktoś z Twojego zespołu"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "Plan strony: discovery, strategia, architektura informacji",
+                        "Messaging i copy",
+                        "Makiety z prawdziwym copy",
+                        "16 typów stron",
+                        "12 miesięcy aktualizacji",
+                        "Licencja do stron własnej firmy"
+                      ]
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Kup Founder",
+                      "variant": "primary"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "1 użytkownik"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Solo Designer"
+                    },
+                    {
+                      "kind": "stat",
+                      "value": "749 zł",
+                      "label": "netto + VAT 23%"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Kosztuje mniej niż dzień Twojej pracy. Zwraca się przy pierwszym zleceniu"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "Plan strony: discovery, strategia, architektura informacji",
+                        "Messaging i copy",
+                        "Makiety z prawdziwym copy",
+                        "16 typów stron",
+                        "Lista szablonów i sekcji do wyceny projektu",
+                        "Pełny audyt UX",
+                        "Makieta istniejącej strony (redesign)",
+                        "12 miesięcy aktualizacji",
+                        "Licencja komercyjna do pracy dla klientów"
+                      ]
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Kup Solo Designer",
+                      "variant": "primary"
+                    }
+                  ],
+                  "id": "pricing-solo",
+                  "variant": "highlight"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Do 5 użytkowników"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Studio"
+                    },
+                    {
+                      "kind": "stat",
+                      "value": "1 249 zł",
+                      "label": "netto + VAT 23%"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Jeden proces dla całego zespołu i trzy razy taniej na osobę"
+                    },
+                    {
+                      "kind": "list",
+                      "ordered": false,
+                      "items": [
+                        "Plan strony: discovery, strategia, architektura informacji",
+                        "Messaging i copy",
+                        "Makiety z prawdziwym copy",
+                        "16 typów stron",
+                        "Lista szablonów i sekcji do wyceny projektu",
+                        "Pełny audyt UX",
+                        "Makieta istniejącej strony (redesign)",
+                        "12 miesięcy aktualizacji",
+                        "Licencja komercyjna dla zespołu do 5 osób"
+                      ]
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Kup Studio",
+                      "variant": "primary"
+                    }
+                  ],
+                  "variant": "tile"
+                }
+              ]
+            },
+            {
+              "kind": "paragraph",
+              "text": "Jednorazowa licencja · 12 miesięcy aktualizacji · potem przedłużenie za ok. połowę ceny"
+            },
+            {
+              "kind": "heading",
+              "level": 4,
+              "text": "14 dni na sprawdzenie. Nie pasuje, oddajesz."
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "pricing-list-state",
+              "summary": "Ceny katalogowe, bez stanu promocji",
+              "reasoning": "W oknie promocji karty dostają przekreśloną cenę, cenę promocyjną, linię o najniższej cenie z 30 dni i inne linki do koszyka. Makieta pokazuje stan poza promocją: 449 zł, 749 zł i 1 249 zł netto + VAT 23%.",
+              "alternatives": [],
+              "confidence": "high"
+            },
+            {
+              "id": "pricing-solo-highlight-no-label",
+              "summary": "Solo Designer wyróżniony samym tłem karty, bez etykiety „polecany”",
+              "reasoning": "Strona wyróżnia ten pakiet tylko kolorem tła; nie ma na niej słowa „polecany” ani „najczęściej wybierany”. Makieta używa wariantu highlight i nie dopisuje etykiety, której odwiedzający nie zobaczy.",
+              "alternatives": [
+                {
+                  "desc": "Etykieta „Najczęściej wybierany” jak w przepisie na cennik",
+                  "rejected": "Byłaby copy spoza strony."
+                }
+              ],
+              "confidence": "high",
+              "attached_to": "pricing-solo"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "free-trial",
+          "id": "wyprobuj-za-darmo",
+          "purpose": "Dać tym, którzy nie są gotowi kupić, drugą drogę: dwa darmowe skille wydzielone z pełnej wersji, do odebrania na miejscu za adres e-mail.",
+          "userQuestion": "Mogę spróbować, zanim kupię?",
+          "narrative": "resolution",
+          "layout": "Nagłówek sekcji (plakietka, H2, zdanie z liczbą pobrań) nad siatką 2-col dwóch kart darmowych skilli: pytanie o sytuację, nazwa skilla, opis, pole e-mail z przyciskiem w jednej linii, notka o linku i zgodzie, link do strony skilla.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Darmowe skille"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Wypróbuj za darmo, zanim kupisz pełną wersję."
+            },
+            {
+              "kind": "paragraph",
+              "text": "Dwa darmowe skille wydzielone z pełnej wersji, pobrane już 200+ razy. Wybierz ten, który pasuje do Twojej sytuacji.",
+              "id": "tf-intro"
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Masz już stronę?"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Skill do audytu UX strony głównej"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Analizuje stronę główną i przygotowuje makietę z wnioskami audytu przypiętymi do konkretnych elementów strony (do 5 stron dziennie)."
+                    },
+                    {
+                      "kind": "field",
+                      "name": "email",
+                      "fieldType": "email",
+                      "placeholder": "adres email"
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Odbierz za darmo",
+                      "variant": "primary"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "Wyślemy Ci mailem osobisty link do instalacji. Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z Polityką prywatności)."
+                    },
+                    {
+                      "kind": "link",
+                      "label": "Poznaj szczegóły",
+                      "variant": "arrow",
+                      "href": "/free-homepage-ux-audit-skill/"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Planujesz stronę?"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Skill do planowania stron"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Pyta o kontekst projektu, planuje mapę strony i rozpisuje sekcje każdej podstrony."
+                    },
+                    {
+                      "kind": "field",
+                      "name": "email",
+                      "fieldType": "email",
+                      "placeholder": "adres email"
+                    },
+                    {
+                      "kind": "button",
+                      "label": "Odbierz za darmo",
+                      "variant": "primary"
+                    },
+                    {
+                      "kind": "micro",
+                      "text": "Wyślemy Ci mailem osobisty link do instalacji. Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z Polityką prywatności)."
+                    },
+                    {
+                      "kind": "link",
+                      "label": "Poznaj szczegóły",
+                      "variant": "arrow",
+                      "href": "/free-website-planning-skill/"
+                    }
+                  ],
+                  "variant": "tile"
+                }
+              ]
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "tf-download-count",
+              "summary": "Liczba pobrań wpisana jako 200+",
+              "reasoning": "Strona wstawia liczbę pobrań darmowych skilli przy każdym budowaniu, z zamówień w sklepie. Makieta pokazuje 200, wartość, którą strona przyjmuje, gdy liczby nie da się pobrać; na żywej stronie liczba może być wyższa.",
+              "alternatives": [],
+              "confidence": "medium",
+              "attached_to": "tf-intro"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "pod-maska",
+          "id": "architektura",
+          "purpose": "Pokazać technicznemu sceptykowi, że to przemyślany system, a nie jeden prompt: skala, struktura folderu i osiem decyzji projektowych.",
+          "userQuestion": "Czy to nie jest po prostu jeden długi prompt?",
+          "narrative": "evidence",
+          "layout": "Nagłówek sekcji (plakietka, H2 w trzech liniach), pod nim lead i link do historii zmian. Niżej układ 5/7: po lewej drzewo folderu skilla na ciemnym tle, po prawej siatka 2-col ośmiu kart decyzji (ikona, numer, H3, jedno zdanie).",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Pod maską"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "To nie jest jeden prompt, tylko ~25 000 linijek kodu i przemyślana architektura systemu."
+            },
+            {
+              "kind": "paragraph",
+              "text": "Asystent to instrukcja działania + 110 plików wiedzy, ładowanych na żądanie. Dojście do tej architektury zajęło kilka miesięcy. Obecna architektura to trzecie podejście. Dwa wcześniejsze nie spełniały wymagań."
+            },
+            {
+              "kind": "link",
+              "label": "Historia zmian i aktualizacji",
+              "variant": "arrow",
+              "href": "/ux-design-skill/changelog/"
+            },
+            {
+              "kind": "card",
+              "children": [
+                {
+                  "kind": "label",
+                  "text": "skills/ux-designer/"
+                },
+                {
+                  "kind": "list",
+                  "ordered": false,
+                  "items": [
+                    "SKILL.md",
+                    "references/",
+                    "references/orchestrator.md",
+                    "references/workflow-*.md",
+                    "references/shared/",
+                    "references/domains/ (b2b/, b2b-saas/, b2b-services/, ecommerce/)",
+                    "references/templates/",
+                    "references/scripts/"
+                  ]
+                }
+              ],
+              "id": "arch-tree",
+              "variant": "tile"
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "01"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Wiedza oddzielona od instrukcji."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "SKILL.md, orkiestrator i workflowy definiują logikę, folder references/ przechowuje surową wiedzę merytoryczną."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "02"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Pliki ładowane na żądanie."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Asystent dynamicznie wykrywa typ strony i ładuje tylko odpowiedni pakiet danych, oszczędzając context window."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "03"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Jeden asystent, pełen cykl."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Jeden asystent prowadzi od discovery do wireframe'u. Kontekst nie ginie przy przekazywaniu."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "04"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Checkpointy na każdym etapie."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Wymuszone punkty kontrolne gwarantują, że błąd złapany na wczesnym etapie kosztuje dokładnie zero."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "05"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Najpierw założenia, potem pytania."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Wykorzystanie confidence tierów pozwala asystentowi działać proaktywnie przy zachowaniu kontroli."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "06"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Copy prowadzi design."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Asystent najpierw projektuje strukturę treści i realny copy, zamiast polegać na pustych placeholderach."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "07"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Pliki jako pamięć projektu."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Stan projektu zapisywany jest w plikach markdown, niezależnie od ulotnej sesji czatu."
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "08"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Audyt dostarcza diagnozę."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Asystent generuje rekomendacje oparte na audycie. Zmiany wprowadzasz Ty."
+                    }
+                  ],
+                  "variant": "tile"
+                }
+              ]
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "arch-tree-above-cards",
+              "summary": "Drzewo folderu nad ośmioma kartami decyzji, nie obok",
+              "reasoning": "Na stronie drzewo zajmuje lewe 5/12, a karty siatkę 2-col w prawych 7/12. Schemat makiet nie pozwala na siatkę w siatce, więc drzewo stoi nad kartami. Drzewo jest tekstem na stronie, więc makieta wypisuje jego pozycje zamiast szarego prostokąta.",
+              "alternatives": [
+                {
+                  "desc": "Drzewo jako placeholder obrazka",
+                  "rejected": "Ukryłoby nazwy plików, które sceptyk czyta na stronie."
+                }
+              ],
+              "confidence": "medium",
+              "attached_to": "arch-tree"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "platforms",
+          "id": "platformy",
+          "purpose": "Potwierdzić, że skill działa w narzędziach, których odbiorca już używa, i pokazać, co dokładnie dostaje w paczce.",
+          "userQuestion": "Czy to zadziała w moim narzędziu i co dokładnie dostaję?",
+          "narrative": "resolution",
+          "layout": "Nagłówek sekcji (plakietka, H2) nad układem 7/5: po lewej siatka 2×2 czterech kart platform (ikona, nazwa, opis), po prawej panel „Co dostajesz w paczce” z listą pięciu pozycji (nazwa + opis) i notką na białym tle.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Platformy"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Skill działa na platformach, których już używasz."
+            },
+            {
+              "kind": "grid",
+              "columns": 2,
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Claude Code"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Pełny dostęp do plików, bezpośredni zapis deliverables"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Codex"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Ten sam skill, uruchamiany komendą $ux-design"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Cursor"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Skill w Twoim edytorze, komenda /ux-design"
+                    }
+                  ],
+                  "variant": "tile"
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "VS Code / IDE"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Przez rozszerzenie Claude Code albo Codex"
+                    }
+                  ],
+                  "variant": "tile"
+                }
+              ]
+            },
+            {
+              "kind": "card",
+              "children": [
+                {
+                  "kind": "heading",
+                  "level": 3,
+                  "text": "Co dostajesz w paczce"
+                },
+                {
+                  "kind": "list",
+                  "ordered": false,
+                  "items": [
+                    "Skill — Reguły (SKILL.md) oraz orkiestrator i workflowy, które sterują pracą",
+                    "Baza wiedzy UX — 110 plików: 16 typów stron, 19 tematów ogólnych",
+                    "Jeden skill, trzy narzędzia — Claude Code, Codex, Cursor",
+                    "Szablony dokumentów — Plan projektu, canvas przekazu, makiety, raport z audytu",
+                    "Instrukcja instalacji — INSTALL.md"
+                  ]
+                },
+                {
+                  "kind": "paragraph",
+                  "text": "Brak dodatkowych zależności. Instalujesz z linku w mailu, otwierasz narzędzie i zaczynasz pierwszy projekt."
+                }
+              ],
+              "variant": "tile"
+            }
+          ],
+          "deliberations": [
+            {
+              "id": "platform-panel-below",
+              "summary": "Panel „Co dostajesz w paczce” pod kartami platform, nie obok",
+              "reasoning": "Na stronie panel stoi w prawych 5/12 obok siatki 2×2. Schemat nie pozwala na siatkę w siatce, więc panel schodzi pod karty.",
+              "alternatives": [],
+              "confidence": "medium"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "install",
+          "id": "instalacja",
+          "purpose": "Zdjąć obawę techniczną „czy sobie poradzę?” trzema krokami instalacji i linkiem do pełnej instrukcji na podstronie Jak pracować.",
+          "userQuestion": "Jak to wgrywam? Czy ogarnę?",
+          "narrative": "resolution",
+          "layout": "Nagłówek sekcji (plakietka, H2, akapit) nad siatką 3-col trzech kroków (ikona, numer kroku, H3, opis). Pod siatką link do pełnej instrukcji.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Instalacja"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Instalujesz jedną komendą"
+            },
+            {
+              "kind": "paragraph",
+              "text": "Dostajesz maila z osobistym linkiem do instalacji. Wklejasz instrukcję z niego do Claude Code, Codex albo Cursora, a agent sam instaluje skill. Bez backendu, bez kont, bez czekania na onboarding."
+            },
+            {
+              "kind": "grid",
+              "columns": 3,
+              "children": [
+                {
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Krok 1"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Otwórz maila z linkiem"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Przychodzi od tomasz@creativesparks.pl. Nie widzisz go? Zajrzyj do Spamu albo Ofert."
+                    }
+                  ],
+                  "fallbackMd": "**Krok 1. Otwórz maila z linkiem** · Przychodzi od tomasz@creativesparks.pl. Nie widzisz go? Zajrzyj do Spamu albo Ofert."
+                },
+                {
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Krok 2"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Wklej instrukcję do swojego narzędzia"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Link i zdanie pod nim, do Claude Code, Codex albo Cursora. Agent pokaże plan i zapyta, zanim cokolwiek skopiuje."
+                    }
+                  ],
+                  "fallbackMd": "**Krok 2. Wklej instrukcję do swojego narzędzia** · Link i zdanie pod nim, do Claude Code, Codex albo Cursora. Agent pokaże plan i zapyta, zanim cokolwiek skopiuje."
+                },
+                {
+                  "kind": "process-step",
+                  "className": "wf-ext-process-step",
+                  "children": [
+                    {
+                      "kind": "label",
+                      "text": "Krok 3"
+                    },
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Uruchom skill komendą"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Jak każdy inny skill. Komendę znajdziesz w mailu."
+                    }
+                  ],
+                  "fallbackMd": "**Krok 3. Uruchom skill komendą** · Jak każdy inny skill. Komendę znajdziesz w mailu."
+                }
+              ]
             },
             {
               "kind": "link",
@@ -2902,14 +3615,16 @@
               "href": "/ux-design-skill/instrukcja/"
             }
           ],
-          "deliberations": []
+          "deliberations": [],
+          "interactionNotes": []
         },
         {
           "type": "faq",
-          "purpose": "Zamknąć pętlę pięcioma najczęstszymi obiekcjami z badań.",
+          "id": "faq",
+          "purpose": "Domknąć siedem pytań, które zwykle padają przed zakupem, konkretnym mechanizmem zamiast obietnicy.",
           "userQuestion": "Co jeszcze powinienem wiedzieć przed zakupem?",
           "narrative": "tension",
-          "layout": "Label + heading na górze, niżej accordion z 5 pytaniami (każde rozwija odpowiedź).",
+          "layout": "Nagłówek sekcji (plakietka FAQ, H2) nad listą siedmiu rozwijanych pytań; otwarte może być jedno naraz.",
           "elements": [
             {
               "kind": "label",
@@ -2918,7 +3633,7 @@
             {
               "kind": "heading",
               "level": 2,
-              "text": "Pięć pytań, które zwykle padają"
+              "text": "Pytania, które zwykle padają"
             },
             {
               "kind": "accordion",
@@ -2938,6 +3653,10 @@
                     {
                       "kind": "paragraph",
                       "text": "Nie. Wbudowane są szesnaście pakietów wiedzy domenowej, trzynaście frameworków i ponad pięćdziesiąt wzorców — narzędzie ładuje właściwy zestaw po wykryciu typu strony. Twoja rola to decyzje strategiczne (kogo obsługujesz, jaki jest cel) i ostateczny wybór wariantu na każdym checkpoincie. Techniczna część UX jest zrobiona za Ciebie, dlatego designer-generalista bierze projekt z domeny, której nie zna na pamięć."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Wiedza UX zdecydowanie pomaga tworzyć lepsze rozwiązania. Modele AI dobrze eksplorują dużo opcji, ale nie zawsze wybierają tę najlepszą. Tutaj wchodzi Twoja wiedza i doświadczenie."
                     }
                   ]
                 },
@@ -2946,7 +3665,7 @@
                   "body": [
                     {
                       "kind": "paragraph",
-                      "text": "Licencja jednorazowa, „pay once, own forever\". W cenie sześć miesięcy darmowych aktualizacji (dwanaście miesięcy w przedsprzedaży). Po wygaśnięciu okna zainstalowana kopia działa dalej bez ograniczeń czasowych — możesz przedłużyć subskrypcję aktualizacji albo zostać przy posiadanej wersji. Bez kont, bez logowania na serwer, bez ryzyka, że dostawca odetnie Ci dostęp."
+                      "text": "Licencja jednorazowa, „pay once, own forever\". W cenie 12 miesięcy darmowych aktualizacji. Po wygaśnięciu okna zainstalowana kopia działa dalej bez ograniczeń czasowych — możesz przedłużyć aktualizacje na kolejny rok za ok. połowę ceny pakietu albo zostać przy posiadanej wersji. Bez kont i bez logowania. Na starcie skill sprawdza tylko licencję i zatrzymuje się wyłącznie po zwrocie zamówienia albo gdy link został zablokowany, na przykład po udostępnieniu go innym osobom."
                     }
                   ]
                 },
@@ -2955,7 +3674,7 @@
                   "body": [
                     {
                       "kind": "paragraph",
-                      "text": "Pobierasz folder z plikami markdown do swojego środowiska (Claude Code, Cursor, ChatGPT, Claude Projects, Alice). Instalacja przypomina dodanie wtyczki do WordPressa — folder w katalogu projektu, narzędzie startuje przy kolejnej rozmowie z modelem. Pełna dokumentacja kroków po zakupie; pre-purchase preview dostępny przed zakupem dla skeptyków, którzy chcą zobaczyć flow zanim zapłacą."
+                      "text": "Dostajesz maila z osobistym linkiem do instalacji. Wklejasz z niego instrukcję, czyli link i zdanie pod nim, do Claude Code, Codex albo Cursora, a agent sam instaluje skill: pokazuje plan i pyta, zanim cokolwiek skopiuje. Potem uruchamiasz skill jego komendą, jak każdy inny."
                     }
                   ]
                 },
@@ -2964,69 +3683,25 @@
                   "body": [
                     {
                       "kind": "paragraph",
-                      "text": "Tak — darmowa edycja audytu. Pobierasz pakiet, uruchamiasz lokalnie na własnej stronie, dostajesz: szkic odtworzony z istniejącej strony (lo-fi HTML), audyt jakości w sześciu wymiarach (kompletność, spójność, jakość, język, obciążenie poznawcze, spójność poziomu witryny) i konkretne propozycje zmian sekcja po sekcji. Bez konta, bez maila. Decyzja o zakupie po realnej próbie na własnym projekcie."
+                      "text": "Tak. Masz do wyboru dwa darmowe skille wydzielone z pełnej wersji. Jeśli masz już stronę, skill do audytu UX analizuje stronę główną i przygotowuje makietę z wnioskami przypiętymi do konkretnych elementów strony. Jeśli planujesz stronę, skill do planowania pyta o kontekst projektu, planuje mapę strony i rozpisuje sekcje każdej podstrony. Bez konta, wystarczy mail. Decyzja o zakupie po realnej próbie na własnym projekcie."
                     }
                   ]
-                }
-              ]
-            }
-          ],
-          "deliberations": []
-        },
-        {
-          "type": "author-bio",
-          "purpose": "Pokazać twarz i kontakt autora tuż przed decyzją zakupową.",
-          "userQuestion": "Kto za tym stoi? Czy mogę zaufać metodologii?",
-          "narrative": "trust",
-          "layout": "Label + heading na górze. Niżej grid 2-col 40/60: lewa to media (zdjęcie autora, format 4:5, z floating-statem 'Doświadczenie 15+ lat'), prawa to karta z imieniem, rolą, paragrafem narracyjnym i blokiem kontaktu (heading 'Kontakt bezpośredni' + email + mikro-copy zachęta).",
-          "elements": [
-            {
-              "kind": "label",
-              "text": "TWÓRCA"
-            },
-            {
-              "kind": "heading",
-              "level": 2,
-              "text": "Kto za tym stoi"
-            },
-            {
-              "kind": "grid",
-              "columns": 2,
-              "children": [
-                {
-                  "kind": "media",
-                  "label": "[Zdjęcie autora: Tomasz Maciąg, format 4:5, na zdjęciu floating-stat: Doświadczenie 15+ lat]",
-                  "height": "cover"
                 },
                 {
-                  "kind": "card",
-                  "variant": "default",
-                  "children": [
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Tomasz Maciąg"
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Founder Fuse Collective."
-                    },
+                  "label": "Co jeśli okaże się, że narzędzie mi nie pomaga?",
+                  "body": [
                     {
                       "kind": "paragraph",
-                      "text": "Projektuję strony i systemy identyfikacji dla firm od ponad 15 lat. Zbudowałem to narzędzie, bo sam potrzebowałem procesu, który mogę powtarzać w każdym projekcie klienckim. Używam go na co dzień."
-                    },
-                    {
-                      "kind": "heading",
-                      "level": 3,
-                      "text": "Kontakt bezpośredni"
-                    },
+                      "text": "Masz 14 dni na zwrot bez pytań. Jeśli narzędzie nie trafi w Twoje oczekiwania albo uznasz, że nie daje efektów, których chcesz, oddajesz je i dostajesz pełną kwotę z powrotem. Nie musisz uzasadniać decyzji, nie ma „a może spróbujemy jeszcze raz\". Decyzja jest Twoja."
+                    }
+                  ]
+                },
+                {
+                  "label": "Co dzieje się z danymi o moim projekcie?",
+                  "body": [
                     {
                       "kind": "paragraph",
-                      "text": "tomasz@creativesparks.pl"
-                    },
-                    {
-                      "kind": "micro",
-                      "text": "Masz pytania? Napisz na powyższy adres."
+                      "text": "Skill działa w Claude Code, Codex albo Cursorze, na Twoim koncie. Rozmowa podlega polityce prywatności i ustawieniom tego narzędzia, a skill daje mu tylko instrukcje, jak poprowadzić proces. Pliki projektu zostają u Ciebie. Na starcie skill sprawdza licencję i wysyła nam tylko Twój identyfikator klienta, nazwę pakietu i numer wersji, nic z rozmowy. Gdy audytujesz istniejącą stronę, jej adres trafia do naszej usługi odczytu stron."
                     }
                   ]
                 }
@@ -3035,48 +3710,131 @@
           ],
           "deliberations": [
             {
-              "id": "author-source-from-v1",
-              "summary": "Treść z v1 sekcja 13 (Twórca), zachowana w pełnej formie jako mini-blok przed Final CTA.",
-              "reasoning": "Authority-Led bez twarzy autora traci kluczową kotwicę zaufania. v3 miał tę sekcję usuniętą; przywrócona w pełnej formie z v1 (bio, stat doświadczenia, kontakt mailowy). Pozycja: między FAQ a Final CTA: autor zamyka pytanie 'komu zaufać' tuż przed klikiem zakupu. Adaptacja: 'Agenta UX zbudowałem' do 'Zbudowałem to narzędzie' (słownik v3, zakaz 'agent' na sales page).",
+              "id": "faq-all-closed",
+              "summary": "Wszystkie pytania zamknięte, jak na stronie",
+              "reasoning": "Na stronie żadne pytanie nie jest otwarte na starcie, a otwarcie jednego zamyka poprzednie. Makieta zachowuje ten stan; odpowiedzi są w makiecie w pełnym brzmieniu ze strony i rozwijają się po kliknięciu.",
               "alternatives": [
                 {
-                  "desc": "Autor jako element chrome (avatar w nawigacji + about w stopce)",
-                  "tradeoff": "Mniej tarcia narracyjnego, ale słabszy moment 'zanim kupisz, zobacz, kto za tym stoi': autor obecny pasywnie, nie jako zatrzymanie."
+                  "desc": "Pierwsze pytanie otwarte, jak w przepisie na FAQ",
+                  "rejected": "Pokazywałoby stan, którego odwiedzający nie widzi."
+                }
+              ],
+              "confidence": "high"
+            }
+          ],
+          "interactionNotes": []
+        },
+        {
+          "type": "author-bio",
+          "id": "autor",
+          "purpose": "Pokazać człowieka za skillem i jego doświadczenie, z bezpośrednim kontaktem, żeby kupujący wiedział, kto odpowiada za produkt.",
+          "userQuestion": "Kto za tym stoi i czy mogę mu zaufać?",
+          "narrative": "evidence",
+          "layout": "Nagłówek sekcji (plakietka, H2) nad układem 5/6: po lewej pionowe zdjęcie autora z nałożoną plakietką doświadczenia, po prawej imię i nazwisko, rola, bio, zachęta do kontaktu, adres e-mail i link do LinkedIna.",
+          "elements": [
+            {
+              "kind": "label",
+              "text": "Twórca"
+            },
+            {
+              "kind": "heading",
+              "level": 2,
+              "text": "Kto za tym stoi"
+            },
+            {
+              "kind": "grid",
+              "columns": [
+                5,
+                6
+              ],
+              "children": [
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "media",
+                      "label": "[Zdjęcie autora: Tomasz Maciąg, format pionowy]",
+                      "height": "cover"
+                    },
+                    {
+                      "kind": "stat",
+                      "value": "15+ lat",
+                      "label": "Doświadczenie"
+                    }
+                  ]
+                },
+                {
+                  "kind": "card",
+                  "children": [
+                    {
+                      "kind": "heading",
+                      "level": 3,
+                      "text": "Tomasz Maciąg,"
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Założyciel agencji brandingowej Fuse Collective."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Od 15 lat zajmuję się UX — strategią, researchem i projektowaniem User Experience. Skilla UX zbudowałem, bo sam potrzebowałem procesu, który mogę powtarzać w każdym projekcie klienckim. Używam go na co dzień."
+                    },
+                    {
+                      "kind": "paragraph",
+                      "text": "Masz pytania? Napisz do mnie maila albo połącz się ze mną na LinkedInie."
+                    },
+                    {
+                      "kind": "link",
+                      "label": "tomasz@creativesparks.pl",
+                      "variant": "plain",
+                      "href": "mailto:tomasz@creativesparks.pl"
+                    },
+                    {
+                      "kind": "link",
+                      "label": "Profil LinkedIn",
+                      "variant": "arrow",
+                      "href": "https://www.linkedin.com/in/tomash-maciag/"
+                    }
+                  ]
                 }
               ]
             }
-          ]
+          ],
+          "deliberations": [],
+          "interactionNotes": []
         },
         {
           "type": "final-cta",
-          "purpose": "Domknąć stronę powtórzeniem głównego CTA z kontekstem pilności przedsprzedażowej.",
+          "id": "final-cta",
+          "purpose": "Domknąć stronę powtórzeniem głównego wezwania (do cennika) i drugiej drogi (darmowe skille), bez przewijania z powrotem.",
           "userQuestion": "Jak ruszam dalej?",
           "narrative": "resolution",
-          "layout": "1-col, wycentrowany. Heading + paragraph (urgency) + dwie akcje (primary CTA + link arrow do anchor audytu).",
+          "layout": "Jedna kolumna: H2, krótkie zdanie, przycisk „Sprawdź ceny”, pod nim link do darmowych skilli.",
           "elements": [
             {
               "kind": "heading",
               "level": 2,
-              "text": "Gotowy żeby zaplanować strukturę swojej strony?"
+              "text": "Zaprojektuj stronę z solidnym planem, prawdziwym copy i jasnymi decyzjami."
             },
             {
               "kind": "paragraph",
-              "text": "Przedsprzedaż polska do 30 maja 2026. Potem rusza globalna sprzedaż i wchodzą wyższe ceny w euro."
+              "text": "Płacisz raz. Bez abonamentu."
             },
             {
               "kind": "button",
-              "label": "Zobacz pakiety",
+              "label": "Sprawdź ceny",
               "variant": "primary",
-              "href": "#pakiety"
+              "href": "#cennik"
             },
             {
               "kind": "link",
-              "label": "Albo zacznij od darmowego audytu",
+              "label": "Albo wypróbuj za darmo",
               "variant": "arrow",
-              "href": "#audyt"
+              "href": "#wyprobuj-za-darmo"
             }
           ],
-          "deliberations": []
+          "deliberations": [],
+          "interactionNotes": []
         }
       ]
     }
