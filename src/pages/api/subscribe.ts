@@ -1,6 +1,8 @@
 import type { APIRoute } from 'astro';
+import { waitUntil } from '@vercel/functions';
 import { normalizeFreeSkillEmail } from '../../lib/free-skill-email';
 import { holdsFreeSkill, HolderLookupError } from '../../lib/free-skill-holder';
+import { resubscribeAfterGrant } from '../../lib/free-skill-resubscribe';
 
 export const prerender = false;
 
@@ -22,7 +24,8 @@ const ALLOWED_LOCALES = new Set(['pl', 'en']);
 const ALLOWED_SKILLS = new Set(['audit', 'planning']);
 
 const EASYCART_API = 'https://cart.easy.tools/api/v1';
-// Cloudflare in front of cart.easy.tools answers 403 (error 1010) to default client signatures.
+const EASYMAIL_API = 'https://email.easy.tools/api/v1';
+// Cloudflare in front of the Easytools hosts answers 403 (error 1010) to default client signatures.
 const USER_AGENT = 'creativesparks-site/1.0';
 
 // One free Easytools product per skill and language; the grant uses the variant. These IDs are not
@@ -50,7 +53,25 @@ const PRODUCTS: Record<Skill, Record<Locale, { productId: string; variantId: str
   },
 };
 
-export const POST: APIRoute = async ({ request }) => {
+// What the handler takes from outside, so a test can stand in for each.
+export interface SubscribeDeps {
+  fetchFn: typeof fetch;
+  easycartApiKey: string | undefined;
+  easymailApiKey: string | undefined;
+  // Keeps the function running for work that goes on after the answer is sent. This is the one
+  // place to change if the platform offers that another way.
+  runAfterAnswer: (work: Promise<unknown>) => void;
+}
+
+export const POST: APIRoute = ({ request }) =>
+  handleSubscribe(request, {
+    fetchFn: (input, init) => fetch(input, init),
+    easycartApiKey: import.meta.env.EASYCART_API_KEY,
+    easymailApiKey: import.meta.env.EASYMAIL_API_KEY,
+    runAfterAnswer: waitUntil,
+  });
+
+export async function handleSubscribe(request: Request, deps: SubscribeDeps): Promise<Response> {
   let body: SubscribeBody;
   try {
     body = await request.json();
@@ -77,7 +98,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const locale: Locale = ALLOWED_LOCALES.has(body.locale ?? '') ? (body.locale as Locale) : 'pl';
 
-  const apiKey = import.meta.env.EASYCART_API_KEY;
+  const apiKey = deps.easycartApiKey;
   if (!apiKey) {
     return json({ ok: false, reason: 'not_configured' }, 503);
   }
@@ -93,14 +114,16 @@ export const POST: APIRoute = async ({ request }) => {
   // A holder of this free skill, in either language, is not granted again (one free skill per
   // person). The answer is the same as for a new sign-up, so the form never reveals who holds a
   // skill. A failed check grants.
+  let knownNewSignup = true;
   try {
     for (const { productId } of Object.values(PRODUCTS[skill])) {
-      if (await holdsFreeSkill(fetch, EASYCART_API, headers, productId, email)) {
+      if (await holdsFreeSkill(deps.fetchFn, EASYCART_API, headers, productId, email)) {
         console.log('[subscribe] address already holds this free skill: grant skipped');
         return json({ ok: true, granted: true }, 200);
       }
     }
   } catch (err) {
+    knownNewSignup = false;
     console.warn('[subscribe] holder check failed, granting:', err instanceof HolderLookupError ? err.message : 'unknown error');
   }
 
@@ -111,7 +134,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     // Grant the free product. Easytools creates the customer account if needed and sends its access email;
     // the license service then emails the personal install link. No file or link comes back here.
-    const grant = await fetch(`${EASYCART_API}/product-access`, {
+    const grant = await deps.fetchFn(`${EASYCART_API}/product-access`, {
       method: 'POST',
       headers: { ...headers, 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -134,13 +157,39 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ ok: false, reason: 'upstream_error', stage, status: grant.status }, 502);
     }
 
+    // Only here, after a new grant: a holder who submits again changes nothing. A grant made after a
+    // failed holder check may be a repeat one, so it leaves the opt-out alone too.
+    if (knownNewSignup) {
+      resubscribeAfterAnswer(deps, email);
+    }
+
     return json({ ok: true, granted: true }, 200);
   } catch (err) {
     // No usable answer at this step: the request failed, or the answer was not readable.
     console.error('[subscribe] fetch failed:', stage, err);
     return json({ ok: false, reason: 'internal_error', stage, status: 0 }, 500);
   }
-};
+}
+
+// A new sign-up is fresh consent to email, so an opt-out of all email made earlier is reversed in
+// Easymail. The work is started here and finishes after the answer is sent: the form never waits
+// for Easymail, and nothing that goes wrong here reaches the form.
+function resubscribeAfterAnswer(deps: SubscribeDeps, email: string): void {
+  if (!deps.easymailApiKey) {
+    console.warn('[subscribe] EASYMAIL_API_KEY is not set: re-subscribe skipped');
+    return;
+  }
+  const headers = {
+    Authorization: `Bearer ${deps.easymailApiKey}`,
+    Accept: 'application/json',
+    'User-Agent': USER_AGENT,
+  };
+  try {
+    deps.runAfterAnswer(resubscribeAfterGrant(deps.fetchFn, EASYMAIL_API, headers, email));
+  } catch {
+    console.warn('[subscribe] re-subscribe could not be kept running after the answer');
+  }
+}
 
 function hasEmailError(errorText: string): boolean {
   try {
