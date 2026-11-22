@@ -24,8 +24,8 @@ contents:
     desc: Claude Code, Codex, Cursor
   - label: Document templates
     desc: Project plan, messaging canvas, wireframes, audit report
-  - label: Install guide
-    desc: INSTALL.md
+  - label: Install
+    desc: Your agent installs the skill from INSTALL.md and asks before each step
 requirements:
   - Claude Code, Codex or Cursor
   - The email with your personal install link

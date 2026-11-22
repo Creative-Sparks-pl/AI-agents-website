@@ -1,6 +1,6 @@
 badge: Instalacja
-heading: Instalujesz jedną komendą
-intro: Dostajesz maila z osobistym linkiem do instalacji. Wklejasz instrukcję z niego do Claude Code, Codex albo Cursora, a agent sam instaluje skill. Bez backendu, bez kont, bez czekania na onboarding.
+heading: Instalujesz, wklejając jedną instrukcję
+intro: Dostajesz maila z osobistym linkiem do instalacji. Wklejasz instrukcję z niego do Claude Code, Codex albo Cursora, a agent sam instaluje skill. Bez kont i bez czekania na onboarding.
 items:
   - icon: mail
     label: Krok 1

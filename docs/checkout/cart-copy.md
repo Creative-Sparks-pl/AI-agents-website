@@ -102,7 +102,7 @@ The site does not send people to these carts: its sign-up form grants the skill 
 
 ### PL — `Skill do planowania stron`
 
-Checkout: `https://cart.creativesparks.pl/checkout/website-planning-skill-pl` · access 30 days
+Checkout: `https://cart.creativesparks.pl/checkout/website-planning-skill-pl` · access 60 days
 
 Description:
 
@@ -121,7 +121,7 @@ Marketing checkbox:
 
 ### EN — `Website Planning Skill`
 
-Checkout: `https://cart.creativesparks.pl/checkout/website-planning-skill-en` · access 30 days
+Checkout: `https://cart.creativesparks.pl/checkout/website-planning-skill-en` · access 60 days
 
 Description:
 

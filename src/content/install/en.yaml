@@ -1,6 +1,6 @@
 badge: Install
-heading: Install with one command
-intro: You get an email with your personal install link. Paste the instruction from it into Claude Code, Codex or Cursor, and your agent installs the skill. No backend, no accounts, no onboarding queue.
+heading: Install by pasting one instruction
+intro: You get an email with your personal install link. Paste the instruction from it into Claude Code, Codex or Cursor, and your agent installs the skill. No accounts, no onboarding queue.
 items:
   - icon: mail
     label: Step 1
