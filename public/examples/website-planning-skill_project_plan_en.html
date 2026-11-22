@@ -101,11 +101,6 @@
     .ui-badge--red    { background: #f8d7da; color: #721c24; }
     .ui-badge--gray   { background: #e9ecef; color: #495057; }
 
-    /* Content-readiness pill variants — compose with .ui-badge. */
-    .ui-badge--content-ready  { background: #d4edda; color: #155724; }
-    .ui-badge--needs-content  { background: #fff3cd; color: #856404; }
-    .ui-badge--tbd-status     { background: #e9ecef; color: #495057; }
-
     /* ---- Content-label modifiers on .ui-badge ----
        `--plain` neutralizes the status-pill styling (uppercase / bold / 9px) so
        the base class can carry mixed-case prose labels like "Trial signup".
@@ -137,7 +132,7 @@
       display: grid;
       gap: var(--wf-gap);
     }
-    .ui-card-row--three { grid-template-columns: 1fr 1fr 1fr; }
+    .ui-card-row--three { grid-template-columns: 1fr 1fr; }
     .ui-card-row--two   { grid-template-columns: 1fr 1fr; }
     .ui-card-row--one   { grid-template-columns: 1fr; }
     .ui-card-row-title {
@@ -725,8 +720,8 @@
     /* ============================================================ */
     /* === PROJECT-PLAN-SPECIFIC — class prefix .pp-*            === */
     /* === Sub-page containers, canvas rows (selective port from === */
-    /* === messaging-canvas-template.html), content-readiness    === */
-    /* === pills. Composes with UNIVERSAL shell chrome above.    === */
+    /* === messaging-canvas-template.html), section cards.       === */
+    /* === Composes with UNIVERSAL shell chrome above.           === */
     /* ============================================================ */
 
     /* Sub-page containers — one active at a time via page switcher.
@@ -1005,7 +1000,7 @@
     }
 
     /* Section card supplemental primitives. Base class is .ui-card;
-       these children hold the narrative tag + question line + readiness pill. */
+       these children hold the narrative tag + question line. */
     .pp-cell-tags {
       display: flex;
       flex-wrap: wrap;
@@ -1029,8 +1024,9 @@
       font-size: 0.8125rem;
       margin: 0;
     }
-    /* Section card — labeled field row. One pattern reused for Goal /
-       Message / Content rows. Content bullets render inside
+    /* Section card — labeled field row. One pattern reused for the Goal /
+       Question rows, and for the Content row of older-shape items (plans
+       written before 4.7). Content bullets render inside
        .pp-section-card__field (label on first line, <ul> below). */
     .pp-section-card__field {
       font-size: 0.8125rem;
@@ -1049,6 +1045,25 @@
     }
     .pp-section-card__field ul li,
     .pp-section-card__content-list li { padding: 2px 0; }
+    /* Section card — content brief (layout A). One labeled list after the
+       Question row; its top border is the thin divider between the rows
+       and the brief. Each <li> opens with a .pp-section-card__field-label;
+       Must cover nests a bulleted <ul> under its label. Reads at the same
+       size and color as the field rows above. */
+    .ui-card > .pp-section-card__brief {
+      margin: 0;
+      padding: 8px 0 0;
+      border-top: 1px solid var(--wf-line);
+      list-style: none;
+      font-size: 0.8125rem;
+      color: var(--wf-secondary);
+    }
+    .ui-card .pp-section-card__brief ul {
+      margin: 2px 0 0;
+      padding-left: 18px;
+      list-style: disc;
+      color: inherit;
+    }
     /* Section map — per-page button list. Sits below the page header; one
        button per page (Home / Product / Global...). Active button shows
        which page-map is visible below. Shares the 600px centered column
@@ -1105,10 +1120,10 @@
 
     /* ---- Design plan sub-page primitives (formerly "Inventory") ---- */
 
-    /* Summary stat block — three big numbers, their labels underneath. */
+    /* Summary stat block — two big numbers, their labels underneath. */
     .pp-summary {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin: 12px 0 24px;
       padding: 20px 24px;
@@ -1269,8 +1284,6 @@
 
     /* === Responsive — page-width steps (container set on .pp-main) === */
     @container pp-main (width <= 900px) {
-      .ui-card-row--three { grid-template-columns: 1fr 1fr; }
-      .pp-summary { grid-template-columns: 1fr 1fr; }
       .pp-header h1 { font-size: 1.75rem; }
     }
     @container pp-main (width < 600px) {
@@ -1438,42 +1451,7 @@
 <script type="application/json" id="context-data">
 {
   "namespace": "ux-designer-project-plan-website-planning-skill-2026-11-02",
-  "labels": {
-    "group_project_specific": "For this project",
-    "pp_context_subtitle": "Discovery: who, what, why",
-    "pp_strategy_title": "Strategy",
-    "pp_strategy_subtitle": "Format, archetype, sitemap, messaging, voice",
-    "pp_section_map_subtitle": "Section map per page (including the virtual Global page)",
-    "pp_inventory_title": "Template inventory",
-    "pp_context_row_project_specific": "For this project",
-    "pp_scope_included": "In scope",
-    "pp_scope_excluded": "Out of scope",
-    "pp_strategy_site_format": "Site format",
-    "pp_strategy_messaging_voice": "Messaging and voice",
-    "pp_strategy_messaging": "Messaging hierarchy",
-    "pp_strategy_voice": "Voice brief",
-    "detail_narrative": "Narrative function",
-    "group_scope_page": "Page level",
-    "pp_inventory_field_narrative": "Narrative function",
-    "pp_inventory_section_index": "Section index",
-    "bar_page_strategy": "Strategy",
-    "bar_page_inventory": "Template inventory",
-    "bar_download": "Download:",
-    "bar_download_html": "Project Plan (HTML)",
-    "bar_download_context_md": "Project Context (MD)",
-    "bar_download_strategy_md": "Strategy (MD)",
-    "bar_download_section_map_md": "Section Map (MD)",
-    "bar_download_inventory_md": "Template Inventory (MD)",
-    "bar_download_context_md_title": "Download Project Context as Markdown",
-    "bar_download_strategy_md_title": "Download Strategy as Markdown",
-    "bar_download_section_map_md_title": "Download Section Map as Markdown",
-    "bar_download_inventory_md_title": "Download Template Inventory as Markdown",
-    "md_included": "In scope",
-    "md_excluded": "Out of scope",
-    "md_narrative": "Narrative function",
-    "md_pp_strategy_title": "Strategy",
-    "md_pp_inventory_title": "Template inventory"
-  },
+  "labels": {},
   "project_language": "en",
   "messaging_routing": "deferred",
   "canvas": {
@@ -1494,7 +1472,7 @@
       },
       {
         "type": "cards",
-        "title": "Specific to this project",
+        "title": "For this project",
         "variant": "two",
         "card_ids": [
           "context-id-free-planning-skill",
@@ -1513,15 +1491,19 @@
       "kv": [
         {
           "label": "Name",
-          "value": "Website Planning Skill: free version landing page"
+          "value": "Website Planning Skill: free version page"
+        },
+        {
+          "label": "Address",
+          "value": "agents.creativesparks.pl/en/free-website-planning-skill/. The Polish version, at /free-website-planning-skill/, has the same layout."
         },
         {
           "label": "Description",
-          "value": "A landing page for downloading the free Website Planning Skill: two stages of the full UX Design Skill, the project conversation and the site plan with a section map for each page. Same quality as the full package."
+          "value": "The page where you get the free Website Planning Skill: the first two stages of the full UX Design Skill, the project conversation and the site plan, with the sitemap and the sections of every page. Both stages work the same as in the full version."
         },
         {
           "label": "Business model",
-          "value": "Free download through the cart: you get an email with the link and can download right away. The free version leads to buying the full UX Design Skill package (one-time license, three packages). People who download get promotional newsletters and a better offer in the upcoming presale."
+          "value": "A free skill, with nothing to pay later. Visitors leave their email address in the form on the page and get a personal install link by email within a minute. People who sign up also get news about Creative Sparks products and services. The free version leads to the paid UX Design Skill (a one-time license in three packages: Founder, Solo Designer, Studio)."
         }
       ]
     },
@@ -1534,14 +1516,19 @@
       "kv": [
         {
           "label": "Primary goal",
-          "value": "Downloads of the free skill, and people who download going on to buy the full package. This landing page is one of two free paths being tested, alongside the free audit. The one that converts better stays."
+          "value": "Sign-ups for the free skill. The skill arrives by email as a personal install link."
+        },
+        {
+          "label": "Second job",
+          "value": "Lead to the paid UX Design Skill: through the “what's next” block the skill shows after the finished plan, and through the page's links to the full version."
         },
         {
           "label": "Success metric",
-          "value": "To be set during the test of the two free paths."
+          "value": "Sign-ups per page view: the number of sign-ups divided by this page's views, counted separately for the English and Polish versions. Alongside it, the number of sign-ups and the share of views in which someone opened the sample plan or the video."
         }
       ],
-      "rationale": "The owner is testing two free paths in parallel and hasn't decided which one stays. The comparison metric doesn't affect the landing page layout, so it can be set later."
+      "rationale": "The owner confirmed the goal, the second job and the metric. The metric is the main number for every free page in the site's analytics definitions. The hero form and the form at the end of the page are counted separately, so you can see which one brings in the sign-ups. The second job doesn't compete with sign-up: the page has no prices and no buy button, only links to the full version.",
+      "alternatives": "The number of sign-ups alone as the main metric: rejected, because it rises with ad traffic and doesn't tell you whether the page is working better. Purchases of the full version as this page's metric: rejected, because that is the paid page's main number, and there are too few purchases to work out a rate."
     },
     {
       "id": "context-id-audience",
@@ -1554,28 +1541,28 @@
       ],
       "kv": [
         {
-          "label": "Primary persona: Designer",
-          "value": "Freelancer or small studio (2–8 people) with 3–15 years of experience. Designs websites for clients, and every structural decision goes through review by a client or a colleague. Main trigger: after launch, the client comes back with conversion data and asks \"why isn't the site converting?\" Makes the buying decision alone or with light input from the studio owner."
+          "label": "Audience",
+          "value": "Anyone planning a new site or rebuilding an existing one. Knowing UX helps, but isn't required."
         },
         {
-          "label": "Secondary audience: Digital creator",
-          "value": "Vibe coder, indie hacker, course creator, or founder building their own site with AI. Builds alone in site generators (Bolt, v0, Lovable), so the site looks like any other site stitched together from default sections. Main trigger: the product isn't selling, and they have no diagnostic tools to pinpoint what to change. Decides alone, short decision path."
+          "label": "In practice: designer",
+          "value": "Freelancer or small studio (2–8 people) with 3–15 years of experience. Designs websites for clients, and every structural decision goes through review by a client or a colleague. Main trigger: after launch, the client comes back with conversion data and asks “why isn't the site converting?” Makes the buying decision alone or with light input from the studio owner."
         },
         {
-          "label": "Third audience: Conversion-focused founder",
-          "value": "E-commerce or SaaS owner sending paid traffic to a site that doesn't convert. Treats the site as an ad channel that has to pay back in ROAS. Main trigger: campaign data shows a low conversion rate, or an investor ties the next round to the quality of the site. The decision often has to be justified internally (to a business partner or the CTO)."
+          "label": "In practice: digital creator",
+          "value": "Vibe coder, indie hacker, course creator or founder building their own site with AI. Builds alone in site builders (Bolt, v0, Lovable), so the site looks like any other site stitched together from default sections. Main trigger: the product isn't selling, and they have no diagnostic tools to pinpoint what to change. Decides alone, short decision path."
+        },
+        {
+          "label": "In practice: conversion-focused founder",
+          "value": "E-commerce or SaaS owner sending paid traffic to a site that doesn't convert. Treats the site as an ad channel that has to pay back in ROAS. Main trigger: campaign data shows a low conversion rate, or an investor ties the next round to the quality of the site. The decision often has to be explained internally (to a business partner or the CTO)."
         },
         {
           "label": "Anti-persona",
-          "value": "Enterprise with a team of 20+, in-house UX research and a budget for big-name consultants. Needs direct sales, contracts and customization. A self-serve sale to this buyer won't close."
-        },
-        {
-          "label": "Who the free version is for",
-          "value": "People with or without a website. Knowing how websites are built helps, but isn't required."
+          "value": "An enterprise with a team of 20+, in-house UX research and a budget for big-name consultants. Needs direct sales, contracts and customization. A self-serve sale to this buyer won't close."
         }
       ],
-      "rationale": "The project owner approved the audience priority (Designer → Digital creator → Founder). In the simulated interviews, the Designer had the clearest and most repeatable buying trigger, the highest willingness to pay (they can bill the client for the planning stage) and the shortest decision path. The Digital creator and the Founder are candidates for lead personas when the English version launches.",
-      "alternatives": "Conversion-focused founder as the primary persona (a stronger trigger measured in money, but a longer decision path with internal blockers; the segment is larger globally than the Polish design market, so we're saving it for the English version). Digital creator as the primary persona (most traffic from this group goes to the English version, and the Polish vibe coder segment is small)."
+      "rationale": "The owner confirmed the audience: anyone planning a new site or a rebuild. The page says the same: the first point in the hero (“Works for a new site and for rebuilding an existing one”) and the first question in the FAQ (you don't need to know UX, though experience helps). The three personas come from the full version's plan and describe who these people are in practice; the page doesn't address any of them separately.",
+      "alternatives": "The full version's persona order, with the designer first: rejected for this page, because the free version is meant to collect sign-ups from anyone planning a site, and the full version has packages both for business owners (Founder) and for designers (Solo Designer, Studio)."
     },
     {
       "id": "context-id-alternative",
@@ -1586,23 +1573,23 @@
       "kv": [
         {
           "label": "Status quo (I do it myself, no process)",
-          "value": "gut feel straight from the project brief into Figma, an eyeballed audit with no criteria, pen and paper. This cluster shows up for all three personas as the common starting point."
+          "value": "gut feel straight from the brief into Figma, an eyeballed audit with no criteria, pen and paper. This cluster shows up for all three personas as the common starting point."
         },
         {
           "label": "Internal DIY (I piece it together from tools)",
-          "value": "ChatGPT or Claude used ad hoc, UX prompt collections, Figma Community UI kits, WordPress or Shopify themes, site generators (Bolt, v0, Lovable, Cursor) with the default structure accepted as is."
+          "value": "ChatGPT or Claude used ad hoc, UX prompt collections, Figma Community UI kits, WordPress or Shopify themes, site builders (Bolt, v0, Lovable, Cursor) with the default structure accepted as is."
         },
         {
           "label": "General tools",
-          "value": "Figma, FigJam, Miro (design tools with no structural layer). The product covers the stage before the first frame and feeds context into Figma, so it doesn't compete with it."
+          "value": "Figma, FigJam, Miro: design tools with no structural layer. The product covers the stage before the first frame, so it doesn't compete with Figma; it feeds it context."
         },
         {
           "label": "Direct competition",
-          "value": "a UX freelancer, consultant, agency or design sprint (known, but rejected because of the cost of PLN 500–8,000 and roughly 3 days). Courses (Udemy, Interaction Design Foundation, NNGroup, Baymard, Smashing Magazine) and peer feedback from fellow designers and communities (Discord, IndieHackers)."
+          "value": "a UX freelancer, consultant, agency or design sprint (known, but turned down because of the cost and the roughly 3 days it takes). Courses (Udemy, Interaction Design Foundation, NNGroup, Baymard, Smashing Magazine) and peer feedback from fellow designers and communities (Discord, IndieHackers)."
         }
       ],
-      "rationale": "The four clusters cover every alternative named in the simulated interviews with the three personas. Each one describes what the customer does (inside-out) instead of what the product offers. Every alternative named in the project brief (chatbots, prompts, templates, a consultant) fits into one of the four clusters.",
-      "alternatives": "Google Analytics, Hotjar and Mixpanel as a separate cluster (rejected: they are diagnostic tools for an earlier stage and don't replace producing UX documentation). \"I skip UX and go straight to build\" as a separate cluster (it fits into cluster 1, no process)."
+      "rationale": "The four clusters cover every alternative named in the simulated interviews with the three personas, and they describe what the customer does (inside-out) rather than what the product offers. Every alternative named in the brief (chatbots, prompts, templates, a consultant) fits into one of the four.",
+      "alternatives": "Google Analytics, Hotjar and Mixpanel as a separate cluster (rejected: they are diagnostic tools for an earlier stage, not an alternative to producing UX documentation). “I skip UX and go straight to build” as a separate cluster (it fits into cluster 1, no process)."
     },
     {
       "id": "context-id-top-tasks",
@@ -1612,15 +1599,15 @@
       "layout": "ranked-list",
       "ranked": [
         {
-          "text": "See what the free skill does and what file I get",
+          "text": "Check what the free skill does and what I get at the end",
           "priority": "Recommended"
         },
         {
-          "text": "See a sample site plan",
+          "text": "See a sample plan: the brief, the sitemap and the content guidelines",
           "priority": "Recommended"
         },
         {
-          "text": "Check whether it's for me, whether or not I have a website or know UX",
+          "text": "Check whether it's for me: for a new site, for a rebuild, and without knowing UX",
           "priority": "Recommended"
         },
         {
@@ -1628,19 +1615,23 @@
           "priority": "Recommended"
         },
         {
-          "text": "See what installation looks like",
+          "text": "See what installing and working with the skill looks like",
           "priority": "Recommended"
         },
         {
-          "text": "Download the skill for free",
+          "text": "Get the skill free and know what will arrive by email",
           "priority": "Recommended"
         },
         {
-          "text": "Find out what the free version doesn't do and what the full package adds",
+          "text": "Find out what the free version doesn't do and what the full version adds",
           "priority": "Recommended"
         },
         {
-          "text": "Go to the full UX Design Skill package",
+          "text": "Read what buyers of the full version say",
+          "priority": "Worth considering"
+        },
+        {
+          "text": "Go to the full version of UX Design Skill",
           "priority": "Worth considering"
         },
         {
@@ -1657,15 +1648,18 @@
       "layout": "scope-split",
       "scope_split": {
         "included": [
-          "Website Planning Skill free version landing page (seven sections)",
-          "Free download through the cart, with the link sent by email",
-          "Sample files from this project: project brief, site plan and section map",
-          "Link to the full UX Design Skill package"
+          "The free Website Planning Skill page (eight sections), in English and Polish",
+          "Sign-up through an email form, in the hero and at the end of the page",
+          "A personal install link sent by email",
+          "A sample plan of this page: the brief, the sitemap and the content guidelines",
+          "Reviews from buyers of the full UX Design Skill",
+          "Links to the full UX Design Skill",
+          "The free skill's changelog on a page of its own"
         ],
         "excluded": [
-          "Link to the free audit (the two paths are being tested)",
+          "A route to the free homepage audit",
+          "Prices and a buy button for the full version",
           "A separate section on who the skill is for",
-          "User testimonials (no quotes about the free version)",
           "Visual design (colors, typography, pixel layout)",
           "Front-end implementation of the page"
         ]
@@ -1680,21 +1674,22 @@
       "kv": [
         {
           "label": "Three personality traits",
-          "value": "Analytical: explains why, cites evidence, patterns and research numbers, doesn't hedge, states uncertainty plainly. Collaborative: treats the reader as the decision-maker, presents options with their trade-offs, doesn't lecture or assume motives. Direct: \"do this\" or \"don't do that\" with the reason, no preambles or statements of intent."
+          "value": "Analytical: explains why, cites evidence, patterns and research numbers, doesn't hedge, and states uncertainty plainly. Collaborative: treats the reader as the decision-maker, presents options with their trade-offs, doesn't lecture or assume motives. Direct: “do this” or “don't do that” with the reason, no preambles or statements of intent."
         },
         {
           "label": "Preferred words",
-          "value": "\"this tool\", \"files\", \"site plan\", \"sitemap\", \"reasoning next to each decision\", \"stage of work\", \"checkpoint\", \"audience\""
+          "value": "“skill”, “site plan”, “brief”, “sitemap”, “content guidelines”, “reasoning and the options it ruled out”, “confidence level”, “full version”, “get it free”"
         },
         {
           "label": "Banned words",
-          "value": "\"agent\" (accepted by 1 in 16 interviewees), \"AI-powered\", \"cutting-edge\", \"innovative\", \"dynamic\", \"comprehensive\", em dashes, rhetorical triads, \"it's not X, it's Y\" frames, forced enthusiasm"
+          "value": "“agent” as the product name (accepted by 1 in 16 interviewees), “AI-powered”, “cutting-edge”, “innovative”, “dynamic”, “comprehensive”, em dashes, rhetorical triads, “it's not X, it's Y” frames, forced enthusiasm"
         },
         {
           "label": "Tone by context",
-          "value": "Hero and sales sections: direct, confident. Educational layer: analytical, patient. Process proof: facts, no self-promotion. FAQ: collaborative, empathetic. Packages and pricing: transactional, specific. Installation: instructional, step by step."
+          "value": "Hero and forms: direct, confident. Proof and reviews: facts, no self-promotion. “Under the hood”: analytical, patient. Limits: honest, brief. FAQ: collaborative, empathetic. Installation: instructional, step by step."
         }
-      ]
+      ],
+      "rationale": "The traits and the banned list carry over from the full version's plan. The preferred words and the tone follow what the live page uses: “skill”, “brief”, “sitemap with content guidelines”, “get it free”. One clash with the banned list: the “Under the hood” heading uses a “not X, Y” frame (“Not just a prompt. A slice of the UX Design Skill system.”) to answer head-on the worry that the skill is just another prompt."
     },
     {
       "id": "context-id-free-planning-skill",
@@ -1705,7 +1700,7 @@
       "kv": [
         {
           "label": "What it is",
-          "value": "The free version of the same tool, with two stages of the full UX Design Skill package: the project conversation and the site plan (a sitemap with the content of each page). Same quality, and the same project plan file as output."
+          "value": "The free version, with the first two stages of the full UX Design Skill: the project conversation and the site plan, meaning the sitemap, menu, footer and the sections of every page with content guidelines. Both stages work the same as in the full version. It saves the result in one HTML file you open in your browser."
         },
         {
           "label": "Name",
@@ -1713,30 +1708,38 @@
         },
         {
           "label": "Who it's for",
-          "value": "The same audience as the full package. People with or without a website. Knowing how websites are built helps, but isn't required."
+          "value": "Anyone planning a new site or rebuilding an existing one. Knowing UX helps, but isn't required."
+        },
+        {
+          "label": "Where it works",
+          "value": "Claude Code, Codex and Cursor, on the plan the user already has in that tool."
         },
         {
           "label": "Traffic sources",
           "value": "Ads and the newsletter, later search."
         },
         {
-          "label": "Download",
-          "value": "Free through the cart, email with the link, immediate download."
+          "label": "Getting it",
+          "value": "An email address in the form on the page. Within a minute, an email with a personal install link. Each email address can claim the skill once."
         },
         {
           "label": "Installation",
-          "value": "Point an AI coding tool (such as Claude Code) to the INSTALL.md file and it installs the skill on its own."
+          "value": "Paste the instruction from the email into Claude Code, Codex or Cursor, and the tool installs the skill by itself."
         },
         {
-          "label": "Path to the full package",
-          "value": "On the landing page: a section explaining that the free version is part of the paid product. After the download: promotional newsletters and a better offer for people who downloaded, in the upcoming presale."
+          "label": "Updates",
+          "value": "The skill works with no time limit. For the first 60 days it installs new versions by itself; after that it keeps working on the version you have."
+        },
+        {
+          "label": "Path to the full version",
+          "value": "In the skill: after the finished plan, the skill shows a “what's next” block once, covering what it planned (pages and sections), what the free version doesn't do, that the full version reads the saved plan and carries on in the same project folder, and a link to the UX Design Skill page. On the page: the full-version card with a button in “Under the hood”, a link in the question about differences, and “UX Design Skill” in the top bar."
         },
         {
           "label": "Status",
-          "value": "The skill works."
+          "value": "The skill works, and the page is live in English and Polish."
         }
       ],
-      "rationale": "Free planning and the free audit are two parallel free paths under test. The owner hasn't decided which one stays, so both landing pages stand alone and don't link to each other."
+      "rationale": "The free version is the first two stages of the full product, so the page can show a real result (this plan) and say honestly where it stops. The “what's next” block appears after the finished plan, when the user already has the result in hand; the link on the page gives a route to people who want to compare versions before signing up."
     },
     {
       "id": "context-id-conversion-path",
@@ -1747,17 +1750,22 @@
       "kv": [
         {
           "label": "Primary action",
-          "value": "Free download of the skill through the cart"
+          "value": "Sign up for the free skill: an email address in the form in the hero or at the end of the page"
+        },
+        {
+          "label": "After sign-up",
+          "value": "An email with a personal install link, within a minute"
         },
         {
           "label": "Secondary action",
-          "value": "Go to the full UX Design Skill package, without competing with the download"
+          "value": "Go to the full UX Design Skill, without competing with sign-up: links only, no prices and no buy button"
         },
         {
-          "label": "No link to the audit",
-          "value": "The landing page doesn't link to the free audit, because the audit is the other path in the test"
+          "label": "No route to the audit",
+          "value": "The page doesn't send visitors to the free homepage audit"
         }
-      ]
+      ],
+      "rationale": "Each free page has its own main number, sign-ups per view, and is read on its own. A link between the two free pages would mix their results, so this page leads only to sign-up and to the full version."
     }
   ]
 }
@@ -1774,92 +1782,137 @@
     "confidence": "high"
   },
   "main_menu_meta": {
-    "rationale": "The top bar holds only the logo and a link to the full package, as on the audit page: one action on the page, no exits to the rest of the site.",
-    "alternatives": "Full site menu: rejected, because it adds exits and blurs the test of the two free paths."
+    "rationale": "The top bar has the logo and three links: to the full version, to the reviews on this page and to the guide to working with the skill. It has no button and doesn't stick when you scroll, so the form stays the only action on the page. The full-version link is the page's second route, and the reviews and the guide answer questions people have before signing up: does it work for others, and what is it like to work with? On a phone the links are hidden and only the logo stays. The free audit page has the same bar.",
+    "alternatives": "Only the logo and a link to the full package, as in the first version of the plan: changed on the live page, which added the reviews and the guide. The full site menu (Pricing, Free skills, Knowledge base) with a “See pricing” button: rejected, because it adds exits and a button that competes with the form. Cost of the chosen option: “How it works” leads to the full version's guide, off this page."
   },
   "main_menu": [
     {
       "id": "menu-logo",
-      "name": "Logo",
+      "name": "Logo (→ UX Design Skill page)",
       "children": []
     },
     {
-      "id": "menu-full-package",
-      "name": "UX Design Skill full package (link)",
+      "id": "menu-full-version",
+      "name": "UX Design Skill",
+      "children": []
+    },
+    {
+      "id": "menu-reviews",
+      "name": "Reviews (→ reviews on this page)",
+      "children": []
+    },
+    {
+      "id": "menu-how-to-work",
+      "name": "How it works (→ UX Design Skill guide)",
       "children": []
     }
   ],
   "sitemap_meta": {
-    "rationale": "One standalone landing page outside the site's main menu. Traffic comes from ads and the newsletter, and later from search.",
-    "alternatives": "A page in the site menu or a section on the homepage: rejected, because both add exits and blur the test."
+    "rationale": "The map shows agents.creativesparks.pl as it works today, in English: the English pages sit under /en/, and the Polish version has the same pages without that prefix. The site's main address redirects to the UX Design Skill page, and /en/ has no page of its own, so the UX Design Skill page is the root. The two free pages stand next to it as standalone landing pages outside the site menu: traffic reaches them from ads and the newsletter, and later from search. Each free page has its own changelog.",
+    "alternatives": "Free pages as items in the site menu: rejected, because it adds exits and blurs each page's main number. Free skills only as a section on the UX Design Skill page: rejected, because an ad has to land on a page with one topic; that section (“Try it for free”) exists, but it only sends visitors on to the two free pages. Cost of the chosen option: one short page gives search engines little content; revisit when search starts to matter."
   },
   "sitemap": [
     {
-      "id": "page-website-planning-skill",
-      "name": "Website Planning Skill",
-      "children": []
-    }
-  ],
-  "footer_meta": {
-    "rationale": "Same footer as the audit page: links to the full package and the installation guide, contact details, legal documents. No link to the free audit.",
-    "alternatives": "Full site footer: rejected for the same reason as the full menu."
-  },
-  "footer": [
-    {
-      "id": "footer-produkt",
-      "name": "Product",
+      "id": "page-ux-design-skill",
+      "name": "UX Design Skill (full version, the site's main page)",
       "children": [
         {
-          "id": "footer-full-package",
-          "name": "UX Design Skill full package",
+          "id": "page-jak-pracowac",
+          "name": "How it works",
           "children": []
         },
         {
-          "id": "footer-jak-pracowac",
-          "name": "How to use it",
+          "id": "page-baza-wiedzy",
+          "name": "Knowledge base",
           "children": []
-        }
-      ]
-    },
-    {
-      "id": "footer-kontakt",
-      "name": "Contact",
-      "children": [
+        },
         {
-          "id": "footer-email",
-          "name": "[email address]",
+          "id": "page-uxd-changelog",
+          "name": "Changelog",
           "children": []
-        }
-      ]
-    },
-    {
-      "id": "footer-legal",
-      "name": "Legal",
-      "children": [
+        },
         {
-          "id": "footer-privacy",
+          "id": "page-polityka-prywatnosci",
           "name": "Privacy policy",
           "children": []
         },
         {
-          "id": "footer-terms",
-          "name": "Terms of service",
+          "id": "page-regulamin",
+          "name": "Terms of sale",
           "children": []
         }
       ]
+    },
+    {
+      "id": "page-free-homepage-ux-audit-skill",
+      "name": "Homepage UX Audit Skill (free)",
+      "children": [
+        {
+          "id": "page-audit-changelog",
+          "name": "Changelog",
+          "children": []
+        }
+      ]
+    },
+    {
+      "id": "page-website-planning-skill",
+      "name": "Website Planning Skill (this page)",
+      "children": [
+        {
+          "id": "page-wps-changelog",
+          "name": "Changelog",
+          "children": []
+        }
+      ]
+    }
+  ],
+  "footer_meta": {
+    "rationale": "The footer is shared across the whole site: logo, legal documents, cookie settings, changelog and email contact, in one row of links. On this page “Changelog” leads to the free skill's changelog, not the full version's. A landing page doesn't need a second navigation in the footer: the full version already has links in the top bar, in “Under the hood” and in the questions. The free audit page has the same footer.",
+    "alternatives": "A footer with columns (Product, Contact, Legal) and a link to the full package, as in the first version of the plan: changed on the live page, which kept only the links, without columns. A full footer listing every page on the site: rejected for the same reason as the full menu."
+  },
+  "footer": [
+    {
+      "id": "footer-logo",
+      "name": "Logo (→ UX Design Skill page)",
+      "children": []
+    },
+    {
+      "id": "footer-privacy",
+      "name": "Privacy policy",
+      "children": []
+    },
+    {
+      "id": "footer-cookies",
+      "name": "Cookie settings",
+      "children": []
+    },
+    {
+      "id": "footer-terms",
+      "name": "Terms of sale",
+      "children": []
+    },
+    {
+      "id": "footer-changelog",
+      "name": "Changelog (→ the free skill's changelog)",
+      "children": []
+    },
+    {
+      "id": "footer-contact",
+      "name": "Contact (email)",
+      "children": []
     }
   ],
   "labels": {},
   "positioning": {
     "strategy": "wedge",
-    "statement": "A tool for the stage before you build the site: a plan in a file, before you open Figma or a site builder. The free version gives you this stage for free.",
+    "statement": "A tool for the stage before you build the site: a plan in a file, before you open Figma or a site builder. The free version gives you that stage at no cost.",
     "against": "ChatGPT or Claude used ad hoc, and site builders that hand you a default structure",
     "confidence": "high"
   },
   "differentiator": {
-    "value": "A site plan file where every decision comes with a rationale grounded in knowledge of that type of site. A chat assistant gives you a list of pages to copy over, with no reasons.",
+    "value": "A site plan file where every decision comes with its reasoning and the options it ruled out, grounded in knowledge of that page type. A chat gives you a list of pages to copy out, with no reasons.",
     "confidence": "high",
-    "rationale": "Confirmed by the owner while planning the Website Planning Skill landing page. Matches the first pillar of the messaging hierarchy (a site plan with a rationale for every decision)."
+    "rationale": "Confirmed by the owner while planning the Website Planning Skill page. Matches the first pillar of the messaging hierarchy (a site plan with the reasoning behind every decision). On the live page, the hero says it (“Every decision comes with its reasoning and the options it ruled out”, “Knows 16 page types”), and so does “Under the hood”."
   },
   "items": [
     {
@@ -1870,9 +1923,9 @@
       "name": "Site format",
       "layout": "simple-meta",
       "lead": "Single landing page",
-      "body": "One action: the free download. The top bar has only the logo and a link to the full package.",
-      "rationale": "All traffic arrives through links (ads, newsletter), and one action with no side exits gives a clean result for the test of the two free paths.",
-      "alternatives": "A regular page in the site menu: rejected, more exits. Cost of the chosen option: one short page gives search engines little content. Revisit when search starts to matter."
+      "body": "One action: sign up for the free skill, in the form in the hero and at the end of the page. At the top, the logo and three links, no button.",
+      "rationale": "Traffic arrives through links (ads, newsletter), and one action with no buttons beside it gives the page a clean main number: sign-ups per view.",
+      "alternatives": "A regular page in the site menu: rejected, more exits. Cost of the chosen option: one short page gives search engines little content; revisit when search starts to matter."
     },
     {
       "id": "strategy-id-archetype",
@@ -1882,9 +1935,9 @@
       "name": "How the page leads",
       "layout": "simple-meta",
       "lead": "Proof first",
-      "body": "Sample files appear as soon as the page opens. Explanations come after them.",
-      "rationale": "The free version produces three files you can show. Designers, the main audience, judge an output faster than a promise. The full skill's page works the same way.",
-      "alternatives": "The audit page's order, with a description of benefits in the second section: rejected, because three files work better as a gallery. Conversation with the skill first: rejected, because the designer would wait a long time to see what they get."
+      "body": "This page's sample plan comes right after the hero; the explanations and reviews follow it.",
+      "rationale": "The free version produces a plan you can show: the brief, the sitemap and the content guidelines of this very page. Visitors judge a result faster than a promise. The full skill's page works the same way.",
+      "alternatives": "The audit page's order, with a description of benefits in the second section: rejected, because the three parts of the plan work better as a gallery. The conversation with the skill first: rejected, because visitors would wait a long time to see what they get."
     },
     {
       "id": "strategy-id-positioning",
@@ -1893,15 +1946,15 @@
       "title": "Positioning",
       "name": "Positioning",
       "layout": "simple-meta",
-      "lead": "A tool for the stage before you build the site: a plan in a file, before you open Figma or a site builder. The free version gives you this stage for free.",
+      "lead": "A tool for the stage before you build the site: a plan in a file, before you open Figma or a site builder. The free version gives you that stage at no cost.",
       "kv": [
         {
           "label": "Against",
           "value": "ChatGPT or Claude used ad hoc, and site builders that hand you a default structure"
         }
       ],
-      "rationale": "Someone who today asks a chat assistant for a sitemap, or accepts the structure a site builder gives them, has no planning stage. The tool takes exactly that stage, before the first screen in Figma and before the site builder, instead of competing with either.",
-      "alternatives": "Attacking chat head-on as a worse tool overall: rejected, because the audience uses chat anyway and the tool runs in the same environments. Comparison with a UX freelancer: rejected for the free version, because a free tool needs no cost argument."
+      "rationale": "Someone who today asks a chat for a sitemap, or accepts the structure a site builder gives them, has no planning stage. The tool takes exactly that stage, before the first screen in Figma and before the site builder, instead of competing with either. On the live page, the closing heading says it (“Plan your site before you start building it”).",
+      "alternatives": "Attacking chat head-on as a worse tool overall: rejected, because the audience uses chat anyway and the tool runs in the same environments. A comparison with a UX freelancer: rejected for the free version, because a free tool needs no cost argument."
     },
     {
       "id": "strategy-id-differentiator",
@@ -1910,8 +1963,8 @@
       "title": "Differentiator",
       "name": "Differentiator",
       "layout": "simple-meta",
-      "lead": "A site plan file where every decision comes with a rationale grounded in knowledge of that type of site. A chat assistant gives you a list of pages to copy over, with no reasons.",
-      "rationale": "Confirmed by the owner while planning the Website Planning Skill landing page. Matches the first pillar of the messaging hierarchy (a site plan with a rationale for every decision)."
+      "lead": "A site plan file where every decision comes with its reasoning and the options it ruled out, grounded in knowledge of that page type. A chat gives you a list of pages to copy out, with no reasons.",
+      "rationale": "Confirmed by the owner while planning the Website Planning Skill page. Matches the first pillar of the messaging hierarchy (a site plan with the reasoning behind every decision). On the live page, the hero says it (“Every decision comes with its reasoning and the options it ruled out”, “Knows 16 page types”), and so does “Under the hood”."
     },
     {
       "id": "strategy-id-messaging-hierarchy",
@@ -1920,20 +1973,20 @@
       "title": "Messaging hierarchy",
       "name": "Messaging hierarchy",
       "layout": "ranked-list",
-      "lead": "A site plan with a rationale for every decision, before you start building. Free.",
+      "lead": "Plan your site before you start building it: a brief and sitemap with content guidelines, free.",
       "ranked": [
         {
-          "text": "P1: A site plan with a rationale for every decision"
+          "text": "P1: A brief and sitemap with content guidelines, every decision with its reasoning. Proof: this page's public plan"
         },
         {
-          "text": "P2: Knowledge of your type of site, decisions stay yours"
+          "text": "P2: Knowledge of 16 page types, and the decision stays yours. Proof: the knowledge pack loaded once the page type is detected"
         },
         {
-          "text": "P3: Two stages of the full UX process, free"
+          "text": "P3: The first two stages of the full UX Design Skill, free. Proof: the skill's folder tree and reviews from buyers of the full version"
         }
       ],
-      "rationale": "The first two pillars come from the full package's hierarchy (its first and third pillars). The third is added as a bridge to the full package. Confidence level is medium because separate messaging work for the free version was postponed.",
-      "alternatives": "Reusing the full package's hierarchy unchanged: rejected, because its second pillar (ready-made files for you and your client) promises more than the free version delivers."
+      "rationale": "The first two pillars come from the full package's hierarchy (its first and third pillars); the third is added as a bridge to the full version. Each pillar has its place on the live page: the first in the hero and the proof, the second in the hero and “Under the hood”, the third in “Under the hood” and the reviews. Medium confidence, because separate messaging work for the free version was postponed.",
+      "alternatives": "Taking over the full package's hierarchy unchanged: rejected, because its second pillar (ready-made files for you and your client) promises more than the free version delivers."
     },
     {
       "id": "strategy-id-voice-brief",
@@ -1942,36 +1995,36 @@
       "title": "Voice brief",
       "name": "Voice brief",
       "layout": "chip-list",
-      "lead": "Analytical, collaborative, direct: explains why, presents options with their trade-offs, and says 'do this' or 'don't do that' with a reason.",
+      "lead": "Analytical, collaborative, direct: explains why, presents options with their trade-offs, and says “do this” or “don't do that” with a reason.",
       "chips": [
         "Analytical",
         "Collaborative",
         "Direct",
         "No hedging",
-        "The user decides"
+        "The reader decides"
       ],
-      "rationale": "Three personality attributes plus two tone modifiers, carried over directly from the canvas. Preferred words ('this tool', 'files', 'site plan', 'rationale next to each decision') and banned ones ('agent', 'AI-powered', 'cutting-edge', em dashes, 'it's not X, it's Y' frames) set the rules for microcopy in every section.",
-      "alternatives": "A warmer 'mentor / coach' tone: rejected, because it reads as an authoritative partner, which designers turn down (accepted by 1 of 16 in interviews). A cool corporate tone: rejected, because it conflicts with 'collaborative'."
+      "rationale": "Three personality traits plus two tone modifiers, carried over directly from the canvas. The preferred words (“skill”, “site plan”, “brief”, “sitemap”, “content guidelines”, “reasoning and the options it ruled out”) and the banned ones (“agent” as the product name, “AI-powered”, “cutting-edge”, em dashes, “it's not X, it's Y” frames) set the rules for the microcopy in every section.",
+      "alternatives": "A warmer “mentor / coach” tone: rejected, because it reads as an authoritative partner, which designers turn down (accepted by 1 in 16 in the interviews). A cool corporate tone: rejected, because it conflicts with “collaborative”."
     },
     {
       "id": "strategy-id-ia-decision-free-landing-pages",
       "scope": "ia",
       "confidence": "high",
       "title": "Free skills as standalone landing pages outside the menu",
-      "element": "Free UX Audit Skill and Website Planning Skill",
+      "element": "Homepage UX Audit Skill and Website Planning Skill",
       "decision_status": "confirmed",
-      "rationale": "Traffic to both pages comes from ads and the newsletter, not from navigation. Each has one action (the free download), and the top bar has only the logo and a link to the full package. The pages don't link to each other: they are two parallel paths in a test, and links between them would muddy the result. The audit page went straight to a wireframe in May and has only now been added to the plan.",
-      "alternatives": "A regular page in the main menu: rejected, because it adds exits and blurs the test. A section on the homepage: rejected, because an ad has to land on a page with one topic. Cost of the chosen option: one short page gives search engines little content. Revisit when search starts to matter."
+      "rationale": "Traffic to both pages comes from ads and the newsletter, not from navigation. Each has one action (sign up for the free skill) and its own main number: sign-ups per view. Both have the same top bar (logo, UX Design Skill, Reviews, How it works) and the same footer. The pages don't link to each other, because a link between them would mix their results. Both are reached from the “Free skills” section on the UX Design Skill page (“Try it for free before you buy the full version”), and the site menu links to that section as “Free skills”.",
+      "alternatives": "A regular page in the main menu: rejected, because it adds exits and blurs the main number. Only a section on the UX Design Skill page: rejected, because an ad has to land on a page with one topic. Cost of the chosen option: one short page gives search engines little content; revisit when search starts to matter."
     },
     {
       "id": "strategy-id-ia-decision-free-planning-order",
       "scope": "ia",
       "confidence": "high",
-      "title": "Website Planning Skill: sample files in the second section",
-      "element": "Website Planning Skill landing page layout",
+      "title": "Website Planning Skill: the sample plan in the second section",
+      "element": "Website Planning Skill page layout",
       "decision_status": "confirmed",
-      "rationale": "The free version produces three things to show (project brief, site plan, section map), so the second section is a gallery of three examples, like the file gallery on the full skill's page. The rest of the order follows the audit page: what's under the hood and what the full package adds, limits, FAQ, and the download at the end. No separate section on who the skill is for: that answer goes into the facts in the first section and into the FAQ.",
-      "alternatives": "The audit page's order (a description of what you get, with links to the example in the second section): rejected, because three files work better as a gallery. Conversation with the skill first: rejected, because the designer would wait a long time to see what they get. A separate section on who the skill is for: rejected, because neither of the two existing pages has one."
+      "rationale": "The order on the live page: the hero with the form, the proof (the three parts of this page's plan), “Under the hood” with the full-version card, the reviews, how it works, the limits, the questions and the form at the end. The second section is a gallery of the three parts of the plan (brief, sitemap, content guidelines), like the file gallery on the full skill's page. The reviews come right after “Under the hood”: first the system the skill is part of, then the people who use it. The rest follows the audit page: limits, questions, sign-up at the end. No separate section on who the skill is for: the answer is in the hero and in the first question.",
+      "alternatives": "The audit page's order (a description of what you get, with links to the example in the second section): rejected, because the three parts of the plan work better as a gallery. The conversation with the skill first: rejected, because visitors would wait a long time to see what they get. A separate section on who the skill is for: rejected, because neither of the two free pages has one."
     }
   ],
   "canvas": {
@@ -2030,23 +2083,24 @@
     {
       "page_id": "page-website-planning-skill",
       "name": "Website Planning Skill",
-      "goal": "Visitors from ads and the newsletter download the free planning skill, with a clear path to the UX Design Skill full package.",
+      "goal": "Sign-ups for the free skill, which arrives by email as a personal install link (main number: sign-ups per page view), and, second, a route to the full UX Design Skill.",
       "top_tasks_served": [
-        "Check what the free skill does and what file I get",
-        "See a sample site plan",
-        "Check if it's for me, whether or not I already have a website or know anything about UX",
-        "Check if it works in my tool",
-        "See what the installation involves",
-        "Download the skill for free",
-        "Find out what the free version doesn't do and what the full package adds",
-        "Go to the UX Design Skill full package",
-        "Check what happens to the data about my project"
+        "Check what the free skill does and what I get at the end",
+        "See a sample plan: the brief, the sitemap and the content guidelines",
+        "Check whether it's for me: for a new site, for a rebuild, and without knowing UX",
+        "Check whether it works in my tool",
+        "See what installing and working with the skill looks like",
+        "Get the skill free and know what will arrive by email",
+        "Find out what the free version doesn't do and what the full version adds",
+        "Read what buyers of the full version say",
+        "Go to the full version of UX Design Skill",
+        "Check what happens to my project data"
       ]
     },
     {
       "page_id": "global",
       "name": "Global: top bar and footer",
-      "goal": "A shared top bar and footer for the landing page, with no exits to the rest of the site except the full package.",
+      "goal": "A shared top bar and footer: the brand, three links that help before sign-up, and the documents, with no button to compete with the form.",
       "top_tasks_served": []
     }
   ],
@@ -2067,49 +2121,109 @@
       "id": "section-map-id-wps-hero",
       "scope": "section",
       "confidence": "high",
-      "title": "What it is and download",
-      "name": "What it is and download",
+      "title": "Hero: what it is and sign-up",
+      "name": "Hero",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Confirm to visitors from an ad or the newsletter that they've found a free skill for planning a website, and let them download it right away.",
-      "question": "Is this a free skill that will plan my website, and what exactly do I get?",
-      "content_description": "Label for users of Claude Code and similar tools. Headline with the name Website Planning Skill and what it does, in one sentence. Paragraph: a conversation about your project, then a site plan in a file. Four short facts, including: it works whether you already have a website or are only planning one; which tools it works in. Free download button with microcopy (no card needed, email with the link). Beside it, an image of the site plan.",
-      "content_status": "tbd",
-      "rationale": "Same layout as the audit page, so the only difference between the two pages in the test is the offer. The fact about having a website (or not yet) replaces a separate section on who the skill is for.",
-      "alternatives": "A separate section on who the skill is for: rejected, because neither of the two existing pages has one."
+      "goal": "Confirm to visitors from an ad or the newsletter that they've found a free skill for planning a website, and let them sign up right away.",
+      "question": "Is this a free skill that will plan my site, and what exactly do I get?",
+      "key_message": "Website Planning Skill gets you a free brief and sitemap with content guidelines, with the reasoning behind every decision.",
+      "must_cover": [
+        "What you get: a brief and sitemap with content guidelines",
+        "How the skill gets there: it asks about your project, plans the sitemap and lays out the sections of every page",
+        "That it works for a new site and for rebuilding an existing one",
+        "Every decision with its reasoning and the options it ruled out",
+        "Knowledge of 16 page types, from portfolios to SaaS and marketplaces",
+        "The result in one HTML file you open in your browser",
+        "Which tools it works in: Claude Code, Codex, Cursor",
+        "What happens after you sign up: a personal install link arrives by email"
+      ],
+      "doubt": "That it's yet another AI tool that hands me a generic template instead of a plan for my site.",
+      "proof": "The free-skill download count in the label above the headline, and the demo video of the full UX Design Skill beside the headline.",
+      "action": "Leave your email and get the skill free.",
+      "leave_out": "A second button next to the form, including one to the full version: the first screen has one action.",
+      "rationale": "Same layout as the audit page, so the two free pages differ in their offer, not their layout. The fact about a new site or a rebuild replaces a separate section on who the skill is for. The video panel shows a demo of the full UX Design Skill; its first stage, the project conversation, is the same stage the free version has. Analytics counts the hero form separately from the form at the end of the page. The English headline opens with the skill's name (“Website Planning Skill:”), where the Polish one describes it as a skill for planning websites.",
+      "alternatives": "A separate section on who the skill is for: rejected, because neither of the two free pages has one."
     },
     {
       "id": "section-map-id-wps-files",
       "scope": "section",
       "confidence": "high",
-      "title": "Sample files",
-      "name": "Sample files",
+      "title": "Proof: this page's plan",
+      "name": "Proof",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "evidence",
-      "goal": "Show what the skill produces before the visitor reads any promises.",
-      "question": "Can I see what I'll get?",
-      "content_description": "Headline and a short intro. Three cards: project brief, site plan, section map. Each card: what it contains, in one sentence, and a link to a sample that opens in a new tab.",
-      "content_status": "tbd",
-      "rationale": "The free version produces three things worth showing, so the section uses a gallery, as on the UX Design Skill page. The cards link to sample files. The owner sets the link targets when the page is built.",
-      "alternatives": "Benefit copy with links to a sample, as on the audit page: rejected by the owner, because three files are better shown as a gallery."
+      "goal": "Show what you get at the end before the visitor reads any promises.",
+      "question": "What does the result look like?",
+      "key_message": "We planned this page with the skill, and the whole plan is public: open each of its three parts in your browser.",
+      "must_cover": [
+        "That this page was built from a plan made with this skill, and the plan is public",
+        "Brief: who the site is for, what it has to achieve, who it competes with and how it sounds, every point with its reasoning and a confidence level",
+        "Sitemap: the page map, menu and footer, every decision with its reasoning and the options it ruled out",
+        "Content guidelines: the sections of every page, the visitor question each one answers, what it is for and what has to go in it",
+        "That the full file also comes with a markdown version to download"
+      ],
+      "doubt": "That the result will be vague rather than a plan you can actually work from.",
+      "proof": "This page's plan in three parts, the brief, the sitemap and the content guidelines, each opening in the browser.",
+      "action": "Open the part of the plan you want to see.",
+      "rationale": "The free version produces a plan in three parts, so the section is a gallery of three cards, like the file gallery on the full skill's page. Each card opens the same file at its own part. The strongest proof is the plan of the very page the visitor is reading: they can compare the plan with what they see. Analytics counts card clicks as a sign of interest.",
+      "alternatives": "A description of benefits with links to the example, as on the audit page: rejected by the owner, because the three parts of the plan work better as a gallery."
     },
     {
       "id": "section-map-id-wps-under-the-hood",
       "scope": "section",
       "confidence": "high",
-      "title": "Under the hood: part of the full system",
+      "title": "Under the hood: a slice of the full system",
       "name": "Under the hood",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "evidence",
-      "goal": "Show that the skill is one part of a larger system, and open the path to the full package.",
+      "goal": "Show that the skill is a slice of a system, not a single prompt, and open the way to the full version.",
       "question": "What's under the hood, and where do I go if I want more?",
-      "content_description": "Label “Under the hood”, headline and paragraph: the skill is the first two stages of the full UX Design Skill and uses the same architecture (an instruction file that defines how it works, plus knowledge packs it loads once it detects the website type). Below that, a diagram of the skill's folders and four numbered points: knowledge kept separate from instructions, a knowledge pack loaded once the type is detected, a confidence level on every assumption, the skill delivers a plan. Under those, a highlighted card showing what the full package adds, and a second button that leads to the full package.",
-      "content_status": "tbd",
-      "rationale": "Replaces two sections from the first version of the plan: the comparison with a chat assistant, and the section on how this fits into the full process. The owner decided the chat comparison added nothing beyond the opening section and the sample files. The highlighted full package card and the button moved into this section, so a separate section on the full process would repeat it. Apart from the top bar, this is the only place on the page that leads to the full package.",
-      "alternatives": "A separate section on the full process next to “Under the hood”: rejected, because it meant two sections in a row about the same system."
+      "key_message": "Not just a prompt: Website Planning Skill is the first two stages of the full UX Design Skill, built the same way as the whole system.",
+      "must_cover": [
+        "Website Planning Skill is the first two stages of the full UX Design Skill: the project conversation and the site plan",
+        "Knowledge kept apart from instructions: the operating file runs the conversation and the plan, and the references/ folder holds patterns for each page type",
+        "A knowledge pack loaded once the page type is detected, not a generic list of best practices",
+        "Every assumption has a confidence level (high, medium, low); where the AI is guessing, the file says so",
+        "The skill delivers a plan: every decision with its reasoning and the options it ruled out, and which one to build stays your call",
+        "The skill's folder tree: SKILL.md, and references/ with the conversation and plan stages, shared folders and page types",
+        "What the full version adds: messaging, a page template list, wireframes with copy and a review, every decision with its reasoning",
+        "A link to the free skill's changelog"
+      ],
+      "doubt": "That it's yet another prompt that will churn out generic advice.",
+      "proof": "The skill's folder tree and the four principles it works by.",
+      "action": "See the full version of UX Design Skill.",
+      "leave_out": "The full version's prices and packages: the card says what the full version does next, and the prices are on its page.",
+      "rationale": "Replaces two sections from the first version of the plan: the comparison with chat and the part on the full process. The owner decided the comparison with chat added nothing beyond the opening and the sample files. The highlighted full-version card and its button moved into this section, so a separate section on the full process would repeat it. This is the page's main route to the full version; the top bar and the link in the question about differences lead there too.",
+      "alternatives": "A separate section on the full process next to “Under the hood”: rejected, because it made two sections in a row about the same system."
+    },
+    {
+      "id": "section-map-id-wps-reviews",
+      "scope": "section",
+      "confidence": "medium",
+      "title": "Reviews",
+      "name": "Reviews",
+      "page_id": "page-website-planning-skill",
+      "layout": "section-card",
+      "narrative": "evidence",
+      "goal": "Show that designers, studios and people outside the industry use the system this skill is part of.",
+      "question": "Does it work for other people, and how did it help them?",
+      "key_message": "An organized process and faster work: that's what buyers of UX Design Skill say, and you get its first two stages free.",
+      "must_cover": [
+        "That these are reviews from buyers of the full UX Design Skill",
+        "What they say: it brings order to the process and speeds up the work, and it helps most at the early stage, with the assumptions, the interview and the site's structure",
+        "Who is speaking: name, photo and studio or way of working (Pozioma, The Sunray Studio, Modela Studio, Freelancer)",
+        "The voice of someone who isn't a web designer and says pretty much everything is easier with the skill",
+        "A review from someone who tested UX Audit and bought the full package the next day"
+      ],
+      "doubt": "That the skill sounds good on the page, but nobody actually uses it.",
+      "proof": "Five signed reviews, each with a name, a photo and the studio or way of working.",
+      "leave_out": "Reviews presented as reviews of the free version: the quotes are about the full UX Design Skill, and the heading says so.",
+      "rationale": "The first version of the plan left reviews out, because there were no quotes about the free version itself. The live page has them, and the heading says plainly that they come from UX Design Skill buyers. Three of the five reviews talk about the early stage (assumptions, the interview, a site's structure and strategy), which is what the free version gives you. The section sits right after “Under the hood”: first the system, then the people who use it. The top bar links to it as “Reviews”. The section has no button, so it has no Action part: sign-up stays the page's only action. Medium confidence, because no review is about the free version itself.",
+      "alternatives": "No reviews section, as in the first version of the plan: changed, because the reviews of the full version mostly talk about the same stages the free skill gives you."
     },
     {
       "id": "section-map-id-wps-how",
@@ -2120,56 +2234,80 @@
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "evidence",
-      "goal": "Remove the worry that installing and using the skill is hard.",
-      "question": "How much work will this take me, and can I handle the installation?",
-      "content_description": "Steps: you download it; you point your AI coding tool to the INSTALL.md file and it installs the skill; you talk through your project (the skill makes its own assumptions and only asks where it isn't sure); you get a site plan in a file. A list of the tools it works in.",
-      "content_status": "tbd",
-      "rationale": "Installing through INSTALL.md is the simplest argument for less technical visitors, and the tool list answers “will it work in my setup?”"
+      "goal": "Remove the worry that installing and working with the skill is hard.",
+      "question": "How much work will this take, and can I handle the installation?",
+      "key_message": "Three steps from install to site plan: install it once, then start every new project with a conversation.",
+      "must_cover": [
+        "Step 1, you install it: paste the instruction from the email into Claude Code, Codex or Cursor, and your agent installs the skill",
+        "Step 2, you talk about the project: the skill asks about the goal, the audience and the context, and where it guesses, it tags the assumption with a confidence level",
+        "Step 3, you get the plan: open the file in your browser and use it as the basis for your wireframes and site design",
+        "That you install it once, then start every new project with a conversation"
+      ],
+      "doubt": "That installation takes technical know-how.",
+      "rationale": "Installing by pasting the instruction from the email is the simplest argument for less technical people, and naming the three tools answers whether the skill works in mine. The section has no separate proof of how easy it is, such as a recording of the installation, so it has no Proof part: the description of the steps removes the worry on its own."
     },
     {
       "id": "section-map-id-wps-boundaries",
       "scope": "section",
       "confidence": "high",
-      "title": "What the skill doesn't do",
-      "name": "What the skill doesn't do",
+      "title": "Limits of the tool",
+      "name": "Limits",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "tension",
-      "goal": "Set honest limits before the visitor decides to download.",
+      "goal": "Set out the limits honestly before the decision to sign up.",
       "question": "Where does the free version stop, and what do I still have to do myself?",
-      "content_description": "A short list in the format “No X. Y.”: it doesn't make wireframes or finished copy (that's the full package), it doesn't do visual design, it doesn't make decisions for you.",
-      "content_status": "tbd",
-      "rationale": "The same honesty signal as on the audit page and the UX Design Skill page."
+      "key_message": "The skill plans, but it doesn't make decisions for you, doesn't create wireframes or finished copy, and doesn't do visual design.",
+      "must_cover": [
+        "It doesn't make decisions for you: it shows the options and their consequences, and you choose",
+        "It doesn't create wireframes or write finished copy: those are the next stages, and the full version of UX Design Skill has them",
+        "It doesn't create visual designs"
+      ],
+      "rationale": "The same honesty signal as on the audit page and the full skill's page. The second limit also points to the full version, without a link or a button."
     },
     {
       "id": "section-map-id-wps-faq",
       "scope": "section",
       "confidence": "high",
-      "title": "Questions and answers",
-      "name": "Questions and answers",
+      "title": "Questions before you download",
+      "name": "FAQ",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "tension",
-      "goal": "Clear the last objections before the download.",
-      "question": "What else should I know before I download it?",
-      "content_description": "Expandable questions: do I need to know UX; what happens to the data about my project; how is this different from the full package; how do I install it and which tools does it work in; is it really free, and what will I get by email.",
-      "content_status": "tbd",
-      "rationale": "The question about UX knowledge takes over the job of the removed section on who the skill is for."
+      "goal": "Close the last objections before sign-up.",
+      "question": "What else do I need to know before I download it?",
+      "key_message": "You don't need to know UX, your plan file stays with you, and the skill is free and works with no time limit.",
+      "must_cover": [
+        "Do I need to know UX: no, but experience designing websites helps, and the plan is a good starting point for discussion",
+        "What happens to project data: the conversation falls under the rules of Claude Code, Codex or Cursor on your own account, your plan file stays with you, and at start-up the skill sends only your customer ID, the package name and the version number",
+        "How it differs from the full version: the free version stops at the site plan, and the full version goes further (messaging, a page template list, wireframes with copy, a review), with a link to the full version",
+        "How installation works: paste the instruction from the email into Claude Code, Codex or Cursor",
+        "How long you can use it: as long as you like, and for the first 60 days the skill installs new versions by itself",
+        "What it costs and what arrives by email: free, with nothing to pay later, on your own plan in the tool; a personal install link within a minute, plus news about products and services"
+      ],
+      "doubt": "That the free version has a catch: hidden fees, project data sent somewhere else, or a time limit.",
+      "rationale": "The question about knowing UX takes over from the removed section on who the skill is for, so it opens expanded. The question about differences from the full version puts a link to it where the visitor is comparing versions. The section answers worries with specific facts, so it has no separate Proof part."
     },
     {
       "id": "section-map-id-wps-final-cta",
       "scope": "section",
       "confidence": "high",
-      "title": "Final download",
-      "name": "Final download",
+      "title": "Sign-up at the end",
+      "name": "Sign-up at the end",
       "page_id": "page-website-planning-skill",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Give people who read the whole page a second chance to download.",
-      "question": "How do I get started?",
-      "content_description": "Headline with a call to action, one sentence on what happens after the click (a free checkout, an email with the link, installation), download button, microcopy: no card, no subscription.",
-      "content_status": "tbd",
-      "rationale": "The same closing moment as on the audit page."
+      "goal": "Give people who read the whole page a second moment to sign up.",
+      "question": "How do I start?",
+      "key_message": "Plan your site before you start building it: get the skill free by email and start your first project conversation.",
+      "must_cover": [
+        "The call: plan your site before you start building it",
+        "What happens next: you get the skill free by email, install it and start your first project conversation",
+        "An email form, with a note that the personal install link arrives by email",
+        "Consent to product and service updates, with a link to the privacy policy"
+      ],
+      "action": "Leave your email and get the free skill.",
+      "rationale": "The same closing moment as on the audit page. The form is the same as in the hero, and analytics counts it separately, so you can see how many sign-ups the end of the page brings. The live copy here says “install it with one command”, while “How it works” talks about pasting the instruction from the email; the brief sticks to the fact both share, that the tool does the installing."
     },
     {
       "id": "section-map-id-wps-global-nav",
@@ -2180,11 +2318,17 @@
       "page_id": "global",
       "layout": "section-card",
       "narrative": "hook",
-      "goal": "Show the brand and offer one exit: to the full package.",
+      "goal": "Show the brand and give three exits that help before sign-up: the full version, the reviews and the guide to working with the skill.",
       "question": "Where am I, and can I see the full product?",
-      "content_description": "Logo and one link to the UX Design Skill full package. None of the site's other menu items.",
-      "content_status": "content-ready",
-      "rationale": "Same top bar as on the audit page."
+      "key_message": "This skill belongs to UX Design Skill: the logo and the first link lead to the full version.",
+      "must_cover": [
+        "The Creative Sparks logo, linking to the UX Design Skill page",
+        "A “UX Design Skill” link to the full version",
+        "A “Reviews” link to the reviews on this page",
+        "A “How it works” link to the UX Design Skill guide"
+      ],
+      "leave_out": "A button in the bar, and the rest of the site menu (Pricing, Free skills, Knowledge base).",
+      "rationale": "The same bar as on the audit page. It doesn't stick when you scroll and has no button, so it doesn't compete with the form. On a phone the links are hidden and only the logo stays. In English the guide link reads “How it works”, the same label as this page's own section, but it leads to the UX Design Skill guide, not to that section; the Polish link has a label of its own."
     },
     {
       "id": "section-map-id-wps-global-footer",
@@ -2195,11 +2339,17 @@
       "page_id": "global",
       "layout": "section-card",
       "narrative": "resolution",
-      "goal": "Give access to the full package, the instructions, contact details and legal documents.",
-      "question": "Where do I find everything else?",
-      "content_description": "Columns: Product (full package, How to use it), Contact ([email address]), Legal (privacy policy, terms of service). Copyright line.",
-      "content_status": "needs-content",
-      "rationale": "Same footer as on the audit page. Email address still to be added."
+      "goal": "Give access to the legal documents, cookie settings, the changelog and contact.",
+      "question": "Where do I find the rest of the information?",
+      "key_message": "The documents, cookie settings, this skill's changelog and contact are always within reach.",
+      "must_cover": [
+        "The logo, linking to the UX Design Skill page",
+        "Privacy policy and Terms of sale",
+        "Cookie settings, which open the consent window",
+        "Changelog, with the free skill's release notes",
+        "Contact by email"
+      ],
+      "rationale": "The same footer as on the audit page, shared across the site; on this page “Changelog” leads to the free skill's changelog. The contact address the first version of the plan left to fill in is now on the page."
     }
   ]
 }
@@ -2253,7 +2403,6 @@
         "{All pages}"
       ],
       "goal": "{Global nav goal — what the main menu has to surface on every page.}",
-      "key_message": "{Core message the nav must land across the site.}",
       "atoms": [
         "{logo}",
         "{nav-items}",
@@ -2266,7 +2415,6 @@
       ],
       "question": "{User question the nav answers at a glance.}",
       "narrative": "{hook}",
-      "content_status": "content-ready",
       "rationale": "{Why this nav architecture globally.}",
       "alternatives": "{Alternative nav patterns considered.}"
     },
@@ -2280,7 +2428,6 @@
         "{Product A}"
       ],
       "goal": "{Section goal — what this section accomplishes on the page.}",
-      "key_message": "{Core message the section must land.}",
       "atoms": [
         "{heading}",
         "{subhead}",
@@ -2293,7 +2440,6 @@
       ],
       "question": "{User question this section answers.}",
       "narrative": "{hook}",
-      "content_status": "content-ready",
       "rationale": "{Priority rationale — anchored to a top task or strategic pillar.}",
       "alternatives": "{Other section treatments considered; why this one was chosen.}"
     },
@@ -2306,7 +2452,6 @@
         "{Home}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{heading}",
         "{grid}",
@@ -2318,7 +2463,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{evidence}",
-      "content_status": "needs-content",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2334,7 +2478,6 @@
         "{Product C}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{heading}",
         "{subhead}",
@@ -2347,7 +2490,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{resolution}",
-      "content_status": "tbd",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2361,7 +2503,6 @@
         "{Product B}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{table}",
         "{note}"
@@ -2371,7 +2512,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{evidence}",
-      "content_status": "needs-content",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2385,7 +2525,6 @@
         "{Product C}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{quote}",
         "{avatar}",
@@ -2396,7 +2535,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{evidence}",
-      "content_status": "tbd",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     },
@@ -2413,7 +2551,6 @@
         "{Summer campaign}"
       ],
       "goal": "{Section goal.}",
-      "key_message": "{Core message.}",
       "atoms": [
         "{columns}",
         "{legal}",
@@ -2424,7 +2561,6 @@
       ],
       "question": "{User question.}",
       "narrative": "{resolution}",
-      "content_status": "content-ready",
       "rationale": "{Priority rationale.}",
       "alternatives": "{Alternatives considered.}"
     }
@@ -2622,14 +2758,17 @@
     pp_strategy_messaging_voice: 'Messaging & Voice',
     pp_strategy_messaging:       'Messaging Hierarchy',
     pp_strategy_voice:           'Voice Brief',
-    // Content-readiness pill short labels
-    pp_content_ready: 'Content ready',
-    pp_needs_content: 'Needs content',
-    pp_tbd_status:    'TBD',
-    pp_section_card_goal:       'Goal:',
-    pp_section_card_message:    'Message:',
-    pp_section_card_content:    'Content:',
-    pp_section_card_readiness:  'Readiness:',
+    // Section card rows + content brief (layout A). `_content` labels the
+    // older-shape items' content row only.
+    pp_section_card_goal:        'Goal:',
+    pp_section_card_question:    'Question:',
+    pp_section_card_key_message: 'Key message:',
+    pp_section_card_must_cover:  'Must cover:',
+    pp_section_card_doubt:       'Doubt it removes:',
+    pp_section_card_proof:       'Proof:',
+    pp_section_card_action:      'Action:',
+    pp_section_card_leave_out:   'Leave out:',
+    pp_section_card_content:     'Content:',
     // Detail block headings
     detail_rationale:      'Rationale',
     detail_alternatives:   'Alternatives considered',
@@ -2640,7 +2779,6 @@
     detail_goal:           'Goal',
     detail_question:       'Question',
     detail_content:        'Content description',
-    detail_content_status: 'Content readiness',
     // Scope group headers
     group_scope_page:    'Page-level',
     group_scope_section: 'Sections',
@@ -2650,16 +2788,13 @@
     // Design plan canvas labels
     pp_inventory_total_templates:          'Unique templates',
     pp_inventory_unique_sections:          'Unique sections',
-    pp_inventory_sections_needing_content: 'Sections needing content',
     // Section Index card field labels (Design plan) — translatable overrides.
     pp_inventory_field_narrative:    'Narrative',
     pp_inventory_field_goal:         'Goal',
     pp_inventory_field_question:     'Question',
-    pp_inventory_field_key_message:  'Key message',
     pp_inventory_field_used_in:      'Used in',
     pp_inventory_field_atoms:        'Atoms',
     pp_inventory_field_variants:     'Variants',
-    pp_inventory_field_readiness:    'Readiness',
     pp_inventory_field_usage:        'Usage',
     pp_inventory_template_map:    'Unique templates',
     pp_inventory_usage_single:    'Single page',
@@ -2674,7 +2809,6 @@
     group_kind_section:  'Sections',
     group_kind_template: 'Templates',
     detail_used_in:      'Used in',
-    detail_key_message:  'Key message',
     detail_atoms:        'Atoms',
     detail_variants:     'Variants',
     detail_pages_using:  'Pages using',
@@ -2720,8 +2854,12 @@
     md_question:             'Question',
     md_content_description:  'Content',
     md_key_message:          'Key message',
+    md_must_cover:           'Must cover',
+    md_doubt:                'Doubt it removes',
+    md_proof:                'Proof',
+    md_action:               'Action',
+    md_leave_out:            'Leave out',
     md_narrative:            'Narrative',
-    md_content_status:       'Content readiness',
     md_top_tasks_served:     'Top tasks served',
     md_element:              'Element',
     md_decision_status:      'Decision status',
@@ -2741,7 +2879,6 @@
     md_inventory_section_template_arch:             'Per-template architecture',
     md_inventory_summary_total_templates:           'Templates',
     md_inventory_summary_unique_sections:           'Unique sections',
-    md_inventory_summary_sections_needing_content:  'Sections needing content',
     md_inventory_template_arch_corp_pool_shared:    'Shared sections',
     md_inventory_template_arch_corp_pool_variants:  'Pool variants',
     md_inventory_template_arch_modular_atoms:       'Atom palette'
@@ -2818,17 +2955,6 @@
   // synthesized `_kind` marker.
   // ============================================================
 
-  const CONTENT_STATUS_MAP = {
-    'content-ready': { cls: 'ui-badge--content-ready', labelKey: 'pp_content_ready' },
-    'needs-content': { cls: 'ui-badge--needs-content', labelKey: 'pp_needs_content' },
-    'tbd':           { cls: 'ui-badge--tbd-status',    labelKey: 'pp_tbd_status' }
-  };
-  function contentStatusPill(status) {
-    const m = CONTENT_STATUS_MAP[status];
-    if (!m) return '';
-    const label = LABELS[m.labelKey] != null ? LABELS[m.labelKey] : status;
-    return '<span class="ui-badge ' + m.cls + '">' + label + '</span>';
-  }
   function narrativeTag(narrative) {
     if (!narrative) return '';
     // Strip placeholder braces so `{hook}` renders as `hook` in the pill
@@ -3110,7 +3236,7 @@
   }
 
   function rowHtml(row, byId, data) {
-    if (row.type === 'summary')       return summaryHtml(data.summary, data);
+    if (row.type === 'summary')       return summaryHtml(data.summary);
     if (row.type === 'heading')       return '<h2 class="ui-card-row-title">' + (row.title || '') + '</h2>';
     if (row.type === 'tree')          return treeRowHtml(resolveTreeRow(row, data));
     if (row.type === 'sitemap')       return treeRowHtml(resolveTreeRow(Object.assign({ kind: 'sitemap', title: row.title || 'Sitemap' }, row), data));
@@ -3162,9 +3288,13 @@
       : '';
     // bullets[] — free-form placeholder list (each entry is a unified `{...}` string
     // rendered verbatim inside <li>). Used by the Alternatives card for behavior
-    // clusters — agent keeps/drops/renames clusters per project.
+    // clusters — agent keeps/drops/renames clusters per project. On that card each
+    // bullet reads "Cluster: what buyers do", so the cluster name renders in bold.
+    const boldName = /^\x7B?context-id-alternative\x7D?$/.test(item.id || '');
     const bulletsHtml = (item.bullets && item.bullets.length)
-      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul>'
+      ? '<ul class="pp-bullets">' + item.bullets.map(function(b) {
+          return '<li>' + (boldName ? String(b).replace(/^(\x7B?)([^:\x7B\x7D<]+):/, '$1<strong>$2</strong>:') : b) + '</li>';
+        }).join('') + '</ul>'
       : '';
     const metaPillsHtml = (item.meta_pills || []).map(plainChip).join('');
     const confPill = item.confidence
@@ -3226,25 +3356,63 @@
       + '</article>';
   }
 
-  // Six-field section card — Name + narrative tag (inline in h4);
-  // then labeled rows for Goal / Message / Content; readiness pill labeled
-  // in .ui-card__meta. Confidence is NOT rendered on the card —
-  // rationale + confidence live in the left panel.
+  // Section card, layout A (schema §Section card (layout A)) — Name +
+  // narrative tag (inline in h4); labeled Goal and Question rows; then the
+  // content brief as one labeled list (Key message, Must cover as a bulleted
+  // sub-list, then Doubt it removes / Proof / Action / Leave out, each only
+  // when present). An older-shape item (no key_message, no must_cover —
+  // written before 4.7) shows its Content row in place of the brief; its
+  // legacy readiness field is ignored. Confidence is NOT rendered on the
+  // card — rationale + confidence live in the left panel.
   function sectionCardHtml(item) {
     const heading = item.name || item.title || '';
     const narrInline = item.narrative ? ' ' + narrativeTag(item.narrative) : '';
-    const readinessPill = contentStatusPill(item.content_status);
-    const fields = [
-      sectionFieldRow(LABELS.pp_section_card_goal      || 'Goal:',      item.goal),
-      sectionFieldRow(LABELS.pp_section_card_message   || 'Message:',   item.question),
-      sectionFieldRow(LABELS.pp_section_card_readiness || 'Readiness:', readinessPill),
-      sectionFieldRow(LABELS.pp_section_card_content   || 'Content:',   sectionContentValue(item.content_description))
-    ].join('');
+    const mustCover = sectionListEntries(item.must_cover);
+    const rows = [
+      sectionFieldRow(LABELS.pp_section_card_goal     || 'Goal:',     item.goal),
+      sectionFieldRow(LABELS.pp_section_card_question || 'Question:', item.question)
+    ];
+    if (item.key_message || mustCover.length) {
+      const mustCoverList = mustCover.length
+        ? '<ul>' + mustCover.map(function(c) { return '<li>' + c + '</li>'; }).join('') + '</ul>'
+        : '';
+      rows.push(sectionBriefList([
+        sectionBriefPart(LABELS.pp_section_card_key_message || 'Key message:',      item.key_message),
+        sectionBriefPart(LABELS.pp_section_card_must_cover  || 'Must cover:',       mustCoverList),
+        sectionBriefPart(LABELS.pp_section_card_doubt       || 'Doubt it removes:', item.doubt),
+        sectionBriefPart(LABELS.pp_section_card_proof       || 'Proof:',            item.proof),
+        sectionBriefPart(LABELS.pp_section_card_action      || 'Action:',           item.action),
+        sectionBriefPart(LABELS.pp_section_card_leave_out   || 'Leave out:',        item.leave_out)
+      ]));
+    } else {
+      rows.push(sectionFieldRow(LABELS.pp_section_card_content || 'Content:', sectionContentValue(item.content_description)));
+    }
     return ''
       + '<article class="ui-card' + cardNoDetailClass(item) + '" data-id="' + item.id + '">'
       +   '<h4>' + heading + narrInline + '</h4>'
-      +   fields
+      +   rows.join('')
       + '</article>';
+  }
+
+  // The content brief list. Its top border (CSS) is the divider between the
+  // Goal / Question rows and the brief. Parts that rendered empty drop out.
+  function sectionBriefList(parts) {
+    const html = parts.join('');
+    return html ? '<ul class="pp-section-card__brief">' + html + '</ul>' : '';
+  }
+
+  // One labeled part of the brief. An empty value (missing, null or '')
+  // prints no <li> and no label.
+  function sectionBriefPart(label, value) {
+    if (!value) return '';
+    return '<li><span class="pp-section-card__field-label">' + label + '</span>' + value + '</li>';
+  }
+
+  // List-valued section field → non-empty entries. An array keeps its order;
+  // a lone string is one entry; anything else is none.
+  function sectionListEntries(value) {
+    const items = Array.isArray(value) ? value : (value ? [value] : []);
+    return items.filter(function(c) { return c != null && c !== ''; });
   }
 
   // One labeled row inside a section card. Value can be a string (inline
@@ -3311,8 +3479,8 @@
     // longer render on Design plan, so the field is dead signal on the card.
     // Priority moves to .ui-card__meta at the bottom as a labeled colored
     // pill (red/amber/green via PRIORITY_MAP) with top separator.
-    // Readiness uses the colored pill (matches Section map's labeled-row
-    // treatment) instead of plain text.
+    // No readiness and no key message: an older entry that still carries
+    // either shows without it.
     const L = function(key, fallback) {
       const v = LABELS[key];
       if (v == null) return fallback;
@@ -3323,11 +3491,9 @@
       item.narrative           ? metaSeg(L('pp_inventory_field_narrative',    'Narrative'),    item.narrative)                        : '',
       item.goal                ? metaSeg(L('pp_inventory_field_goal',         'Goal'),         item.goal)                             : '',
       item.question            ? metaSeg(L('pp_inventory_field_question',     'Question'),     item.question)                         : '',
-      item.key_message         ? metaSeg(L('pp_inventory_field_key_message',  'Key message'),  item.key_message)                      : '',
       listSeg(L('pp_inventory_field_used_in', 'Used in'), item.used_in),
       listChipsSeg(L('pp_inventory_field_atoms',    'Atoms'),    item.atoms),
-      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants),
-      item.content_status      ? metaSeg(L('pp_inventory_field_readiness',    'Readiness'),    contentStatusPill(item.content_status)) : ''
+      listChipsSeg(L('pp_inventory_field_variants', 'Variants'), item.variants)
     ].join('');
     const priorityMeta = item.priority_tier
       ? '<div class="ui-card__meta"><span class="ui-card__meta-label">' + LABELS.axis_priority + ':</span>' + pill(PRIORITY_MAP, item.priority_tier) + '</div>'
@@ -3401,7 +3567,7 @@
       return it.scope === 'section' && it.page_id === row.page_id;
     });
     // Section cards stack vertically on Section map — one column, section cards
-    // carry multi-line content (Goal + Message + bullets + readiness pill).
+    // carry multi-line content (Goal + Question rows + the content brief).
     const variant = 'one';
     const cardsHtml = sectionItems.map(cardHtml).join('');
     return ''
@@ -3411,23 +3577,17 @@
       + '</section>';
   }
 
-  function summaryHtml(summary, data) {
+  // Two figures. A legacy summary.sections_needing_content (plans written
+  // before 4.7) is ignored — readiness is gone.
+  function summaryHtml(summary) {
     if (!summary) return '';
     function stat(n, labelKey, fallback) {
       return '<div class="pp-summary__stat"><div class="pp-summary__n">' + (n != null ? n : '') + '</div><div class="pp-summary__label">' + (LABELS[labelKey] || fallback) + '</div></div>';
     }
-    // Sections needing content = count of section_index entries whose
-    // content_status is NOT content-ready. Derived (not persisted) because
-    // it's a view over data the agent already wrote.
-    const sections = (data && data.section_index) || [];
-    const needingContent = summary.sections_needing_content != null
-      ? summary.sections_needing_content
-      : sections.filter(function(s) { return s.content_status && s.content_status !== 'content-ready'; }).length;
     return ''
       + '<div class="pp-summary">'
-      +   stat(summary.total_templates,  'pp_inventory_total_templates',          'Unique templates')
-      +   stat(summary.unique_sections,  'pp_inventory_unique_sections',          'Unique sections')
-      +   stat(needingContent,           'pp_inventory_sections_needing_content', 'Sections needing content')
+      +   stat(summary.total_templates,  'pp_inventory_total_templates', 'Unique templates')
+      +   stat(summary.unique_sections,  'pp_inventory_unique_sections', 'Unique sections')
       + '</div>';
   }
 
@@ -3885,7 +4045,7 @@
   }
 
   // ---- Section map detail — rationale + alternatives only. Section card
-  // fields (Goal / Message / Readiness / Content) are already on the canvas
+  // fields (Goal / Question / content brief) are already on the canvas
   // card; repeating them in the panel is redundant. ----
   function renderSectionMapDetail(id) {
     view = 'detail';
@@ -3955,7 +4115,7 @@
   }
 
   // ---- Design plan detail — rationale + alternatives only. Priority /
-  // usage / used-in / atoms / variants / goal / key_message / narrative
+  // usage / used-in / atoms / variants / goal / narrative
   // all live on the canvas card already. Panel surfaces only the "why". ----
   function renderInventoryDetail(id) {
     view = 'detail';
@@ -4173,12 +4333,6 @@
     if (t === 'modular')        return LABELS.template_modular;
     return t || '';
   }
-  function _md_contentStatusLabel(s) {
-    if (s === 'content-ready') return LABELS.pp_content_ready;
-    if (s === 'needs-content') return LABELS.pp_needs_content;
-    if (s === 'tbd')           return LABELS.pp_tbd_status;
-    return s || '';
-  }
   function _md_joinChips(arr) {
     if (!arr || !arr.length) return '';
     return arr.map(_md_stripBraces).join(', ');
@@ -4347,17 +4501,32 @@
       var pageSections = sections.filter(function(s) { return s.page_id === page.page_id; });
       pageSections.forEach(function(s) {
         // Heading shape per schema's MD export contract:
-        // ### {Title} — {narrative} ({confidence}, {content_status})
+        // ### {Title} — {narrative} ({confidence})
         var heading = '### ' + _md_stripBraces(s.title || s.id || '');
         if (s.narrative) heading += ' — ' + _md_stripBraces(s.narrative);
         var pillBits = [];
         if (s.confidence)     pillBits.push(_md_confidenceLabel(s.confidence));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.goal)                parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)            parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.content_description) parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        // Content brief, in the card's order; Must cover nests its entries
+        // two spaces in. An older-shape item (no key_message, no must_cover)
+        // keeps its content line in place of the brief.
+        var mustCover = sectionListEntries(s.must_cover);
+        if (s.key_message || mustCover.length) {
+          if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
+          if (mustCover.length) {
+            parts.push('- **' + LABELS.md_must_cover + ':**');
+            mustCover.forEach(function(c) { parts.push('  - ' + _md_stripBraces(c)); });
+          }
+          if (s.doubt)     parts.push('- **' + LABELS.md_doubt + ':** ' + _md_stripBraces(s.doubt));
+          if (s.proof)     parts.push('- **' + LABELS.md_proof + ':** ' + _md_stripBraces(s.proof));
+          if (s.action)    parts.push('- **' + LABELS.md_action + ':** ' + _md_stripBraces(s.action));
+          if (s.leave_out) parts.push('- **' + LABELS.md_leave_out + ':** ' + _md_stripBraces(s.leave_out));
+        } else if (s.content_description) {
+          parts.push('- **' + LABELS.md_content_description + ':** ' + _md_stripBraces(s.content_description));
+        }
         if (s.rationale)           parts.push('- **' + LABELS.md_rationale + ':** ' + _md_stripBraces(s.rationale));
         if (s.alternatives)        parts.push('- **' + LABELS.md_alternatives + ':** ' + _md_stripBraces(s.alternatives));
         parts.push('');
@@ -4371,13 +4540,9 @@
     data = data || INVENTORY;
     var parts = ['# ' + LABELS.md_pp_inventory_title, ''];
     var summary = data.summary || {};
-    var sectionsNeeding = (typeof summary.sections_needing_content === 'number')
-      ? summary.sections_needing_content
-      : (data.section_index || []).filter(function(s) { return s.content_status !== 'content-ready'; }).length;
     parts.push('## ' + LABELS.md_inventory_section_summary, '');
     parts.push('- **' + LABELS.md_inventory_summary_total_templates + ':** ' + (summary.total_templates || 0));
     parts.push('- **' + LABELS.md_inventory_summary_unique_sections + ':** ' + (summary.unique_sections || 0));
-    parts.push('- **' + LABELS.md_inventory_summary_sections_needing_content + ':** ' + sectionsNeeding);
     parts.push('', '---', '');
     var templateMap = data.template_map || [];
     if (templateMap.length) {
@@ -4404,7 +4569,6 @@
         var pillBits = [];
         if (s.priority_tier)  pillBits.push(_md_priorityLabel(s.priority_tier));
         if (s.template_type)  pillBits.push(_md_templateTypeLabel(s.template_type));
-        if (s.content_status) pillBits.push(_md_contentStatusLabel(s.content_status));
         if (pillBits.length) heading += ' (' + pillBits.join(', ') + ')';
         parts.push(heading, '');
         if (s.narrative)   parts.push('- **' + LABELS.md_narrative + ':** ' + _md_stripBraces(s.narrative));
@@ -4413,7 +4577,6 @@
         }
         if (s.goal)        parts.push('- **' + LABELS.md_goal + ':** ' + _md_stripBraces(s.goal));
         if (s.question)    parts.push('- **' + LABELS.md_question + ':** ' + _md_stripBraces(s.question));
-        if (s.key_message) parts.push('- **' + LABELS.md_key_message + ':** ' + _md_stripBraces(s.key_message));
         if (s.atoms && s.atoms.length) {
           parts.push('- **' + LABELS.md_atoms + ':** ' + _md_joinChips(s.atoms));
         }
