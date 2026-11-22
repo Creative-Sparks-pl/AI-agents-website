@@ -2,6 +2,18 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.7.0 — 2026-11-22
+
+### Added
+- The free sign-up re-subscribes a contact who had opted out of all email: a sign-up is fresh consent to email, and until now such a person was granted the skill and never got the install email. It happens only after a genuinely new grant, and after the form has answered, so the form neither waits for Easymail nor fails with it. A holder who submits again and a suppressed contact (undeliverable after bounces or complaints) are left untouched; no contact is created and no list is changed.
+- Both privacy policies (dated 2026-11-22) gain a purpose line: license service events (whether and when the skill was downloaded, installed and started) time and tailor the product emails, on the same bases as those emails (GDPR article 6(1)(a) and (b)). From the same events I count how many users of a free skill later buy a paid package, on my legitimate interest in knowing how the offer works (GDPR article 6(1)(f)).
+
+### Changed
+- The policies' Easytools recipient entry adds that the stage reached with a skill (downloaded, installed, started) is kept with the contact in Easymail, so that the product emails can be timed.
+- `EASYMAIL_API_KEY` is now needed in the Vercel project: the re-subscribe uses it (set for Preview and Production on 2026-11-22). Without it the sign-up still grants and skips the re-subscribe. `AGENTS.md` names both places.
+- `@vercel/functions` is declared as a dependency (the Vercel adapter already installed it): it keeps the re-subscribe running after the form's answer.
+- `docs/analytics/metrics.md` points to the license service report for the free-skill numbers past the sign-up (such as links sent, downloaded, installed, started and bought paid).
+
 ## 1.6.3 — 2026-11-21
 
 ### Changed
