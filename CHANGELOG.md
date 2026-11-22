@@ -2,6 +2,16 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.7.2 — 2026-11-22
+
+### Changed
+- Install copy matches the personal-link install. The install section's heading (product and audit pages) reads "Instalujesz, wklejając jedną instrukcję" / "Install by pasting one instruction", and the planning page's final section says you paste the instruction from the email, instead of "one command". "Bez backendu" / "No backend" is gone from the paid hero and the install intro, since every start checks the licence with a server.
+- The architecture section's folder tree shows the install folder `skills/ux-design/`; the package list says your agent installs the skill from INSTALL.md and asks before each step, instead of listing INSTALL.md as a guide to read.
+- The planning page's FAQ heading reads "przed instalacją" / "before you install"; the audit page's final section names Codex and Cursor beside Claude Code.
+- English pages: the top-bar and page links to the guide read "User guide" (the address is unchanged), so they no longer share "How it works" with the steps section.
+- The example plans and wireframes follow the new copy.
+- `docs/checkout/cart-copy.md`: free planning access is 60 days, as set in Easytools.
+
 ## 1.7.1 — 2026-11-22
 
 ### Changed
