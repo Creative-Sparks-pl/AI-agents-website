@@ -20,6 +20,9 @@ export default defineConfig({
 
   integrations: [
     sitemap({
+      // The email answer page (/answer/, /en/answer/) is reached only from email links and carries
+      // noindex, so it stays out of the sitemap.
+      filter: (page) => !['/answer/', '/en/answer/'].includes(new URL(page).pathname),
       i18n: {
         defaultLocale: 'pl',
         locales: {
