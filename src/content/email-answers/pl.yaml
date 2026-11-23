@@ -1,0 +1,24 @@
+# The thank-you page for one-click answers in emails (/answer/?mail=…&odp=…).
+# A new one-click email adds its answers here and in en.yaml, with the same mail + odp values.
+title: Dzięki za odpowiedź | Creative Sparks
+description: Dzięki za odpowiedź na mój mail.
+
+# Shown for a missing or unknown mail + odp, and when scripts do not run.
+fallback:
+  heading: Dzięki za odpowiedź.
+  text: Możesz zamknąć tę kartę.
+
+answers:
+  # Day-12 onboarding email, free planning skill not run yet ("Na jakim etapie jesteś?").
+  - mail: n3
+    odp: sprobuje
+    heading: Dzięki za odpowiedź.
+    text: Twój osobisty link do instalacji jest w mailu z linkiem do instalacji. Wklej go razem z instrukcją do Claude Code, Codex albo Cursora. Jeśli coś nie zadziała, odpowiedz na mój mail, a pomogę.
+  - mail: n3
+    odp: pozniej
+    heading: Dzięki za odpowiedź.
+    text: Kiedy zechcesz wrócić do skilla, Twój link i instrukcja są w mailu z linkiem do instalacji.
+  - mail: n3
+    odp: nie-dla-mnie
+    heading: Dzięki za szczerą odpowiedź.
+    text: To był mój ostatni mail o skillu.

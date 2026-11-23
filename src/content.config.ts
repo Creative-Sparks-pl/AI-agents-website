@@ -375,6 +375,24 @@ const footer = defineCollection({
 
 // Cookie banner text and the cookie list, one file per language. The schema lives with the
 // banner configuration builder so unit tests can validate the files without Astro.
+// The thank-you page for one-click answers in emails (/answer/, /en/answer/), one file per language.
+// A link's `mail` (which email asked) and `odp` (the answer) pick an entry; anything else shows the
+// fallback. Both files hold the same mail + odp pairs (tests/unit/email-answers.spec.ts).
+const answerTextSchema = z.object({
+  heading: z.string().min(1),
+  text: z.string().min(1),
+});
+
+const emailAnswers = defineCollection({
+  loader: glob({ pattern: '**/*.yaml', base: './src/content/email-answers' }),
+  schema: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    fallback: answerTextSchema,
+    answers: z.array(answerTextSchema.extend({ mail: z.string().min(1), odp: z.string().min(1) })),
+  }),
+});
+
 const consent = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/consent' }),
   schema: consentContentSchema,
@@ -406,5 +424,6 @@ export const collections = {
   changelog,
   nav,
   footer,
+  'email-answers': emailAnswers,
   consent,
 };
