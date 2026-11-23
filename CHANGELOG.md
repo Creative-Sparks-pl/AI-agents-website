@@ -2,6 +2,12 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.7.3 — 2026-11-23
+
+### Changed
+- The line under the pricing heading says what the buyer gets: "Płacisz raz i skill jest Twój na stałe. Bonus: 12 miesięcy darmowych aktualizacji do kolejnych wersji." / "Pay once and the skill is yours to keep. Bonus: 12 months of free updates to every new version.", with the changelog link. The English pricing section now has this line too.
+- The example plan and wireframes follow the new line.
+
 ## 1.7.2 — 2026-11-22
 
 ### Changed

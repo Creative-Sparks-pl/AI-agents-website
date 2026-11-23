@@ -2806,13 +2806,23 @@
           "purpose": "Show the three packages side by side and help visitors choose with one question, whether they design for their own business or for clients; each card leads straight to its package's checkout.",
           "userQuestion": "How much does it cost, and which package is for me?",
           "narrative": "resolution",
-          "layout": "Section header (H2 as a question) above a 3-col grid: Founder, Solo Designer (highlighted background), Studio. A card: number of users, name, price with the tax note, a value sentence, a list with check icons, a “Buy …” button at the bottom. Under the grid, the license terms centered and a line about the 14-day refund with an icon.",
+          "layout": "Section header (H2 as a question, a sentence about paying once and the update bonus with a link to the changelog) above a 3-col grid: Founder, Solo Designer (highlighted background), Studio. A card: number of users, name, price with the tax note, a value sentence, a list with check icons, a “Buy …” button at the bottom. Under the grid, the license terms centered and a line about the 14-day refund with an icon.",
           "elements": [
             {
               "kind": "heading",
               "level": 2,
               "text": "Do you design sites for your own business or for clients?",
               "id": "pricing-heading"
+            },
+            {
+              "kind": "paragraph",
+              "text": "Pay once and the skill is yours to keep. Bonus: 12 months of free updates to every new version."
+            },
+            {
+              "kind": "link",
+              "label": "See changelog",
+              "variant": "arrow",
+              "href": "/en/ux-design-skill/changelog/"
             },
             {
               "kind": "grid",
@@ -2980,14 +2990,6 @@
               ],
               "confidence": "high",
               "attached_to": "pricing-solo"
-            },
-            {
-              "id": "pricing-no-updates-line",
-              "summary": "No line about free updates under the heading, unlike the Polish page",
-              "reasoning": "Under the heading, the Polish page has a sentence about 12 months of free updates with a “See changelog” link. The English page shows only the question, so the wireframe has neither; the updates appear in the cards and in the terms line under them.",
-              "alternatives": [],
-              "confidence": "high",
-              "attached_to": "pricing-heading"
             }
           ],
           "interactionNotes": []

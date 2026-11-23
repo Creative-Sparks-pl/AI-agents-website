@@ -21,11 +21,17 @@ const plans = (await getLocalizedCollection('pricing', locale))
 const copy = locale === 'en'
   ? {
       heading: 'Do you design sites for your own business or for clients?',
+      ownershipLine: 'Pay once and the skill is yours to keep. Bonus: 12 months of free updates to every new version.',
+      changelogLabel: 'See changelog',
+      changelogHref: '/en/ux-design-skill/changelog/',
       termsLine: 'One-time license · 12 months of updates · then renewal at about half the price',
       refundNote: '14-day refund. Not a fit? Return it.',
     }
   : {
       heading: 'Projektujesz strony dla swojej firmy czy dla klientów?',
+      ownershipLine: 'Płacisz raz i skill jest Twój na stałe. Bonus: 12 miesięcy darmowych aktualizacji do kolejnych wersji.',
+      changelogLabel: 'Zobacz changelog',
+      changelogHref: '/ux-design-skill/changelog/',
       termsLine: 'Jednorazowa licencja · 12 miesięcy aktualizacji · potem przedłużenie za ok. połowę ceny',
       refundNote: '14 dni na sprawdzenie. Nie pasuje, oddajesz.',
     };
@@ -43,14 +49,12 @@ const copy = locale === 'en'
         <h2 id="pricing-heading" class="font-headline text-4xl md:text-5xl font-bold text-foreground leading-[1.1] tracking-tight">
           {copy.heading}
         </h2>
-        {locale === 'pl' && (
-          <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
-            12 miesięcy darmowych aktualizacji w cenie.
-            <LinkArrow href="/ux-design-skill/changelog/" class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
-              Zobacz changelog
-            </LinkArrow>
-          </p>
-        )}
+        <p class="text-lg md:text-xl text-muted leading-relaxed mt-6">
+          {copy.ownershipLine}
+          <LinkArrow href={copy.changelogHref} class="ml-2 align-baseline text-base [&_.material-symbols-outlined]:text-base">
+            {copy.changelogLabel}
+          </LinkArrow>
+        </p>
       </Fragment>
 
       {/* The first card reports "Pricing seen": on phones the whole section is too tall to be half on screen.
