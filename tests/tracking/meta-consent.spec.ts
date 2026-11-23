@@ -136,3 +136,31 @@ declare global {
     trackConversion?: (eventName: string, params?: Record<string, unknown>) => void;
   }
 }
+
+// The email answer page loads no Meta at all (the layout's metaPixel switch is off there), so even
+// "Accept all" sends nothing to Meta. The tests above on /ux-design-skill/ show that Meta still
+// works where it should, so an empty result here means the switch, not a broken Meta setup.
+for (const { path, acceptAll } of [
+  { path: '/answer/?mail=n3&odp=pozniej', acceptAll: 'Akceptuj wszystkie' },
+  { path: '/en/answer/?mail=n3&odp=pozniej', acceptAll: 'Accept all' },
+]) {
+  test(`meta consent: ${path} sends nothing to Meta, even after "Accept all"`, async ({ page }) => {
+    const metaRequests: string[] = [];
+    page.on('request', (request) => {
+      if (/(^|\.)facebook\.(net|com)$/.test(new URL(request.url()).hostname)) metaRequests.push(request.url());
+    });
+    const calls = await catchCapi(page);
+    const response = await page.goto(path);
+    expect(response?.status()).toBe(200);
+    await expect(page.locator('main h1')).toHaveCount(1);
+    await expect(page.locator('script[data-service="meta-pixel"]')).toHaveCount(0);
+
+    await banner(page).getByRole('button', { name: acceptAll, exact: true }).click();
+    await expect(banner(page)).toBeHidden();
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(500);
+    expect(calls(), 'nothing posted to /api/meta-capi').toEqual([]);
+    expect(metaRequests, 'no request to Meta').toEqual([]);
+    expect(await page.evaluate(() => typeof (window as unknown as { fbq?: unknown }).fbq)).toBe('undefined');
+  });
+}
