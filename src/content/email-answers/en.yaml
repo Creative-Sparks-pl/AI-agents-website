@@ -13,12 +13,12 @@ answers:
   - mail: n3
     odp: sprobuje
     heading: Thanks for your answer.
-    text: Your personal install link is in the email with your install link. Paste it into Claude Code, Codex or Cursor along with the instructions. If something doesn't work, reply to my email and I'll help.
+    text: Your personal install link is in the email with your install link. Paste it into Claude Code, Codex or Cursor along with the instructions. If something doesn't work, reply to my email and I'll help. You can close this tab now.
   - mail: n3
     odp: pozniej
     heading: Thanks for your answer.
-    text: Whenever you want to come back to the skill, your link and the instructions are in the email with your install link.
+    text: Whenever you want to come back to the skill, your link and the instructions are in the email with your install link. You can close this tab now.
   - mail: n3
     odp: nie-dla-mnie
     heading: Thanks for your honest answer.
-    text: That was my last email about the skill.
+    text: That was my last email about the skill. You can close this tab now.

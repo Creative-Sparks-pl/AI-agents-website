@@ -127,8 +127,10 @@ test.describe('email answer page', () => {
       // The note: photo, name and contact from the author content.
       const owner = author(locale);
       const note = page.locator('[data-email-answer]');
-      const photo = note.locator('img');
-      await expect(photo).toHaveAttribute('alt', `${owner.nameFirst} ${owner.nameLast}`);
+      // The photo is the one image with the owner's name; the decorative shape beside it is hidden from readers.
+      const photo = note.getByRole('img', { name: `${owner.nameFirst} ${owner.nameLast}`, exact: true });
+      await expect(photo).toHaveCount(1);
+      await expect(note.locator('img[aria-hidden="true"][alt=""]')).toHaveCount(1);
       await expect(note.locator('[data-answer-name]')).toHaveText(`${owner.nameFirst} ${owner.nameLast}`);
       await expect(note.locator(`a[href="mailto:${owner.email}"]`)).toHaveText(owner.email);
       await expect(note.locator(`a[href="${owner.linkedIn}"]`)).toHaveCount(1);

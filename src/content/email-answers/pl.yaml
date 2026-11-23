@@ -13,12 +13,12 @@ answers:
   - mail: n3
     odp: sprobuje
     heading: Dzięki za odpowiedź.
-    text: Twój osobisty link do instalacji jest w mailu z linkiem do instalacji. Wklej go razem z instrukcją do Claude Code, Codex albo Cursora. Jeśli coś nie zadziała, odpowiedz na mój mail, a pomogę.
+    text: Twój osobisty link do instalacji jest w mailu z linkiem do instalacji. Wklej go razem z instrukcją do Claude Code, Codex albo Cursora. Jeśli coś nie zadziała, odpowiedz na mój mail, a pomogę. Możesz zamknąć tę kartę.
   - mail: n3
     odp: pozniej
     heading: Dzięki za odpowiedź.
-    text: Kiedy zechcesz wrócić do skilla, Twój link i instrukcja są w mailu z linkiem do instalacji.
+    text: Kiedy zechcesz wrócić do skilla, Twój link i instrukcja są w mailu z linkiem do instalacji. Możesz zamknąć tę kartę.
   - mail: n3
     odp: nie-dla-mnie
     heading: Dzięki za szczerą odpowiedź.
-    text: To był mój ostatni mail o skillu.
+    text: To był mój ostatni mail o skillu. Możesz zamknąć tę kartę.
