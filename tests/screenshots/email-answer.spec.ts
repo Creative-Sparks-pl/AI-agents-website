@@ -136,11 +136,14 @@ test.describe('email answer page', () => {
       await expect(note.locator(`a[href="${owner.linkedIn}"]`)).toHaveCount(1);
       await expect(note.locator('a[href*="cennik"], a[href*="pricing"], a[href*="cart."]')).toHaveCount(0);
 
-      // Photo left of the message on wide screens, above it on phones.
+      // One column: the small round photo below the message, the name and contact to its right.
       const photoBox = (await photo.boundingBox())!;
-      const headingBox = (await heading(page).boundingBox())!;
-      if (widthOf(testInfo) >= 1024) expect(photoBox.x + photoBox.width).toBeLessThanOrEqual(headingBox.x);
-      else expect(photoBox.y + photoBox.height).toBeLessThanOrEqual(headingBox.y);
+      const messageBox = (await message(page).boundingBox())!;
+      const nameBox = (await note.locator('[data-answer-name]').boundingBox())!;
+      expect(photoBox.y).toBeGreaterThanOrEqual(messageBox.y + messageBox.height);
+      expect(nameBox.x).toBeGreaterThanOrEqual(photoBox.x + photoBox.width);
+      expect(photoBox.width).toBeLessThanOrEqual(128);
+      expect(await photo.evaluate((img) => getComputedStyle(img).borderRadius)).not.toBe('0px');
 
       // Head: kept out of search, canonical and language links without the query string, Umami's count.
       await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex');
