@@ -73,6 +73,8 @@ test.beforeEach(async ({ page, baseURL }) => {
 /** Opens a page and checks it exists, so every test fails while the page is missing. */
 async function open(page: Page, path: string) {
   await openPage(page, path);
+  // One main heading on the whole page, and it sits in <main>.
+  await expect(page.locator('h1')).toHaveCount(1);
   await expect(heading(page)).toHaveCount(1);
 }
 
