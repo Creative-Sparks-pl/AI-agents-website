@@ -156,6 +156,13 @@ test.describe('email answer page', () => {
       await shoot(page, page.locator('body'), `email-answer-${locale}-${widthOf(testInfo)}`);
     });
 
+    test(`${locale}: on a tall screen the footer sits at the bottom edge`, async ({ page }, testInfo) => {
+      await page.setViewportSize({ width: widthOf(testInfo), height: 1600 });
+      await open(page, `${pagePath(locale)}?mail=n3&odp=pozniej`);
+      const footer = (await page.locator('footer').boundingBox())!;
+      expect(Math.round(footer.y + footer.height)).toBe(1600);
+    });
+
     test(`${locale}: first visit shows the cookie banner; the footer link reopens the settings`, async ({ page }) => {
       await blockThirdParty(page);
       const response = await page.goto(pagePath(locale), { waitUntil: 'load' });

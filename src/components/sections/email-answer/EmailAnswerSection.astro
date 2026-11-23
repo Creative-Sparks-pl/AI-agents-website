@@ -25,7 +25,7 @@ const texts = answers.map(({ mail, odp, heading, text }) => ({ mail, odp, headin
 ---
 
 <section
-  class:list={['py-16 md:py-24', className]}
+  class:list={['py-16 md:py-24 bg-surface-primary', className]}
   aria-labelledby="email-answer-heading"
   data-email-answer
   {...rest}
@@ -40,9 +40,8 @@ const texts = answers.map(({ mail, odp, heading, text }) => ({ mail, odp, headin
       >
         {fallback.heading}
       </h1>
-      <p class="text-lg md:text-xl text-muted leading-relaxed font-body" data-answer-text>
-        {fallback.text}
-      </p>
+      <!-- pre-line keeps the line breaks in a text, so "you can close this tab" stands on its own line. -->
+      <p class="text-lg md:text-xl text-muted leading-relaxed font-body whitespace-pre-line" data-answer-text>{fallback.text}</p>
       <!-- Runs right after the text, before the page is painted, so the right answer shows with no flicker. -->
       <script is:inline define:vars={{ texts }}>
         var params = new URLSearchParams(window.location.search);

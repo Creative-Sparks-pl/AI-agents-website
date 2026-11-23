@@ -11,9 +11,12 @@ const { title, description } = (await requireLocalizedEntry('email-answers', 'pl
 ---
 
 <BaseLayout title={title} description={description} noindex metaPixel={false}>
-  <TopAppBar navLinks={[]} showCta={false} />
-  <main>
-    <EmailAnswerSection />
-  </main>
-  <Footer />
+  <!-- At least one screen tall, so the footer sits at the bottom edge and the blue note fills the space above it. -->
+  <div class="min-h-screen flex flex-col">
+    <TopAppBar navLinks={[]} showCta={false} />
+    <main class="flex-1 flex flex-col">
+      <EmailAnswerSection class="flex-1 flex flex-col justify-center" />
+    </main>
+    <Footer />
+  </div>
 </BaseLayout>
