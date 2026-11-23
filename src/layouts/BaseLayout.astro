@@ -22,6 +22,11 @@ interface Props {
   viewContent?: ViewContentParams;
   /** Loads PostHog recordings + heatmaps after statistics consent. Landing pages only. */
   posthog?: boolean;
+  /** Asks search engines not to index the page (robots noindex). Off by default. */
+  noindex?: boolean;
+  /** Loads the Meta Pixel and its PageView / ViewContent after marketing consent. On by default;
+   *  `false` keeps Meta off the page whatever the consent (the email answer page). */
+  metaPixel?: boolean;
 }
 
 const locale = localeFromPathname(Astro.url.pathname);
@@ -38,6 +43,8 @@ const {
   canonical,
   viewContent,
   posthog = false,
+  noindex = false,
+  metaPixel = true,
 } = Astro.props;
 const canonicalURL = new URL(canonical ?? Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site).toString();
@@ -94,6 +101,7 @@ const productStructuredData = locale === 'en'
     };
 
 const metaPixelId = import.meta.env.PUBLIC_META_PIXEL_ID as string | undefined;
+const loadMetaPixel = metaPixel && Boolean(metaPixelId);
 
 // PostHog Cloud EU. The project key is public by design, like Umami's website ID.
 const POSTHOG_PROJECT_KEY = 'phc_xJEvm2rFYcD3VKe3BQb2zPpAaWqVZRe7zBqYUwhsgG5t';
@@ -144,6 +152,7 @@ const consentStorageJson = JSON.stringify(consentStorage).replace(/</g, '\\u003c
 
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
 
     <link rel="canonical" href={canonicalURL.toString()} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -199,7 +208,7 @@ const consentStorageJson = JSON.stringify(consentStorage).replace(/</g, '\\u003c
       import '../scripts/consent';
     </script>
 
-    {metaPixelId && (
+    {loadMetaPixel && (
       <Fragment>
         <!-- Meta Pixel (runs only after marketing consent in the cookie banner).
              Init only — the deduplicated PageView fires via queueConversion below
@@ -366,7 +375,7 @@ fbq('init', '${metaPixelId}');
       })();
     </script>
 
-    {metaPixelId && (
+    {loadMetaPixel && (
       <script is:inline>
         // Deduplicated PageView — fires once per page load after consent.
         // Pixel + CAPI share an event_id so Meta dedupes both signals.
@@ -376,7 +385,7 @@ fbq('init', '${metaPixelId}');
       </script>
     )}
 
-    {viewContent && (
+    {metaPixel && viewContent && (
       <script is:inline define:vars={{ viewContentParams: viewContent }}>
         if (typeof window.queueConversion === 'function') {
           window.queueConversion('ViewContent', viewContentParams);

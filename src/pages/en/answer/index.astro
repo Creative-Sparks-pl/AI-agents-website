@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../../components/sections/footer/Footer.astro';
+import EmailAnswerSection from '../../../components/sections/email-answer/EmailAnswerSection.astro';
+import { requireLocalizedEntry } from '../../../lib/i18n';
+
+// The thank-you page for one-click answers in emails (/en/answer/?mail=…&odp=…). Hidden from
+// search and left out of the sitemap; no Meta here. The texts live in src/content/email-answers/.
+const { title, description } = (await requireLocalizedEntry('email-answers', 'en')).data;
+
+// Two quiet links for a curious reader: reviews and the free skills. No price link, no button.
+const navLinks: { label: string; href: string }[] = [
+  { label: 'UX Design Skill reviews', href: '/en/ux-design-skill/#reviews' },
+  { label: 'Free skills', href: '/en/ux-design-skill/#try-for-free' },
+];
+---
+
+<BaseLayout title={title} description={description} noindex metaPixel={false}>
+  <!-- At least one screen tall, so the footer sits at the bottom edge and the blue note fills the space above it. -->
+  <div class="min-h-screen flex flex-col">
+    <TopAppBar navLinks={navLinks} showCta={false} />
+    <main class="flex-1 flex flex-col">
+      <EmailAnswerSection class="flex-1 flex flex-col justify-center" />
+    </main>
+    <Footer />
+  </div>
+</BaseLayout>

@@ -1,0 +1,30 @@
+# The thank-you page for one-click answers in emails (/en/answer/?mail=…&odp=…).
+# The same mail + odp values as pl.yaml, so both languages read as one set of answers.
+title: Thanks for your answer | Creative Sparks
+description: Thanks for answering my email.
+
+# Shown for a missing or unknown mail + odp, and when scripts do not run.
+fallback:
+  heading: Thanks for your answer.
+  text: You can close this tab now.
+
+answers:
+  # Day-12 onboarding email, free planning skill not run yet ("Where are you with it?").
+  - mail: n3
+    odp: sprobuje
+    heading: Thanks for your answer.
+    text: |-
+      Your personal install link is in the email with your install link. Paste it into Claude Code, Codex or Cursor along with the instructions. If something doesn't work, reply to my email and I'll help.
+      You can close this tab now.
+  - mail: n3
+    odp: pozniej
+    heading: Thanks for your answer.
+    text: |-
+      Whenever you want to come back to the skill, your link and the instructions are in the email with your install link.
+      You can close this tab now.
+  - mail: n3
+    odp: nie-dla-mnie
+    heading: Thanks for your honest answer.
+    text: |-
+      That was my last email about the skill.
+      You can close this tab now.

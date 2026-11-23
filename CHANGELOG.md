@@ -2,6 +2,18 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.8.0 — 2026-11-23
+
+### Added
+- A thank-you page for one-click answers in emails: `/answer/` in Polish and `/en/answer/` in English. The link's `mail` and `odp` values pick the text (first for the day-12 onboarding email's three answers, `?mail=n3&odp=sprobuje|pozniej|nie-dla-mnie`); a missing or unknown value, or a browser without scripts, shows a general thank-you. Every answer ends with "Możesz zamknąć tę kartę." / "You can close this tab now." on its own line. The texts live in `src/content/email-answers/` (one file per language, the same answer values in both), so the next one-click email adds its answers there.
+- The page: the header with the logo and two links, "Opinie o UX Design Skill" / "UX Design Skill reviews" and "Darmowe skille" / "Free skills" (no price link, no button); one column on a light blue background with the heading, the message, and the owner's round portrait with name, email and LinkedIn; the usual footer, pinned to the bottom edge on tall screens.
+- The page is hidden from search (`noindex`), left out of the sitemap, and loads no Meta Pixel, no Meta page view and no PostHog, whatever the consent. Umami's cookieless visit count stays. Easymail's click record is the record of the answer; the page stores nothing.
+- Two optional layout switches for any page: `noindex` and `metaPixel` (both off by default, so every other page is unchanged).
+
+### Changed
+- The author section ("Twórca" / its English version) shows the surname in the same dark colour as the first name, not in brand blue.
+- `docs/testing.md`: the new page spec, the unit test for the answer texts, the Meta and PostHog checks for the page, the two pages in the accessibility scan, a test-map row for the answer texts, and test counts brought up to date.
+
 ## 1.7.3 — 2026-11-23
 
 ### Changed

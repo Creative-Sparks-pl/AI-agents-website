@@ -20,6 +20,8 @@ const PAGES_WITHOUT_POSTHOG = [
   '/en/ux-design-skill/terms/',
   '/ux-design-skill/changelog/',
   '/en/ux-design-skill/changelog/',
+  '/answer/',
+  '/en/answer/',
 ];
 
 type ScriptInfo = { type: string | null; category: string | null; service: string | null; src: string | null; text: string };

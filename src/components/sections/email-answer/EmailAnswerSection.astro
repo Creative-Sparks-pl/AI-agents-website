@@ -1,0 +1,88 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { Image } from 'astro:assets';
+import portrait from '../../../assets/author-portrait.jpg';
+import sectionIcon from '../../../assets/icons/shape-6.svg';
+import { localeFromPathname, requireLocalizedEntry } from '../../../lib/i18n';
+
+// The note on the email answer page (/answer/, /en/answer/), in one column: the thank-you for the
+// answer, then the owner's small round photo with the name and contact beside it. The author
+// section's decorative shape sits on the left, hidden on phones.
+// The link's `mail` and `odp` pick the text (src/content/email-answers/); the HTML carries the
+// general thank-you, which also shows when scripts do not run.
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = localeFromPathname(Astro.url.pathname);
+const { fallback, answers } = (await requireLocalizedEntry('email-answers', locale)).data;
+const { nameFirst, nameLast, email, linkedIn } = (await requireLocalizedEntry('author', locale)).data;
+const name = `${nameFirst} ${nameLast}`;
+const texts = answers.map(({ mail, odp, heading, text }) => ({ mail, odp, heading, text }));
+---
+
+<section
+  class:list={['py-16 md:py-24 bg-surface-primary', className]}
+  aria-labelledby="email-answer-heading"
+  data-email-answer
+  {...rest}
+>
+  <div class="max-w-screen-2xl mx-auto px-6 flex items-start gap-8 lg:gap-16">
+    <img src={sectionIcon.src} alt="" aria-hidden="true" class="hidden lg:block w-32 h-32 shrink-0" />
+
+    <div class="flex-1 min-w-0 max-w-2xl">
+      <h1
+        id="email-answer-heading"
+        class="font-headline font-bold text-4xl md:text-5xl text-foreground leading-[1.1] tracking-tight mb-6"
+      >
+        {fallback.heading}
+      </h1>
+      <!-- pre-line keeps the line breaks in a text, so "you can close this tab" stands on its own line. -->
+      <p class="text-lg md:text-xl text-muted leading-relaxed font-body whitespace-pre-line" data-answer-text>{fallback.text}</p>
+      <!-- Runs right after the text, before the page is painted, so the right answer shows with no flicker. -->
+      <script is:inline define:vars={{ texts }}>
+        var params = new URLSearchParams(window.location.search);
+        var mail = params.get('mail');
+        var odp = params.get('odp');
+        var match = texts.find(function (entry) { return entry.mail === mail && entry.odp === odp; });
+        if (match) {
+          document.getElementById('email-answer-heading').textContent = match.heading;
+          document.querySelector('[data-answer-text]').textContent = match.text;
+        }
+      </script>
+
+      <div class="mt-12 flex items-center gap-6">
+        <Image
+          src={portrait}
+          alt={name}
+          class="w-24 h-24 rounded-full object-cover shrink-0"
+          widths={[96, 192]}
+          sizes="96px"
+          loading="eager"
+        />
+        <div class="min-w-0 space-y-1">
+          <p class="font-headline font-bold text-xl md:text-2xl text-foreground" data-answer-name>{name}</p>
+          <p>
+            <a
+              class="font-headline font-bold text-lg md:text-xl text-primary hover:text-foreground transition-colors break-all"
+              href={`mailto:${email}`}
+            >{email}</a>
+          </p>
+          {linkedIn && (
+            <p>
+              <a
+                class="font-headline font-bold text-lg md:text-xl text-primary hover:text-foreground transition-colors"
+                href={linkedIn}
+                target="_blank"
+                rel="noopener"
+              >{locale === 'en' ? 'LinkedIn profile' : 'Profil LinkedIn'}</a>
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
