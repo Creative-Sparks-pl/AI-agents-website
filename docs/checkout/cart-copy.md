@@ -6,7 +6,7 @@ How to use it:
 - To change cart text, edit it here first, then paste it into Easytools (product → Produkt for the name, description and link; Warianty ceny for the package names and prices) and publish the product. A saved change only reaches the cart after **Publikuj**.
 - Changes tried out in Easytools first are fine; copy them back here the same day so the two stay the same. When the two differ, the live cart is the newer version.
 - The site's own prices and package names live in `src/content/pricing/`; the variant names below must match the card names there.
-- Synced with the live carts on 2026-11-18.
+- Synced with the live carts on 2026-11-23.
 
 Terms and privacy links (since 2026-11-18): each product sets its own under Koszyk → Regulamin i zwroty, overriding the store's default (Ustawienia sklepu → Strony prawne). Polish products link `https://agents.creativesparks.pl/ux-design-skill/regulamin/` and `/ux-design-skill/polityka-prywatnosci/`; English products `/en/ux-design-skill/terms/` and `/en/ux-design-skill/privacy-policy/`. The store default points to the Polish policy. The site and the cart carry no separate data note: the terms and the privacy policy hold it.
 
@@ -26,6 +26,8 @@ Description:
 - Rozumie 16 typów stron, używa 13 frameworków UX i 50+ wzorców projektowych.
 - Każda decyzja z uzasadnieniem i odrzuconymi wariantami.
 - Decyzje są oznaczone poziomem pewności, więc wiesz, gdzie AI zgaduje.
+
+Płacisz raz i skill jest Twój na stałe. Bonus: 12 miesięcy darmowych aktualizacji do kolejnych wersji.
 
 Link: **» Sprawdź zawartość pakietów** → `https://agents.creativesparks.pl/ux-design-skill/`
 
@@ -53,6 +55,8 @@ Description:
 - Knows 16 site types and draws on 13 UX frameworks and 50+ design patterns.
 - Confidence levels on each decision show you where the AI is guessing.
 
+Pay once and the skill is yours to keep. Bonus: 12 months of free updates to every new version.
+
 Link: **» See what's in each package** → `https://agents.creativesparks.pl/en/ux-design-skill/`
 
 Price variants (net prices; access 365 days):
@@ -68,13 +72,13 @@ Old variants, shown on the plain checkout link until the release hides them: Sol
 
 ## Paid: Founder (own-business licence)
 
-A separate product per language; same description and link as the UX Design Skill, plus a closing licence line so the buyer sees the limit before paying.
+A separate product per language; same description, ownership line and link as the UX Design Skill, plus a closing licence line so the buyer sees the limit before paying.
 
 ### PL — `Skill do projektowania UX dla właścicieli firm`
 
 Checkout: `https://cart.creativesparks.pl/checkout/founder-pl`
 
-Description, bullets and link: as in UX Design Skill PL above, then a closing paragraph after the bullets:
+Description, bullets, ownership line and link: as in UX Design Skill PL above, then a closing paragraph after the ownership line:
 
 > Licencja Founder: do projektowania stron Twojej własnej firmy. Nie obejmuje pracy dla klientów. Do tego wybierz Solo Designer lub Studio.
 
@@ -87,7 +91,7 @@ Description, bullets and link: as in UX Design Skill PL above, then a closing pa
 
 Checkout: `https://cart.creativesparks.pl/checkout/founder-en`
 
-Description, bullets and link: as in UX Design Skill EN above, then a closing paragraph after the bullets:
+Description, bullets, ownership line and link: as in UX Design Skill EN above, then a closing paragraph after the ownership line:
 
 > Founder license: for designing your own business's websites. It does not cover client work. For that, choose Solo Designer or Studio.
 
@@ -95,6 +99,15 @@ Description, bullets and link: as in UX Design Skill EN above, then a closing pa
 |---|---|---|---|
 | Founder | $149 | — | always |
 | Founder — Black Friday | $119 | $149 | 23.11.2026 00:00 – 1.12.2026 00:00 |
+
+## Customer portal (all four paid products)
+
+Easytools → product → Portal klienta (`long_description`); the button below it (`cta_text` / `cta_url`) links the user guide.
+
+- PL (UX Design Skill PL, Founder PL): "Osobisty link do instalacji dostajesz mailem, osobno od tego portalu. Jeśli go nie masz, sprawdź spam albo napisz na tomasz@creativesparks.pl. Data końca dostępu to koniec darmowych aktualizacji. Skill działa dalej także po niej." Button: "Zapoznaj się z instrukcją użycia" → `https://agents.creativesparks.pl/ux-design-skill/instrukcja`
+- EN (UX Design Skill EN, Founder EN): "Your personal install link comes by email, separately from this portal. If you can't find it, check your spam folder or write to tomasz@creativesparks.pl. The access end date is when free updates end. The skill keeps working after it." Button: "Check out the instruction manual" → `https://agents.creativesparks.pl/en/ux-design-skill/how-it-works`
+
+The paid variants grant 365 days of access, which is the update period, not a limit on use.
 
 ## Free: Website Planning Skill
 
