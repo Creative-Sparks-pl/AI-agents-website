@@ -1,0 +1,88 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import { Image } from 'astro:assets';
+import authorPhoto from '../../../assets/author.webp';
+import { localeFromPathname, requireLocalizedEntry } from '../../../lib/i18n';
+
+// The note on the email answer page (/answer/, /en/answer/): the owner's photo, the thank-you for
+// the answer, and the owner's name and contact. Styled like the author section, without its badge,
+// bio or experience badge. The link's `mail` and `odp` pick the text (src/content/email-answers/);
+// the HTML carries the general thank-you, which also shows when scripts do not run.
+
+interface Props extends HTMLAttributes<'section'> {
+  class?: string;
+}
+
+const { class: className, ...rest } = Astro.props;
+
+const locale = localeFromPathname(Astro.url.pathname);
+const { fallback, answers } = (await requireLocalizedEntry('email-answers', locale)).data;
+const { nameFirst, nameLast, email, linkedIn } = (await requireLocalizedEntry('author', locale)).data;
+const name = `${nameFirst} ${nameLast}`;
+const texts = answers.map(({ mail, odp, heading, text }) => ({ mail, odp, heading, text }));
+---
+
+<section
+  class:list={['py-16 md:py-24', className]}
+  aria-labelledby="email-answer-heading"
+  data-email-answer
+  {...rest}
+>
+  <div class="max-w-screen-xl mx-auto px-6 grid grid-cols-12 gap-x-8 lg:gap-x-16 gap-y-12 items-center">
+    <div class="col-span-12 lg:col-span-5">
+      <div class="aspect-[4/5] max-w-xs lg:max-w-none mx-auto lg:mx-0 bg-white shadow-[0_24px_48px_-12px_rgba(0,7,188,0.08)] overflow-hidden">
+        <Image
+          src={authorPhoto}
+          alt={name}
+          class="w-full h-full object-cover"
+          widths={[400, 600]}
+          sizes="(max-width: 1024px) 320px, 40vw"
+          loading="eager"
+        />
+      </div>
+    </div>
+
+    <div class="col-span-12 lg:col-span-6 lg:col-start-7">
+      <h1
+        id="email-answer-heading"
+        class="font-headline font-bold text-4xl md:text-5xl text-foreground leading-[1.1] tracking-tight mb-6"
+      >
+        {fallback.heading}
+      </h1>
+      <p class="text-lg md:text-xl text-muted leading-relaxed font-body max-w-xl" data-answer-text>
+        {fallback.text}
+      </p>
+      <!-- Runs right after the text, before the page is painted, so the right answer shows with no flicker. -->
+      <script is:inline define:vars={{ texts }}>
+        var params = new URLSearchParams(window.location.search);
+        var mail = params.get('mail');
+        var odp = params.get('odp');
+        var match = texts.find(function (entry) { return entry.mail === mail && entry.odp === odp; });
+        if (match) {
+          document.getElementById('email-answer-heading').textContent = match.heading;
+          document.querySelector('[data-answer-text]').textContent = match.text;
+        }
+      </script>
+
+      <div class="mt-12 pt-8 border-l-4 border-accent pl-6 space-y-3">
+        <p class="font-headline font-bold text-2xl md:text-3xl text-foreground" data-answer-name>{name}</p>
+        <p>
+          <a
+            class="font-headline font-bold text-xl md:text-2xl text-primary hover:text-foreground transition-colors"
+            href={`mailto:${email}`}
+          >{email}</a>
+        </p>
+        {linkedIn && (
+          <p>
+            <a
+              class="font-headline font-bold text-xl md:text-2xl text-primary hover:text-foreground transition-colors"
+              href={linkedIn}
+              target="_blank"
+              rel="noopener"
+            >{locale === 'en' ? 'LinkedIn profile' : 'Profil LinkedIn'}</a>
+          </p>
+        )}
+      </div>
+    </div>
+  </div>
+</section>

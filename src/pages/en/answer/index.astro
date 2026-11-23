@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../../components/sections/footer/Footer.astro';
+import EmailAnswerSection from '../../../components/sections/email-answer/EmailAnswerSection.astro';
+import { requireLocalizedEntry } from '../../../lib/i18n';
+
+// The thank-you page for one-click answers in emails (/en/answer/?mail=…&odp=…). Hidden from
+// search and left out of the sitemap; no Meta here. The texts live in src/content/email-answers/.
+const { title, description } = (await requireLocalizedEntry('email-answers', 'en')).data;
+---
+
+<BaseLayout title={title} description={description} noindex metaPixel={false}>
+  <TopAppBar navLinks={[]} showCta={false} />
+  <main>
+    <EmailAnswerSection />
+  </main>
+  <Footer />
+</BaseLayout>
