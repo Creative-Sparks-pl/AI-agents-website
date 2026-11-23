@@ -122,7 +122,7 @@ test.describe('email answer page', () => {
       // Header: the logo plus two quiet links, reviews and the free skills; no price link, no button.
       const header = page.locator('header').first();
       const menu = header.locator('nav a').filter({ hasNot: page.locator('svg') });
-      await expect(menu).toHaveText(locale === 'en' ? ['Reviews', 'Free skills'] : ['Opinie', 'Darmowe skille']);
+      await expect(menu).toHaveText(locale === 'en' ? ['UX Design Skill reviews', 'Free skills'] : ['Opinie o UX Design Skill', 'Darmowe skille']);
       const base = locale === 'en' ? '/en/ux-design-skill/' : '/ux-design-skill/';
       await expect(menu.nth(0)).toHaveAttribute('href', `${base}#${locale === 'en' ? 'reviews' : 'opinie'}`);
       await expect(menu.nth(1)).toHaveAttribute('href', `${base}#${locale === 'en' ? 'try-for-free' : 'wyprobuj-za-darmo'}`);
