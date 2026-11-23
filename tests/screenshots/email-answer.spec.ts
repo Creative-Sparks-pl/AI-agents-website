@@ -119,9 +119,14 @@ test.describe('email answer page', () => {
       await open(page, `${pagePath(locale)}?mail=n3&odp=pozniej`);
       await expect(page).toHaveTitle(file.title);
 
-      // Header: the logo and nothing else (no menu, no price or sale button).
+      // Header: the logo plus two quiet links, reviews and the free skills; no price link, no button.
       const header = page.locator('header').first();
-      await expect(header.locator('a')).toHaveCount(1);
+      const menu = header.locator('nav a').filter({ hasNot: page.locator('svg') });
+      await expect(menu).toHaveText(locale === 'en' ? ['Reviews', 'Free skills'] : ['Opinie', 'Darmowe skille']);
+      const base = locale === 'en' ? '/en/ux-design-skill/' : '/ux-design-skill/';
+      await expect(menu.nth(0)).toHaveAttribute('href', `${base}#${locale === 'en' ? 'reviews' : 'opinie'}`);
+      await expect(menu.nth(1)).toHaveAttribute('href', `${base}#${locale === 'en' ? 'try-for-free' : 'wyprobuj-za-darmo'}`);
+      await expect(header.locator('a[href*="cennik"], a[href*="pricing"]')).toHaveCount(0);
       await expect(header.locator('button, [data-sale-only], [data-list-only]')).toHaveCount(0);
 
       // The note: photo, name and contact from the author content.
