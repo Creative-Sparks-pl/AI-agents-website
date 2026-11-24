@@ -1,5 +1,6 @@
 badge: Comparison
 heading: "Why Claude Code alone isn't enough,<br/>and why writing your own skill isn't either."
+lead: "I've been building skills since 2025 and use more than 20 of my own every day at my agency. Even so, UX Design Skill took me 6 months and four versions of its architecture: it grew from 24 files in the first version to more than 140 files and 50,000 lines."
 columns:
   - key: skill
     label: UX skill (this product)
@@ -35,7 +36,7 @@ rows:
         text: 0 minutes, but 0 methodology.
       diy:
         status: "no"
-        text: 80 to 160 hours of writing and testing.
+        text: Months of writing and testing.
   - feature: Cross-model (Claude, GPT, Gemini)
     cells:
       skill:
