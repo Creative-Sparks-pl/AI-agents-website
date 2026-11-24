@@ -3,6 +3,7 @@ import { waitUntil } from '@vercel/functions';
 import { normalizeFreeSkillEmail } from '../../lib/free-skill-email';
 import { holdsFreeSkill, HolderLookupError } from '../../lib/free-skill-holder';
 import { resubscribeAfterGrant } from '../../lib/free-skill-resubscribe';
+import { isListedTestPerson, TestPersonLookupError } from '../../lib/free-skill-test-person';
 
 export const prerender = false;
 
@@ -58,6 +59,9 @@ export interface SubscribeDeps {
   fetchFn: typeof fetch;
   easycartApiKey: string | undefined;
   easymailApiKey: string | undefined;
+  // Easytools customer IDs of the owner's test people, separated by commas; unset or empty turns
+  // the rule off.
+  freeSkillTestCustomerIds: string | undefined;
   // Keeps the function running for work that goes on after the answer is sent. This is the one
   // place to change if the platform offers that another way.
   runAfterAnswer: (work: Promise<unknown>) => void;
@@ -68,6 +72,7 @@ export const POST: APIRoute = ({ request }) =>
     fetchFn: (input, init) => fetch(input, init),
     easycartApiKey: import.meta.env.EASYCART_API_KEY,
     easymailApiKey: import.meta.env.EASYMAIL_API_KEY,
+    freeSkillTestCustomerIds: import.meta.env.FREE_SKILL_TEST_CUSTOMER_IDS,
     runAfterAnswer: waitUntil,
   });
 
@@ -93,8 +98,6 @@ export async function handleSubscribe(request: Request, deps: SubscribeDeps): Pr
   if (!typedEmail || !EMAIL_RE.test(typedEmail) || typedEmail.length > 254) {
     return json({ ok: false, reason: 'invalid_email' }, 422);
   }
-  // Gmail aliases reach one mailbox, so they count as one address: Easytools gets the plain form.
-  const email = normalizeFreeSkillEmail(typedEmail);
 
   const locale: Locale = ALLOWED_LOCALES.has(body.locale ?? '') ? (body.locale as Locale) : 'pl';
 
@@ -111,20 +114,37 @@ export async function handleSubscribe(request: Request, deps: SubscribeDeps): Pr
     'User-Agent': USER_AGENT,
   };
 
+  // The owner's listed test people keep their Gmail alias and may sign up again and again. A
+  // lookup that fails or cannot say for sure treats the address like anyone else's.
+  let testPerson = false;
+  try {
+    testPerson = await isListedTestPerson(deps.fetchFn, EASYCART_API, headers, deps.freeSkillTestCustomerIds, typedEmail);
+  } catch (err) {
+    console.warn('[subscribe] test-person lookup failed, folding:', err instanceof TestPersonLookupError ? err.message : 'unknown error');
+  }
+  if (testPerson) {
+    console.log('[subscribe] listed test person: alias kept, holder check skipped');
+  }
+
+  // Gmail aliases reach one mailbox, so they count as one address: Easytools gets the plain form.
+  const email = testPerson ? typedEmail : normalizeFreeSkillEmail(typedEmail);
+
   // A holder of this free skill, in either language, is not granted again (one free skill per
   // person). The answer is the same as for a new sign-up, so the form never reveals who holds a
-  // skill. A failed check grants.
+  // skill. A failed check grants. A listed test person skips the check and is granted every time.
   let knownNewSignup = true;
-  try {
-    for (const { productId } of Object.values(PRODUCTS[skill])) {
-      if (await holdsFreeSkill(deps.fetchFn, EASYCART_API, headers, productId, email)) {
-        console.log('[subscribe] address already holds this free skill: grant skipped');
-        return json({ ok: true, granted: true }, 200);
+  if (!testPerson) {
+    try {
+      for (const { productId } of Object.values(PRODUCTS[skill])) {
+        if (await holdsFreeSkill(deps.fetchFn, EASYCART_API, headers, productId, email)) {
+          console.log('[subscribe] address already holds this free skill: grant skipped');
+          return json({ ok: true, granted: true }, 200);
+        }
       }
+    } catch (err) {
+      knownNewSignup = false;
+      console.warn('[subscribe] holder check failed, granting:', err instanceof HolderLookupError ? err.message : 'unknown error');
     }
-  } catch (err) {
-    knownNewSignup = false;
-    console.warn('[subscribe] holder check failed, granting:', err instanceof HolderLookupError ? err.message : 'unknown error');
   }
 
   // Failed answers say which step failed and Easytools' HTTP status (0: no answer), so the form's error
