@@ -20,6 +20,31 @@ const LOOKUP = `GET /api/v1/contacts?email=${ENCODED_ADDRESS}`;
 const DETAIL = `GET /api/v1/contacts/${UUID}`;
 const RESUBSCRIBE = `POST /api/v1/contacts/${UUID}/resubscribe`;
 
+// A test person: a "+" alias of a Gmail address, with its own Easytools customer. Made up.
+const TEST_ALIAS = 'anna.testowa+test-signup@gmail.com';
+const TEST_PLAIN = 'anna.testowa@gmail.com';
+const TEST_CUSTOMER = '6d2f1c3a-0b4e-4f6a-9c1d-2e3f4a5b6c7d';
+const OTHER_TEST_CUSTOMER = '0a1b2c3d-4e5f-4a6b-8c7d-9e0f1a2b3c4d';
+const UNLISTED_CUSTOMER = 'f0e1d2c3-b4a5-4968-8776-655443322110';
+// The server setting that lists test people, as an owner might type it.
+const TEST_SETTING = ` ${OTHER_TEST_CUSTOMER} , ${TEST_CUSTOMER} `;
+const lookupOf = (email: string) => `GET /api/v1/contacts?${new URLSearchParams({ email })}`;
+
+// One customer in the shape of Easytools' customer search answer, captured from the real API on
+// 2026-11-24 (values made up).
+const searchCustomer = (id: string, email: string, currency = 'pln') => ({
+  id,
+  name: 'Anna Testowa',
+  email,
+  avatar: null,
+  first_seen: '2026-11-19T14:33:36+01:00',
+  last_order: '2026-11-19T14:33:36+01:00',
+  orders_count: 1,
+  subscriptions_count: 0,
+  lifetime_value: 0,
+  currency,
+});
+
 // Easymail's answers, in the shapes captured from the real API on 2026-11-21 (IDs, addresses and
 // names replaced; the contact's lists shortened to two).
 const contactsByEmail = (email: string) => ({
@@ -92,14 +117,22 @@ const contactDetail = (state: ContactState) => ({
 
 type EasymailStep = 'lookup' | 'detail' | 'resubscribe';
 type Failure = 'network' | 'unreadable' | 500 | 429;
+type SearchAnswer = Partial<Record<'pln' | 'usd', unknown[]>> | 'network' | 'unreadable' | number;
 
 interface WorldOptions {
   // The Easymail contact behind the address; none by default.
   contact?: ContactState;
   // Free products the address already holds in Easytools.
   holds?: string[];
+  // The addresses the holder of those products is listed under; the sign-up's address by default.
+  holderEmails?: string[];
   // Easytools' answer to the holder check and to the grant.
   customersStatus?: number;
+  // The server setting listing test people's Easytools customer IDs; unset by default.
+  testCustomerIds?: string;
+  // Easytools' answer to the customer search with no product filter: the customers per currency,
+  // or a failure. No customers by default.
+  search?: SearchAnswer;
   grant?: number | 'network';
   grantBody?: string;
   // Makes one Easymail step fail.
@@ -126,11 +159,26 @@ function world(options: WorldOptions = {}) {
   // Work the handler handed to the "run after the answer" hook.
   const after: Promise<unknown>[] = [];
 
+  const search = (url: URL) => {
+    const given = options.search ?? {};
+    if (given === 'network') throw new TypeError('fetch failed');
+    if (given === 'unreadable') return new Response('<html>', { status: 200 });
+    if (typeof given === 'number') return answer({ error: 'server error' }, given);
+    const items = given[url.searchParams.get('currency') as 'pln' | 'usd'] ?? [];
+    return answer({ items, pagination: { current_page: 1, total_pages: 1, per_page: 10, total: items.length } });
+  };
+
   const easytools = (method: string, url: URL) => {
+    if (method === 'GET' && url.pathname === '/api/v1/customers' && !url.searchParams.has('product')) {
+      return search(url);
+    }
     if (method === 'GET' && url.pathname === '/api/v1/customers') {
       if (options.customersStatus) return new Response('{}', { status: options.customersStatus });
       const holds = (options.holds ?? []).includes(url.searchParams.get('product') ?? '');
-      const items = holds && url.searchParams.get('currency') === 'pln' ? [{ id: 'c1', email: ADDRESS }] : [];
+      const items =
+        holds && url.searchParams.get('currency') === 'pln'
+          ? (options.holderEmails ?? [ADDRESS]).map((email, i) => ({ id: `c${i + 1}`, email }))
+          : [];
       return answer({ items, pagination: { total_pages: 1 } });
     }
     if (method === 'POST' && url.pathname === '/api/v1/product-access') {
@@ -184,6 +232,7 @@ function world(options: WorldOptions = {}) {
     fetchFn: fetchFn as unknown as typeof fetch,
     easycartApiKey: EASYCART_KEY,
     easymailApiKey: 'easymailKey' in options ? options.easymailKey : EASYMAIL_KEY,
+    freeSkillTestCustomerIds: options.testCustomerIds,
     runAfterAnswer: (work: Promise<unknown>) => {
       if (options.hookThrows) throw new Error('no request context');
       after.push(work);
@@ -214,7 +263,23 @@ function world(options: WorldOptions = {}) {
     easymailRequests: () => to('email.easy.tools'),
     easymailCalls: () => calls('email.easy.tools'),
     easytoolsCalls: () => calls('cart.easy.tools').map((call) => call.split('?')[0]),
+    // The body of every grant sent to Easytools.
+    grants: () =>
+      to('cart.easy.tools')
+        .filter((r) => r.method === 'POST' && new URL(r.url).pathname === '/api/v1/product-access')
+        .map((r) => JSON.parse(String(r.body)) as { email: string }),
+    // The address each customer search with no product filter asked for.
+    searches: () => customerQueries(false),
+    // The address each holder check (a customer search for one product) asked for.
+    holderQueries: () => customerQueries(true),
   };
+
+  function customerQueries(withProduct: boolean) {
+    return to('cart.easy.tools')
+      .map((r) => new URL(r.url))
+      .filter((url) => url.pathname === '/api/v1/customers' && url.searchParams.has('product') === withProduct)
+      .map((url) => url.searchParams.get('query'));
+  }
 }
 
 const GRANTED = { ok: true, granted: true };
@@ -244,6 +309,7 @@ test.afterEach(() => {
     expect(line.toLowerCase()).not.toContain(ADDRESS);
     expect(line.toLowerCase()).not.toContain(ENCODED_ADDRESS.toLowerCase());
     expect(line).not.toContain(ADDRESS.split('@')[0]);
+    expect(line.toLowerCase()).not.toContain(TEST_PLAIN.split('@')[0]);
     expect(line).not.toContain(EASYMAIL_KEY);
     expect(line).not.toContain(EASYCART_KEY);
     expect(line).not.toContain(UUID);
@@ -463,4 +529,78 @@ test.describe('the form’s answer never depends on Easymail', () => {
     const w = world({ contact: OPTED_OUT, hookThrows: true });
     await expectGranted(await w.submit());
   });
+});
+
+// A listed test person keeps the alias as typed and is granted on every sign-up; everyone else
+// is folded to the plain address and checked as a holder, as before.
+test.describe('a listed test person signs up again and again', () => {
+  test('a listed alias is granted on each sign-up, with the alias as typed and no holder check', async () => {
+    const w = world({
+      testCustomerIds: TEST_SETTING,
+      search: { pln: [searchCustomer(TEST_CUSTOMER, TEST_ALIAS)] },
+      // Were the holder check made, it would refuse: both spellings already hold the skill.
+      holds: [AUDIT_PL, AUDIT_EN],
+      holderEmails: [TEST_ALIAS, TEST_PLAIN],
+    });
+    await expectGranted(await w.submit({ email: TEST_ALIAS }));
+    await expectGranted(await w.submit({ email: TEST_ALIAS }));
+    expect(w.grants().map((grant) => grant.email)).toEqual([TEST_ALIAS, TEST_ALIAS]);
+    expect(w.searches()).toEqual([TEST_ALIAS, TEST_ALIAS]);
+    expect(w.holderQueries()).toEqual([]);
+    // Each grant counts as a new sign-up, so the re-subscribe starts after each, for the alias.
+    expect(w.after).toHaveLength(2);
+    await w.settle();
+    expect(w.easymailCalls()).toEqual([lookupOf(TEST_ALIAS), lookupOf(TEST_ALIAS)]);
+  });
+
+  test('a listed alias found under USD only is granted with the alias as typed', async () => {
+    const w = world({ testCustomerIds: TEST_SETTING, search: { usd: [searchCustomer(TEST_CUSTOMER, TEST_ALIAS, 'usd')] } });
+    await expectGranted(await w.submit({ email: TEST_ALIAS }));
+    expect(w.grants().map((grant) => grant.email)).toEqual([TEST_ALIAS]);
+    expect(w.holderQueries()).toEqual([]);
+  });
+
+  test('an unlisted alias is folded to the plain address and refused as a holder, as before', async () => {
+    const w = world({
+      testCustomerIds: TEST_SETTING,
+      search: { pln: [searchCustomer(UNLISTED_CUSTOMER, TEST_ALIAS)] },
+      holds: [AUDIT_PL],
+      holderEmails: [TEST_PLAIN],
+    });
+    await expectGranted(await w.submit({ email: TEST_ALIAS }));
+    expect(w.searches()).toEqual([TEST_ALIAS]);
+    expect(w.holderQueries()[0]).toBe(TEST_PLAIN);
+    expect(w.grants()).toEqual([]);
+    expect(w.after).toHaveLength(0);
+  });
+
+  // A lookup that cannot say for sure who this is folds the alias, exactly as for anyone else.
+  const undecided: [string, SearchAnswer][] = [
+    ['the search answers 500', 500],
+    ['the search answers 404', 404],
+    ['the search gets no answer', 'network'],
+    ['the search answers unreadable JSON', 'unreadable'],
+    ['the search finds only the plain address’s customer', { pln: [searchCustomer(TEST_CUSTOMER, TEST_PLAIN)] }],
+    [
+      'the search finds two customers with exactly the alias',
+      { pln: [searchCustomer(TEST_CUSTOMER, TEST_ALIAS), searchCustomer(OTHER_TEST_CUSTOMER, TEST_ALIAS)] },
+    ],
+  ];
+  for (const [label, search] of undecided) {
+    test(`${label}: the alias is folded, and the plain address is refused as a holder`, async () => {
+      const w = world({ testCustomerIds: TEST_SETTING, search, holds: [AUDIT_PL], holderEmails: [TEST_PLAIN] });
+      await expectGranted(await w.submit({ email: TEST_ALIAS }));
+      expect(w.searches()[0]).toBe(TEST_ALIAS);
+      expect(w.holderQueries()[0]).toBe(TEST_PLAIN);
+      expect(w.grants()).toEqual([]);
+    });
+
+    test(`${label}: the alias is folded, and a new sign-up is granted on the plain address`, async () => {
+      const w = world({ testCustomerIds: TEST_SETTING, search });
+      await expectGranted(await w.submit({ email: TEST_ALIAS }));
+      expect(w.searches()[0]).toBe(TEST_ALIAS);
+      expect(new Set(w.holderQueries())).toEqual(new Set([TEST_PLAIN]));
+      expect(w.grants().map((grant) => grant.email)).toEqual([TEST_PLAIN]);
+    });
+  }
 });
