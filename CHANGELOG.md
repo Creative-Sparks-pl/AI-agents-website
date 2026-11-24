@@ -5,7 +5,8 @@ Changes to this website. The skill's own changelog lives on the site's changelog
 ## 1.9.1 — 2026-11-24
 
 ### Changed
-- The English Fuse Collective examples no longer say that the live site is in Polish, and the English messaging canvas names the service lines "Advisory" and "Transformation" without the Polish names in brackets.
+- The English Fuse Collective examples read as written in English: no note that the live site is in Polish, no Polish names in brackets, and a full copy edit of all four files (over 200 phrasings that read as translated, e.g. "for the drawer" → "that gathers dust", "the board" → "the leadership team", "price shelf" → "price tier"; the Sprint headline now reads "Find the edge you can't name on your own").
+- Both messaging canvases (PL + EN) show their messaging row under its label: the row's data key was the old Polish `przekaz`, which the current template does not name.
 
 ## 1.9.0 — 2026-11-24
 
