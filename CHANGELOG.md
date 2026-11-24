@@ -2,6 +2,17 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.9.0 — 2026-11-24
+
+### Added
+- The Fuse Collective website redesign as public examples, Polish and English: the audit of the old site, the messaging canvas, the project plan and the wireframes, at `/examples/fuse-collective_audit.html`, `…_messaging_canvas.html`, `…_project_plan.html` and `…_wireframes.html`, each with an `_en` twin. They are the UX Design Skill's real output for the agency's homepage and offer pages, on the skill's current templates (the plan with a content brief per section), with the copy fixed for publishing: clients only as the agency's homepage names them, no email address, competitor agencies or internal tool names, and nothing from a simulated study presented as client or research evidence.
+- The files are linked only from the free planner's onboarding email that tells this story (A3, PL and EN); no site page or proof card links them. Each carries `noindex`, and none is in the sitemap.
+
+### Changed
+- The UX Design Skill comparison section has the author's lead under its heading (how long the skill took to build), and the do-it-yourself time reads "months" instead of hours (PL + EN).
+- Free sign-up: listed test people (`FREE_SKILL_TEST_CUSTOMER_IDS`) keep their Gmail "+" alias and are granted on every sign-up; everyone else is checked as before. Shipped to production on 2026-11-24 ahead of this version.
+- `docs/testing.md`: the cookie check counts 49 tests (the eight new example files).
+
 ## 1.8.0 — 2026-11-23
 
 ### Added
