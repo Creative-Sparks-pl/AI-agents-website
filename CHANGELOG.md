@@ -2,6 +2,11 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.9.1 — 2026-11-24
+
+### Changed
+- The English Fuse Collective examples no longer say that the live site is in Polish, and the English messaging canvas names the service lines "Advisory" and "Transformation" without the Polish names in brackets.
+
 ## 1.9.0 — 2026-11-24
 
 ### Added
