@@ -4,9 +4,11 @@ import { blockThirdParty, expectAxeClean, openPage, shoot, widthOf } from './hel
 
 // The free-skill guide: one page per language, both at the same address apart from /en/, so the two
 // pair up as language versions. Its "no AI tool" section is what the sign-up overlay and the emails
-// link to; it opens from its anchor and shows both example files in the page's language.
-// Expected values come from the plan ("Settled questions": the addresses, the #no-ai-tool anchor, indexed)
-// and FIN-017 (the example files), never from the rendered pages. Wording is not checked.
+// link to; it opens from its anchor and shows both example files in the page's language. Every free page
+// and its changelog lead to the guide in their own language from the top bar (FIN-014).
+// Expected values come from the plan ("Settled questions": the addresses, the #no-ai-tool anchor, indexed;
+// Step 4: the eight pages), FIN-014 and FIN-017 (the example files), never from the rendered pages.
+// Wording is not checked.
 
 type Locale = 'pl' | 'en';
 
@@ -26,6 +28,41 @@ const EXAMPLES: Record<Locale, string[]> = {
   pl: ['/examples/website-planning-skill_project_plan.html', '/examples/creativesparks-ux-designer_audit.html'],
   en: ['/examples/website-planning-skill_project_plan_en.html', '/examples/creativesparks-ux-designer_audit_en.html'],
 };
+
+// The four free pages and their four changelog pages, each with the language of its address.
+const FREE_PAGES: { path: string; locale: Locale }[] = [
+  { path: '/free-website-planning-skill/', locale: 'pl' },
+  { path: '/en/free-website-planning-skill/', locale: 'en' },
+  { path: '/free-homepage-ux-audit-skill/', locale: 'pl' },
+  { path: '/en/free-homepage-ux-audit-skill/', locale: 'en' },
+  { path: '/free-website-planning-skill/changelog/', locale: 'pl' },
+  { path: '/en/free-website-planning-skill/changelog/', locale: 'en' },
+  { path: '/free-homepage-ux-audit-skill/changelog/', locale: 'pl' },
+  { path: '/en/free-homepage-ux-audit-skill/changelog/', locale: 'en' },
+];
+
+// The paid skill's guide, in both languages: no free page's top bar leads there any more.
+const PAID_GUIDES = ['/ux-design-skill/instrukcja/', '/en/ux-design-skill/how-it-works/'];
+
+for (const { path, locale } of FREE_PAGES) {
+  const other: Locale = locale === 'pl' ? 'en' : 'pl';
+
+  test(`top bar of ${path}: leads to the free-skill guide in its own language`, async ({ page }, testInfo) => {
+    test.skip(widthOf(testInfo) < 1000, 'the top-bar links do not depend on screen size');
+    test.setTimeout(120_000);
+    await blockThirdParty(page);
+    await presetConsentInPage(page, []);
+    const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
+    expect(response?.status()).toBe(200);
+
+    const header = page.locator('header').first();
+    await expect(header.locator(`a[href="${GUIDE[locale]}"]`)).toHaveCount(1);
+    await expect(header.locator(`a[href="${GUIDE[other]}"]`), "the other language's guide").toHaveCount(0);
+    for (const paid of PAID_GUIDES) {
+      await expect(header.locator(`a[href="${paid}"]`), `the paid guide ${paid}`).toHaveCount(0);
+    }
+  });
+}
 
 for (const locale of LOCALES) {
   const other: Locale = locale === 'pl' ? 'en' : 'pl';
