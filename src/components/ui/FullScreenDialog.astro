@@ -1,14 +1,13 @@
 ---
-// A full-screen dialog on the native <dialog> element, opened with showModal(): it sits in the top layer over
-// everything on the page (the cookie banner included), the page behind it is inert, and Esc closes it.
-// It fills the screen on phones and desktop and closes only on purpose: its ✕, Esc, or any element inside
-// marked `data-dialog-close`. A click outside the content does nothing.
+// A dialog on the native <dialog> element, opened with showModal(): it sits in the top layer over everything on
+// the page (the cookie banner included), the page behind it is inert, and Esc closes it. It closes only on
+// purpose: its ✕, Esc, or any element inside marked `data-dialog-close`. A click outside the content does nothing.
 //
-// With `phoneSheet`, below Tailwind's sm breakpoint (640 px) it is a bottom sheet over a scrim instead: anchored
-// to the bottom edge, full width, as tall as its content (the owner's Figma frame "Pop-up / Phone 390 / A2"),
-// leaving at least a 72 px strip of the page above it. Only on phones too short for that does its content scroll
-// inside, with the footer pinned. A click on the
-// scrim does nothing either. From 640 px up it is the full-screen dialog above.
+// By default it fills the screen on phones and desktop. With `sheet` it is a sheet over a scrim instead (the
+// owner's Figma frames "Pop-up / Phone 390 / A2" and "Pop-up / Desktop 1440 / A2 port", approved 2026-11-26):
+// below Tailwind's sm breakpoint (640 px) anchored to the bottom edge at full width, leaving at least a 72 px strip
+// of the page above it; from 640 px up a centred panel 512 px wide. Either way it is as tall as its content and
+// scrolls inside only when the screen is too short, with the footer pinned.
 //
 // A page script opens it with
 //   dialog.dispatchEvent(new CustomEvent('full-screen-dialog:open', { detail: { returnFocus } }))
@@ -24,12 +23,12 @@ interface Props {
   closeLabel: string;
   /** Material Symbols name shown before the title. */
   icon?: string;
-  /** Below 640 px, a bottom sheet over a scrim instead of the whole screen. */
-  phoneSheet?: boolean;
+  /** A sheet over a scrim: a bottom sheet on phones, a centred panel from 640 px. */
+  sheet?: boolean;
   class?: string;
 }
 
-const { id, title, closeLabel, icon, phoneSheet = false, class: className } = Astro.props;
+const { id, title, closeLabel, icon, sheet = false, class: className } = Astro.props;
 const titleId = `${id}-title`;
 const hasFooter = Astro.slots.has('footer');
 ---
@@ -39,60 +38,57 @@ const hasFooter = Astro.slots.has('footer');
   aria-labelledby={titleId}
   class:list={[
     'full-screen-dialog',
-    'm-0 h-full max-h-none w-full max-w-none overflow-y-auto border-0 p-0 bg-background text-foreground',
-    phoneSheet && [
-      'full-screen-dialog--phone-sheet',
-      'max-sm:top-auto max-sm:bottom-0 max-sm:h-auto max-sm:overflow-hidden',
-      'max-sm:bg-surface-primary max-sm:border-t-4 max-sm:border-primary',
-    ],
+    sheet
+      ? [
+          'full-screen-dialog--sheet',
+          'm-0 h-fit w-full max-w-none overflow-hidden p-0 border-0 border-t-4 border-primary bg-surface-primary text-foreground',
+          'max-sm:top-auto max-sm:bottom-0',
+          'sm:m-auto sm:max-w-lg',
+        ]
+      : 'm-0 h-full max-h-none w-full max-w-none overflow-y-auto border-0 p-0 bg-background text-foreground',
     className,
   ]}
 >
-  <div class:list={['flex min-h-full flex-col', phoneSheet && 'max-sm:min-h-0']}>
-    <!-- On a phone sheet the ✕ sits on the title's row, outside the scrolling content. -->
-    <div
-      class:list={[
-        'flex justify-end px-3 pt-3 sm:px-6 sm:pt-6',
-        phoneSheet && 'max-sm:absolute max-sm:top-4 max-sm:right-6 max-sm:z-10 max-sm:p-0',
-      ]}
-    >
+  <div class:list={['flex flex-col', !sheet && 'min-h-full']}>
+    <!-- On a sheet the ✕ sits on the title's row, outside the scrolling content. -->
+    <div class:list={[sheet ? 'absolute top-4 right-6 z-10' : 'flex justify-end px-3 pt-3 sm:px-6 sm:pt-6']}>
       <button
         type="button"
         class="full-screen-dialog__close inline-flex h-12 w-12 items-center justify-center text-foreground hover:text-primary transition-colors cursor-pointer"
         aria-label={closeLabel}
         data-dialog-close
       >
-        <span class:list={['material-symbols-outlined text-3xl', phoneSheet && 'max-sm:text-2xl']} aria-hidden="true">close</span>
+        <span class:list={['material-symbols-outlined', sheet ? 'text-2xl' : 'text-3xl']} aria-hidden="true">close</span>
       </button>
     </div>
     <div
       class:list={[
-        'mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 pb-12 sm:justify-center sm:px-10 sm:pb-20',
-        // The sheet's scroll area: the screen minus the 72 px strip above it and the 4 px line at its top.
-        phoneSheet && 'max-sm:max-h-[calc(100dvh-76px)] max-sm:overflow-y-auto max-sm:overscroll-contain max-sm:pt-4 max-sm:pb-0',
+        sheet
+          ? // The sheet's scroll area: the screen minus the 72 px strip and the 4 px line on phones, minus 4 rem on desktop.
+            'flex w-full flex-col overflow-y-auto overscroll-contain px-6 pt-4 max-h-[calc(100dvh-76px)] sm:max-h-[calc(100dvh-4rem)]'
+          : 'mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 pb-12 sm:justify-center sm:px-10 sm:pb-20',
       ]}
     >
       <h2
         id={titleId}
         class:list={[
-          'font-headline text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-foreground',
-          phoneSheet && 'max-sm:flex max-sm:min-h-12 max-sm:items-center max-sm:pr-14',
+          'font-headline font-extrabold tracking-tight leading-tight text-foreground',
+          sheet ? 'flex min-h-12 items-center pr-14 text-3xl' : 'text-3xl sm:text-4xl',
         ]}
       >
         {icon && <span class="material-symbols-outlined align-middle text-primary mr-2 text-4xl" aria-hidden="true">{icon}</span>}
         <span class="align-middle">{title}</span>
       </h2>
-      <div class:list={['full-screen-dialog__body mt-6 sm:mt-8', phoneSheet && 'max-sm:mt-5 max-sm:pb-5']}></div>
+      <div class:list={['full-screen-dialog__body', sheet ? 'mt-5 pb-5' : 'mt-6 sm:mt-8']}></div>
       <template class="full-screen-dialog__content"><slot /></template>
       {hasFooter && (
         <div
           class:list={[
-            'full-screen-dialog__footer mt-8 sm:mt-10',
-            // Pinned to the sheet's bottom edge while the content scrolls above it.
-            phoneSheet && [
-              'max-sm:sticky max-sm:bottom-0 max-sm:-mx-6 max-sm:mt-0 max-sm:px-6 max-sm:pt-4 max-sm:pb-6',
-              'max-sm:bg-surface-primary max-sm:border-t max-sm:border-primary/20',
-            ],
+            'full-screen-dialog__footer',
+            // On a sheet, pinned to its bottom edge while the content scrolls above it.
+            sheet
+              ? 'sticky bottom-0 -mx-6 px-6 pt-4 pb-6 bg-surface-primary border-t border-primary/20'
+              : 'mt-8 sm:mt-10',
           ]}
         ></div>
       )}
@@ -107,12 +103,10 @@ const hasFooter = Astro.slots.has('footer');
     overflow: hidden;
   }
 
-  /* The scrim over the page above a phone sheet: the foreground colour at 60 % (the owner's Figma frame).
+  /* The scrim over the page behind a sheet: the foreground colour at 60 % (the owner's Figma frames).
      The fallback covers browsers where ::backdrop does not inherit the page's custom properties. */
-  @media (width < 40rem) {
-    dialog.full-screen-dialog--phone-sheet::backdrop {
-      background: color-mix(in oklab, var(--color-foreground, #171717) 60%, transparent);
-    }
+  dialog.full-screen-dialog--sheet::backdrop {
+    background: color-mix(in oklab, var(--color-foreground, #171717) 60%, transparent);
   }
 </style>
 

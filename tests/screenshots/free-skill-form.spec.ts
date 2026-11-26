@@ -118,7 +118,14 @@ async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill
       expect(overflow, 'scrollable pixels inside the sheet').toBeLessThanOrEqual(1);
     }
   } else {
-    expect([box.x, box.y, box.width, box.height].map(Math.round)).toEqual([0, 0, viewport.width, viewport.height]);
+    // Desktop: the same sheet as a centred panel about 512 px wide over the dimmed page, fully on screen
+    // (Figma "Pop-up / Desktop 1440 / A2 port (approved)", 2026-11-26).
+    expect(box.width).toBeGreaterThanOrEqual(480);
+    expect(box.width).toBeLessThanOrEqual(560);
+    expect(Math.abs(box.x - (viewport.width - box.x - box.width))).toBeLessThanOrEqual(2);
+    expect(box.y).toBeGreaterThan(0);
+    expect(box.y + box.height).toBeLessThan(viewport.height);
+    expect(Math.abs(box.y - (viewport.height - box.y - box.height))).toBeLessThanOrEqual(2);
   }
 
   const heading = overlay.getByRole('heading', { level: 2 });
@@ -243,6 +250,10 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
       await expectOffer(form, submit);
       await expectAxeClean(page, selector);
       await shot('default');
+
+      // The field stays white inside when focused, also on the yellow box (owner, 2026-11-26).
+      await email.focus();
+      expect(await email.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe('rgb(255, 255, 255)');
 
       await email.fill('not-an-email');
       await submit.click();
