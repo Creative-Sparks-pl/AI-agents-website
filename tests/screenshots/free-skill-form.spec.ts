@@ -100,9 +100,23 @@ async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill
     expect(Math.round(box.x)).toBe(0);
     expect(Math.round(box.width)).toBe(viewport.width);
     expect(Math.round(box.y + box.height)).toBe(viewport.height);
-    expect(box.y).toBeGreaterThanOrEqual(140);
+    // A strip of the page stays visible above the sheet (at least 72 px).
+    expect(box.y).toBeGreaterThanOrEqual(72);
     // A sheet holding the whole message, not a strip: it covers most of the screen.
     expect(box.height).toBeGreaterThanOrEqual(viewport.height / 2);
+    // The sheet grows with its content, so on a phone as tall as 844 px nothing scrolls: a few pixels of scroll
+    // under a pinned footer look like a glitch (owner's design, 2026-11-26).
+    if (viewport.height >= 844) {
+      const overflow = await overlay.evaluate((dialog) => {
+        let most = 0;
+        for (const el of [dialog, ...dialog.querySelectorAll('*')]) {
+          const style = getComputedStyle(el);
+          if (/(auto|scroll)/.test(style.overflowY)) most = Math.max(most, el.scrollHeight - el.clientHeight);
+        }
+        return most;
+      });
+      expect(overflow, 'scrollable pixels inside the sheet').toBeLessThanOrEqual(1);
+    }
   } else {
     expect([box.x, box.y, box.width, box.height].map(Math.round)).toEqual([0, 0, viewport.width, viewport.height]);
   }

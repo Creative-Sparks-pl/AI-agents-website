@@ -5,8 +5,9 @@
 // marked `data-dialog-close`. A click outside the content does nothing.
 //
 // With `phoneSheet`, below Tailwind's sm breakpoint (640 px) it is a bottom sheet over a scrim instead: anchored
-// to the bottom edge, full width, as tall as its content up to the screen minus 151 px (the owner's Figma frame
-// "Pop-up / Phone 390 / A2" at 844 px). Its content scrolls inside and the footer stays pinned. A click on the
+// to the bottom edge, full width, as tall as its content (the owner's Figma frame "Pop-up / Phone 390 / A2"),
+// leaving at least a 72 px strip of the page above it. Only on phones too short for that does its content scroll
+// inside, with the footer pinned. A click on the
 // scrim does nothing either. From 640 px up it is the full-screen dialog above.
 //
 // A page script opens it with
@@ -67,8 +68,8 @@ const hasFooter = Astro.slots.has('footer');
     <div
       class:list={[
         'mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 pb-12 sm:justify-center sm:px-10 sm:pb-20',
-        // The sheet's scroll area: the screen minus 151 px above it and the 4 px line at its top.
-        phoneSheet && 'max-sm:max-h-[calc(100dvh-155px)] max-sm:overflow-y-auto max-sm:overscroll-contain max-sm:pt-4 max-sm:pb-0',
+        // The sheet's scroll area: the screen minus the 72 px strip above it and the 4 px line at its top.
+        phoneSheet && 'max-sm:max-h-[calc(100dvh-76px)] max-sm:overflow-y-auto max-sm:overscroll-contain max-sm:pt-4 max-sm:pb-0',
       ]}
     >
       <h2
