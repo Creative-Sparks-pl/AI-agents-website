@@ -1,0 +1,455 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopAppBar from '../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../components/sections/footer/Footer.astro';
+import SectionWithIcon from '../../components/ui/SectionWithIcon.astro';
+import sectionIcon from '../../assets/icons/shape-3.svg';
+
+// The guide for both free skills, made from the paid skill's guide (src/pages/ux-design-skill/instrukcja.astro).
+// The English page has the same address under /en/, so the two pair up as language versions.
+// #no-ai-tool is linked from the sign-up overlay and the emails: keep the id as it is.
+
+interface GuideLink {
+  label: string;
+  href: string;
+  icon: string;
+}
+
+interface GuideSection {
+  id?: string;
+  number: string;
+  label: string;
+  title: string;
+  description: string;
+  bullets: string[];
+  groups?: { heading: string; bullets: string[] }[];
+  links: GuideLink[];
+  quote: string;
+  group: string | null;
+}
+
+const rawSections: GuideSection[] = [
+  {
+    number: 'Esencja',
+    label: 'Główne zasady',
+    title: 'Główne zasady współpracy',
+    description: 'Krótka lista zasad, które decydują o jakości wyniku. Każda jest rozwinięta w sekcjach poniżej.',
+    bullets: [
+      '<strong>Więcej kontekstu = mniej zgadywania.</strong> Im więcej dasz, tym lepszy wynik. Ale wystarczy też minimum: jedno zdanie o stronie albo jej adres.',
+      '<strong>Decyzja po Twojej stronie.</strong> Skill pokazuje opcje z trade-offami albo wnioski z poziomem pewności. Ty wybierasz, co z nimi zrobić.',
+      '<strong>Sprawdzaj oznaczenia pewności.</strong> 🟢 zielone zostaw, 🟡 żółte zweryfikuj, 🔴 czerwone uzupełnij, zanim ruszysz dalej.',
+      '<strong>Kwestionuj wyniki.</strong> Pytaj „dlaczego”, proś o alternatywy, każ skracać.',
+      '<strong>Skill to też konsultant.</strong> Pytaj o metodologię, proś o weryfikację Twoich decyzji.',
+      '<strong>Plik = pamięć projektu.</strong> Skill zapisuje wynik w pliku HTML, a nie w pamięci rozmowy.',
+      '<strong>Nie wiesz jak? Zapytaj skill.</strong> Zna swój proces i podpowie następny krok. Nie musisz domyślać się sam.',
+    ],
+    links: [],
+    quote: '',
+    group: null,
+  },
+  {
+    number: 'Setup',
+    label: 'Konfiguracja',
+    title: 'Jak zainstalować skill',
+    description: 'Po zapisie dostajesz maila z osobistym linkiem do instalacji. Wklejasz instrukcję z tego maila (link i zdanie pod nim) do Claude Code, Codex albo Cursora, a agent sam instaluje skill. Nie masz jeszcze żadnego z tych narzędzi? Zobacz „Nie masz jeszcze narzędzia AI?” poniżej.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Instalacja z osobistego linku',
+        bullets: [
+          '<strong>Otwórz maila z linkiem na komputerze.</strong> Przychodzi z adresu tomasz@creativesparks.pl w ciągu minuty od zapisu. Nie widzisz go? Sprawdź folder Spam.',
+          '<strong>Wklej instrukcję z maila do Claude Code, Codex albo Cursora.</strong> W mailu jest Twój link i zdanie pod nim. Skopiuj oba wiersze, niczego nie zmieniając.',
+          '<strong>Agent pokaże plan i zapyta, zanim cokolwiek skopiuje.</strong> Może kilka razy poprosić o zgodę na uruchomienie poleceń (pobranie, rozpakowanie, kopiowanie i sprawdzenie plików). To normalne.',
+          '<strong>Po instalacji uruchom skill jego komendą:</strong> <code>/website-planning</code> albo <code>/homepage-ux-audit</code> w Claude Code i Cursorze, <code>$website-planning</code> albo <code>$homepage-ux-audit</code> w Codexie. Komendę znajdziesz też w mailu.',
+          '<strong>Każdy darmowy skill dostajesz raz na adres email.</strong> Masz go już? Twój link jest w pierwszym mailu.',
+        ],
+      },
+      {
+        heading: 'Za darmo, jeśli zainstalujesz go w ciągu 14 dni',
+        bullets: [
+          '<strong>Zainstaluj skill w ciągu 14 dni od zapisu.</strong> Wtedy zostaje darmowy, a projekt może poczekać: korzystasz ze skilla, kiedy chcesz.',
+          '<strong>Po instalacji link działa dalej.</strong> Możesz z niego instalować ponownie, więc zachowaj tego maila. Nie udostępniaj linku innym osobom.',
+          '<strong>Bez instalacji w ciągu 14 dni link nie da już pakietu.</strong> Później nie pobierzesz już z niego skilla.',
+        ],
+      },
+      {
+        heading: 'Aktualizacje',
+        bullets: [
+          '<strong>Instalują się same.</strong> Przez pierwsze 60 dni od zapisu skill sam instaluje nowe wersje przy starcie, jeśli się pojawią.',
+          '<strong>Chcesz to wyłączyć?</strong> Po prostu poproś agenta. Aktualizacje automatyczne są włączone domyślnie.',
+          '<strong>Po 60 dniach</strong> skill działa dalej w wersji, którą masz.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    id: 'no-ai-tool',
+    number: 'Narzędzia',
+    label: 'Zanim zaczniesz',
+    title: 'Nie masz jeszcze narzędzia AI?',
+    description: 'Skill działa na komputerze, w jednym z trzech narzędzi AI: Claude Code, Codex albo Cursor. Sam skill jest darmowy. Narzędzie AI to osobna, płatna usługa: płacisz za nie firmie, która je robi, nie nam.',
+    bullets: [
+      '<strong>Czego potrzebujesz:</strong> komputera i jednego z narzędzi: Claude Code, Codex albo Cursor. Skill instalujesz i uruchamiasz na komputerze, więc maila z linkiem też otwórz na komputerze.',
+      '<strong>Skill jest darmowy, narzędzie AI opłacasz osobno.</strong> Plan wybierasz i opłacasz u firmy, która robi dane narzędzie. Skill pracuje w ramach tego planu, a nam nic nie płacisz.',
+      '<strong>Nie wiesz, które wybrać?</strong> Zacznij od Claude Code. Więcej znajdziesz poniżej, w „Jak wybrać platformę do pracy”.',
+      '<strong>Termin 14 dni liczy się od zapisu.</strong> Zainstaluj skill w tym czasie, nawet jeśli projekt musi poczekać. Potem korzystasz z niego, kiedy chcesz.',
+      '<strong>W międzyczasie zobacz gotowy wynik.</strong> Tak wyglądają pliki, które przygotowują oba skille:',
+    ],
+    links: [
+      { label: 'Przykładowy plan strony', href: '/examples/website-planning-skill_project_plan.html', icon: 'description' },
+      { label: 'Przykładowy audyt strony głównej', href: '/examples/creativesparks-ux-designer_audit.html', icon: 'description' },
+    ],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Wybór',
+    label: 'Platforma',
+    title: 'Jak wybrać platformę do pracy',
+    description: 'Oba darmowe skille działają w Claude Code, Codexie i Cursorze, także w VS Code z pluginem, ale te narzędzia różnią się jakością współpracy.',
+    bullets: [
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Najmocniejsza rekomendacja: Claude Code.</strong> Szerokie okno kontekstu i głębsze wnioskowanie niż w pozostałych modelach. Bywa trochę wolniejszy, ale to akceptowalny trade-off za jakość.',
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Solidna alternatywa: VS Code z pluginem do LLM</strong> (Claude Code, OpenAI Codex, Cursor). Pełna kontrola nad plikami, skill stabilnie trzyma się procesu, łatwy powrót do projektu między sesjami.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Start',
+    label: 'Pierwsza sesja',
+    title: 'Jak zacząć',
+    description: 'Uruchom skill jego komendą. Skill się przedstawi i poprowadzi Cię dalej. Im więcej kontekstu dasz na starcie, tym mniej zgaduje, ale wystarczy jedno zdanie. Sprawdzaj oznaczenia pewności (🟢🟡🔴): zielone zostaw, żółte zweryfikuj, czerwone uzupełnij.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Skill do planowania stron',
+        bullets: [
+          'Wpisz <code>/website-planning</code> (w Codexie <code>$website-planning</code>) i opisz stronę w jednym lub dwóch zdaniach, np. „Planuję nową stronę dla [nazwa firmy], która [czym się zajmuje]. Strona ma [główny cel, np. przyprowadzać zapytania od klientów].”',
+          'Przebudowujesz obecną stronę? Napisz, co w niej działa, a co chcesz zmienić.',
+          'Masz brief od klienta albo materiały o firmie? Wklej je od razu. Skill wyciągnie z nich odbiorców, cele i wyróżniki.',
+        ],
+      },
+      {
+        heading: 'Skill do audytu UX strony głównej',
+        bullets: [
+          'Wpisz <code>/homepage-ux-audit</code> (w Codexie <code>$homepage-ux-audit</code>) i podaj adres strony głównej. Skill potrzebuje tylko jego.',
+          'Strona musi być publicznie dostępna: skill czyta tę samą wersję, którą widzi każdy odwiedzający. Sprawdzisz do 5 witryn dziennie.',
+          'Najpierw sprawdź, jaki typ strony rozpoznał skill. Wnioski porównują Twoją stronę ze standardem dla tego typu, więc od niego zależy cała reszta.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pierwsze uruchomienie',
+  },
+  {
+    number: 'Decyzje',
+    label: 'Decyzje',
+    title: 'Jak podejmować decyzje',
+    description: 'Skill pokazuje opcje z trade-offami albo wnioski z poziomem pewności. Nie musisz wiedzieć, co jest lepsze: przeczytaj, co każda opcja daje i z czego rezygnuje.',
+    bullets: [
+      'Jeśli żadna opcja nie pasuje, powiedz dlaczego. Skill zaproponuje nowe',
+      'Mów „pomóż mi podjąć decyzję”, kiedy utkniesz. Skill podsumuje za i przeciw',
+      'W audycie decyzja o priorytetach zostaje po Twojej stronie. Skill daje diagnozę, a Ty wybierasz, co poprawić najpierw',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca ze skillem',
+  },
+  {
+    number: 'Dialog',
+    label: 'Rozmowa ze skillem',
+    title: 'Jak rozmawiać ze skillem',
+    description: 'Skill nie jest nieomylny. Twoja wiedza o klientach i rynku jest ważniejsza niż jego wzorce. Kwestionuj, proś o alternatywy, hamuj, gdy pisze za dużo.',
+    bullets: [
+      '„Dlaczego tu nie ma sekcji X?” — skill wyjaśni, czy pominął ją celowo, czy jej nie rozważył',
+      '„Czy to nadal potrzebujemy?” — kiedy coś wydaje się zbędne po zmianach w innych miejscach',
+      '„Daj alternatywy” — wymusza opcje zamiast jednego rozwiązania',
+      '„Najpierw zidentyfikuj sens tego punktu” — zanim coś zmienisz, zrozum, co ma komunikować',
+      '„Skróć” — AI pisze za dużo, hamuj',
+      '„Czy to się nie powtarza z X?” — skill sprawdzi, czy coś się dubluje',
+      '„Oceń krytycznie ten plan” — skill poszuka słabych punktów',
+      'Jeśli nie wiesz, co dalej, zapytaj skill. Zna proces i podpowie następny krok',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca ze skillem',
+  },
+  {
+    number: 'Czas',
+    label: 'Tempo pracy',
+    title: 'Ile to trwa',
+    description: 'Skill myśli długo, bo w każdym kroku przetwarza duży kontekst: wiedzę o typie strony, wzorce i Twoje odpowiedzi. Czas zależy od tego, ile wkładu dostanie: im więcej dasz na starcie, tym szybciej.',
+    bullets: [
+      'Plan strony za pierwszym razem: 2-3 godziny rozmowy, zależnie od tego, jak dobrze wiesz, czego potrzebujesz',
+      'Audyt strony głównej: 20-30 minut',
+      'Krótkie pytania, drobne poprawki: parę sekund',
+      'Jeśli widzisz, że skill „myśli”, poczekaj. Przerwanie cofa Cię na początek kroku.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Praca ze skillem',
+  },
+  {
+    number: 'Output',
+    label: 'Wyniki',
+    title: 'Jak wykorzystać plik wyjściowy',
+    description: 'Każdy z darmowych skilli zapisuje wynik w jednym pliku HTML. Otwierasz go w przeglądarce i pokazujesz innym bez dodatkowych narzędzi. W pliku jest przycisk pobierania Markdown, więc wersję dla innych narzędzi AI masz w jednym kliknięciu.',
+    bullets: [
+      'Plan strony: brief, mapa strony i wytyczne zawartości każdej podstrony w jednym pliku',
+      'Audyt: makieta Twojej strony głównej z wnioskami przypiętymi do sekcji i elementów, plus krótka lista zmian',
+      'Markdown jednym klikiem: przycisk w pliku pobiera plik .md gotowy dla innego narzędzia AI. Szybciej niż eksport przez skill',
+      'Eksport przez skill: gdy chcesz konkretny fragment albo inny format, poproś skill bezpośrednio',
+      'Plan strony jako brief dla agencji albo projektanta: wydrukuj HTML albo wyślij plik',
+      'Wnioski z audytu dla projektanta albo klienta: przekaż plik albo zacznij od listy zmian',
+    ],
+    links: [],
+    quote: '',
+    group: 'Wyniki i kontynuacja',
+  },
+  {
+    number: 'Sesje',
+    label: 'Powrót do projektu',
+    title: 'Praca na wielu sesjach',
+    description: 'Skill czyta pliki, nie pamięta rozmowy. Wszystko ważne musi być w pliku.',
+    bullets: [
+      'Po przerwie powiedz, nad czym pracujecie, np. „kontynuuj plan strony”. Skill przeczyta plik i wróci do kontekstu',
+      'Jeśli zmieniłeś coś ręcznie w pliku, powiedz o tym skillowi. Inaczej nadpisze Twoje zmiany',
+      'Zacznij nową sesję, gdy odpowiedzi stają się ogólnikowe albo skill zapomina wcześniejsze ustalenia. To sygnał, że kontekst rozmowy się zapełnił',
+      'Po instalacji aktualizacji skill poprosi o nową sesję. Zacznij ją, zanim pracujesz dalej',
+    ],
+    links: [],
+    quote: '',
+    group: 'Wyniki i kontynuacja',
+  },
+  {
+    number: 'Opinia',
+    label: 'Weryfikacja i konsultacja',
+    title: 'Pytaj skill o opinię',
+    description: 'Skill ma w plecaku wzorce dla wielu typów stron, oparte na badaniach. To nie tylko wykonawca, to też konsultant. Zweryfikuje Twoje decyzje i wyjaśni metodologię.',
+    bullets: [
+      '„Zweryfikuj moją decyzję” — sceptyczne spojrzenie na Twoją wersję i propozycja, co poprawić.',
+      '„Co powinna zawierać sekcja X?” — skill zna wzorce, traktuj go jak konsultanta UX.',
+      '„Jak to się powinno zrobić według metodologii Y?” — odpowie z odniesieniem do frameworków.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Dobre praktyki',
+  },
+  {
+    number: 'Uwaga',
+    label: 'Pułapki',
+    title: 'Czego unikać',
+    description: 'Kilka rzeczy, które obniżają jakość wyników.',
+    bullets: [
+      'Nie akceptuj wszystkiego na „ok”. Skill pójdzie dalej, ale wynik będzie gorszy',
+      'Nie pomijaj pytań, które zadaje skill. Wynik bez kontekstu to zgadywanie z lepszym formatowaniem',
+      'Nie wykorzystuj wyników bez przeczytania. Skill zakłada, Ty weryfikujesz',
+    ],
+    links: [],
+    quote: '',
+    group: 'Dobre praktyki',
+  },
+  {
+    number: 'Feedback',
+    label: 'Pytania i zgłoszenia',
+    title: 'Powiedz skillowi: pytania, błędy, pomysły',
+    description: 'Skill ma wbudowany kanał feedbacku. Wystarczy zwykła rozmowa, bez formularzy ani konta. Działa w Claude Code, Codexie i Cursorze.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Co możesz zgłosić',
+        bullets: [
+          '<strong>Pytanie</strong> — „jak zrobić X?”, „co to znaczy Y?”, „dlaczego skill…?”. Skill uporządkuje pytanie z kontekstem i prześle.',
+          '<strong>Błąd</strong> — „zgłaszam błąd”, „coś jest zepsute”. Skill dopyta o szczegóły, sam doda platformę i wersję.',
+          '<strong>Pomysł / nowa funkcja</strong> — „chciałbym, żeby skill X”, „dodaj proszę Y”. Skill zapisze sytuację, w której tego potrzebowałeś, i jakiego efektu chcesz.',
+          '<strong>Ogólny feedback</strong> — wrażenia z pracy, co działa, co nie. Wystarczy „mam feedback do Ciebie”.',
+        ],
+      },
+      {
+        heading: 'Jak to działa',
+        bullets: [
+          '<strong>Powiedz w swoich słowach.</strong> Bez komend, bez formatu. Skill rozpozna intencję i dopyta o brakujące szczegóły.',
+          '<strong>Podgląd przed wysłaniem.</strong> Zobaczysz tytuł i treść zgłoszenia. Możesz poprawić, zmienić kategorię albo anulować.',
+          '<strong>Email opcjonalny.</strong> Zostawiasz go tylko, jeśli chcesz odpowiedź. Używam go wyłącznie do kontaktu w sprawie tego konkretnego zgłoszenia.',
+          '<strong>Trafia do publicznych GitHub Discussions</strong> — forum, na którym widzisz swoje zgłoszenie i odpowiedzi. Inni użytkownicy mogą dołączyć do dyskusji.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Pomoc',
+  },
+  {
+    number: 'Kontakt',
+    label: 'Wsparcie',
+    title: 'Pomoc',
+    description: 'Masz pytania albo coś nie działa? Odpowiedz na maila z linkiem albo napisz na tomasz@creativesparks.pl',
+    bullets: [],
+    links: [
+      { label: 'tomasz@creativesparks.pl', href: 'mailto:tomasz@creativesparks.pl', icon: 'mail' },
+    ],
+    quote: '',
+    group: 'Pomoc',
+  },
+];
+
+const sections = rawSections.map((s, i) => ({
+  ...s,
+  groupStarts: !!s.group && (i === 0 || s.group !== rawSections[i - 1].group),
+}));
+
+// The same top bar as the free skills' pages: three links, no buy button, not sticky.
+const navLinks: { label: string; href: string }[] = [
+  { label: 'UX Design Skill', href: '/ux-design-skill/' },
+  { label: 'Opinie', href: '/free-website-planning-skill/#opinie' },
+  { label: 'Jak pracować', href: '/free-skills/guide/' },
+];
+---
+
+<BaseLayout
+  title="Jak pracować z darmowymi skillami: instrukcja | Creative Sparks"
+  description="Instrukcja do Skilla do planowania stron i Skilla do audytu UX strony głównej: instalacja, pierwsza sesja, praca ze skillem i wyniki."
+>
+  <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
+  <main>
+    <section class="py-20 md:py-28 px-6 bg-surface-primary">
+      <div class="max-w-screen-2xl mx-auto">
+        <SectionWithIcon icon={sectionIcon}>
+          <Fragment slot="header">
+            <span class="font-label text-primary text-sm mb-4">Darmowe skille</span>
+            <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+              Jak pracować z darmowymi skillami
+            </h1>
+            <p class="text-muted text-lg leading-relaxed mt-6 max-w-3xl">
+              Ta instrukcja dotyczy obu darmowych skilli:
+              <a href="/free-website-planning-skill/" class="text-primary underline underline-offset-4 hover:no-underline">Skilla do planowania stron</a>
+              i
+              <a href="/free-homepage-ux-audit-skill/" class="text-primary underline underline-offset-4 hover:no-underline">Skilla do audytu UX strony głównej</a>.
+              Pracuje się z nimi tak samo. Pierwszy planuje nową stronę, drugi sprawdza stronę główną, którą już masz.
+            </p>
+          </Fragment>
+
+          <div class="flex flex-col">
+            {sections.map((section) => (
+              <>
+                {section.groupStarts && (
+                  <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground mt-20 mb-8">
+                    {section.group}
+                  </h2>
+                )}
+                <details
+                  id={section.id}
+                  class="group border-b border-border/30 overflow-hidden bg-white"
+                  name="guide"
+                  open={false}
+                >
+                  <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface-hover transition-colors">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+                      <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                        {section.number}
+                      </span>
+                      <div class="flex flex-col gap-3 flex-1">
+                        <span class="font-label text-sm text-primary leading-none">{section.label}</span>
+                        <h2 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                          {section.title}
+                        </h2>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" aria-hidden="true">expand_more</span>
+                  </summary>
+                  <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+                    <div class="max-w-3xl">
+                      {section.description && (
+                        <p class="text-muted text-lg leading-relaxed mb-6">
+                          {section.description}
+                        </p>
+                      )}
+                      {section.bullets.length > 0 && (
+                        <ul class="space-y-3 mb-8">
+                          {section.bullets.map((bullet) => (
+                            <li class="flex items-start gap-3 text-base text-muted">
+                              {!bullet.startsWith('<span class="material-symbols-outlined') && (
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                              )}
+                              <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {section.groups && section.groups.map((group) => (
+                        <div class="mb-8">
+                          <h3 class="font-headline font-bold text-lg text-foreground mb-3">{group.heading}</h3>
+                          <ul class="space-y-3">
+                            {group.bullets.map((bullet) => (
+                              <li class="flex items-start gap-3 text-base text-muted">
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                                <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      {section.links.length > 0 && (
+                        <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
+                          <div class="flex flex-wrap gap-x-12 gap-y-3">
+                            {section.links.map((link) => (
+                              <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                                <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
+                                {link.label}
+                                <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                              </a>
+                            ))}
+                          </div>
+                          {section.quote && <p class="text-sm font-label text-muted">{section.quote}</p>}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </details>
+              </>
+            ))}
+          </div>
+        </SectionWithIcon>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  // An address with a section's id opens that section: the sign-up overlay and the emails link to #no-ai-tool.
+  function openLinkedSection() {
+    let id = '';
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      return;
+    }
+    if (!id) return;
+    const section = document.getElementById(id);
+    if (!(section instanceof HTMLDetailsElement)) return;
+    section.open = true;
+    section.scrollIntoView({ block: 'start' });
+  }
+  openLinkedSection();
+  window.addEventListener('hashchange', openLinkedSection);
+</script>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

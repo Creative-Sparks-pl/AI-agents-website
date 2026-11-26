@@ -20,6 +20,8 @@ const PAGES = [
   '/en/free-homepage-ux-audit-skill/changelog/',
   '/free-website-planning-skill/changelog/',
   '/en/free-website-planning-skill/changelog/',
+  '/free-skills/guide/',
+  '/en/free-skills/guide/',
   '/answer/',
   '/en/answer/',
 ];

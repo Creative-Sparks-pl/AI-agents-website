@@ -1,0 +1,455 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TopAppBar from '../../../components/sections/top-app-bar/TopAppBar.astro';
+import Footer from '../../../components/sections/footer/Footer.astro';
+import SectionWithIcon from '../../../components/ui/SectionWithIcon.astro';
+import sectionIcon from '../../../assets/icons/shape-3.svg';
+
+// The guide for both free skills, made from the paid skill's guide (src/pages/en/ux-design-skill/how-it-works.astro).
+// The Polish page has the same address without /en/, so the two pair up as language versions.
+// #no-ai-tool is linked from the sign-up overlay and the emails: keep the id as it is.
+
+interface GuideLink {
+  label: string;
+  href: string;
+  icon: string;
+}
+
+interface GuideSection {
+  id?: string;
+  number: string;
+  label: string;
+  title: string;
+  description: string;
+  bullets: string[];
+  groups?: { heading: string; bullets: string[] }[];
+  links: GuideLink[];
+  quote: string;
+  group: string | null;
+}
+
+const rawSections: GuideSection[] = [
+  {
+    number: 'TL;DR',
+    label: 'Core principles',
+    title: 'Core principles for working with the skills',
+    description: 'A short list of principles that decide the quality of the output. Each one is unpacked in the sections below.',
+    bullets: [
+      "<strong>More context = less guessing.</strong> The more you give, the better the output. But a minimum works too: one sentence about the site, or its address.",
+      '<strong>The decision is yours.</strong> The skill shows options with trade-offs, or findings with a confidence level. You decide what to do with them.',
+      '<strong>Watch the confidence markers.</strong> 🟢 green is fine as-is, 🟡 yellow needs a check, 🔴 red needs to be filled in before you move on.',
+      '<strong>Question the output.</strong> Ask "why", ask for alternatives, tell it to cut.',
+      '<strong>The skill is also a consultant.</strong> Ask about methodology, ask it to sanity-check your decisions.',
+      '<strong>The file is the project memory.</strong> The skill saves its work in an HTML file, not in the conversation.',
+      '<strong>Not sure how? Ask the skill.</strong> It knows its own process and will suggest the next step. You do not have to figure it out alone.',
+    ],
+    links: [],
+    quote: '',
+    group: null,
+  },
+  {
+    number: 'Setup',
+    label: 'Configuration',
+    title: 'How to install the skill',
+    description: 'After you sign up, you get an email with your personal install link. You paste the instruction from it (the link and the sentence below it) into Claude Code, Codex or Cursor, and your agent installs the skill. Don\'t have any of these tools yet? See "No AI tool yet?" below.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Install from your personal link',
+        bullets: [
+          '<strong>Open the email with your link on a computer.</strong> It comes from tomasz@creativesparks.pl within a minute of signing up. Not there? Check your Spam folder.',
+          '<strong>Paste the instruction from the email into Claude Code, Codex or Cursor.</strong> The email has your link and a sentence below it. Copy both lines, unchanged.',
+          '<strong>Your agent shows you the plan and asks before copying anything.</strong> It may ask several times for approval to run commands (downloading, unpacking, copying and checking files). That is expected.',
+          '<strong>Once installed, start the skill with its command:</strong> <code>/website-planning</code> or <code>/homepage-ux-audit</code> in Claude Code and Cursor, <code>$website-planning</code> or <code>$homepage-ux-audit</code> in Codex. The command is in the email too.',
+          '<strong>Each free skill is given once per email address.</strong> Have it already? Your link is in the first email.',
+        ],
+      },
+      {
+        heading: 'Free if you install it within 14 days',
+        bullets: [
+          '<strong>Install the skill within 14 days of signing up.</strong> Then it stays free, and your project can wait: use the skill whenever you like.',
+          "<strong>Once installed, your link keeps working.</strong> You can reinstall from it, so keep the email. Please don't share the link with anyone else.",
+          '<strong>No install within 14 days, no package.</strong> After that, the link no longer downloads the skill.',
+        ],
+      },
+      {
+        heading: 'Updates',
+        bullets: [
+          '<strong>They install themselves.</strong> For the first 60 days after you sign up, the skill installs new versions by itself when it starts, if there are any.',
+          '<strong>Want to turn that off?</strong> Just ask your agent. Auto-update is on by default.',
+          '<strong>After the 60 days,</strong> the skill keeps working on the version you have.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Getting started',
+  },
+  {
+    id: 'no-ai-tool',
+    number: 'Tools',
+    label: 'Before you start',
+    title: 'No AI tool yet?',
+    description: 'The skill runs on a computer, inside one of three AI tools: Claude Code, Codex or Cursor. The skill itself is free. The AI tool is a separate, paid service: you pay the company that makes it, not us.',
+    bullets: [
+      '<strong>What you need:</strong> a computer and one of these tools: Claude Code, Codex or Cursor. You install and run the skill on your computer, so open the email with your link there too.',
+      '<strong>The skill is free; the AI tool is paid separately.</strong> You pick a plan from the company behind the tool and pay them for it. The skill runs on that plan, and you pay us nothing.',
+      '<strong>Not sure which one to pick?</strong> Start with Claude Code. There is more below, under "How to pick a platform".',
+      '<strong>The 14 days count from the day you signed up.</strong> Install the skill within that time, even if your project has to wait. After that, use it whenever you like.',
+      '<strong>Meanwhile, look at a finished result.</strong> Here is what the two skills produce:',
+    ],
+    links: [
+      { label: 'Example website plan', href: '/examples/website-planning-skill_project_plan_en.html', icon: 'description' },
+      { label: 'Example homepage audit', href: '/examples/creativesparks-ux-designer_audit_en.html', icon: 'description' },
+    ],
+    quote: '',
+    group: 'Getting started',
+  },
+  {
+    number: 'Choice',
+    label: 'Platform',
+    title: 'How to pick a platform',
+    description: 'Both free skills run in Claude Code, Codex and Cursor, also inside VS Code with a plugin, but these tools differ in collaboration quality.',
+    bullets: [
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Strongest recommendation: Claude Code.</strong> A wide context window and deeper reasoning than the other models. Sometimes a bit slower, which is an acceptable trade-off for the quality.',
+      '<span class="material-symbols-outlined text-primary text-xl align-middle mr-2">check_circle</span><strong>Solid alternative: VS Code with an LLM plugin</strong> (Claude Code, OpenAI Codex, Cursor). Full control over files, the skill sticks to the process reliably, and it is easy to come back to the project between sessions.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Getting started',
+  },
+  {
+    number: 'Start',
+    label: 'First session',
+    title: 'How to get started',
+    description: 'Start the skill with its command. It will introduce itself and lead you from there. The more context you give up front, the less it has to guess, but a single sentence is enough. Watch the confidence markers (🟢🟡🔴): green is fine as-is, yellow needs a check, red needs to be filled in.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'Website Planning Skill',
+        bullets: [
+          'Type <code>/website-planning</code> (<code>$website-planning</code> in Codex) and describe the site in a sentence or two, for example: "I\'m planning a new website for [company name], which [what it does]. The site should [main goal, e.g. bring in client enquiries]."',
+          'Redesigning your current site? Say what works on it and what you want to change.',
+          'Have a client brief or materials about the company? Paste them in right away. The skill will pull out the audience, goals and differentiators.',
+        ],
+      },
+      {
+        heading: 'Homepage UX Audit Skill',
+        bullets: [
+          'Type <code>/homepage-ux-audit</code> (<code>$homepage-ux-audit</code> in Codex) and give it your homepage address. That is all it needs.',
+          'The page has to be public: the skill reads the same version every visitor sees. You can check up to 5 sites a day.',
+          'First, check which site type the skill recognized. Every finding compares your site with the standard for that type, so everything else hinges on it.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Getting started',
+  },
+  {
+    number: 'Decisions',
+    label: 'Decisions',
+    title: 'How to make decisions',
+    description: 'The skill shows options with trade-offs, or findings with a confidence level. You do not need to know which option is better. Read what each one optimizes for and what it gives up.',
+    bullets: [
+      'If none of the options fit, say why. The skill will propose new ones',
+      'Say "help me decide" when you get stuck. The skill will sum up the pros and cons',
+      'In an audit, what to fix first is your call. The skill gives you the diagnosis',
+    ],
+    links: [],
+    quote: '',
+    group: 'Working with the skill',
+  },
+  {
+    number: 'Dialog',
+    label: 'Talking to the skill',
+    title: 'How to talk to the skill',
+    description: 'The skill is not infallible. Your knowledge of your customers and your market matters more than its patterns. Push back, ask for alternatives, rein it in when it writes too much.',
+    bullets: [
+      '"Why is there no section X here?" The skill will explain whether it left it out on purpose or did not consider it',
+      '"Do we still need this?" When something starts to look redundant after changes elsewhere',
+      '"Give me alternatives" forces options instead of a single answer',
+      '"First identify the point of this item": before changing anything, understand what it is meant to say',
+      '"Cut it down." AI writes too much, rein it in',
+      '"Does this overlap with X?" The skill will check for repetition',
+      '"Critique this plan" makes it look for weak spots',
+      'If you do not know what comes next, ask the skill. It knows the process and will suggest the next step',
+    ],
+    links: [],
+    quote: '',
+    group: 'Working with the skill',
+  },
+  {
+    number: 'Pace',
+    label: 'Work pace',
+    title: 'How long it takes',
+    description: 'The skill thinks for a while because every step processes a lot of context: knowledge about your type of site, patterns and your answers. Time depends on how much input it gets. The more you give up front, the faster it goes.',
+    bullets: [
+      'A website plan, the first time: 2-3 hours of conversation, depending on how clearly you know what you need',
+      'A homepage audit: 20-30 minutes',
+      'Quick questions, small tweaks: a few seconds',
+      'If you see the skill "thinking", wait. Interrupting bounces you back to the start of the step.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Working with the skill',
+  },
+  {
+    number: 'Output',
+    label: 'Results',
+    title: "How to use the skill's output file",
+    description: 'Each free skill saves its result in one HTML file. You open it in a browser and show it to others without any extra tools. The file has a Markdown download button, so a version for other AI tools is one click away.',
+    bullets: [
+      'Website plan: the brief, the sitemap and the content guidelines for every page, in one file',
+      'Audit: a wireframe of your homepage with findings pinned to sections and elements, plus a short list of changes',
+      'Markdown in one click: the button in the file downloads a .md file ready for another AI tool. Faster than asking the skill to export',
+      'Export via the skill: when you want a specific part or a different format, ask the skill directly',
+      'The plan as a brief for an agency or a designer: print the HTML or send the file',
+      'Audit findings for a designer or a client: pass on the file, or start with the list of changes',
+    ],
+    links: [],
+    quote: '',
+    group: 'Output and continuity',
+  },
+  {
+    number: 'Sessions',
+    label: 'Coming back to a project',
+    title: 'Working across sessions',
+    description: 'The skill reads files. It does not remember the conversation. Anything important has to live in the file.',
+    bullets: [
+      'After a break, say what you are working on, for example "continue the website plan". The skill will read the file and pick up the context',
+      'If you changed something in the file by hand, tell the skill. Otherwise it will overwrite your changes',
+      'Start a new session when answers turn vague or the skill forgets earlier decisions. That is the sign the conversation context is full',
+      'After installing an update, the skill asks you to start a new session. Do that before you carry on',
+    ],
+    links: [],
+    quote: '',
+    group: 'Output and continuity',
+  },
+  {
+    number: 'Opinion',
+    label: 'Sanity check and consultation',
+    title: 'Ask the skill for its opinion',
+    description: 'The skill carries research-backed patterns for many types of site. It is not only an executor. It is also a consultant. It will sanity-check your decisions and explain the methodology.',
+    bullets: [
+      '"Sanity-check my decision" gets a skeptical look at your version and a proposal for what to improve.',
+      '"What should section X contain?" The skill knows the patterns. Treat it like a UX consultant.',
+      '"How should this be done according to methodology Y?" You get an answer that references the frameworks.',
+    ],
+    links: [],
+    quote: '',
+    group: 'Best practices',
+  },
+  {
+    number: 'Watch out',
+    label: 'Pitfalls',
+    title: 'What to avoid',
+    description: 'A few things that drag the quality of the output down.',
+    bullets: [
+      'Do not accept everything with a quick "ok". The skill will push on, but the output will be worse',
+      'Do not skip the questions the skill asks. Output without context is guesswork with nicer formatting',
+      'Do not use the output without reading it. The skill makes assumptions. You verify',
+    ],
+    links: [],
+    quote: '',
+    group: 'Best practices',
+  },
+  {
+    number: 'Feedback',
+    label: 'Questions and reports',
+    title: 'Talk to the skill: questions, bugs, ideas',
+    description: 'The skill has a built-in feedback channel. A normal conversation is enough, no forms, no account. It works in Claude Code, Codex and Cursor.',
+    bullets: [],
+    groups: [
+      {
+        heading: 'What you can report',
+        bullets: [
+          '<strong>A question</strong> ("how do I do X?", "what does Y mean?", "why does the skill...?"). The skill will tidy up the question with context and send it.',
+          '<strong>A bug</strong> ("I want to report a bug", "something is broken"). The skill will ask for details and add the platform and version itself.',
+          '<strong>An idea or feature request</strong> ("I would like the skill to X", "please add Y"). The skill will note the situation in which you needed it and the outcome you wanted.',
+          '<strong>General feedback</strong>: your impressions, what works, what does not. "I have some feedback for you" is enough.',
+        ],
+      },
+      {
+        heading: 'How it works',
+        bullets: [
+          '<strong>Say it in your own words.</strong> No commands, no format. The skill will pick up the intent and ask for any missing details.',
+          '<strong>Preview before sending.</strong> You see the title and body of the report. You can edit it, change the category, or cancel.',
+          '<strong>Email is optional.</strong> Leave it only if you want a reply. I use it solely to follow up on that specific report.',
+          '<strong>It goes to public GitHub Discussions</strong>: a forum where you see your report and the replies. Other users can join the discussion.',
+        ],
+      },
+    ],
+    links: [],
+    quote: '',
+    group: 'Help',
+  },
+  {
+    number: 'Contact',
+    label: 'Support',
+    title: 'Help',
+    description: 'Questions, or something not working? Reply to the email with your link, or write to tomasz@creativesparks.pl',
+    bullets: [],
+    links: [
+      { label: 'tomasz@creativesparks.pl', href: 'mailto:tomasz@creativesparks.pl', icon: 'mail' },
+    ],
+    quote: '',
+    group: 'Help',
+  },
+];
+
+const sections = rawSections.map((s, i) => ({
+  ...s,
+  groupStarts: !!s.group && (i === 0 || s.group !== rawSections[i - 1].group),
+}));
+
+// The same top bar as the free skills' pages: three links, no buy button, not sticky.
+const navLinks: { label: string; href: string }[] = [
+  { label: 'UX Design Skill', href: '/en/ux-design-skill/' },
+  { label: 'Reviews', href: '/en/free-website-planning-skill/#reviews' },
+  { label: 'User guide', href: '/en/free-skills/guide/' },
+];
+---
+
+<BaseLayout
+  title="How to work with the free skills: user guide | Creative Sparks"
+  description="User guide for the free Website Planning Skill and Homepage UX Audit Skill: installing, your first session, working with the skill, and what to do with the results."
+>
+  <TopAppBar navLinks={navLinks} showCta={false} sticky={false} />
+  <main>
+    <section class="py-20 md:py-28 px-6 bg-surface-primary">
+      <div class="max-w-screen-2xl mx-auto">
+        <SectionWithIcon icon={sectionIcon}>
+          <Fragment slot="header">
+            <span class="font-label text-primary text-sm mb-4">Free skills</span>
+            <h1 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground">
+              How to work with the free skills
+            </h1>
+            <p class="text-muted text-lg leading-relaxed mt-6 max-w-3xl">
+              This guide covers both free skills: the
+              <a href="/en/free-website-planning-skill/" class="text-primary underline underline-offset-4 hover:no-underline">Website Planning Skill</a>
+              and the
+              <a href="/en/free-homepage-ux-audit-skill/" class="text-primary underline underline-offset-4 hover:no-underline">Homepage UX Audit Skill</a>.
+              You work with them the same way. The first plans a new site; the second audits the homepage you already have.
+            </p>
+          </Fragment>
+
+          <div class="flex flex-col">
+            {sections.map((section) => (
+              <>
+                {section.groupStarts && (
+                  <h2 class="font-headline font-bold text-4xl md:text-5xl tracking-tight leading-[1.1] text-foreground mt-20 mb-8">
+                    {section.group}
+                  </h2>
+                )}
+                <details
+                  id={section.id}
+                  class="group border-b border-border/30 overflow-hidden bg-white"
+                  name="guide"
+                  open={false}
+                >
+                  <summary class="flex items-start justify-between p-6 md:p-10 cursor-pointer list-none hover:bg-surface-hover transition-colors">
+                    <div class="flex flex-col md:flex-row gap-4 md:gap-12 flex-1 md:items-start">
+                      <span class="font-label text-xs font-bold text-muted w-16 hidden sm:block leading-[1.4]">
+                        {section.number}
+                      </span>
+                      <div class="flex flex-col gap-3 flex-1">
+                        <span class="font-label text-sm text-primary leading-none">{section.label}</span>
+                        <h2 class="font-headline font-bold text-2xl md:text-3xl tracking-tight leading-tight text-foreground">
+                          {section.title}
+                        </h2>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-muted expand-icon transition-transform duration-300 pt-2" aria-hidden="true">expand_more</span>
+                  </summary>
+                  <div class="px-6 pb-12 md:pb-16 md:pl-[152px] md:pr-10">
+                    <div class="max-w-3xl">
+                      {section.description && (
+                        <p class="text-muted text-lg leading-relaxed mb-6">
+                          {section.description}
+                        </p>
+                      )}
+                      {section.bullets.length > 0 && (
+                        <ul class="space-y-3 mb-8">
+                          {section.bullets.map((bullet) => (
+                            <li class="flex items-start gap-3 text-base text-muted">
+                              {!bullet.startsWith('<span class="material-symbols-outlined') && (
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                              )}
+                              <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {section.groups && section.groups.map((group) => (
+                        <div class="mb-8">
+                          <h3 class="font-headline font-bold text-lg text-foreground mb-3">{group.heading}</h3>
+                          <ul class="space-y-3">
+                            {group.bullets.map((bullet) => (
+                              <li class="flex items-start gap-3 text-base text-muted">
+                                <svg class="w-5 h-5 shrink-0 mt-0.5" viewBox="0 0 19 22" fill="none"><path d="M14.32 12.84L10.24 17.66L8.75 16.77L12.11 12.67L8.75 8.57L10.24 7.7L14.32 12.53V12.84ZM9.54 12.84L5.49 17.66L4 16.77L7.36 12.67L4 8.57L5.49 7.7L9.54 12.53V12.84Z" fill="currentColor" class="text-primary"/></svg>
+                                <span class="[&_strong]:text-foreground [&_strong]:font-semibold [&_code]:font-label [&_code]:text-sm [&_code]:bg-surface-primary [&_code]:px-1" set:html={bullet} />
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                      {section.links.length > 0 && (
+                        <div class="bg-surface-primary p-6 space-y-4 rounded-xl">
+                          <div class="flex flex-wrap gap-x-12 gap-y-3">
+                            {section.links.map((link) => (
+                              <a href={link.href} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight hover:translate-x-1 transition-transform">
+                                <span class="material-symbols-outlined text-sm" data-icon={link.icon} aria-hidden="true">{link.icon}</span>
+                                {link.label}
+                                <span class="material-symbols-outlined text-sm" data-icon="trending_flat" aria-hidden="true">trending_flat</span>
+                              </a>
+                            ))}
+                          </div>
+                          {section.quote && <p class="text-sm font-label text-muted">{section.quote}</p>}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </details>
+              </>
+            ))}
+          </div>
+        </SectionWithIcon>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<script>
+  // An address with a section's id opens that section: the sign-up overlay and the emails link to #no-ai-tool.
+  function openLinkedSection() {
+    let id = '';
+    try {
+      id = decodeURIComponent(window.location.hash.slice(1));
+    } catch {
+      return;
+    }
+    if (!id) return;
+    const section = document.getElementById(id);
+    if (!(section instanceof HTMLDetailsElement)) return;
+    section.open = true;
+    section.scrollIntoView({ block: 'start' });
+  }
+  openLinkedSection();
+  window.addEventListener('hashchange', openLinkedSection);
+</script>
+
+<style>
+  details[open] summary .expand-icon {
+    transform: rotate(180deg);
+  }
+
+  details[open] summary:hover {
+    background-color: transparent;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+</style>
