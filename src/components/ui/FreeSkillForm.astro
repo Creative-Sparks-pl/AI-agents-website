@@ -38,11 +38,14 @@ const COPY_PL = {
   disclaimerLinkLabel: 'Polityką prywatności',
   disclaimerSuffix: '.',
   privacyHref: '/ux-design-skill/polityka-prywatnosci/',
+  overlayTitle: 'Sprawdź skrzynkę.',
   overlayClose: 'Zamknij',
-  overlayEmail: 'Otwórz maila na komputerze. Jest w nim Twój osobisty link do instalacji.',
+  overlayEmailLead: 'Otwórz maila na komputerze.',
+  overlayEmailRest: 'Jest w nim Twój osobisty link do instalacji.',
   overlayTools: 'Skill działa w Claude Code, Codex albo Cursorze.',
   overlayHelpLink: 'Nie masz jeszcze narzędzia AI? Zobacz, czego potrzebujesz',
-  overlayFree: 'Zainstaluj go w ciągu 14 dni od zapisu, a pozostanie darmowy. Korzystać z niego możesz później, kiedy zechcesz.',
+  overlayFreeLead: 'Zainstaluj go w ciągu 14 dni od zapisu, a pozostanie darmowy.',
+  overlayFreeRest: 'Korzystać z niego możesz później, kiedy zechcesz.',
   overlayExample: 'W międzyczasie obejrzyj gotowy przykład.',
   overlayExampleLink: { planning: 'Zobacz przykładowy plan strony', audit: 'Zobacz przykładowy audyt strony głównej' },
   overlayNewTab: '(otwiera się w nowej karcie)',
@@ -68,11 +71,14 @@ const COPY_EN = {
   disclaimerLinkLabel: 'Privacy Policy',
   disclaimerSuffix: '.',
   privacyHref: '/en/ux-design-skill/privacy-policy/',
+  overlayTitle: 'Check your inbox.',
   overlayClose: 'Close',
-  overlayEmail: 'Open the email on a computer. Your personal install link is in it.',
+  overlayEmailLead: 'Open the email on a computer.',
+  overlayEmailRest: 'Your personal install link is in it.',
   overlayTools: 'The skill runs in Claude Code, Codex or Cursor.',
   overlayHelpLink: 'No AI tool yet? See what you need',
-  overlayFree: 'Install it within 14 days of signing up and it stays free. You can use it later, whenever you like.',
+  overlayFreeLead: 'Install it within 14 days of signing up and it stays free.',
+  overlayFreeRest: 'You can use it later, whenever you like.',
   overlayExample: 'Meanwhile, have a look at a finished example.',
   overlayExampleLink: { planning: 'See an example website plan', audit: 'See an example homepage audit' },
   overlayNewTab: '(opens in a new tab)',
@@ -118,7 +124,11 @@ const overlayClickLabels = {
   'data-umami-click-page': page,
 };
 const overlayLinkClass =
-  'mt-2 inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight underline-offset-4 hover:underline';
+  'mt-2 max-sm:mt-1.5 inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight underline-offset-4 hover:underline';
+// On phones the overlay is the owner's bottom sheet (Figma "Pop-up / Phone 390 / A2"): the email and the 14 days
+// in white boxes with their icons, then the two link rows in small type without icons. Desktop keeps one list.
+const overlayBoxClass = 'flex gap-4 max-sm:gap-3 max-sm:bg-background max-sm:p-4';
+const overlayRowClass = 'flex gap-4 max-sm:text-sm max-sm:leading-relaxed';
 
 const inputSizeClasses: Record<Size, string> = {
   md: 'px-6 py-4 text-base',
@@ -248,21 +258,31 @@ const iconSize: Record<Size, string> = {
     <p class="text-muted mt-2 free-skill-form__success-repeat">{COPY.successRepeat}</p>
   </div>
 
-  <!-- The message after a granted sign-up, over the whole page. No install link: it comes only by email. -->
+  <!-- The message after a granted sign-up: a bottom sheet on phones, the whole screen from 640 px up.
+       No install link: it comes only by email. -->
   <FullScreenDialog
     id={`free-skill-overlay-${surface}`}
-    title={successHeading}
+    title={COPY.overlayTitle}
     closeLabel={COPY.overlayClose}
-    icon="check_circle"
+    phoneSheet
     class="free-skill-form__overlay"
   >
+    <!-- Phones read the boxes first, in this order; desktop shows its list in the order email, AI tool, 14 days,
+         example (sm:order-*). Both links keep the same order everywhere. -->
     <ul class="flex flex-col gap-5 sm:gap-6 text-base sm:text-lg text-foreground leading-relaxed">
-      <li class="flex gap-4">
+      <li class:list={[overlayBoxClass, 'sm:order-1']}>
         <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">mail</span>
-        <p>{COPY.overlayEmail}</p>
+        <p><span class="font-bold sm:font-normal">{COPY.overlayEmailLead}</span> {COPY.overlayEmailRest}</p>
       </li>
-      <li class="flex gap-4">
-        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">terminal</span>
+      <li class:list={[overlayBoxClass, 'sm:order-3']}>
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">schedule</span>
+        <p><span class="font-bold sm:font-normal">{COPY.overlayFreeLead}</span> {COPY.overlayFreeRest}</p>
+      </li>
+      <li class:list={[overlayRowClass, 'sm:order-2']}>
+        <!-- The wrapper hides the icon on phones: global.css sets the icon's own display outside Tailwind's layers. -->
+        <span class="flex shrink-0 max-sm:hidden" aria-hidden="true">
+          <span class="material-symbols-outlined text-primary text-2xl">terminal</span>
+        </span>
         <div>
           <p>{COPY.overlayTools}</p>
           <a
@@ -278,12 +298,11 @@ const iconSize: Record<Size, string> = {
           </a>
         </div>
       </li>
-      <li class="flex gap-4">
-        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">schedule</span>
-        <p>{COPY.overlayFree}</p>
-      </li>
-      <li class="flex gap-4">
-        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">description</span>
+      <!-- 14 px below the row above on phones (the list's 20 px gap less 6). -->
+      <li class:list={[overlayRowClass, 'sm:order-4 max-sm:-mt-1.5']}>
+        <span class="flex shrink-0 max-sm:hidden" aria-hidden="true">
+          <span class="material-symbols-outlined text-primary text-2xl">description</span>
+        </span>
         <div>
           <p>{COPY.overlayExample}</p>
           <a
@@ -301,16 +320,17 @@ const iconSize: Record<Size, string> = {
       </li>
     </ul>
 
-    <div class="mt-6 sm:mt-8 border-t border-border pt-5 sm:pt-6 text-muted leading-relaxed">
+    <div class="mt-6 sm:mt-8 border-t border-border pt-5 sm:pt-6 text-muted leading-relaxed max-sm:mt-5 max-sm:border-t-0 max-sm:pt-0 max-sm:text-sm">
       <p>{successNote}</p>
-      <p class="mt-2">{COPY.successRepeat}</p>
+      <p class="mt-2 max-sm:mt-0">{COPY.successRepeat}</p>
     </div>
 
     <button
+      slot="footer"
       type="button"
       data-dialog-close
       class:list={[
-        'free-skill-form__overlay-done mt-8 sm:mt-10 w-full sm:w-auto',
+        'free-skill-form__overlay-done w-full sm:w-auto',
         'inline-flex items-center justify-center gap-2 tracking-tight cursor-pointer transition-all duration-300',
         'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
         buttonSizeClasses.md,

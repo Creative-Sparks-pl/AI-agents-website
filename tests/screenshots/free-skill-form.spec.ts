@@ -34,6 +34,13 @@ const EXAMPLE: Record<Skill, Record<Locale, string>> = {
 
 const GRANTED = { status: 200, body: { ok: true, granted: true } };
 
+// The pop-up's own title, without "Gotowe."/"Done." and its icon; the success line under the form keeps them
+// (FIN-009 as amended 2026-11-26, the owner's phone design).
+const POPUP_TITLE: Record<Locale, string> = { pl: 'Sprawdź skrzynkę.', en: 'Check your inbox.' };
+const SUCCESS_WORD: Record<Locale, string> = { pl: 'Gotowe', en: 'Done' };
+// Below Tailwind's sm breakpoint (640 px) the pop-up is a bottom sheet over a scrim; from it up, full screen.
+const SHEET_MAX_WIDTH = 639;
+
 const PRIVACY: Record<Locale, string> = {
   pl: '/ux-design-skill/polityka-prywatnosci/',
   en: '/en/ux-design-skill/privacy-policy/',
@@ -76,10 +83,29 @@ const focusInForm = (form: Locator) =>
     );
   });
 
-/** The open overlay: modal, named by its heading, over the whole screen, focus inside, and only its two links. */
+/**
+ * The open overlay: modal, named by its own title, a bottom sheet on phones and full screen on desktop, the
+ * "Got it" button on screen, focus inside, and only its two links.
+ */
 async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill: Skill) {
   await expect(overlay).toBeVisible();
   expect(await overlay.evaluate((dialog) => dialog.matches(':modal'))).toBe(true);
+
+  // Phones: a sheet along the bottom edge, full width, as tall as its content up to the screen minus about 151 px
+  // (the approved frame at 844 px), so the page stays visible above it under the scrim. Desktop: the whole screen
+  // (FIN-009 as amended).
+  const viewport = page.viewportSize()!;
+  const box = (await overlay.boundingBox())!;
+  if (viewport.width <= SHEET_MAX_WIDTH) {
+    expect(Math.round(box.x)).toBe(0);
+    expect(Math.round(box.width)).toBe(viewport.width);
+    expect(Math.round(box.y + box.height)).toBe(viewport.height);
+    expect(box.y).toBeGreaterThanOrEqual(140);
+    // A sheet holding the whole message, not a strip: it covers most of the screen.
+    expect(box.height).toBeGreaterThanOrEqual(viewport.height / 2);
+  } else {
+    expect([box.x, box.y, box.width, box.height].map(Math.round)).toEqual([0, 0, viewport.width, viewport.height]);
+  }
 
   const heading = overlay.getByRole('heading', { level: 2 });
   await expect(heading).toHaveCount(1);
@@ -88,13 +114,22 @@ async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill
     copy.querySelectorAll('[aria-hidden="true"]').forEach((n) => n.remove());
     return (copy.textContent ?? '').replace(/\s+/g, ' ').trim();
   });
-  expect(headingName).not.toBe('');
+  expect(headingName).toBe(POPUP_TITLE[locale]);
+  await expect(heading.locator('.material-symbols-outlined')).toHaveCount(0);
   await expect(overlay).toHaveAccessibleName(headingName);
 
-  // Full screen on phones and desktop (FIN-009).
-  const viewport = page.viewportSize()!;
-  const box = (await overlay.boundingBox())!;
-  expect([box.x, box.y, box.width, box.height].map(Math.round)).toEqual([0, 0, viewport.width, viewport.height]);
+  // "Got it" is on screen without scrolling, and nothing covers it.
+  const done = overlay.locator('.free-skill-form__overlay-done');
+  await expect(done).toBeVisible();
+  const doneBox = (await done.boundingBox())!;
+  expect(doneBox.y).toBeGreaterThanOrEqual(box.y);
+  expect(doneBox.y + doneBox.height).toBeLessThanOrEqual(viewport.height + 0.5);
+  expect(
+    await done.evaluate((b) => {
+      const r = b.getBoundingClientRect();
+      return b.contains(document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2));
+    }),
+  ).toBe(true);
 
   await expect.poll(() => focusInOverlay(overlay)).toBe(true);
 
@@ -109,9 +144,8 @@ async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill
   }
   await expect(overlay.locator('a[download]')).toHaveCount(0);
 
-  // A labelled ✕ and the "Got it" button.
+  // A labelled ✕.
   await expect(overlay.locator('.full-screen-dialog__close')).toHaveAccessibleName(/\S/);
-  await expect(overlay.locator('.free-skill-form__overlay-done')).toBeVisible();
 }
 
 /**
@@ -151,12 +185,13 @@ async function expectConsent(form: Locator, locale: Locale) {
 }
 
 /** After the overlay closed: focus back on the form, whose place shows the success heading and the repeat line. */
-async function expectClosed(form: Locator) {
+async function expectClosed(form: Locator, locale: Locale) {
   await expect(overlayOf(form)).toHaveCount(0);
   await expect.poll(() => focusInForm(form)).toBe(true);
   const success = form.locator('.free-skill-form__success');
   await expect(success).toBeVisible();
   await expect(success.locator('.free-skill-form__success-heading')).toBeVisible();
+  await expect(success.locator('.free-skill-form__success-heading')).toContainText(SUCCESS_WORD[locale]);
   await expect(success.locator('.free-skill-form__success-repeat')).toBeVisible();
   // The "once per email address" note moved into the overlay; the offer line went with the form.
   await expect(success.locator('.free-skill-form__success-note')).toHaveCount(0);
@@ -227,7 +262,7 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
       await submit.click();
       await expect(form).toHaveAttribute('data-state', 'success');
 
-      // A granted sign-up opens the overlay over the whole page.
+      // A granted sign-up opens the overlay over the page.
       await expectOverlay(page, overlay, locale, skill);
       await expectAxeClean(page, `${selector} dialog`);
       await page.screenshot({
@@ -245,7 +280,7 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
 
       // "Got it" closes it.
       await overlay.locator('.free-skill-form__overlay-done').click();
-      await expectClosed(form);
+      await expectClosed(form, locale);
 
       const success = form.locator('.free-skill-form__success');
       await expect(success).toBeVisible();
@@ -275,7 +310,7 @@ for (const { name, path, locale, skill, surfaces } of FORMS) {
 
         if (way === 'close button') await overlay.locator('.full-screen-dialog__close').click();
         else await page.keyboard.press('Escape');
-        await expectClosed(form);
+        await expectClosed(form, locale);
       }
     });
   }
@@ -319,7 +354,7 @@ test('form planning-pl free_planning_skill_hero: the overlay covers the cookie b
   });
 
   await overlay.locator('.free-skill-form__overlay-done').click();
-  await expectClosed(form);
+  await expectClosed(form, 'pl');
   await expect(banner).toBeVisible();
   expect(await onTopAtBanner()).toBe('banner');
 });

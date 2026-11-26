@@ -4,13 +4,18 @@
 // It fills the screen on phones and desktop and closes only on purpose: its ✕, Esc, or any element inside
 // marked `data-dialog-close`. A click outside the content does nothing.
 //
+// With `phoneSheet`, below Tailwind's sm breakpoint (640 px) it is a bottom sheet over a scrim instead: anchored
+// to the bottom edge, full width, as tall as its content up to the screen minus 151 px (the owner's Figma frame
+// "Pop-up / Phone 390 / A2" at 844 px). Its content scrolls inside and the footer stays pinned. A click on the
+// scrim does nothing either. From 640 px up it is the full-screen dialog above.
+//
 // A page script opens it with
 //   dialog.dispatchEvent(new CustomEvent('full-screen-dialog:open', { detail: { returnFocus } }))
 // On closing, focus goes back to the element that had it when the dialog opened, or to `returnFocus` when that
 // element is gone or hidden by then.
 //
-// The content (the default slot) waits in a <template> until the dialog opens and is removed when it closes,
-// so a closed dialog adds no links or text to the page.
+// The content (the default slot) and the footer (the `footer` slot, e.g. a closing button) wait in <template>s
+// until the dialog opens and are removed when it closes, so a closed dialog adds no links or text to the page.
 
 interface Props {
   id: string;
@@ -18,11 +23,14 @@ interface Props {
   closeLabel: string;
   /** Material Symbols name shown before the title. */
   icon?: string;
+  /** Below 640 px, a bottom sheet over a scrim instead of the whole screen. */
+  phoneSheet?: boolean;
   class?: string;
 }
 
-const { id, title, closeLabel, icon, class: className } = Astro.props;
+const { id, title, closeLabel, icon, phoneSheet = false, class: className } = Astro.props;
 const titleId = `${id}-title`;
+const hasFooter = Astro.slots.has('footer');
 ---
 
 <dialog
@@ -31,27 +39,63 @@ const titleId = `${id}-title`;
   class:list={[
     'full-screen-dialog',
     'm-0 h-full max-h-none w-full max-w-none overflow-y-auto border-0 p-0 bg-background text-foreground',
+    phoneSheet && [
+      'full-screen-dialog--phone-sheet',
+      'max-sm:top-auto max-sm:bottom-0 max-sm:h-auto max-sm:overflow-hidden',
+      'max-sm:bg-surface-primary max-sm:border-t-4 max-sm:border-primary',
+    ],
     className,
   ]}
 >
-  <div class="flex min-h-full flex-col">
-    <div class="flex justify-end px-3 pt-3 sm:px-6 sm:pt-6">
+  <div class:list={['flex min-h-full flex-col', phoneSheet && 'max-sm:min-h-0']}>
+    <!-- On a phone sheet the ✕ sits on the title's row, outside the scrolling content. -->
+    <div
+      class:list={[
+        'flex justify-end px-3 pt-3 sm:px-6 sm:pt-6',
+        phoneSheet && 'max-sm:absolute max-sm:top-4 max-sm:right-6 max-sm:z-10 max-sm:p-0',
+      ]}
+    >
       <button
         type="button"
         class="full-screen-dialog__close inline-flex h-12 w-12 items-center justify-center text-foreground hover:text-primary transition-colors cursor-pointer"
         aria-label={closeLabel}
         data-dialog-close
       >
-        <span class="material-symbols-outlined text-3xl" aria-hidden="true">close</span>
+        <span class:list={['material-symbols-outlined text-3xl', phoneSheet && 'max-sm:text-2xl']} aria-hidden="true">close</span>
       </button>
     </div>
-    <div class="mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 pb-12 sm:justify-center sm:px-10 sm:pb-20">
-      <h2 id={titleId} class="font-headline text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-foreground">
+    <div
+      class:list={[
+        'mx-auto flex w-full max-w-2xl flex-1 flex-col px-6 pb-12 sm:justify-center sm:px-10 sm:pb-20',
+        // The sheet's scroll area: the screen minus 151 px above it and the 4 px line at its top.
+        phoneSheet && 'max-sm:max-h-[calc(100dvh-155px)] max-sm:overflow-y-auto max-sm:overscroll-contain max-sm:pt-4 max-sm:pb-0',
+      ]}
+    >
+      <h2
+        id={titleId}
+        class:list={[
+          'font-headline text-3xl sm:text-4xl font-extrabold tracking-tight leading-tight text-foreground',
+          phoneSheet && 'max-sm:flex max-sm:min-h-12 max-sm:items-center max-sm:pr-14',
+        ]}
+      >
         {icon && <span class="material-symbols-outlined align-middle text-primary mr-2 text-4xl" aria-hidden="true">{icon}</span>}
         <span class="align-middle">{title}</span>
       </h2>
-      <div class="full-screen-dialog__body mt-6 sm:mt-8"></div>
+      <div class:list={['full-screen-dialog__body mt-6 sm:mt-8', phoneSheet && 'max-sm:mt-5 max-sm:pb-5']}></div>
       <template class="full-screen-dialog__content"><slot /></template>
+      {hasFooter && (
+        <div
+          class:list={[
+            'full-screen-dialog__footer mt-8 sm:mt-10',
+            // Pinned to the sheet's bottom edge while the content scrolls above it.
+            phoneSheet && [
+              'max-sm:sticky max-sm:bottom-0 max-sm:-mx-6 max-sm:mt-0 max-sm:px-6 max-sm:pt-4 max-sm:pb-6',
+              'max-sm:bg-surface-primary max-sm:border-t max-sm:border-primary/20',
+            ],
+          ]}
+        ></div>
+      )}
+      {hasFooter && <template class="full-screen-dialog__footer-content"><slot name="footer" /></template>}
     </div>
   </div>
 </dialog>
@@ -60,6 +104,14 @@ const titleId = `${id}-title`;
   /* The page behind does not scroll while a dialog covers it. */
   :root:has(dialog.full-screen-dialog[open]) {
     overflow: hidden;
+  }
+
+  /* The scrim over the page above a phone sheet: the foreground colour at 60 % (the owner's Figma frame).
+     The fallback covers browsers where ::backdrop does not inherit the page's custom properties. */
+  @media (width < 40rem) {
+    dialog.full-screen-dialog--phone-sheet::backdrop {
+      background: color-mix(in oklab, var(--color-foreground, #171717) 60%, transparent);
+    }
   }
 </style>
 
@@ -71,6 +123,8 @@ const titleId = `${id}-title`;
     const body = dialog.querySelector<HTMLElement>('.full-screen-dialog__body');
     const content = dialog.querySelector<HTMLTemplateElement>('.full-screen-dialog__content');
     if (!body || !content) return;
+    const footer = dialog.querySelector<HTMLElement>('.full-screen-dialog__footer');
+    const footerContent = dialog.querySelector<HTMLTemplateElement>('.full-screen-dialog__footer-content');
     let opener: HTMLElement | null = null;
     let returnFocus: HTMLElement | null = null;
 
@@ -81,6 +135,7 @@ const titleId = `${id}-title`;
       opener = active instanceof HTMLElement && active !== document.body ? active : null;
       returnFocus = (event as CustomEvent<{ returnFocus?: HTMLElement | null }>).detail?.returnFocus ?? null;
       body.replaceChildren(content.content.cloneNode(true));
+      if (footer && footerContent) footer.replaceChildren(footerContent.content.cloneNode(true));
       dialog.showModal();
     });
 
@@ -90,7 +145,8 @@ const titleId = `${id}-title`;
       dialog.close();
     });
 
-    // Only marked elements close it; a click anywhere else, the dialog's own empty area included, does nothing.
+    // Only marked elements close it; a click anywhere else, the dialog's own empty area and the scrim included,
+    // does nothing.
     dialog.addEventListener('click', (event) => {
       const closer = event.target instanceof Element ? event.target.closest('[data-dialog-close]') : null;
       if (closer && dialog.contains(closer)) dialog.close();
@@ -98,6 +154,7 @@ const titleId = `${id}-title`;
 
     dialog.addEventListener('close', () => {
       body.replaceChildren();
+      footer?.replaceChildren();
       // An element that is gone or hidden has no boxes and cannot take focus.
       const target = opener?.isConnected && opener.getClientRects().length > 0 ? opener : returnFocus;
       target?.focus();
