@@ -33,12 +33,10 @@ const COPY_PL = {
   errGeneric: 'Wystąpił błąd. Spróbuj ponownie za chwilę.',
   errOffline: 'Brak połączenia. Sprawdź internet i spróbuj ponownie.',
   offerHeading: 'Za darmo, jeśli zainstalujesz go w ciągu 14 dni od zapisu.',
-  offerNote: 'Część płatnego UX Design Skill. Z oferty możesz skorzystać tylko raz.',
-  nextStep: 'Wyślemy Ci mailem osobisty link do instalacji.',
-  disclaimerPrefix: 'Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z ',
+  offerNote: 'Część płatnego UX Design Skill. Z oferty możesz skorzystać tylko raz. Mailem otrzymasz osobisty link do instalacji.',
+  disclaimerPrefix: 'Zapisując się, zgadzasz się na otrzymywanie maili i wykorzystanie Twoich danych w celach marketingowych, zgodnie z ',
   disclaimerLinkLabel: 'Polityką prywatności',
-  disclaimerSuffix: ').',
-  disclaimerMeta: 'Zgadzasz się też, żebyśmy informowali Metę o pobraniu i instalacji skilla, aby mierzyć skuteczność naszych reklam.',
+  disclaimerSuffix: '.',
   privacyHref: '/ux-design-skill/polityka-prywatnosci/',
   overlayClose: 'Zamknij',
   overlayEmail: 'Otwórz maila na komputerze. Jest w nim Twój osobisty link do instalacji.',
@@ -65,12 +63,10 @@ const COPY_EN = {
   errGeneric: 'Something went wrong. Try again in a moment.',
   errOffline: 'No connection. Check your internet and try again.',
   offerHeading: 'Free if you install it within 14 days of signing up.',
-  offerNote: 'Part of the paid UX Design Skill. You can claim this offer only once.',
-  nextStep: "We'll email you a personal install link.",
-  disclaimerPrefix: 'By submitting your email you consent to receive product and service updates (per our ',
+  offerNote: "Part of the paid UX Design Skill. You can claim this offer only once. We'll email you a personal install link.",
+  disclaimerPrefix: 'By signing up, you agree to receive emails from us and to the use of your data for marketing purposes, as described in our ',
   disclaimerLinkLabel: 'Privacy Policy',
-  disclaimerSuffix: ').',
-  disclaimerMeta: 'You also agree that we tell Meta when you download and install the skill, so we can measure our ads.',
+  disclaimerSuffix: '.',
   privacyHref: '/en/ux-design-skill/privacy-policy/',
   overlayClose: 'Close',
   overlayEmail: 'Open the email on a computer. Your personal install link is in it.',
@@ -145,6 +141,12 @@ const buttonSizeClasses: Record<Size, string> = {
   lg: 'px-12 py-6 text-xl font-extrabold',
 };
 
+// Inside a narrow card the offer box's padding leaves less room, so the stacked button's side padding is smaller.
+const buttonFitSizeClasses: Record<Size, string> = {
+  md: 'px-4 py-4 text-base font-extrabold',
+  lg: 'px-6 py-6 text-xl font-extrabold',
+};
+
 const iconSize: Record<Size, string> = {
   md: 'text-lg',
   lg: 'text-xl',
@@ -169,12 +171,14 @@ const iconSize: Record<Size, string> = {
   data-umami-seen-page={page}
 >
   <!-- The offer, above the button: the condition is visible before signing up (FIN-003). -->
-  <div class="free-skill-form__offer mb-4 flex flex-col gap-1">
-    <p class="flex items-start gap-3">
-      <span class:list={['material-symbols-outlined shrink-0 text-primary', offerIconSizeClasses[size]]} aria-hidden="true">redeem</span>
-      <span class:list={['font-bold text-foreground', offerHeadingSizeClasses[size]]}>{COPY.offerHeading}</span>
-    </p>
-    <p class="text-sm text-muted leading-relaxed">{COPY.offerNote}</p>
+  <!-- The offer and the field share a pale yellow box (Figma "Free sign-up", Card); the consent text sits below it. -->
+  <div class="free-skill-form__card bg-surface-accent p-4 sm:p-6 flex flex-col gap-4">
+  <div class="free-skill-form__offer flex items-start gap-3">
+    <span class:list={['material-symbols-outlined shrink-0 text-primary', offerIconSizeClasses[size]]} aria-hidden="true">redeem</span>
+    <div class="flex flex-col gap-1 min-w-0">
+      <p class:list={['font-bold text-foreground', offerHeadingSizeClasses[size]]}>{COPY.offerHeading}</p>
+      <p class="text-sm text-muted leading-relaxed">{COPY.offerNote}</p>
+    </div>
   </div>
 
   <form
@@ -216,17 +220,17 @@ const iconSize: Record<Size, string> = {
         'transition-all duration-300',
         'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
         'disabled:opacity-60 disabled:cursor-not-allowed',
-        buttonSizeClasses[size],
+        (fitContainer ? buttonFitSizeClasses : buttonSizeClasses)[size],
       ]}
     >
       <span class="free-skill-form__submit-label">{submitLabel}</span>
       <span class:list={['material-symbols-outlined', iconSize[size]]} aria-hidden="true">mail</span>
     </button>
   </form>
+  </div>
 
   <p class="free-skill-form__disclaimer mt-3 text-sm text-muted leading-relaxed">
-    <span class="free-skill-form__next-step block">{COPY.nextStep}</span>
-    {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix} {COPY.disclaimerMeta}
+    {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix}
   </p>
 
   <p
@@ -342,11 +346,13 @@ const iconSize: Record<Size, string> = {
   function showSuccess(root: HTMLElement) {
     const form = root.querySelector<HTMLElement>('.free-skill-form__form');
     const offer = root.querySelector<HTMLElement>('.free-skill-form__offer');
+    const card = root.querySelector<HTMLElement>('.free-skill-form__card');
     const disclaimer = root.querySelector<HTMLElement>('.free-skill-form__disclaimer');
     const success = root.querySelector<HTMLElement>('.free-skill-form__success');
     if (!form || !success) return;
     form.classList.add('hidden');
     offer?.classList.add('hidden');
+    card?.classList.add('hidden');
     disclaimer?.classList.add('hidden');
     success.classList.remove('hidden');
   }

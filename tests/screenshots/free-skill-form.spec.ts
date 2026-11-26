@@ -39,7 +39,9 @@ const PRIVACY: Record<Locale, string> = {
   en: '/en/ux-design-skill/privacy-policy/',
 };
 // Meta's name, in the forms Polish declines it into.
-const NAMES_META = /Meta|Metę|Mety|Metą|Mecie/;
+// The consent names emails and marketing; the offer names the install link (any Polish or English form).
+const NAMES_MARKETING = /marketing/i;
+const NAMES_LINK = /link/i;
 
 /** Answers the form's request and records what it sent. */
 async function mockSubscribe(page: Page, reply: () => { status: number; body: object }) {
@@ -122,6 +124,10 @@ async function expectOffer(form: Locator, submit: Locator) {
   await expect(offer).toBeVisible();
   await expect(offer).toContainText('UX Design Skill');
   await expect(offer).toContainText('14');
+  // The offer and the email field share one box (owner's Figma "Free sign-up", Card, 2026-11-26).
+  await expect(form.locator('.free-skill-form__card')).toBeVisible();
+  await expect(form.locator('.free-skill-form__card .free-skill-form__offer')).toHaveCount(1);
+  await expect(form.locator('.free-skill-form__card input[name="email"]')).toHaveCount(1);
   const button = await submit.elementHandle();
   expect(await offer.evaluate((el, b) => !!(el.compareDocumentPosition(b!) & Node.DOCUMENT_POSITION_FOLLOWING), button)).toBe(true);
   const offerBox = (await offer.boundingBox())!;
@@ -130,22 +136,18 @@ async function expectOffer(form: Locator, submit: Locator) {
 }
 
 /**
- * Under the form: the install-link line stays, the consent sentence keeps its privacy-policy link, and a second
- * sentence after it names Meta (FIN-006).
+ * Under the box: one consent sentence that names emails and marketing and links the privacy policy, which names
+ * Meta (FIN-006 as amended 2026-11-26). The install-link line moved into the offer, so nothing else sits there.
  */
 async function expectConsent(form: Locator, locale: Locale) {
   const disclaimer = form.locator('.free-skill-form__disclaimer');
   await expect(disclaimer).toBeVisible();
-  await expect(disclaimer.locator('.free-skill-form__next-step')).toBeVisible();
+  await expect(disclaimer).toContainText(NAMES_MARKETING);
   const privacy = disclaimer.locator('a');
   await expect(privacy).toHaveCount(1);
   await expect(privacy).toHaveAttribute('href', PRIVACY[locale]);
-  const afterLink = await privacy.evaluate((link) => {
-    let text = '';
-    for (let node = link.nextSibling; node; node = node.nextSibling) text += node.textContent ?? '';
-    return text;
-  });
-  expect(afterLink).toMatch(NAMES_META);
+  await expect(form.locator('.free-skill-form__next-step')).toHaveCount(0);
+  await expect(form.locator('.free-skill-form__offer')).toContainText(NAMES_LINK);
 }
 
 /** After the overlay closed: focus back on the form, whose place shows the success heading and the repeat line. */
@@ -159,6 +161,7 @@ async function expectClosed(form: Locator) {
   // The "once per email address" note moved into the overlay; the offer line went with the form.
   await expect(success.locator('.free-skill-form__success-note')).toHaveCount(0);
   await expect(form.locator('.free-skill-form__offer')).toBeHidden();
+  await expect(form.locator('.free-skill-form__card')).toBeHidden();
 }
 
 /** Opens a page for signing up, without the scroll-through that screenshots need. */
