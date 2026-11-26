@@ -1,5 +1,6 @@
 ---
-import { localeFromPathname } from '../../lib/i18n';
+import { localeFromPathname, type Locale } from '../../lib/i18n';
+import FullScreenDialog from './FullScreenDialog.astro';
 
 type Size = 'md' | 'lg';
 type Skill = 'audit' | 'planning';
@@ -36,6 +37,16 @@ const COPY_PL = {
   disclaimerLinkLabel: 'Polityką prywatności',
   disclaimerSuffix: ').',
   privacyHref: '/ux-design-skill/polityka-prywatnosci/',
+  overlayClose: 'Zamknij',
+  overlayEmail: 'Otwórz maila na komputerze. Jest w nim Twój osobisty link do instalacji.',
+  overlayTools: 'Skill działa w Claude Code, Codex albo Cursorze.',
+  overlayHelpLink: 'Nie masz jeszcze narzędzia AI? Zobacz, czego potrzebujesz',
+  overlayFree: 'Zainstaluj go w ciągu 14 dni od zapisu, a pozostanie darmowy. Korzystać z niego możesz później, kiedy zechcesz.',
+  overlayExample: 'W międzyczasie obejrzyj gotowy przykład.',
+  overlayExampleLink: { planning: 'Zobacz przykładowy plan strony', audit: 'Zobacz przykładowy audyt strony głównej' },
+  overlayNewTab: '(otwiera się w nowej karcie)',
+  overlayDone: 'Rozumiem',
+  guideHref: '/free-skills/guide/#no-ai-tool',
 };
 
 const COPY_EN = {
@@ -55,9 +66,31 @@ const COPY_EN = {
   disclaimerLinkLabel: 'Privacy Policy',
   disclaimerSuffix: ').',
   privacyHref: '/en/ux-design-skill/privacy-policy/',
+  overlayClose: 'Close',
+  overlayEmail: 'Open the email on a computer. Your personal install link is in it.',
+  overlayTools: 'The skill runs in Claude Code, Codex or Cursor.',
+  overlayHelpLink: 'No AI tool yet? See what you need',
+  overlayFree: 'Install it within 14 days of signing up and it stays free. You can use it later, whenever you like.',
+  overlayExample: 'Meanwhile, have a look at a finished example.',
+  overlayExampleLink: { planning: 'See an example website plan', audit: 'See an example homepage audit' },
+  overlayNewTab: '(opens in a new tab)',
+  overlayDone: 'Got it',
+  guideHref: '/en/free-skills/guide/#no-ai-tool',
 };
 
 const COPY = locale === 'en' ? COPY_EN : COPY_PL;
+
+// The finished example the overlay shows: the same files as the free pages' proof gallery (FIN-017).
+const EXAMPLES: Record<Skill, Record<Locale, string>> = {
+  planning: {
+    pl: '/examples/website-planning-skill_project_plan.html',
+    en: '/examples/website-planning-skill_project_plan_en.html',
+  },
+  audit: {
+    pl: '/examples/creativesparks-ux-designer_audit.html',
+    en: '/examples/creativesparks-ux-designer_audit_en.html',
+  },
+};
 
 const {
   surface,
@@ -75,6 +108,15 @@ const {
 const privacyHref = COPY.privacyHref;
 // The seen event's labels hold the same values as the other funnel events' labels, built in the script below.
 const page = Astro.url.pathname;
+// The overlay's two link clicks carry the same labels: the form's own values, never what the visitor typed.
+const overlayClickLabels = {
+  'data-umami-click-skill': skill,
+  'data-umami-click-language': locale,
+  'data-umami-click-surface': surface,
+  'data-umami-click-page': page,
+};
+const overlayLinkClass =
+  'mt-2 inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight underline-offset-4 hover:underline';
 
 const inputSizeClasses: Record<Size, string> = {
   md: 'px-6 py-4 text-base',
@@ -167,14 +209,86 @@ const iconSize: Record<Size, string> = {
     aria-live="polite"
   ></p>
 
-  <div class="free-skill-form__success hidden mt-2" role="status" aria-live="polite">
+  <!-- Focus comes back here when the overlay closes, since the form it was opened from is hidden by then. -->
+  <div class="free-skill-form__success hidden mt-2 focus:outline-none" role="status" aria-live="polite" tabindex="-1">
     <p class="text-lg font-bold text-foreground">
       <span class="material-symbols-outlined align-middle text-primary mr-2" aria-hidden="true">check_circle</span>
       <span class="free-skill-form__success-heading align-middle">{successHeading}</span>
     </p>
-    <p class="text-muted mt-2 free-skill-form__success-note">{successNote}</p>
     <p class="text-muted mt-2 free-skill-form__success-repeat">{COPY.successRepeat}</p>
   </div>
+
+  <!-- The message after a granted sign-up, over the whole page. No install link: it comes only by email. -->
+  <FullScreenDialog
+    id={`free-skill-overlay-${surface}`}
+    title={successHeading}
+    closeLabel={COPY.overlayClose}
+    icon="check_circle"
+    class="free-skill-form__overlay"
+  >
+    <ul class="flex flex-col gap-5 sm:gap-6 text-base sm:text-lg text-foreground leading-relaxed">
+      <li class="flex gap-4">
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">mail</span>
+        <p>{COPY.overlayEmail}</p>
+      </li>
+      <li class="flex gap-4">
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">terminal</span>
+        <div>
+          <p>{COPY.overlayTools}</p>
+          <a
+            href={COPY.guideHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={overlayLinkClass}
+            data-umami-click="Overlay help link"
+            {...overlayClickLabels}
+          >
+            {COPY.overlayHelpLink}<span class="sr-only"> {COPY.overlayNewTab}</span>
+            <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </li>
+      <li class="flex gap-4">
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">schedule</span>
+        <p>{COPY.overlayFree}</p>
+      </li>
+      <li class="flex gap-4">
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">description</span>
+        <div>
+          <p>{COPY.overlayExample}</p>
+          <a
+            href={EXAMPLES[skill][locale]}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={overlayLinkClass}
+            data-umami-click="Overlay example link"
+            {...overlayClickLabels}
+          >
+            {COPY.overlayExampleLink[skill]}<span class="sr-only"> {COPY.overlayNewTab}</span>
+            <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="mt-6 sm:mt-8 border-t border-border pt-5 sm:pt-6 text-muted leading-relaxed">
+      <p>{successNote}</p>
+      <p class="mt-2">{COPY.successRepeat}</p>
+    </div>
+
+    <button
+      type="button"
+      data-dialog-close
+      class:list={[
+        'free-skill-form__overlay-done mt-8 sm:mt-10 w-full sm:w-auto',
+        'inline-flex items-center justify-center gap-2 tracking-tight cursor-pointer transition-all duration-300',
+        'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
+        buttonSizeClasses.md,
+      ]}
+    >
+      {COPY.overlayDone}
+    </button>
+  </FullScreenDialog>
 </div>
 
 <script>
@@ -207,6 +321,14 @@ const iconSize: Record<Size, string> = {
     form.classList.add('hidden');
     disclaimer?.classList.add('hidden');
     success.classList.remove('hidden');
+  }
+
+  // The full message opens over the page (FullScreenDialog.astro); closing it returns focus to the success
+  // line, because the button that sent the form is hidden by then.
+  function openOverlay(root: HTMLElement) {
+    const overlay = root.querySelector<HTMLDialogElement>('.free-skill-form__overlay');
+    const success = root.querySelector<HTMLElement>('.free-skill-form__success');
+    overlay?.dispatchEvent(new CustomEvent('full-screen-dialog:open', { detail: { returnFocus: success } }));
   }
 
   // Funnel events carry only these labels, never the email or anything else the visitor typed.
@@ -317,10 +439,12 @@ const iconSize: Record<Size, string> = {
         };
 
         // Only a real grant says `granted`; the honeypot's bare `ok` falls through to the generic error.
+        // The overlay opens last, after the success state and the Meta Lead and Umami submit events.
         if (res.ok && payload.ok && payload.granted === true) {
           setState(root, 'success');
           trackLead(surface, skill, funnel, email);
           showSuccess(root);
+          openOverlay(root);
           return;
         }
 
