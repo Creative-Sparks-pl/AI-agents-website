@@ -2,6 +2,24 @@
 
 Changes to this website. The skill's own changelog lives on the site's changelog pages.
 
+## 1.10.0 — 2026-11-26
+
+### Added
+- The 14-day free offer for both free skills (Website Planning and the homepage UX audit), PL + EN. Every sign-up form, on the free pages and in the paid page's "try for free" cards, shows it above the button in a pale yellow box: "Free if you install it within 14 days of signing up." in bold with a gift icon, then "Part of the paid UX Design Skill. You can claim this offer only once. We'll email you a personal install link." (PL: „Za darmo, jeśli zainstalujesz go w ciągu 14 dni od zapisu." / „Część płatnego UX Design Skill. Z oferty możesz skorzystać tylko raz. Mailem otrzymasz osobisty link do instalacji.").
+- A pop-up after a granted free sign-up, titled "Check your inbox." / „Sprawdź skrzynkę.": open the email on a computer, the AI tools it runs in, install within 14 days and it stays free, "once per email address", a link to the guide's "no AI tool" section and the skill's own example, both in new tabs; no date and no install link. A sheet from the bottom on phones, leaving a strip of the page above it; a centred panel about 512 px wide on desktop, both over a dimmed page. It closes with "Got it", ✕ or Esc, not with a tap outside; focus returns to the form, whose place keeps "Done. Check your inbox." and "Have it already? Your link is in the first email." Built on a shared dialog component (`FullScreenDialog.astro`).
+- Two anonymous Umami click events in the pop-up, `Overlay help link` and `Overlay example link` (labels `skill`, `language`, `surface`, `page`); their rows are in the marketing repo's `analytics/metrics.md`.
+- A user guide for the free skills, `/free-skills/guide/` and `/en/free-skills/guide/`, adapted from the paid guide: the install with the 14 days and the 60 days of updates, and a "no AI tool" section (`#no-ai-tool`) that says what is needed, that the AI tool is paid separately to the company that makes it (no prices, no pricing links), with the two example files.
+
+### Changed
+- The free pages' FAQ "How long can I use the skill?" states the 14 days and the 60 days of updates from sign-up (PL + EN).
+- The top bar of the four free pages and their four changelog pages leads to the free-skill guide; the free audit pages' "full install guide" link does too. The paid pages keep the paid guide.
+- The sign-up consent is one sentence: "By signing up, you agree to receive emails from us and to the use of your data for marketing purposes, as described in our Privacy Policy." / „Zapisując się, zgadzasz się na otrzymywanie maili i wykorzystanie Twoich danych w celach marketingowych, zgodnie z Polityką prywatności."
+- The terms (PL + EN), in force from 2026-11-26: a "Free skills" / „Darmowe skille" section with one rule for both free skills; the non-expiring personal link is for paid packages only; free sign-ups from before 2026-11-26 that never installed get 14 days from the email that tells them; the new uses of personal data.
+- Both privacy policies name the install-file event, install records deciding the free offer, and the Meta events of a free skill's first download and first install (fields, the two routes, 24 months, withdrawal by writing), resting on the consent given at sign-up.
+- The product pages' install line: the agent installs the skill by following the install instructions at the personal link, not INSTALL.md (PL + EN).
+- The free planning page's hero tagline is shorter (PL + EN).
+- `docs/testing.md`: the form, overlay, guide and click-event checks, the guide in the accessibility scan, and the counts (page sections 240, accessibility 36, cookie check 51). `docs/design-process.md`: new UI starts in Figma and is built only from a frame the owner approved.
+
 ## 1.9.1 — 2026-11-24
 
 ### Changed
