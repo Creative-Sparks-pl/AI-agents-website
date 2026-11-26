@@ -27,6 +27,10 @@ Rules are scoped by activity in `~/.claude/skills/wm/rules/`:
 - `design.md` — design system reference
 - `projects/` — WM project records (gitignored)
 
+## Design work
+
+New or changed UI starts in Figma and is built only from a frame the owner approved. The file, the steps and the font stand-ins are in `docs/design-process.md`.
+
 ## Infrastructure
 
 Where things live, so nobody has to ask again. No secrets here — secret values sit in `.env.local` (gitignored) and in Vercel's environment settings.
