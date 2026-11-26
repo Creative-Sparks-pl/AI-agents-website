@@ -25,7 +25,7 @@ contents:
   - label: Szablony dokumentów
     desc: Plan projektu, canvas przekazu, makiety, raport z audytu
   - label: Instalacja
-    desc: Twój agent instaluje skill według INSTALL.md i pyta o zgodę przed każdym krokiem
+    desc: Twój agent instaluje skill według instrukcji instalacji z Twojego osobistego linku i pyta o zgodę przed każdym krokiem
 requirements:
   - Claude Code, Codex albo Cursor
   - Mail z osobistym linkiem do instalacji

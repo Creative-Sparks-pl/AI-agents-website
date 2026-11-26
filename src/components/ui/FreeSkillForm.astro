@@ -1,5 +1,6 @@
 ---
-import { localeFromPathname } from '../../lib/i18n';
+import { localeFromPathname, type Locale } from '../../lib/i18n';
+import FullScreenDialog from './FullScreenDialog.astro';
 
 type Size = 'md' | 'lg';
 type Skill = 'audit' | 'planning';
@@ -31,11 +32,25 @@ const COPY_PL = {
   errUnavailable: 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.',
   errGeneric: 'Wystąpił błąd. Spróbuj ponownie za chwilę.',
   errOffline: 'Brak połączenia. Sprawdź internet i spróbuj ponownie.',
-  nextStep: 'Wyślemy Ci mailem osobisty link do instalacji.',
-  disclaimerPrefix: 'Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z ',
+  offerHeading: 'Za darmo, jeśli zainstalujesz go w ciągu 14 dni od zapisu.',
+  offerNote: 'Część płatnego UX Design Skill. Z oferty możesz skorzystać tylko raz. Mailem otrzymasz osobisty link do instalacji.',
+  disclaimerPrefix: 'Zapisując się, zgadzasz się na otrzymywanie maili i wykorzystanie Twoich danych w celach marketingowych, zgodnie z ',
   disclaimerLinkLabel: 'Polityką prywatności',
-  disclaimerSuffix: ').',
+  disclaimerSuffix: '.',
   privacyHref: '/ux-design-skill/polityka-prywatnosci/',
+  overlayTitle: 'Sprawdź skrzynkę.',
+  overlayClose: 'Zamknij',
+  overlayEmailLead: 'Otwórz maila na komputerze.',
+  overlayEmailRest: 'Jest w nim Twój osobisty link do instalacji.',
+  overlayTools: 'Skill działa w Claude Code, Codex albo Cursorze.',
+  overlayHelpLink: 'Nie masz jeszcze narzędzia AI? Zobacz, czego potrzebujesz',
+  overlayFreeLead: 'Zainstaluj go w ciągu 14 dni od zapisu, a pozostanie darmowy.',
+  overlayFreeRest: 'Korzystać z niego możesz później, kiedy zechcesz.',
+  overlayExample: 'W międzyczasie obejrzyj gotowy przykład.',
+  overlayExampleLink: { planning: 'Zobacz przykładowy plan strony', audit: 'Zobacz przykładowy audyt strony głównej' },
+  overlayNewTab: '(otwiera się w nowej karcie)',
+  overlayDone: 'Rozumiem',
+  guideHref: '/free-skills/guide/#no-ai-tool',
 };
 
 const COPY_EN = {
@@ -50,14 +65,40 @@ const COPY_EN = {
   errUnavailable: 'Temporarily unavailable. Try again in a moment.',
   errGeneric: 'Something went wrong. Try again in a moment.',
   errOffline: 'No connection. Check your internet and try again.',
-  nextStep: "We'll email you a personal install link.",
-  disclaimerPrefix: 'By submitting your email you consent to receive product and service updates (per our ',
+  offerHeading: 'Free if you install it within 14 days of signing up.',
+  offerNote: "Part of the paid UX Design Skill. You can claim this offer only once. We'll email you a personal install link.",
+  disclaimerPrefix: 'By signing up, you agree to receive emails from us and to the use of your data for marketing purposes, as described in our ',
   disclaimerLinkLabel: 'Privacy Policy',
-  disclaimerSuffix: ').',
+  disclaimerSuffix: '.',
   privacyHref: '/en/ux-design-skill/privacy-policy/',
+  overlayTitle: 'Check your inbox.',
+  overlayClose: 'Close',
+  overlayEmailLead: 'Open the email on a computer.',
+  overlayEmailRest: 'Your personal install link is in it.',
+  overlayTools: 'The skill runs in Claude Code, Codex or Cursor.',
+  overlayHelpLink: 'No AI tool yet? See what you need',
+  overlayFreeLead: 'Install it within 14 days of signing up and it stays free.',
+  overlayFreeRest: 'You can use it later, whenever you like.',
+  overlayExample: 'Meanwhile, have a look at a finished example.',
+  overlayExampleLink: { planning: 'See an example website plan', audit: 'See an example homepage audit' },
+  overlayNewTab: '(opens in a new tab)',
+  overlayDone: 'Got it',
+  guideHref: '/en/free-skills/guide/#no-ai-tool',
 };
 
 const COPY = locale === 'en' ? COPY_EN : COPY_PL;
+
+// The finished example the overlay shows: the same files as the free pages' proof gallery.
+const EXAMPLES: Record<Skill, Record<Locale, string>> = {
+  planning: {
+    pl: '/examples/website-planning-skill_project_plan.html',
+    en: '/examples/website-planning-skill_project_plan_en.html',
+  },
+  audit: {
+    pl: '/examples/creativesparks-ux-designer_audit.html',
+    en: '/examples/creativesparks-ux-designer_audit_en.html',
+  },
+};
 
 const {
   surface,
@@ -75,15 +116,45 @@ const {
 const privacyHref = COPY.privacyHref;
 // The seen event's labels hold the same values as the other funnel events' labels, built in the script below.
 const page = Astro.url.pathname;
+// The overlay's two link clicks carry the same labels: the form's own values, never what the visitor typed.
+const overlayClickLabels = {
+  'data-umami-click-skill': skill,
+  'data-umami-click-language': locale,
+  'data-umami-click-surface': surface,
+  'data-umami-click-page': page,
+};
+const overlayLinkClass =
+  'mt-1.5 inline-flex items-center gap-2 text-primary font-label font-bold text-sm tracking-tight underline-offset-4 hover:underline';
+// The overlay is the owner's sheet at every size (Figma "Pop-up / Phone 390 / A2" and "Pop-up / Desktop 1440 / A2
+// port"): the email and the 14 days in white boxes with their icons, then the two link rows in small type.
+const overlayBoxClass = 'flex gap-3 bg-background p-4';
+const overlayRowClass = 'text-sm leading-relaxed';
 
 const inputSizeClasses: Record<Size, string> = {
   md: 'px-6 py-4 text-base',
   lg: 'px-8 py-6 text-xl',
 };
 
+// The offer's bold line and its icon follow the form's size (Figma "Free sign-up", Plain: 20 px text, 28 px icon at lg).
+const offerHeadingSizeClasses: Record<Size, string> = {
+  md: 'text-lg leading-7',
+  lg: 'text-xl leading-7',
+};
+
+const offerIconSizeClasses: Record<Size, string> = {
+  md: 'text-2xl',
+  lg: 'text-[28px]',
+};
+
 const buttonSizeClasses: Record<Size, string> = {
   md: 'px-10 py-4 text-base font-extrabold',
   lg: 'px-12 py-6 text-xl font-extrabold',
+};
+
+// Inside a narrow card the offer box's padding leaves less room, so the stacked button's side padding is smaller.
+const buttonFitSizeClasses: Record<Size, string> = {
+  md: 'px-4 py-4 text-base font-extrabold',
+  lg: 'px-6 py-6 text-xl font-extrabold',
 };
 
 const iconSize: Record<Size, string> = {
@@ -109,6 +180,17 @@ const iconSize: Record<Size, string> = {
   data-umami-seen-surface={surface}
   data-umami-seen-page={page}
 >
+  <!-- The offer, above the button: the condition is visible before signing up. -->
+  <!-- The offer and the field share a pale yellow box (Figma "Free sign-up", Card); the consent text sits below it. -->
+  <div class="free-skill-form__card bg-surface-accent p-4 sm:p-6 flex flex-col gap-4">
+  <div class="free-skill-form__offer flex items-start gap-3">
+    <span class:list={['material-symbols-outlined shrink-0 text-primary', offerIconSizeClasses[size]]} aria-hidden="true">redeem</span>
+    <div class="flex flex-col gap-1 min-w-0">
+      <p class:list={['font-bold text-foreground', offerHeadingSizeClasses[size]]}>{COPY.offerHeading}</p>
+      <p class="text-sm text-muted leading-relaxed">{COPY.offerNote}</p>
+    </div>
+  </div>
+
   <form
     class:list={['free-skill-form__form flex flex-col items-stretch gap-0 sm:gap-0', fitContainer ? '@sm:flex-row' : 'sm:flex-row']}
     novalidate
@@ -127,7 +209,8 @@ const iconSize: Record<Size, string> = {
         'flex-1 min-w-0 bg-white text-foreground border-2 border-primary',
         fitContainer ? '@sm:border-r-0' : 'sm:border-r-0',
         'placeholder:text-muted/70 outline-none',
-        'focus:bg-primary/5 transition-colors duration-200',
+        // White inside when focused too (on the yellow box); focus shows as a thicker border.
+        'focus:ring-2 focus:ring-inset focus:ring-primary',
         inputSizeClasses[size],
       ]}
     />
@@ -148,16 +231,16 @@ const iconSize: Record<Size, string> = {
         'transition-all duration-300',
         'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
         'disabled:opacity-60 disabled:cursor-not-allowed',
-        buttonSizeClasses[size],
+        (fitContainer ? buttonFitSizeClasses : buttonSizeClasses)[size],
       ]}
     >
       <span class="free-skill-form__submit-label">{submitLabel}</span>
       <span class:list={['material-symbols-outlined', iconSize[size]]} aria-hidden="true">mail</span>
     </button>
   </form>
+  </div>
 
   <p class="free-skill-form__disclaimer mt-3 text-sm text-muted leading-relaxed">
-    <span class="free-skill-form__next-step block">{COPY.nextStep}</span>
     {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix}
   </p>
 
@@ -167,14 +250,87 @@ const iconSize: Record<Size, string> = {
     aria-live="polite"
   ></p>
 
-  <div class="free-skill-form__success hidden mt-2" role="status" aria-live="polite">
+  <!-- Focus comes back here when the overlay closes, since the form it was opened from is hidden by then. -->
+  <div class="free-skill-form__success hidden mt-2 focus:outline-none" role="status" aria-live="polite" tabindex="-1">
     <p class="text-lg font-bold text-foreground">
       <span class="material-symbols-outlined align-middle text-primary mr-2" aria-hidden="true">check_circle</span>
       <span class="free-skill-form__success-heading align-middle">{successHeading}</span>
     </p>
-    <p class="text-muted mt-2 free-skill-form__success-note">{successNote}</p>
     <p class="text-muted mt-2 free-skill-form__success-repeat">{COPY.successRepeat}</p>
   </div>
+
+  <!-- The message after a granted sign-up: a bottom sheet on phones, a centred panel from 640 px up.
+       No install link: it comes only by email. -->
+  <FullScreenDialog
+    id={`free-skill-overlay-${surface}`}
+    title={COPY.overlayTitle}
+    closeLabel={COPY.overlayClose}
+    sheet
+    class="free-skill-form__overlay"
+  >
+    <ul class="flex flex-col gap-5 text-base text-foreground leading-relaxed">
+      <li class={overlayBoxClass}>
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">mail</span>
+        <p><span class="font-bold">{COPY.overlayEmailLead}</span> {COPY.overlayEmailRest}</p>
+      </li>
+      <li class={overlayBoxClass}>
+        <span class="material-symbols-outlined shrink-0 text-primary text-2xl" aria-hidden="true">schedule</span>
+        <p><span class="font-bold">{COPY.overlayFreeLead}</span> {COPY.overlayFreeRest}</p>
+      </li>
+      <li class={overlayRowClass}>
+        <div>
+          <p>{COPY.overlayTools}</p>
+          <a
+            href={COPY.guideHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={overlayLinkClass}
+            data-umami-click="Overlay help link"
+            {...overlayClickLabels}
+          >
+            {COPY.overlayHelpLink}<span class="sr-only"> {COPY.overlayNewTab}</span>
+            <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </li>
+      <!-- 14 px below the row above (the list's 20 px gap less 6). -->
+      <li class:list={[overlayRowClass, '-mt-1.5']}>
+        <div>
+          <p>{COPY.overlayExample}</p>
+          <a
+            href={EXAMPLES[skill][locale]}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={overlayLinkClass}
+            data-umami-click="Overlay example link"
+            {...overlayClickLabels}
+          >
+            {COPY.overlayExampleLink[skill]}<span class="sr-only"> {COPY.overlayNewTab}</span>
+            <span class="material-symbols-outlined text-base" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </li>
+    </ul>
+
+    <div class="mt-5 text-sm text-muted leading-relaxed">
+      <p>{successNote}</p>
+      <p>{COPY.successRepeat}</p>
+    </div>
+
+    <button
+      slot="footer"
+      type="button"
+      data-dialog-close
+      class:list={[
+        'free-skill-form__overlay-done w-full',
+        'inline-flex items-center justify-center gap-2 tracking-tight cursor-pointer transition-all duration-300',
+        'bg-primary text-white border-2 border-primary hover:bg-black hover:border-black',
+        buttonSizeClasses.md,
+      ]}
+    >
+      {COPY.overlayDone}
+    </button>
+  </FullScreenDialog>
 </div>
 
 <script>
@@ -201,12 +357,24 @@ const iconSize: Record<Size, string> = {
   // The personal install link comes only by email; the page never shows it.
   function showSuccess(root: HTMLElement) {
     const form = root.querySelector<HTMLElement>('.free-skill-form__form');
+    const offer = root.querySelector<HTMLElement>('.free-skill-form__offer');
+    const card = root.querySelector<HTMLElement>('.free-skill-form__card');
     const disclaimer = root.querySelector<HTMLElement>('.free-skill-form__disclaimer');
     const success = root.querySelector<HTMLElement>('.free-skill-form__success');
     if (!form || !success) return;
     form.classList.add('hidden');
+    offer?.classList.add('hidden');
+    card?.classList.add('hidden');
     disclaimer?.classList.add('hidden');
     success.classList.remove('hidden');
+  }
+
+  // The full message opens over the page (FullScreenDialog.astro); closing it returns focus to the success
+  // line, because the button that sent the form is hidden by then.
+  function openOverlay(root: HTMLElement) {
+    const overlay = root.querySelector<HTMLDialogElement>('.free-skill-form__overlay');
+    const success = root.querySelector<HTMLElement>('.free-skill-form__success');
+    overlay?.dispatchEvent(new CustomEvent('full-screen-dialog:open', { detail: { returnFocus: success } }));
   }
 
   // Funnel events carry only these labels, never the email or anything else the visitor typed.
@@ -317,10 +485,12 @@ const iconSize: Record<Size, string> = {
         };
 
         // Only a real grant says `granted`; the honeypot's bare `ok` falls through to the generic error.
+        // The overlay opens last, after the success state and the Meta Lead and Umami submit events.
         if (res.ok && payload.ok && payload.granted === true) {
           setState(root, 'success');
           trackLead(surface, skill, funnel, email);
           showSuccess(root);
+          openOverlay(root);
           return;
         }
 

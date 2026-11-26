@@ -14,6 +14,13 @@ const SAMPLE_OUTPUT = 'Sample output';
 const HERO_VIDEO = 'Hero video';
 const INTEREST = 'Interest shown';
 const PRICING_SEEN = 'Pricing seen';
+const OVERLAY_HELP = 'Overlay help link';
+const OVERLAY_EXAMPLE = 'Overlay example link';
+// Where the overlay's two links lead: the guide's "no AI tool" section and the skill's example, per language.
+const OVERLAY_LINKS: Record<string, { help: string; example: string }> = {
+  'planning-pl': { help: '/free-skills/guide/#no-ai-tool', example: '/examples/website-planning-skill_project_plan.html' },
+  'audit-en': { help: '/en/free-skills/guide/#no-ai-tool', example: '/examples/creativesparks-ux-designer_audit_en.html' },
+};
 // The top bar shows its links from this width up.
 const NAV_LINKS_MIN_WIDTH = 768;
 
@@ -202,6 +209,9 @@ for (const { path, language, skill, surface } of CASES) {
     const calls = await umamiCalls();
 
     expect(calls.filter(([name]) => name === STARTED)).toEqual([[STARTED, expected]]);
+    // Nothing is sent before the visitor clicks in the overlay.
+    expect(named(calls, OVERLAY_HELP)).toEqual([]);
+    expect(named(calls, OVERLAY_EXAMPLE)).toEqual([]);
     expect(calls.filter(([name]) => String(name).startsWith(SUBMIT_PREFIX))).toEqual([
       [`${SUBMIT_PREFIX}${surface}`, expected],
     ]);
@@ -210,6 +220,57 @@ for (const { path, language, skill, surface } of CASES) {
     const serialized = JSON.stringify(calls);
     expect(serialized).not.toContain(EMAIL);
     expect(serialized).not.toContain(EMAIL.split('@')[0]);
+  });
+
+  test(`umami ${path} ${surface}: the overlay's help and example links report one click each, labels only`, async ({ page }) => {
+    // The links open site pages in new tabs; this keeps those tabs from counting a visit or sending anything.
+    await page.context().route(/^https?:\/\/(analytics\.creativesparks\.pl|connect\.facebook\.net|[^/]*\.posthog\.com)\//, (route) =>
+      route.abort(),
+    );
+    await blockThirdParty(page);
+    await presetConsentInPage(page, []);
+    const umamiCalls = await recordUmami(page);
+    // Notes, for every event sent, whether an overlay was open at that moment.
+    await page.addInitScript(() => {
+      const u = window as unknown as { umami: { track: (...args: unknown[]) => void }; __overlayOpen: boolean[] };
+      const track = u.umami.track;
+      u.__overlayOpen = [];
+      u.umami.track = (...args: unknown[]) => {
+        u.__overlayOpen.push(document.querySelector('dialog[open]') !== null);
+        track(...args);
+      };
+    });
+    const overlayOpen = () => page.evaluate(() => (window as unknown as { __overlayOpen: boolean[] }).__overlayOpen);
+    await mockSubscribe(page);
+    await open(page, path);
+
+    const form = page.locator(`.free-skill-form[data-surface="${surface}"]`);
+    await form.locator('input[name="email"]').fill(EMAIL);
+    await form.locator('button[type="submit"]').click();
+    const overlay = form.getByRole('dialog');
+    await expect(overlay).toBeVisible();
+
+    // The overlay opens after the submit event, as today's order has it.
+    const beforeClicks = await umamiCalls();
+    const submitAt = beforeClicks.findIndex(([name]) => name === `${SUBMIT_PREFIX}${surface}`);
+    expect(submitAt).toBeGreaterThanOrEqual(0);
+    expect((await overlayOpen())[submitAt]).toBe(false);
+
+    const links = OVERLAY_LINKS[`${skill}-${language}`];
+    const help = overlay.locator(`a[data-umami-click="${OVERLAY_HELP}"]`);
+    const example = overlay.locator(`a[data-umami-click="${OVERLAY_EXAMPLE}"]`);
+    await expect(help).toHaveAttribute('href', links.help);
+    await expect(example).toHaveAttribute('href', links.example);
+    expect(await openSample(page, help)).toBe(links.help);
+    expect(await openSample(page, example)).toBe(links.example);
+    // The new tabs leave the overlay open.
+    await expect(overlay).toBeVisible();
+
+    const expected = { skill, language, surface, page: path };
+    const calls = await umamiCalls();
+    expect(named(calls, OVERLAY_HELP)).toEqual([[OVERLAY_HELP, expected]]);
+    expect(named(calls, OVERLAY_EXAMPLE)).toEqual([[OVERLAY_EXAMPLE, expected]]);
+    expectNothingTyped(calls, EMAIL);
   });
 }
 

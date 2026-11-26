@@ -9,7 +9,7 @@ import Footer from '../../../components/sections/footer/Footer.astro';
   <main class="py-20 md:py-28">
     <article class="max-w-3xl mx-auto px-6 prose-custom">
       <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Terms of sale</h1>
-      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-19</p>
+      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-26</p>
 
       <p class="text-sm bg-surface-primary p-5 border-l-4 border-primary mb-12"><strong>Note:</strong> This is an English translation provided for convenience. The Polish version of these terms is the legally binding version under Polish law. If there is any conflict between this English version and the Polish version, the Polish version controls. See the <a href="/ux-design-skill/regulamin/">Polish terms</a>.</p>
 
@@ -63,10 +63,18 @@ import Footer from '../../../components/sections/footer/Footer.astro';
         <li>After payment you receive an email with your personal install link.</li>
         <li>You install the skill by pasting one sentence with this link into your AI coding tool (Claude Code, Codex, or Cursor). You will find the sentence in the email.</li>
       </ol>
-      <p>Your personal link does not expire. You can reinstall the skill from it at any time. If the email with the link does not arrive, write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
-      <p>You get the free skills (for a homepage UX audit and for website planning) the same way: after you sign up, you receive an email with a personal link, with no payment.</p>
+      <p>For paid packages, your personal link does not expire. You can reinstall the skill from it at any time. If the email with the link does not arrive, write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
       <p>Prices on the site are shown in USD and are net prices. VAT is calculated at checkout based on your country and shown before you pay.</p>
       <p>Easytools issues the invoice automatically after payment, on my behalf. Invoices for businesses are also registered in Poland's national e-invoicing system (KSeF). If you need a company invoice, choose to buy as a company at checkout and enter your tax ID.</p>
+
+      <h2>Free skills</h2>
+      <p>The free skills, for a homepage UX audit and for website planning, are part of the paid UX Design Skill. You can sign up for each of them once per email address, with no payment: after you sign up, you receive an email with a personal install link.</p>
+      <ul>
+        <li>The skill is free if you install it for the first time within 14 days of signing up.</li>
+        <li>If you do not install it within 14 days of signing up, your link no longer gives you the skill.</li>
+        <li>Once you have installed it, your link keeps working and you can reinstall the skill from it.</li>
+        <li>For 60 days from signing up, you get its new versions, if there are any. After that, the skill keeps working on the version you have.</li>
+      </ul>
 
       <h2>Updates</h2>
       <p>Every package includes 12 months of updates from the purchase date. During this period you have access to new versions of the skill (new page types, patterns, fixes).</p>
@@ -111,7 +119,9 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <h2>Personal data</h2>
       <p>I process your personal data (email, billing details) to fulfill your order and deliver the product. Legal basis: GDPR article 6(1)(b), performance of a contract.</p>
       <p>Your data is not shared with third parties, except the companies that help me fulfill your order: Easytools (checkout, invoices, and the Easymail email system I use to send your personal link), Stripe (payments), Vercel (servers for the online services and the skill files for installation), Upstash (the online services' database: license service records and page capture limits).</p>
-      <p>The skill connects to my server when you install and update it, every time it starts (it then checks your license and updates), and when it captures pages. It sends the customer ID stored in the license.json file, the package, the version, the event type (install, update, start), and the date, and for a page capture also the page's address. I do not store your IP address or the content of your projects. For page captures without a paid package's personal link, the server stores, for the daily limit, only a one-way hash of the network address and the name of the captured site, and deletes them at the end of the day. I keep the record of these events for 24 months.</p>
+      <p>The skill connects to my server when you install and update it, every time it starts (it then checks your license and updates), and when it captures pages. It sends the customer ID stored in the license.json file, the package, the version, the event type (install, update, start), and the date, and for a page capture also the page's address. When the install file at your personal link is opened, the server records the customer ID, the package, the version, the event type, and the date as well. I do not store your IP address or the content of your projects. For page captures without a paid package's personal link, the server stores, for the daily limit, only a one-way hash of the network address and the name of the captured site, and deletes them at the end of the day. I keep the record of these events for 24 months.</p>
+      <p>For a free skill, these records also show whether you installed it within 14 days of signing up, which decides whether your link still gives you the skill (see "Free skills"). Legal basis: GDPR article 6(1)(b), performance of a contract.</p>
+      <p>Apart from the companies above, Meta receives data about free skills, with your consent. When you sign up for a free skill, you agree that I tell Meta when you first download and first install it, so I can measure my ads. Legal basis: GDPR article 6(1)(a), consent. For each of these two events, the license service sends Meta a one-way hash of your email address, a one-way hash of your customer ID, the IP address of the request, the skill, the event, its time, and an event ID (a one-way hash of your customer ID, the skill, and the event), and, when the request names the browser or program that sent it (its user agent), also that user agent and the license service's address. Your IP address goes to Meta; I do not store it. This applies to sign-ups from 2026-11-26. You can withdraw this consent at any time by writing to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>; the license service then stops sending these events for you.</p>
       <p>If you send feedback or a bug report through the skill, its title and content are published publicly in GitHub Discussions. Your email address, if you give it, is not published: it reaches only me, so I can reply.</p>
       <p>See the <a href="/en/ux-design-skill/privacy-policy/">privacy policy</a> for details.</p>
       <p>You have the right to access, correct, and delete your data. Write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
@@ -119,9 +129,10 @@ import Footer from '../../../components/sections/footer/Footer.astro';
       <h2>Changes to these terms</h2>
       <p>I may change these terms. Changes do not apply to orders already completed. I will announce changes on the product page.</p>
       <p>Purchases made before 2026-11-19 remain under the terms in force on the day of purchase, including that version's license scope and update period.</p>
-      <p>If you have the skill from a purchase made before these terms took effect, you move to a personal link: your copy keeps working, and the previous shared key stops giving full page capture 60 days after this change. You keep full page capture by installing the skill from the personal link you will receive by email.</p>
+      <p>If you have the skill from a purchase made before 2026-11-19, you move to a personal link: your copy keeps working, and the previous shared key stops giving full page capture 60 days after 2026-11-19. You keep full page capture by installing the skill from the personal link you will receive by email.</p>
+      <p>If you have a personal link to a free skill from a sign-up before 2026-11-26 and have not installed the skill from it yet, you have 14 days to install it, counted from the email in which I tell you about this change. After that, the link no longer gives you the skill. If you have already installed it, your link keeps working.</p>
 
-      <p class="text-sm text-muted mt-12">This version of the terms is effective from 2026-11-19. Any disputes will be resolved by the court with jurisdiction over the seller's registered office.</p>
+      <p class="text-sm text-muted mt-12">This version of the terms is effective from 2026-11-26. Any disputes will be resolved by the court with jurisdiction over the seller's registered office.</p>
     </article>
   </main>
   <Footer />

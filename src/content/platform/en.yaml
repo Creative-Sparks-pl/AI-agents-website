@@ -25,7 +25,7 @@ contents:
   - label: Document templates
     desc: Project plan, messaging canvas, wireframes, audit report
   - label: Install
-    desc: Your agent installs the skill from INSTALL.md and asks before each step
+    desc: Your agent installs the skill by following the install instructions at your personal link, and asks before each step
 requirements:
   - Claude Code, Codex or Cursor
   - The email with your personal install link

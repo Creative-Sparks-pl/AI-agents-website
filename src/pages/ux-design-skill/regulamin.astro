@@ -9,7 +9,7 @@ import Footer from '../../components/sections/footer/Footer.astro';
   <main class="py-20 md:py-28">
     <article class="max-w-3xl mx-auto px-6 prose-custom">
       <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Regulamin sprzedaży</h1>
-      <p class="text-sm font-label text-muted mb-12">Ostatnia aktualizacja: 2026-11-19</p>
+      <p class="text-sm font-label text-muted mb-12">Ostatnia aktualizacja: 2026-11-26</p>
 
       <h2>Moje dane</h2>
       <p>Nazywam się Tomasz Maciąg i jestem autorem tego produktu. Jestem również sprzedawcą produktów cyfrowych i podmiotem świadczącym usługi drogą elektroniczną. Prowadzę działalność gospodarczą pod firmą "Creative Sparks Tomasz Maciąg", Na Polance 10B/10, 51-109 Wrocław, NIP: 7722112640.</p>
@@ -61,10 +61,18 @@ import Footer from '../../components/sections/footer/Footer.astro';
         <li>Po płatności otrzymujesz email z osobistym linkiem do instalacji.</li>
         <li>Instalujesz skill, wklejając do swojego narzędzia AI (Claude Code, Codex lub Cursor) jedno zdanie z tym linkiem. Zdanie znajdziesz w emailu.</li>
       </ol>
-      <p>Osobisty link nie wygasa. Możesz z niego zainstalować skill ponownie w każdej chwili. Jeśli email z linkiem nie dotrze, napisz na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
-      <p>Darmowe skille (do audytu UX strony głównej i do planowania stron) dostajesz tak samo: po zapisie otrzymujesz email z osobistym linkiem, bez płatności.</p>
+      <p>Osobisty link do płatnego pakietu nie wygasa. Możesz z niego zainstalować skill ponownie w każdej chwili. Jeśli email z linkiem nie dotrze, napisz na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
       <p>Ceny na stronie są cenami netto. VAT jest naliczany w koszyku według kraju nabywcy (dla klientów z Polski 23%), a jego wysokość widzisz przed zapłatą.</p>
       <p>Fakturę wystawia automatycznie po płatności, w moim imieniu, system Easytools. Faktury dla firm trafiają do KSeF. Jeśli potrzebujesz faktury na firmę, wybierz w koszyku zakup jako firma i podaj NIP.</p>
+
+      <h2>Darmowe skille</h2>
+      <p>Darmowe skille (do audytu UX strony głównej i do planowania stron) są częścią płatnego UX Design Skill. Na każdy z nich możesz się zapisać raz na adres email, bez płatności: po zapisie otrzymujesz email z osobistym linkiem do instalacji.</p>
+      <ul>
+        <li>Skill jest darmowy, jeśli zainstalujesz go po raz pierwszy w ciągu 14 dni od zapisu.</li>
+        <li>Jeśli nie zainstalujesz go w ciągu 14 dni od zapisu, link nie pozwala już pobrać skilla.</li>
+        <li>Po instalacji link działa dalej i możesz z niego zainstalować skill ponownie.</li>
+        <li>Przez 60 dni od zapisu dostajesz nowe wersje skilla, jeśli się pojawią. Potem skill działa dalej w wersji, którą masz.</li>
+      </ul>
 
       <h2>Aktualizacje</h2>
       <p>Każdy pakiet zawiera 12 miesięcy aktualizacji od daty zakupu. W tym czasie masz dostęp do nowych wersji skilla (nowe typy stron, wzorce, poprawki).</p>
@@ -109,7 +117,9 @@ import Footer from '../../components/sections/footer/Footer.astro';
       <h2>Dane osobowe</h2>
       <p>Przetwarzam Twoje dane osobowe (email, dane do faktury) w celu realizacji zamówienia i dostarczenia produktu. Podstawa prawna: art. 6 ust. 1 lit. b RODO (wykonanie umowy).</p>
       <p>Twoje dane nie są udostępniane osobom trzecim, z wyjątkiem podmiotów, które pomagają mi realizować zamówienie: Easytools (koszyk, faktury i system mailowy Easymail, przez który wysyłam osobisty link), Stripe (płatności), Vercel (serwery usług online i pliki skilla do instalacji), Upstash (baza danych usług online: zapisy usługi licencji i limity pobierania stron).</p>
-      <p>Skill łączy się z moim serwerem przy instalacji, aktualizacji i każdym uruchomieniu (sprawdza wtedy licencję i aktualizacje) oraz przy pobieraniu stron. Wysyła identyfikator klienta zapisany w pliku license.json, pakiet, wersję, rodzaj zdarzenia (instalacja, aktualizacja, uruchomienie) i datę, a przy pobieraniu strony także jej adres. Nie zapisuję adresu IP ani treści Twoich projektów. Przy pobieraniu stron bez osobistego linku płatnego pakietu serwer na potrzeby dziennego limitu zapisuje tylko jednokierunkowy skrót adresu sieci i nazwę pobieranej witryny i usuwa je na koniec dnia. Zapis tych zdarzeń przechowuję przez 24 miesiące.</p>
+      <p>Skill łączy się z moim serwerem przy instalacji, aktualizacji i każdym uruchomieniu (sprawdza wtedy licencję i aktualizacje) oraz przy pobieraniu stron. Wysyła identyfikator klienta zapisany w pliku license.json, pakiet, wersję, rodzaj zdarzenia (instalacja, aktualizacja, uruchomienie) i datę, a przy pobieraniu strony także jej adres. Gdy zostanie otwarty plik instalacji z Twojego osobistego linku, serwer zapisuje również identyfikator klienta, pakiet, wersję, rodzaj zdarzenia i datę. Nie zapisuję adresu IP ani treści Twoich projektów. Przy pobieraniu stron bez osobistego linku płatnego pakietu serwer na potrzeby dziennego limitu zapisuje tylko jednokierunkowy skrót adresu sieci i nazwę pobieranej witryny i usuwa je na koniec dnia. Zapis tych zdarzeń przechowuję przez 24 miesiące.</p>
+      <p>Przy darmowym skillu te zapisy pokazują też, czy skill został zainstalowany w ciągu 14 dni od zapisu, a od tego zależy, czy Twój link nadal pozwala go pobrać (sekcja „Darmowe skille”). Podstawa prawna: art. 6 ust. 1 lit. b RODO (wykonanie umowy).</p>
+      <p>Poza podmiotami wymienionymi wyżej dane o darmowych skillach otrzymuje, za Twoją zgodą, Meta. Zapisując się na darmowy skill, zgadzasz się, żebym informował Metę o jego pierwszym pobraniu i pierwszej instalacji, aby mierzyć skuteczność moich reklam. Podstawa prawna: art. 6 ust. 1 lit. a RODO (zgoda). Przy każdym z tych dwóch zdarzeń usługa licencji wysyła do Mety jednokierunkowy skrót Twojego adresu email, jednokierunkowy skrót Twojego identyfikatora klienta, adres IP, z którego przyszło żądanie, skill, rodzaj zdarzenia, jego czas i identyfikator zdarzenia (jednokierunkowy skrót identyfikatora klienta, skilla i zdarzenia), a gdy żądanie podaje przeglądarkę lub program, który je wysłał (user agent), także tę informację i adres usługi licencji. Adres IP trafia do Mety; nie zapisuję go. Dotyczy to zapisów od 2026-11-26. Zgodę możesz w każdej chwili wycofać, pisząc na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>; usługa licencji przestanie wtedy wysyłać te zdarzenia.</p>
       <p>Jeśli wyślesz przez skill opinię lub zgłoszenie błędu, jego tytuł i treść zostaną opublikowane publicznie w GitHub Discussions. Twój adres email, jeśli go podasz, nie jest publikowany: trafia tylko do mnie, żebym mógł odpowiedzieć.</p>
       <p>Szczegóły znajdziesz w <a href="/ux-design-skill/polityka-prywatnosci/">polityce prywatności</a>.</p>
       <p>Masz prawo do wglądu, poprawiania i usunięcia swoich danych. Napisz na <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
@@ -117,9 +127,10 @@ import Footer from '../../components/sections/footer/Footer.astro';
       <h2>Zmiany regulaminu</h2>
       <p>Mogę zmienić ten regulamin. Zmiany nie dotyczą zamówień już zrealizowanych. O zmianach poinformuję na stronie produktu.</p>
       <p>Zakupy dokonane przed 2026-11-19 podlegają regulaminowi obowiązującemu w dniu zakupu, w tym zakresowi licencji i okresowi aktualizacji z tamtego regulaminu.</p>
-      <p>Jeśli masz skill z zakupu sprzed wejścia w życie tego regulaminu, przechodzisz na osobisty link: Twoja kopia działa dalej, a dotychczasowy wspólny klucz przestaje dawać pełne pobieranie stron 60 dni po tej zmianie. Pełne pobieranie stron zachowujesz, instalując skill z osobistego linku, który dostaniesz emailem.</p>
+      <p>Jeśli masz skill z zakupu sprzed 2026-11-19, przechodzisz na osobisty link: Twoja kopia działa dalej, a dotychczasowy wspólny klucz przestaje dawać pełne pobieranie stron 60 dni po 2026-11-19. Pełne pobieranie stron zachowujesz, instalując skill z osobistego linku, który dostaniesz emailem.</p>
+      <p>Jeśli masz osobisty link do darmowego skilla z zapisu sprzed 2026-11-26, a skill nie został jeszcze z niego zainstalowany, masz 14 dni na instalację, liczone od emaila, w którym poinformuję Cię o tej zmianie. Po tym terminie link nie pozwala już pobrać skilla. Jeśli skill został już zainstalowany, link działa dalej.</p>
 
-      <p class="text-sm text-muted mt-12">Regulamin w tej wersji obowiązuje od 2026-11-19. Wszelkie spory rozstrzygane będą przez sąd właściwy dla siedziby Sprzedawcy.</p>
+      <p class="text-sm text-muted mt-12">Regulamin w tej wersji obowiązuje od 2026-11-26. Wszelkie spory rozstrzygane będą przez sąd właściwy dla siedziby Sprzedawcy.</p>
     </article>
   </main>
   <Footer />
