@@ -32,7 +32,8 @@ const COPY_PL = {
   errUnavailable: 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.',
   errGeneric: 'Wystąpił błąd. Spróbuj ponownie za chwilę.',
   errOffline: 'Brak połączenia. Sprawdź internet i spróbuj ponownie.',
-  offer: 'Część płatnego UX Design Skill. Za darmo, jeśli zainstalujesz go w ciągu 14 dni od zapisu. Z oferty możesz skorzystać tylko raz.',
+  offerHeading: 'Za darmo, jeśli zainstalujesz go w ciągu 14 dni od zapisu.',
+  offerNote: 'Część płatnego UX Design Skill. Z oferty możesz skorzystać tylko raz.',
   nextStep: 'Wyślemy Ci mailem osobisty link do instalacji.',
   disclaimerPrefix: 'Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z ',
   disclaimerLinkLabel: 'Polityką prywatności',
@@ -63,7 +64,8 @@ const COPY_EN = {
   errUnavailable: 'Temporarily unavailable. Try again in a moment.',
   errGeneric: 'Something went wrong. Try again in a moment.',
   errOffline: 'No connection. Check your internet and try again.',
-  offer: 'Part of the paid UX Design Skill. Free if you install it within 14 days of signing up. You can claim this offer only once.',
+  offerHeading: 'Free if you install it within 14 days of signing up.',
+  offerNote: 'Part of the paid UX Design Skill. You can claim this offer only once.',
   nextStep: "We'll email you a personal install link.",
   disclaimerPrefix: 'By submitting your email you consent to receive product and service updates (per our ',
   disclaimerLinkLabel: 'Privacy Policy',
@@ -127,6 +129,17 @@ const inputSizeClasses: Record<Size, string> = {
   lg: 'px-8 py-6 text-xl',
 };
 
+// The offer's bold line and its icon follow the form's size (Figma "Free sign-up", Plain: 20 px text, 28 px icon at lg).
+const offerHeadingSizeClasses: Record<Size, string> = {
+  md: 'text-lg leading-7',
+  lg: 'text-xl leading-7',
+};
+
+const offerIconSizeClasses: Record<Size, string> = {
+  md: 'text-2xl',
+  lg: 'text-[28px]',
+};
+
 const buttonSizeClasses: Record<Size, string> = {
   md: 'px-10 py-4 text-base font-extrabold',
   lg: 'px-12 py-6 text-xl font-extrabold',
@@ -156,7 +169,13 @@ const iconSize: Record<Size, string> = {
   data-umami-seen-page={page}
 >
   <!-- The offer, above the button: the condition is visible before signing up (FIN-003). -->
-  <p class="free-skill-form__offer mb-3 text-sm font-semibold text-foreground leading-relaxed">{COPY.offer}</p>
+  <div class="free-skill-form__offer mb-4 flex flex-col gap-1">
+    <p class="flex items-start gap-3">
+      <span class:list={['material-symbols-outlined shrink-0 text-primary', offerIconSizeClasses[size]]} aria-hidden="true">redeem</span>
+      <span class:list={['font-bold text-foreground', offerHeadingSizeClasses[size]]}>{COPY.offerHeading}</span>
+    </p>
+    <p class="text-sm text-muted leading-relaxed">{COPY.offerNote}</p>
+  </div>
 
   <form
     class:list={['free-skill-form__form flex flex-col items-stretch gap-0 sm:gap-0', fitContainer ? '@sm:flex-row' : 'sm:flex-row']}
