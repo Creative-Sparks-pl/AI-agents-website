@@ -10,7 +10,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
   <main class="py-20 md:py-28">
     <article class="max-w-3xl mx-auto px-6 prose-custom">
       <h1 class="font-headline font-bold text-4xl md:text-5xl text-foreground tracking-tight leading-[1.1] mb-4">Privacy policy</h1>
-      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-22</p>
+      <p class="text-sm font-label text-muted mb-12">Last updated: 2026-11-26</p>
 
       <p class="text-sm bg-surface-primary p-5 border-l-4 border-primary mb-12"><strong>Note:</strong> This is an English translation provided for convenience. The Polish version of this policy is the legally binding version under Polish law. If there is any conflict between this English version and the Polish version, the Polish version controls. See the <a href="/ux-design-skill/polityka-prywatnosci/">Polish privacy policy</a>.</p>
 
@@ -24,6 +24,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li><strong>Billing details</strong>, if you provide company details at purchase (company name, tax ID, address).</li>
         <li><strong>Technical data</strong>, IP address and browser type, collected automatically by the server.</li>
         <li><strong>License service and page capture data</strong>, sent by the agent at install, update, every start and page capture for the audit: the customer ID stored in its license.json file, the package, the version, the event type (install, update, start) and the date, and for a page capture also the page's address; for captures without a paid package's personal link, I store only a one-way hash of the network address and the site's name, for the daily limit.</li>
+        <li><strong>Install file opened</strong>, recorded by the license service when the install file at your personal link is opened (in a browser or by your AI tool): the customer ID, the package, the version, the event type and the date.</li>
         <li><strong>Reports sent through the skill</strong>, the title and content of feedback or a bug report, and your email address if you give it.</li>
         <li><strong>Visit statistics</strong>, the pages you visit, the page you came from, browser, operating system, device type, language, approximate location (country, region, city) and selected actions such as a button click or a purchase (without your email address); collected without cookies by my own Umami instance, which does not store your IP address and tells visits apart by a cryptographic hash of your IP address, your browser and a value that changes regularly.</li>
         <li><strong>Session recordings and heatmaps</strong>, how you move through the product pages (such as cursor movements, clicks and scrolling), only if you consent to statistics cookies; PostHog does not store your IP address.</li>
@@ -37,6 +38,8 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li>To inform you about product updates (GDPR article 6(1)(b), performance of a contract).</li>
         <li>Newsletter / waitlist, based on your consent (GDPR article 6(1)(a)).</li>
         <li id="license-events-purpose">To time and tailor the product emails you agreed to receive, using license service events (whether and when the skill was downloaded, installed and started), on the same bases as those emails (GDPR article 6(1)(a) and (b)); from the same events I also count how many users of a free skill later buy a paid package, based on my legitimate interest in knowing how the offer works (GDPR article 6(1)(f)).</li>
+        <li>To check whether a free skill's condition was met, that is, whether the skill was installed within 14 days of signing up, using the license service's install records; this decides whether your personal link still gives you the skill (GDPR article 6(1)(b), performance of a contract).</li>
+        <li>To measure and improve my ads: a free skill's first download and first install are reported to Meta (see "Who I share data with"), based on the consent you give when you sign up for the skill (GDPR article 6(1)(a)), which you can withdraw at any time by writing to me.</li>
         <li>To deliver the product through your personal link, check the license and updates, and capture pages for the audit, including enforcing the daily limit (GDPR article 6(1)(b), performance of a contract).</li>
         <li>To publish and handle feedback and bug reports you choose to send through the skill (GDPR article 6(1)(a), consent).</li>
         <li>Statistics and improving the pages: counting visits with Umami, based on my legitimate interest in measuring traffic on the site (GDPR article 6(1)(f)); session recordings and heatmaps with PostHog and video viewing statistics with Wistia, based on your consent (GDPR article 6(1)(a)), which you can withdraw at any time in the cookie settings.</li>
@@ -49,7 +52,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
       <ul>
         <li><strong>Easytools</strong>, checkout, issuing VAT invoices on my behalf, mailing list and skill delivery, including sending your personal install link through Easymail, and keeping with your contact there the stage you have reached with a skill (downloaded, installed, started), so that the product emails can be timed.</li>
         <li><strong>Stripe</strong>, online payment processing.</li>
-        <li><strong>Meta</strong>, ad performance measurement (including a one-way hash of your email address when you sign up), if you consent to marketing cookies.</li>
+        <li><strong>Meta</strong>, ad performance measurement, by two routes. From your browser (Meta Pixel), only if you consent to marketing cookies, including a one-way hash of your email address when you sign up. From the license service, for free skills you sign up for from 2026-11-26 on, based on the consent you give when you sign up: the skill's first download and first install. For each of these events the license service sends a one-way hash of your email address, a one-way hash of your customer ID, the network (IP) address of the request, the skill (its name and package), the event, its time and an event ID made from a one-way hash of your customer ID, the skill and the event; when the request names the browser or program that sent it (its user agent), also that user agent and the license service's own address as the page address. The IP address goes to Meta; I do not store it.</li>
         <li><strong>PostHog</strong>, session recordings and heatmaps on the product pages (UX Design Skill and the free skills), if you consent to statistics cookies; data is stored in the EU (Frankfurt).</li>
         <li><strong>Wistia</strong>, the video player on the pages (Wistia, Inc., USA), which reports player errors to Sentry; it collects video viewing statistics (also through Mux Data) only if you consent to statistics cookies.</li>
         <li><strong>Vercel</strong>, servers for this website (including saving cookie-banner choices), the license service and its downloads, the page capture service, the feedback server and visit statistics (Umami).</li>
@@ -70,7 +73,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li>Session recordings (PostHog), 30 days; heatmap data and other PostHog events, up to 1 year.</li>
         <li>Visit statistics (Umami), up to 2 years.</li>
         <li>Record of cookie consents, 2 years; I delete older entries once a year.</li>
-        <li>License service event records (installs, updates, starts), 24 months.</li>
+        <li>License service event records (installs, updates, starts and install file opens), 24 months.</li>
         <li>Network address hashes from page captures without a paid package's personal link, deleted at the end of the day.</li>
         <li>Reports published in GitHub Discussions, until deleted; you can ask me to delete your report.</li>
       </ul>
@@ -85,6 +88,7 @@ import CookieTable from '../../../components/ui/CookieTable.astro';
         <li>Data portability.</li>
         <li>Object to processing based on my legitimate interest (such as visit statistics).</li>
         <li>Withdraw consent (for the newsletter, and for statistics and marketing cookies in the cookie settings in the footer).</li>
+        <li>Withdraw your consent to the Meta events of a free skill (its first download and first install) by writing to me; the license service then stops sending them for you.</li>
         <li>Lodge a complaint with the President of the Polish Personal Data Protection Office (UODO). Under GDPR, EU and UK residents may also lodge a complaint with their local supervisory authority.</li>
       </ul>
       <p>To exercise your rights, write to <a href="mailto:tomasz@creativesparks.pl">tomasz@creativesparks.pl</a>.</p>
