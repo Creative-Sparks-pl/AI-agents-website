@@ -32,10 +32,12 @@ const COPY_PL = {
   errUnavailable: 'Mechanizm chwilowo niedostępny. Spróbuj ponownie za chwilę.',
   errGeneric: 'Wystąpił błąd. Spróbuj ponownie za chwilę.',
   errOffline: 'Brak połączenia. Sprawdź internet i spróbuj ponownie.',
+  offer: 'Część płatnego UX Design Skill. Za darmo, jeśli zainstalujesz go w ciągu 14 dni od zapisu. Z oferty możesz skorzystać tylko raz.',
   nextStep: 'Wyślemy Ci mailem osobisty link do instalacji.',
   disclaimerPrefix: 'Podając maila wyrażasz zgodę na otrzymywanie wiadomości o naszych produktach i usługach (zgodnie z ',
   disclaimerLinkLabel: 'Polityką prywatności',
   disclaimerSuffix: ').',
+  disclaimerMeta: 'Zgadzasz się też, żebyśmy informowali Metę o pobraniu i instalacji skilla, aby mierzyć skuteczność naszych reklam.',
   privacyHref: '/ux-design-skill/polityka-prywatnosci/',
   overlayClose: 'Zamknij',
   overlayEmail: 'Otwórz maila na komputerze. Jest w nim Twój osobisty link do instalacji.',
@@ -61,10 +63,12 @@ const COPY_EN = {
   errUnavailable: 'Temporarily unavailable. Try again in a moment.',
   errGeneric: 'Something went wrong. Try again in a moment.',
   errOffline: 'No connection. Check your internet and try again.',
+  offer: 'Part of the paid UX Design Skill. Free if you install it within 14 days of signing up. You can claim this offer only once.',
   nextStep: "We'll email you a personal install link.",
   disclaimerPrefix: 'By submitting your email you consent to receive product and service updates (per our ',
   disclaimerLinkLabel: 'Privacy Policy',
   disclaimerSuffix: ').',
+  disclaimerMeta: 'You also agree that we tell Meta when you download and install the skill, so we can measure our ads.',
   privacyHref: '/en/ux-design-skill/privacy-policy/',
   overlayClose: 'Close',
   overlayEmail: 'Open the email on a computer. Your personal install link is in it.',
@@ -151,6 +155,9 @@ const iconSize: Record<Size, string> = {
   data-umami-seen-surface={surface}
   data-umami-seen-page={page}
 >
+  <!-- The offer, above the button: the condition is visible before signing up (FIN-003). -->
+  <p class="free-skill-form__offer mb-3 text-sm font-semibold text-foreground leading-relaxed">{COPY.offer}</p>
+
   <form
     class:list={['free-skill-form__form flex flex-col items-stretch gap-0 sm:gap-0', fitContainer ? '@sm:flex-row' : 'sm:flex-row']}
     novalidate
@@ -200,7 +207,7 @@ const iconSize: Record<Size, string> = {
 
   <p class="free-skill-form__disclaimer mt-3 text-sm text-muted leading-relaxed">
     <span class="free-skill-form__next-step block">{COPY.nextStep}</span>
-    {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix}
+    {COPY.disclaimerPrefix}<a href={privacyHref} class="underline hover:text-primary">{COPY.disclaimerLinkLabel}</a>{COPY.disclaimerSuffix} {COPY.disclaimerMeta}
   </p>
 
   <p
@@ -315,10 +322,12 @@ const iconSize: Record<Size, string> = {
   // The personal install link comes only by email; the page never shows it.
   function showSuccess(root: HTMLElement) {
     const form = root.querySelector<HTMLElement>('.free-skill-form__form');
+    const offer = root.querySelector<HTMLElement>('.free-skill-form__offer');
     const disclaimer = root.querySelector<HTMLElement>('.free-skill-form__disclaimer');
     const success = root.querySelector<HTMLElement>('.free-skill-form__success');
     if (!form || !success) return;
     form.classList.add('hidden');
+    offer?.classList.add('hidden');
     disclaimer?.classList.add('hidden');
     success.classList.remove('hidden');
   }
