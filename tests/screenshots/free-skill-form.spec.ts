@@ -19,7 +19,7 @@ const FORMS: Array<{ name: string; path: string; locale: Locale; skill: Skill; s
 ];
 
 // The overlay after sign-up links to exactly these: the free-skill guide's "no AI tool" section and the skill's
-// own example, both in the page's language (FIN-017; the guide's address is settled in the activation-offer plan).
+// own example, both in the page's language.
 const GUIDE: Record<Locale, string> = { pl: '/free-skills/guide/#no-ai-tool', en: '/en/free-skills/guide/#no-ai-tool' };
 const EXAMPLE: Record<Skill, Record<Locale, string>> = {
   planning: {
@@ -35,7 +35,7 @@ const EXAMPLE: Record<Skill, Record<Locale, string>> = {
 const GRANTED = { status: 200, body: { ok: true, granted: true } };
 
 // The pop-up's own title, without "Gotowe."/"Done." and its icon; the success line under the form keeps them
-// (FIN-009 as amended 2026-11-26, the owner's phone design).
+// (the owner's phone design, 2026-11-26).
 const POPUP_TITLE: Record<Locale, string> = { pl: 'Sprawdź skrzynkę.', en: 'Check your inbox.' };
 const SUCCESS_WORD: Record<Locale, string> = { pl: 'Gotowe', en: 'Done' };
 // Below Tailwind's sm breakpoint (640 px) the pop-up is a bottom sheet over a scrim; from it up, full screen.
@@ -92,8 +92,8 @@ async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill
   expect(await overlay.evaluate((dialog) => dialog.matches(':modal'))).toBe(true);
 
   // Phones: a sheet along the bottom edge, full width, as tall as its content up to the screen minus about 151 px
-  // (the approved frame at 844 px), so the page stays visible above it under the scrim. Desktop: the whole screen
-  // (FIN-009 as amended).
+  // (the approved frame at 844 px), so the page stays visible above it under the scrim. Desktop: a centred
+  // panel (below).
   const viewport = page.viewportSize()!;
   const box = (await overlay.boundingBox())!;
   if (viewport.width <= SHEET_MAX_WIDTH) {
@@ -170,7 +170,7 @@ async function expectOverlay(page: Page, overlay: Locator, locale: Locale, skill
 }
 
 /**
- * The offer line (FIN-003, FIN-004) is on screen, before the submit button in reading order and above it,
+ * The offer line is on screen, before the submit button in reading order and above it,
  * and names what the offer is part of and its 14 days. Its wording is otherwise not checked.
  */
 async function expectOffer(form: Locator, submit: Locator) {
@@ -192,7 +192,7 @@ async function expectOffer(form: Locator, submit: Locator) {
 
 /**
  * Under the box: one consent sentence that names emails and marketing and links the privacy policy, which names
- * Meta (FIN-006 as amended 2026-11-26). The install-link line moved into the offer, so nothing else sits there.
+ * Meta (owner, 2026-11-26). The install-link line moved into the offer, so nothing else sits there.
  */
 async function expectConsent(form: Locator, locale: Locale) {
   const disclaimer = form.locator('.free-skill-form__disclaimer');

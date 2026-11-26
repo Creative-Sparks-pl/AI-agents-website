@@ -5,9 +5,9 @@ import { blockThirdParty, expectAxeClean, openPage, shoot, widthOf } from './hel
 // The free-skill guide: one page per language, both at the same address apart from /en/, so the two
 // pair up as language versions. Its "no AI tool" section is what the sign-up overlay and the emails
 // link to; it opens from its anchor and shows both example files in the page's language. Every free page
-// and its changelog lead to the guide in their own language from the top bar (FIN-014).
-// Expected values come from the plan ("Settled questions": the addresses, the #no-ai-tool anchor, indexed;
-// Step 4: the eight pages), FIN-014 and FIN-017 (the example files), never from the rendered pages.
+// and its changelog lead to the guide in their own language from the top bar.
+// Expected values come from the agreed addresses, the #no-ai-tool anchor, the indexing, the eight pages and the
+// example files the free pages already show, never from the rendered pages.
 // Wording is not checked.
 
 type Locale = 'pl' | 'en';
@@ -23,7 +23,7 @@ const HREFLANG: Record<Locale, string> = { pl: 'pl-PL', en: 'en-US' };
 
 const NO_AI_TOOL = 'no-ai-tool';
 
-// FIN-017: the planner's example plan and the audit's example audit, in each language.
+// The planner's example plan and the audit's example audit, in each language.
 const EXAMPLES: Record<Locale, string[]> = {
   pl: ['/examples/website-planning-skill_project_plan.html', '/examples/creativesparks-ux-designer_audit.html'],
   en: ['/examples/website-planning-skill_project_plan_en.html', '/examples/creativesparks-ux-designer_audit_en.html'],
@@ -65,7 +65,7 @@ for (const { path, locale } of FREE_PAGES) {
 }
 
 // The install section's "full install guide" link: the free audit pages lead to the free-skill guide in their
-// own language (owner, 2026-11-26, plan Step 9); the paid page, which shares the install content, keeps its
+// own language (owner, 2026-11-26); the paid page, which shares the install content, keeps its
 // own guide (the counter-example).
 const INSTALL_LINK_PAGES: { path: string; expected: string; never: string[] }[] = [
   { path: '/free-homepage-ux-audit-skill/', expected: GUIDE.pl, never: [GUIDE.en, ...PAID_GUIDES] },
@@ -147,7 +147,7 @@ for (const locale of LOCALES) {
       await expect(section.locator(`a[href="${href}"]`), `${href} is the other language's example`).toHaveCount(0);
     }
 
-    // Only the site's own pages are linked here: no AI tool's pricing page (FIN-014 as amended).
+    // Only the site's own pages are linked here: no AI tool's pricing page.
     const hrefs = await section.locator('a').evaluateAll((links) => links.map((link) => link.getAttribute('href') ?? ''));
     for (const href of hrefs) expect(href, 'a link in the "no AI tool" section').toMatch(/^\/(?!\/)/);
 
