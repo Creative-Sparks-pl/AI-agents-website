@@ -160,7 +160,7 @@ const navLinks: { label: string; href: string }[] = [
       items={installEntry.data.items}
       columns={3}
       footerNote={installEntry.data.footerNote}
-      footerLink={installEntry.data.footerLink}
+      footerLink={installEntry.data.footerLink && { ...installEntry.data.footerLink, href: '/en/free-skills/guide/' }}
       icon={installIcon}
     />
     <FAQSection entries={faqEntries} />

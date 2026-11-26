@@ -64,6 +64,34 @@ for (const { path, locale } of FREE_PAGES) {
   });
 }
 
+// The install section's "full install guide" link: the free audit pages lead to the free-skill guide in their
+// own language (owner, 2026-11-26, plan Step 9); the paid page, which shares the install content, keeps its
+// own guide (the counter-example).
+const INSTALL_LINK_PAGES: { path: string; expected: string; never: string[] }[] = [
+  { path: '/free-homepage-ux-audit-skill/', expected: GUIDE.pl, never: [GUIDE.en, ...PAID_GUIDES] },
+  { path: '/en/free-homepage-ux-audit-skill/', expected: GUIDE.en, never: [GUIDE.pl, ...PAID_GUIDES] },
+  { path: '/ux-design-skill/', expected: PAID_GUIDES[0], never: [GUIDE.pl, GUIDE.en] },
+  { path: '/en/ux-design-skill/', expected: PAID_GUIDES[1], never: [GUIDE.pl, GUIDE.en] },
+];
+
+for (const { path, expected, never } of INSTALL_LINK_PAGES) {
+  test(`install section of ${path}: the full install guide link leads to ${expected}`, async ({ page }, testInfo) => {
+    test.skip(widthOf(testInfo) < 1000, 'the link does not depend on screen size');
+    test.setTimeout(120_000);
+    await blockThirdParty(page);
+    await presetConsentInPage(page, []);
+    const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
+    expect(response?.status()).toBe(200);
+
+    const install = page.locator('section[aria-labelledby="install-heading"]');
+    await expect(install).toHaveCount(1);
+    await expect(install.locator(`a[href="${expected}"]`)).toHaveCount(1);
+    for (const href of never) {
+      await expect(install.locator(`a[href="${href}"]`), `a link to ${href}`).toHaveCount(0);
+    }
+  });
+}
+
 for (const locale of LOCALES) {
   const other: Locale = locale === 'pl' ? 'en' : 'pl';
 
