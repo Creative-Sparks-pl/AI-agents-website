@@ -39,7 +39,7 @@ Each role is named like the CSS token in `src/styles/global.css` (`--color-surfa
 
 - **Opacity modifiers** in the code (`border-border/20`) are roles named after the expression, aliasing an alpha primitive, code syntax `color-mix(in oklab, var(--color-border) 20%, transparent)`: `color/border-15|20|30|40` → `alpha/neutral-300-NN`; `color/white-20|50|60|70|80|90` → `alpha/white-NN`; `color/foreground-10|60|70|80` → `alpha/neutral-900-NN` (60 is also the dialog scrim); `color/muted-40|80` → `alpha/neutral-700-NN`; `color/accent-30` → `alpha/yellow-400-30`; `color/primary-5|20` → `alpha/blue-500-NN`.
 - **Tailwind palette colours** used outside the tokens (the terminal mockup, one red): `color/tw/<name>` → `tailwind/<name>` (`zinc-300`, `zinc-400`, `zinc-800`, `zinc-900`, `emerald-400`, `amber-400`, `red-700`), plus `color/tw/white` → `white`, `color/tw/black` → `black`; code syntax `var(--color-zinc-300)` etc.
-- **To look one up live:** in the web library, Local variables → Color → the role shows its alias; or paste the skill's `scripts/audit-library.js` as read-only `use_figma` code on `zDsBjCordPVukR38UY5GAS` (each variable comes back with its alias target). Base variable keys (for `importVariableByKeyAsync`): a read-only `use_figma` in the brand base returning `(await figma.variables.getLocalVariablesAsync()).map((v) => [v.name, v.key])`.
+- **To look one up live:** in the web library, Local variables → Color → the role shows its alias; or a short read-only `use_figma` on `zDsBjCordPVukR38UY5GAS`: `const v = (await figma.variables.getLocalVariablesAsync()).find((x) => x.name === 'color/surface-primary'); const a = Object.values(v.valuesByMode)[0]; return (await figma.variables.getVariableByIdAsync(a.id)).name;` (the skill's `scripts/audit-library.js` lists every variable with its alias, but is heavy for one lookup). Base variable keys (for `importVariableByKeyAsync`): a read-only `use_figma` in the brand base returning `(await figma.variables.getLocalVariablesAsync()).map((v) => [v.name, v.key])`.
 
 ### Number variables
 
@@ -129,13 +129,13 @@ Most sections are built on a `SectionWithIcon` instance whose Header and Content
 | Free skills guide — /free-skills/guide/ | 33:8051 | 53:1144 | 55:1599 | TopAppBar, frame `guide`, Footer |
 | How it works — /ux-design-skill/instrukcja/ | 33:8052 | 54:1985 | 55:3461 | TopAppBar, frame `instrukcja`, Footer |
 
-Frames are named `<slug> — 1440` / `<slug> — 390` (vertical auto layout, no gap, hugging). The three text pages have no components of their own in code: their content is a captured, cleaned-up frame on library text styles and parts, named after the measured block. Page builders never create local components, variables or styles here; a missing variant or style is added to the web library, published, and accepted here.
+Frames are named after the page's URL path: `<path> — 1440` / `<path> — 390` (e.g. `/ux-design-skill/regulamin/ — 390`; vertical auto layout, no gap, hugging). The `slug` in `figma/checks/pages.json` is the measurement file's name, not the frame's name. To list a frame's section instances with their ids: `GET https://api.figma.com/v1/files/uSPmRV0KIyNTpOLO4TcYRU/nodes?ids=<frame id>&depth=1` (header `X-Figma-Token`) — e.g. the FAQSection instance on the free audit page's 1440 frame is 27:9636. The three text pages have no components of their own in code: their content is a captured, cleaned-up frame on library text styles and parts, named after the measured block. Page builders never create local components, variables or styles here; a missing variant or style is added to the web library, published, and accepted here.
 
 ## Code Connect
 
 - Templates: `figma/code-connect/` — `Button.figma.ts` at the top, shared parts in `figma/code-connect/ui/`, each section with its section-only parts in `figma/code-connect/sections/<folder>/` (the folder name under `src/components/sections/`). 76 parserless `.figma.ts` templates, one per published component; config `figma.config.json` (label "Astro", language "html").
 - CLI pinned at **`@figma/code-connect@2.1.0`**, run through npx (no dependency in `package.json`) by the skill's `scripts/code-connect.mjs`. Active Code Connect selection on the plan: library "Creative Sparks — Web library", framework "Astro".
-- Not mapped: Brand-base icons (snippets write the Material Symbols name or `icon="…"`); text sections take from content collections (shown as "…"); Figma-only properties (Breakpoint, Hover, Open, Sale window — the sale state is the date, `src/lib/presale.ts`).
+- Not mapped: Brand-base icons (snippets write the Material Symbols name or `icon="…"`); text sections take from content collections (left out — a section that reads its own collection shows as a bare `<FAQSection />` — or shown as "…" where the code takes it as a prop); Figma-only properties (Breakpoint, Hover, Open, Sale window — the sale state is the date, `src/lib/presale.ts`).
 - `figma/` and `figma.config.json` have their own row in `docs/testing.md` (no tests) and are skipped by the doc and code graphs.
 
 ## Measurements
@@ -202,7 +202,7 @@ node --env-file=.env.local C:/Users/Tomasz/.claude/skills/figma-design-set/scrip
 7. `compare-pages.mjs --list figma/checks/pages.json <slugs that use it>` until PASS; screenshots if the change is visible.
 8. A new variant id goes into `figma/checks/sections.json`; a new section gets its row there (name, desktop, phone, page).
 
-**Add a page:** measure it (add its slug and path to `--pages`); create a Figma page `<Title> — <path>` in the Website file with frames `<slug> — 1440` / `<slug> — 390` built from library instances (skill: method reference, "Pages in the pages file"); add `{ "slug", "d", "p" }` to `figma/checks/pages.json`; run `compare-pages.mjs` for it.
+**Add a page:** measure it (add its slug and path to `--pages`); create a Figma page `<Title> — <path>` in the Website file with frames `<path> — 1440` / `<path> — 390` built from library instances (skill: method reference, "Pages in the pages file"); add `{ "slug", "d", "p" }` to `figma/checks/pages.json`; run `compare-pages.mjs` for it.
 
 **Publish Code Connect** (from this repo only — `figma.config.json` is here):
 ```bash
@@ -210,7 +210,7 @@ node --env-file=.env.local C:/Users/Tomasz/.claude/skills/figma-design-set/scrip
 node --env-file=.env.local C:/Users/Tomasz/.claude/skills/figma-design-set/scripts/code-connect.mjs publish --dry-run
 node --env-file=.env.local C:/Users/Tomasz/.claude/skills/figma-design-set/scripts/code-connect.mjs publish
 ```
-Then check `get_design_context` on an instance in the Website file (it returns e.g. `<FAQSection />` with its import), and run `npm run build` once with the templates in the tree.
+Then check `get_design_context` on an instance in the Website file (it returns e.g. `<FAQSection />` with its import; find an instance id as under "Pages"). Before that call the Figma connector requires the `figma:figma-design-to-code` skill to be loaded and a `create_session` on the file; pass `excludeScreenshot: true` when you only need the snippet. The answer lists component descriptions under the Website file's own node ids (its copies of the library components), not the library ids in this map. Run `npm run build` once with the templates in the tree.
 
 **Regenerate the icon keys** (Brand-base icon name → key, for build scripts):
 ```bash
