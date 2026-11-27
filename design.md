@@ -2,100 +2,131 @@
 
 ## 1. Introduction
 
-This design system documents the visual tokens, component primitives, section shells, and architectural conventions used in the WEB-Agents website (the Polish-language landing page at `/ux-designer/`). The site is built on Astro 7 and Tailwind 4, with content managed through Astro content collections. The system is designed to support a future English locale and a Keystatic CMS integration without requiring structural changes — those follow-up efforts become content edits, not architecture changes.
+This design system documents the visual tokens, the shared parts, the page sections and the conventions of agents.creativesparks.pl, the Creative Sparks site for its AI skills. The site is built on Astro 7 and Tailwind 4, with text kept in Astro content collections, in Polish (at the root) and English (under `/en/`). Its pages:
 
-The decisions documented here cover three areas: the token vocabulary defined in the `@theme` block of `global.css`, the two promoted UI primitives (`ChecklistItem` and `SectionWithIcon`), and the decomposition and i18n conventions that govern how sections are built and how content is loaded. Anyone joining the project should be able to understand both the visual language and the component model from this document in a single read.
+- the UX Design Skill page `/ux-design-skill/` and its sub-pages: knowledge base (`baza-wiedzy/`, EN `knowledge-base/`), how it works (`instrukcja/`, EN `how-it-works/`), `changelog/`, terms (`regulamin/`, EN `terms/`) and privacy policy (`polityka-prywatnosci/`, EN `privacy-policy/`);
+- the two free-skill pages, `/free-homepage-ux-audit-skill/` and `/free-website-planning-skill/`, each with its own `changelog/`;
+- the free-skill guide `/free-skills/guide/` and the email answer page `/answer/` (reached only from email links, `noindex`).
+
+`/` redirects to `/ux-design-skill/`. The retired `/ux-designer/` pages are kept in `src/pages/archive/ux-designer/` and their old URLs redirect to today's pages (`vercel.json`); this document does not describe them.
+
+The decisions documented here cover the token vocabulary in the `@theme` block of `global.css`, the type scale, the parts in `src/components/ui/`, the sections in `src/components/sections/`, and the decomposition and i18n conventions that govern how sections are built and how content is loaded. Anyone joining the project should be able to understand both the visual language and the component model from this document in a single read.
+
+**Where design lives.** New or changed UI is designed in Figma before it is built, in three files: Brand base (primitive colours, fonts, logo, icons), Web library (tokens, text styles, one component per code component) and Website (the live pages at 1440 and 390 px, built from library instances). Their keys are in `AGENTS.md` → Infrastructure → Figma. The process is in `docs/design-process.md`, the map of the three files in `docs/figma/README.md`. Every web-library component has the same name as its code component and is mapped to it with Code Connect (templates in `figma/code-connect/`, config in `figma.config.json`). This document describes the code, the record of today's design; Figma is brought up to date after each release (step 5 of the process).
 
 ---
 
 ## 2. Tokens
 
-All tokens are defined in the `@theme` block in `src/styles/global.css` and are available as Tailwind utility classes automatically via Tailwind 4's CSS-first configuration.
+All tokens are defined in the `@theme` block in `src/styles/global.css` and are available as Tailwind utility classes automatically via Tailwind 4's CSS-first configuration. In the web library each colour is a variable named like its token (e.g. `color/surface-primary` is `var(--color-surface-primary)`).
 
 ### 2.1 Colors
 
-| Token | Hex | Tailwind utility | Role / intended usage |
+| Token | Hex | Tailwind utility | Role / where it is used |
 |---|---|---|---|
-| `--color-primary` | `#010DFF` | `bg-primary`, `text-primary`, `border-primary` | Main brand color. Used for CTA buttons, key interactive elements, links, and the checkmark icon in `ChecklistItem`. |
-| `--color-primary-dark` | `#020DF6` | `bg-primary-dark`, `text-primary-dark` | Hover/active state of primary. Apply on `:hover` and `:focus-visible` variants of primary-colored elements. |
-| `--color-on-primary` | `#ffffff` | `text-on-primary` | Text/icon color placed on top of a primary background. Ensures contrast on blue fills. |
-| `--color-accent` | `#E5FA00` | `bg-accent`, `text-accent` | Highlight yellow. Used for the checklist bullet background, callout labels, and badge chips. |
-| `--color-accent-dark` | `#DAEE04` | `bg-accent-dark` | Hover/active state of accent. Apply on `:hover` over accent-colored elements. |
-| `--color-background` | `#ffffff` | `bg-background` | Page background. Default surface for all sections unless overridden. |
-| `--color-foreground` | `#171717` | `text-foreground` | Default body text color. Near-black for maximum readability on white. |
-| `--color-muted` | `#4C4C4C` | `text-muted` | Secondary / helper text. Use for supporting descriptions, meta labels, and captions where contrast with foreground is needed. |
-| `--color-border` | `#CDCDCD` | `border-border` | Default border color for dividers, cards, and table rules. |
-| `--color-surface` | `#FAFAFA` | `bg-surface` | Slightly off-white surface. Use as an alternative section background for visual rhythm between page bands. |
-| `--color-surface-primary` | `#F1F2FE` | `bg-surface-primary` | Tinted blue surface. Use for pricing cards, comparison highlights, and other elements that need to echo the primary color without full saturation. |
-| `--color-surface-accent` | `#FAFECC` | `bg-surface-accent` | Tinted yellow surface. Use for callout blocks, tip cards, or any element that needs a warm highlight without full accent saturation. |
-| `--color-pattern` | `#EBEBEB` | `bg-pattern` | Decorative background pattern fill (e.g., dot grids, stripes). Not intended for text containers. |
+| `--color-primary` | `#010DFF` | `bg-primary`, `text-primary`, `border-primary` | Main brand color, the most used token. Filled and outlined buttons, links (`LinkArrow`), icons, the tick in `ChecklistItem`, the architecture file-tree panel, the hover fill of cards (`ProblemCard`, `PlatformCard`). |
+| `--color-primary-dark` | `#020DF6` | `bg-primary-dark`, `text-primary-dark` | Defined but not used on the live pages (shown only on `/design-system/tokens/`). Hover states do not use it: `Button`'s primary variant hovers to black, the secondary one fills with primary. |
+| `--color-on-primary` | `#ffffff` | `text-on-primary` | Text on a primary fill. Only the knowledge base's selected page-type button uses the token; elsewhere text on blue is written `text-white` (same value). |
+| `--color-accent` | `#E5FA00` | `bg-accent`, `text-accent` | Highlight yellow. The `ChecklistItem` bullet, the hero badge and the hero mockup's offset shadow, the testimonials band, the highlighted pricing tier and landscape card, the architecture CTA box, icons on dark panels; with black in `Button`'s `sale` variant. |
+| `--color-accent-dark` | `#DAEE04` | `bg-accent-dark`, `text-accent-dark` | One use: the verified icon in the knowledge base's sources (`KBSources`). |
+| `--color-background` | `#ffffff` | `bg-background` | Page background (`<body>`). Many sections and cards write `bg-white` instead (same value). |
+| `--color-foreground` | `#171717` | `text-foreground` | Default text color (`<body>`). Near-black for maximum readability on white. |
+| `--color-muted` | `#4C4C4C` | `text-muted` | Secondary text: descriptions, captions, item numbers, footer links. |
+| `--color-border` | `#CDCDCD` | `border-border` | Dividers, accordion and table rules, the empty stars of `RatingStars`. |
+| `--color-surface` | `#FAFAFA` | `bg-surface` | Off-white band for rhythm between sections (`ProcessSection`, `LandscapeSection`, `PlatformSection`, `AuthorSection`, the "what it doesn't do" `ProblemsSection` via `!bg-surface`), the plain pricing tiers. |
+| `--color-surface-primary` | `#F1F2FE` | `bg-surface-primary` | Tinted blue band and hover fill: section backgrounds (`UseCasesSection`, `ComparisonSection`, `TryFreeSection`, `FAQSection`, `DemoSection`, `ChangelogSection`, `EmailAnswerSection`, `KBPageTypes`), the `StageCard` hover, code and note boxes on the long-text pages. |
+| `--color-surface-accent` | `#FAFECC` | `bg-surface-accent` | Tinted yellow: the `KnowledgeBaseSection` and `KBFrameworks` bands, `ProblemCard`, the offer box in `FreeSkillForm`. |
+| `--color-pattern` | `#EBEBEB` | `bg-pattern` | One use: the `KBPatterns` band. Not intended for text containers. |
 
-Primary and accent are the two active brand colors. Use primary for interactive and structural elements; accent for emphasis, highlights, and calls-to-attention. The dark variants exist solely for state changes — do not use them as base colors. The surface palette (surface, surface-primary, surface-accent) provides three levels of section tinting that stay harmonious without needing custom one-off colors.
+Primary and accent are the two active brand colors. Use primary for interactive and structural elements; accent for emphasis, highlights, and calls-to-attention. The surface palette (surface, surface-primary, surface-accent) provides three levels of section tinting that stay harmonious without needing custom one-off colors. Colours outside the tokens: white and black (`bg-white`, `text-white`, `Button`'s black hover and sale variant), and Tailwind's zinc, emerald and amber in the hero's terminal mockup.
 
 ### 2.2 Typography
 
 | Token | Font family | Weight(s) loaded | Role |
 |---|---|---|---|
-| `--font-headline` | `"Gilroy", sans-serif` | 400, 700 | Section headings, hero headings. The primary display typeface. |
+| `--font-headline` | `"Gilroy", sans-serif` | 400, 700 | Section headings, hero headings, card titles. The primary display typeface. |
 | `--font-display` | `"Gilroy", sans-serif` | 400, 700 | Alias of headline. Use for large decorative numerals or oversized labels. |
-| `--font-body` | `"Noto Sans", sans-serif` | Variable (system) | Body copy, descriptions, list items, and all running text. |
-| `--font-sans` | `"Noto Sans", sans-serif` | Variable (system) | Alias of body. Tailwind's default `font-sans` override. |
-| `--font-label` | `"Noto Sans Mono", monospace` | Variable (system) | Monospaced labels, badges, version tags, code snippets, and any UI chrome that benefits from tabular spacing. |
-| `--font-mono` | `"Noto Sans Mono", monospace` | Variable (system) | Alias of label. Tailwind's default `font-mono` override. |
+| `--font-body` | `"Noto Sans", sans-serif` | 400, 500, 600, 700 | Body copy, descriptions, list items, and all running text. |
+| `--font-sans` | `"Noto Sans", sans-serif` | 400, 500, 600, 700 | Alias of body. Tailwind's default family, so text with no family class is set in Noto Sans. |
+| `--font-label` | `"Noto Sans Mono", monospace` | 400, 500, 700 | Monospaced labels: badges above headings, links, navigation, footer, item numbers, small uppercase captions. |
+| `--font-mono` | `"Noto Sans Mono", monospace` | 400, 500, 700 | Alias of label. Tailwind's default `font-mono` override. |
 
-Gilroy is self-hosted (two OTF files loaded via `@font-face` in `global.css`). Noto Sans and Noto Sans Mono are expected to be loaded from Google Fonts or a similar CDN at the page level. Headline and display are effectively the same typeface — use `font-headline` for semantic clarity on section headings, and `font-display` when using Gilroy for a non-heading decorative purpose.
+All three families are self-hosted. Gilroy is two woff2 files (Latin + Latin Extended-A subset) in `src/assets/fonts/`, declared with `@font-face` in `global.css`; Noto Sans and Noto Sans Mono come from the `@fontsource` packages imported at the top of `global.css`, normal style only (no italic files). Headline and display are effectively the same typeface — use `font-headline` for semantic clarity on section headings, and `font-display` when using Gilroy for a non-heading decorative purpose.
 
-### 2.3 Spacing
+### 2.3 Type scale
+
+The site has no named type ramp and no type-size tokens: text is set with Tailwind classes in each component. On the nine Polish pages drawn in the Figma Website file (the UX Design Skill page, both free-skill pages, the UX Design Skill changelog, the free-skill guide, how it works, the knowledge base, the terms and the email answer page) the rendered text comes to about 70 distinct combinations of family, size, weight, line height and tracking. They group by family:
+
+| Group | Class | Font | Typical use |
+|---|---|---|---|
+| Headline | `font-headline` | Gilroy | h1–h3, card titles, large numbers |
+| Body | `font-body`, or no family class | Noto Sans | Running text, taglines, buttons |
+| Label | `font-label` | Noto Sans Mono | Badges, `LinkArrow`, navigation, footer, numbers, uppercase captions |
+
+- **Sizes** are Tailwind's scale, `text-xs` to `text-8xl` (`text-8xl` only in the knowledge base hero), plus two sizes off the scale: `text-[10px]` (small uppercase captions, e.g. `DecisionCard`, the `KBHero` stat labels) and `text-[13px]` (`TopAppBar` links, `Button` size `sm`). `text-[28px]` also appears, but it sizes an icon (the offer icon in `FreeSkillForm` at `lg`), not text.
+- **Weights**: `font-normal`, `font-medium`, `font-semibold`, `font-bold` (by far the most common) and `font-extrabold`.
+- **Line heights**: Tailwind's named ones (`leading-none`, `-tight`, `-snug`, `-normal`, `-relaxed`, and `leading-5`, `leading-7`) plus four arbitrary values: `leading-[1.1]` (section h2s), `leading-[1.05]` (the hero h1), `leading-[0.95]` (the knowledge base h1) and `leading-[1.4]` (item numbers beside accordion rows). The long-text pages (terms, privacy policy) set 1.75 for paragraphs and list items in their own page-level `.prose-custom` style block.
+- **Tracking**: `tracking-tight` on most headings, links and buttons; `tracking-wider` and `tracking-widest` on uppercase captions.
+
+**Figma counterpart.** In the web library every combination is a text style named after the Tailwind classes that produce it, e.g. `Headline/5xl/bold · leading-[1.1] · tracking-tight`, with font family and size bound to variables (the family to the brand base's font variables, the size to the Tailwind scale). Reading a text's classes gives its style name; building text from a style means writing the classes in its name.
+
+**Weights the site does not load.** Gilroy ships only 400 and 700, and Noto Sans has no 800 file, so `font-extrabold` (800) has no face of its own: the browser draws it with the 700 face, and it looks exactly like `font-bold`, although computed styles report 800. The same goes for `font-semibold` on Gilroy or Noto Sans Mono (no 600 face, drawn at 700). Extrabold is used on the hero h1 and the `FullScreenDialog` title (Gilroy) and on the `md`/`lg` buttons of `Button` and `FreeSkillForm` (Noto Sans). In Figma these texts use the Bold face. Italic is not loaded for any family either, so `italic` text is slanted by the browser.
+
+### 2.4 Spacing
 
 | Token | Value | Role |
 |---|---|---|
-| `--spacing-section` | `80px` | Vertical padding between major page bands at mobile/tablet viewports. |
-| `--spacing-section-lg` | `144px` | Vertical padding between major page bands at large viewport (`lg:` breakpoint and up). |
-| `--spacing-grid` | `64px` | Internal gap inside a section — between the section header and its content grid, or between grid columns. |
+| `--spacing-section` | `80px` | Defined for vertical padding of page bands at mobile/tablet viewports. |
+| `--spacing-section-lg` | `144px` | Defined for vertical padding of page bands from the `lg:` breakpoint. |
+| `--spacing-grid` | `64px` | Defined for the gap inside a section, between its header and its grid or between columns. |
 
-Use `--spacing-section` and `--spacing-section-lg` together with responsive classes (`py-section lg:py-section-lg`) on every section shell to maintain consistent vertical rhythm across the page. Use `--spacing-grid` for gaps between section sub-elements, not between sections themselves.
+None of the three is used by a page or component today (`py-section`, `py-section-lg` and `gap-grid` appear nowhere). Sections use Tailwind's scale instead: section shells are `py-20 md:py-28` (80 px, 112 px from 768 px; `EmailAnswerSection` uses `py-16 md:py-24`), content sits in `max-w-screen-2xl mx-auto px-6`, and gaps are mostly `gap-4`, with `gap-6`, `gap-12` and `gap-16` (64 px) between larger blocks. The web library's spacing variables follow the same Tailwind scale.
 
-### 2.4 Radii
+### 2.5 Radii
 
 | Token | Value | Role |
 |---|---|---|
 | `--radius-default` | `0px` | Default corner radius. All cards, buttons, and containers are sharp-cornered. |
 | `--radius-lg` | `0px` | Large-variant radius. Also zero — maintains the architectural-precision aesthetic. |
-| `--radius-xl` | `0px` | Extra-large radius. Also zero. |
-| `--radius-full` | `9999px` | Pill / circle shape. Used for the checklist bullet (`ChecklistItem`) and any round badge or avatar. |
+| `--radius-xl` | `0px` | Extra-large radius. Also zero, so the `rounded-xl` written on the guide and how-it-works pages' boxes draws square corners. |
+| `--radius-full` | `9999px` | Pill / circle shape: `rounded-full` on the hero mockup's three window dots and the photo in `EmailAnswerSection`. |
 
-The design deliberately uses zero border-radius everywhere except circular elements. This is an intentional aesthetic choice ("architectural precision"). Do not introduce rounded corners on cards or buttons without an explicit design decision to change this convention.
+The `ChecklistItem` bullet and the `circle` shape of `StageCard` are round through `border-radius: 50%` in their own styles. The design deliberately uses zero border-radius everywhere except circular elements. This is an intentional aesthetic choice ("architectural precision"). Do not introduce rounded corners on cards or buttons without an explicit design decision to change this convention.
 
 ---
 
-## 3. Components (ui/ primitives)
+## 3. Parts (ui/)
 
-The `ui/` directory holds four primitives. Each is used in ≥2 sections, satisfying T2 promotion.
+The ten shared parts live in `src/components/ui/<Name>.astro`. Every one except `CookieTable` has a web-library component of the same name.
 
-| Component | Usage | Purpose |
-|---|---|---|
-| `Button` | HeroSection, PricingTier, DemoSection, TopAppBar | Filled primary CTA. Renders as `<a>` (with `href`) or `<button>`. Sizes `sm`/`md`/`lg`, optional `block`, optional `trailingIcon`, optional `external`. |
-| `LinkArrow` | ArchitectureSection, FAQItem, PricingSection, CaseCard, DemoSection | Text-only directional link with arrow icon. Hover translates 1px right. Optional leading `icon`, customizable `trailingIcon` (defaults to `arrow_forward`). |
-| `ChecklistItem` | HeroSection (6 uses) and any feature-with-description pattern | Accent-bullet item with title + slotted body. |
-| `SectionWithIcon` | Every content section (51 usages) | Layout primitive with icon + header slot + body slot. Two layouts: `stacked` (default) and `side-by-side`. |
-
-
+| Part | What it is | Main props | Used by |
+|---|---|---|---|
+| `Button` | CTA button. Renders as `<a>` (with `href`) or `<button>`; optional trailing Material Symbols icon. | `href`, `size` (`sm`/`md`/`lg`), `variant` (`primary`, `secondary`, `sale` — black and yellow, shown only in the sale window), `trailingIcon`, `block`, `external` | HeroSection, TopAppBar, PricingTier, ArchitectureSection (CTA box), DemoSection, TestimonialsSection |
+| `LinkArrow` | Text link in the label font with a trailing arrow (default `arrow_forward`); moves right on hover. | `href`, `icon`, `trailingIcon`, `external` | ArchitectureSection, DemoSection, ProblemsSection, PricingSection, TestimonialsSection, FAQItem, CaseCard, TryFreeCard |
+| `ChecklistItem` | Yellow round bullet with a blue tick, a title and an optional slotted body. | `title` | HeroSection (its bullet list, titles only) |
+| `SectionWithIcon` | Layout: the decorative section icon (from `lg`) beside the section header, the body below or beside it. | `icon`, `layout` (`stacked`/`side-by-side`) | Nearly every section, the guide and how-it-works pages |
+| `StageCard` | White card: optional shape glyph (`cube`, `diamond`, `circle`, `grid`, `nested`, `bars`) and number, title, description, optional output link (new tab, tracked in Umami and Meta) and quote. | `title`, `description`, `index`, `shape`, `output`, `outputLink`, `outputIcon`, `quote`, `trackEvent`, `trackParams` | ProcessSection |
+| `RatingStars` | Five stars filled to the average rating, the visible text beside them and a full sentence for screen readers; a link when `href` is set. | `value`, `text`, `label`, `href` | HeroSection (when its entry has a `rating`) |
+| `FreeSkillForm` | The free-skill sign-up: email field, the 14-day offer box, button, consent line, error and success states, and the "check your inbox" sheet after sign-up. Text in PL and EN built in. | `skill` (`audit`/`planning`), `surface` (analytics label), `size` (`md`/`lg`), `submitLabel`, `placeholder`, `successHeading`, `successNote`, `block`, `fitContainer` | TryFreeCard; the free pages' HeroSection (`primary-cta` slot) and DemoSection (`cta` slot) |
+| `FullScreenDialog` | Dialog on the native `<dialog>`: full screen, or with `sheet` a bottom sheet on phones and a centred 512 px panel from 640 px. Opened by a `full-screen-dialog:open` event; closes only on purpose. | `id`, `title`, `closeLabel`, `icon`, `sheet`; slots: default, `footer` | FreeSkillForm |
+| `PreSaleCountdown` | The sale window's countdown text and the page-wide script that shows `[data-sale-only]` / `[data-list-only]` elements and swaps sale and list links at the window's edges (`src/lib/presale.ts`). | `showCountdown` (`false` = script only) | HeroSection (countdown), PricingSection and TopAppBar (script only) |
+| `CookieTable` | The privacy policies' cookie list, one table per consent category, built from the same rows as the banner's preferences window. | `lang` | The two privacy-policy pages |
 
 ### 3.1 ChecklistItem
 
-**Purpose.** `ChecklistItem` renders a single checklist entry consisting of a circular accent-colored bullet with an embedded checkmark icon, a bold title line, and a body paragraph delivered via slot. It is used in the hero section's social-proof checklist and anywhere a checkmark-annotated feature point is needed.
+**Purpose.** `ChecklistItem` renders a single checklist entry consisting of a circular accent-colored bullet with an embedded checkmark, a title line, and an optional body paragraph delivered via slot. The hero uses it for its bullet list (title only).
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
-| `title` | `string` | required | The headline text rendered in the title line (`text-xl`). |
+| `title` | `string` | required | The text rendered in the title line (`text-xl`, normal weight). |
 | `class` | `string` | `undefined` | Additional Tailwind classes merged onto the root `<div>`. |
 | `...rest` | `HTMLAttributes<'div'>` | — | Any other HTML div attributes (e.g., `id`, `data-*`) are spread onto the root element. |
 
-The slot (`<slot />`) receives the body text rendered below the title at `text-base`. The bullet is always accent-colored with a primary-colored checkmark; these are not configurable via props. Use `ChecklistItem` when you need a styled checklist entry with a title and optional body. Do not use it as a generic list item — if you need a list without the checkmark bullet style, use plain `<li>` elements with Tailwind classes.
+The slot (`<slot />`) receives the body text rendered below the title at `text-base`; without it only the title shows. The bullet is a 24 px accent circle with a primary checkmark, drawn in the component's own styles; neither is configurable via props. Do not use it as a generic list item — if you need a list without the checkmark bullet style, use plain `<li>` elements with Tailwind classes.
 
 ### 3.2 SectionWithIcon
 
-**Purpose.** `SectionWithIcon` is a layout primitive that pairs a decorative section icon (hidden on mobile) with section content in one of two arrangements: a stacked layout where the icon sits in a row with the header above the body, or a side-by-side layout where the header column is sticky at `top-24` and the body column scrolls alongside it. It is used to give content-heavy sections (process steps, knowledge base, architecture overview) a consistent icon-anchored visual structure.
+**Purpose.** `SectionWithIcon` is a layout primitive that pairs a decorative section icon (hidden below `lg`) with section content in one of two arrangements: a stacked layout where the icon sits in a row with the header and the body is indented under it, or a side-by-side layout where the header column is sticky at `top-24` and the body column scrolls alongside it. It gives content sections a consistent icon-anchored structure. The icons are `src/assets/icons/shape-1.svg` to `shape-12.svg`.
 
 | Prop | Type | Default | Description |
 |---|---|---|---|
@@ -104,38 +135,67 @@ The slot (`<slot />`) receives the body text rendered below the title at `text-b
 | `class` | `string` | `undefined` | Additional classes merged onto the root wrapper `<div>`. |
 | `...rest` | `HTMLAttributes<'div'>` | — | Spread onto the root element. |
 
-The component uses two named slots: `header` (for the section heading/badge area) and the default slot (for body content). Use `stacked` for sections with a single block of content below the heading; use `side-by-side` for sections with multiple items that benefit from keeping the heading in view while the user scrolls through the list. Do not use `SectionWithIcon` as a generic two-column layout — it is semantically tied to the "section with optional decorative icon" pattern.
+The component uses two named slots: `header` (for the section heading/badge area) and the default slot (for body content). Every live use is `stacked`; `side-by-side` appears only in the showcase (`/design-system/components/`). Do not use `SectionWithIcon` as a generic two-column layout — it is semantically tied to the "section with optional decorative icon" pattern.
 
 ---
 
 ## 4. Sections (layout shells)
 
-All 17 sections live under `src/components/sections/`. Each section loads its content via `await getEntry('<collection>', getCurrentLocale())` and accepts an optional `content` prop override for use in the design system showcase.
+Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<SectionName>.astro`. Item subcomponents (CaseCard, FAQItem, etc.) are colocated in the same folder. Sections take the page's language from the URL (`localeFromPathname(Astro.url.pathname)`, see section 6) and get their content in one of three ways:
 
-Each section lives in a named subfolder: `src/components/sections/<kebab-name>/<SectionName>.astro`. Item subcomponents (CaseCard, FAQItem, etc.) are colocated in the same folder.
+- **They load their own entry** for that language (`requireLocalizedEntry`, `getLocalizedCollection` from `src/lib/i18n.ts`), some with an `entryId` for a page variant: HeroSection, LandscapeSection, ComparisonSection, TestimonialsSection, PricingSection, TryFreeSection, PlatformSection, KnowledgeBaseSection, AuthorSection, ChangelogSection, EmailAnswerSection, TopAppBar, Footer; FAQSection and ArchitectureSection unless the page passes its own items.
+- **They take everything as props**, which the page reads from a collection: ProcessSection, UseCasesSection, ProblemsSection, DemoSection. That is why one section serves several collections (ProblemsSection shows `boundaries` and `install`).
+- **They carry their copy in the component** as `COPY_PL` / `COPY_EN`: the five `kb/` sections, and the default texts of ArchitectureSection and PricingSection.
 
-| Section path | Collection | Colocated subcomponents | Purpose |
-|---|---|---|---|
-| `hero/HeroSection.astro` | `hero` | — | Page hero: badge, headline + optional emphasis, subheadline, checklist (renders via `ChecklistItem` ui/), CTA. Terminal mockup hardcoded. |
-| `use-cases/UseCasesSection.astro` | `use-cases` + `use-cases-examples` | `ExampleCard`, `CaseCard` | Static examples panel (8 example links) + 4 accordion case studies. |
-| `problems/ProblemsSection.astro` | `problems` | `ProblemCard` | 4 icon-annotated pain points. |
-| `landscape/LandscapeSection.astro` | `landscape` | — | Category-map pattern: header (badge + heading + optional lead), 3-col grid (cols 1-2: 2×2 of default cards with optional `sampleLabel` footer; col 3: full-height highlight card), optional closing line. |
-| `comparison/ComparisonSection.astro` | `comparison` | `ComparisonRow` | Feature table (5 columns × 6 rows). |
-| `process/ProcessSection.astro` | `process` | `ProcessStage` | 6 process stage cards with shape glyphs + output links. |
-| `pricing/PricingSection.astro` | `pricing` | `PricingTier` | 3 pricing tier cards. |
-| `demo/DemoSection.astro` | `demo` | `DemoStage` | Demo CTA + 3 stage cards (Discovery / Strategia / Wireframing). |
-| `try-free/TryFreeSection.astro` | `try-free` | `TryFreeCard` | Two free skills side by side, picked by situation. Each card has the signup form and a link to the skill's page. |
-| `platform/PlatformSection.astro` | `platform` | `PlatformCard` | 4 platform cards + contents list + requirements. |
-| `knowledge-base/KnowledgeBaseSection.astro` | `knowledge-base` | `KnowledgeColumn` | 3 columns of knowledge taxonomy. |
-| `architecture/ArchitectureSection.astro` | `architecture` | `DecisionCard` | File tree visual + 8 architecture decision cards. |
-| `faqs/FAQSection.astro` | `faqs` | `FAQItem` | 8 accordion FAQ items. |
-| `author/AuthorSection.astro` | `author` | — | Author bio card with photo, experience badge, contact block. |
-| `testimonials/TestimonialsSection.astro` | `testimonials` | — | One-at-a-time slider on the accent background: quote, name, optional company (a link when it has an address), photo with speckle texture, previous/next buttons and a polite counter. No autoplay, no swipe; 300 ms fade, instant with reduced motion. Optional `buttons` prop, default none. |
-| `changelog/ChangelogSection.astro` | `changelog` | `ChangelogEntry` | Versioned changelog accordion entries of the product the page names (`product`, required), newest first. |
-| `top-app-bar/TopAppBar.astro` | `nav` | — | Sticky header with logo, nav links, CTA. Accepts overrides via props for sub-pages. |
-| `footer/Footer.astro` | `footer` | — | Logo + flat link list. |
+Pages below: **UXDS** = `/ux-design-skill/`, **Audit** = `/free-homepage-ux-audit-skill/`, **Planning** = `/free-website-planning-skill/`; each also at `/en/…`.
 
-**Colocated subcomponents (12 total)** all sit at exactly 1 importer — none have been promoted to `ui/` per strict T2. The decomposition is honest: zero preemptive abstraction.
+| Section | Content | Colocated parts | What it is | Pages |
+|---|---|---|---|---|
+| `top-app-bar/TopAppBar.astro` | `nav` | — | Header: logo, nav links, CTA; sticky by default. In the sale window the default CTA becomes the black-and-yellow sale button. Props `navLinks`, `ctaLabel`, `ctaHref`, `showCta`, `sticky`. | Every page; the free pages and the guide pass their own links, no CTA, not sticky |
+| `hero/HeroSection.astro` | `hero` (`entryId`) | — | Page hero: badge (the sale countdown on UXDS, the download count on the free pages), optional rating, h1 in three parts, tagline, bullets, CTAs; on the right a terminal mockup that opens the demo video (Wistia). Slot `primary-cta` replaces the buttons. Prop `entryId`. | UXDS, Audit, Planning (with `FreeSkillForm` in the slot) |
+| `process/ProcessSection.astro` | props (`proof-gallery`, `process`) | — (cards are `ui/StageCard`) | Grid of StageCards in 2 or 3 columns, optional video tile, default slot below the grid. Props `headingId`, `badge`, `heading`, `lead`, `cards`, `videoTile`, `icon`, `columns`. | UXDS twice (proof gallery, the four-step process), Audit and Planning (proof gallery) |
+| `use-cases/UseCasesSection.astro` | props (`value-props`) | `CaseCard`, `ExampleCard` | Numbered accordion cards (`CaseCard`, one open at a time per `groupName`); optional examples panel (`ExampleCard`). Props `headingId`, `badge`, `heading`, `cases`, `examples`, `icon`, `groupName`. | UXDS (value props) |
+| `knowledge-base/KnowledgeBaseSection.astro` | `knowledge-base` | `KnowledgeColumn` | Three columns (page types, frameworks, section patterns) and a link to the knowledge base page. Props `heading`, `mapLabel`. | UXDS |
+| `landscape/LandscapeSection.astro` | `landscape` (`entryId`) | — | Category map: header, a 2×2 grid of default cards with optional `sampleLabel`, a full-height accent highlight card, optional closing line. On UXDS: the free skills on GitHub. Props `entryId`, `headingId`. | UXDS |
+| `comparison/ComparisonSection.astro` | `comparison` (`entryId`) | `ComparisonRow` | Feature table, one icon and text per column (yes / no / partial / n.a.), one column highlighted. Prop `entryId`. | UXDS |
+| `problems/ProblemsSection.astro` | props (`boundaries`, `install`, or the page's own items) | `ProblemCard` | Icon cards in 2, 3 or 4 columns, optional intro and footer note with link. Props `headingId`, `badge`, `heading`, `intro`, `items`, `columns`, `footerNote`, `footerLink`, `icon`. | UXDS and Audit ("what it doesn't do", install), Planning (three steps, "what it doesn't do") |
+| `testimonials/TestimonialsSection.astro` | `testimonials` | — | One-at-a-time slider on the accent background: quote, name, optional company (a link when it has an address), photo with speckle texture, previous/next buttons and a polite counter. No autoplay, no swipe; 300 ms fade, instant with reduced motion. Props `buttons` (default none), `headingId`. | UXDS, Audit, Planning |
+| `pricing/PricingSection.astro` | `pricing` | `PricingTier` | Three package cards with list and sale prices and buy links (checkout links carry `lang` and `page`); `PreSaleCountdown` swaps them at the sale window's edges. No props. | UXDS |
+| `try-free/TryFreeSection.astro` | `try-free` | `TryFreeCard` | Two free skills side by side, picked by situation. Each card has the sign-up form (`FreeSkillForm`) and a link to the skill's page. Prop `headingId`. | UXDS |
+| `architecture/ArchitectureSection.astro` | `architecture` + copy in the component | `DecisionCard` | Badge, heading, lead, optional link; a blue file-tree panel (slot `tree` replaces it) beside the decision cards; optional accent CTA box with a `Button`. Props `badge`, `heading`, `lead`, `link`, `decisions`, `cta`. | UXDS (defaults), Audit and Planning (own decisions and CTA box; Planning also its own tree) |
+| `platform/PlatformSection.astro` | `platform` | `PlatformCard` | Platform cards and the "what's in the package" list. | UXDS |
+| `faqs/FAQSection.astro` | `faqs`, or the `entries` prop | `FAQItem` | Numbered accordion of questions. Props `heading`, `entries`. | UXDS (collection), Audit and Planning (the page's own entries) |
+| `author/AuthorSection.astro` | `author` | — | Author bio card with photo, experience figure, email and LinkedIn. | UXDS, Audit |
+| `demo/DemoSection.astro` | props (`final-cta`) | `DemoStage` | Closing call to action: heading, intro, CTA button and secondary links, or the `cta` slot. It also takes `stages` (`DemoStage` cards), `note` and `videoPopover`. Props `badge`, `heading`, `intro`, `stages`, `note`, `cta`, `secondaryLinks`, `videoPopover`, `icon`. | UXDS, Audit, Planning (last section; the free pages put `FreeSkillForm` in the slot) |
+| `changelog/ChangelogSection.astro` | `changelog` | `ChangelogEntry` | Release notes of one product as accordion entries, newest first. Props `product` (required: `ux-design-skill`, `homepage-ux-audit`, `website-planning`), `label`. | The three changelog pages |
+| `kb/KBHero.astro`, `kb/KBPageTypes.astro`, `kb/KBFrameworks.astro`, `kb/KBPatterns.astro`, `kb/KBSources.astro` | copy in each component | — | The knowledge base page's five sections: hero with stat cards; the 16 page types (a list of buttons that switches the detail panel on desktop, an accordion on phones); the 13 frameworks; section patterns by category; experts and organisations. No props. | Knowledge base page |
+| `email-answer/EmailAnswerSection.astro` | `email-answers` + `author` | — | The thank-you note on the email answer page, its text picked by the link's `mail` and `odp` parameters, then the owner's photo and contact. | `/answer/` |
+| `footer/Footer.astro` | `footer` | — | Logo + flat link list. Prop `changelogHref` (a free page points the Changelog link at its own). | Every page |
+
+**Folders and parts that are not live.**
+
+- `audience-filter/AudienceFilterSection.astro` — a props-only card grid (badge, heading, lead, cards). No page and no showcase imports it, and it has no Figma counterpart.
+- `value-props/` and `proof-gallery/` — empty folders (only Google Drive's `desktop.ini`). The content collections of the same names are live; they render through UseCasesSection and ProcessSection.
+- `DemoStage` and `ExampleCard` render only on `/design-system/sections/`: no live page passes `stages` to DemoSection or `examples` to UseCasesSection. Neither has a Figma counterpart.
+
+The web library also holds a few smaller pieces that are written inline in a section's markup, not as components (e.g. `KBStatCard` in `KBHero`, `PricingFeature` in `PricingTier`); their Code Connect templates point at the section's file.
+
+**Colocated subcomponents (12 total)** all sit at exactly 1 importer — none have been promoted to `ui/` per strict T2.
+
+### 4.1 Pages and their sections
+
+| Page (PL · EN) | Sections, top to bottom |
+|---|---|
+| UXDS · `/en/ux-design-skill/` | TopAppBar · HeroSection · ProcessSection (proof gallery) · UseCasesSection (value props) · ProcessSection (process) · KnowledgeBaseSection · LandscapeSection · ComparisonSection · ProblemsSection ("what it doesn't do") · TestimonialsSection · PricingSection · TryFreeSection · ArchitectureSection · PlatformSection · ProblemsSection (install) · FAQSection · AuthorSection · DemoSection (final CTA) · Footer |
+| Audit · `/en/free-homepage-ux-audit-skill/` | TopAppBar · HeroSection + FreeSkillForm · ProcessSection (proof gallery) · ArchitectureSection · TestimonialsSection · ProblemsSection ("what it doesn't do") · ProblemsSection (install) · FAQSection · AuthorSection · DemoSection + FreeSkillForm · Footer |
+| Planning · `/en/free-website-planning-skill/` | TopAppBar · HeroSection + FreeSkillForm · ProcessSection (proof gallery) · ArchitectureSection · TestimonialsSection · ProblemsSection (three steps) · ProblemsSection ("what it doesn't do") · FAQSection · DemoSection + FreeSkillForm · Footer |
+| `/ux-design-skill/baza-wiedzy/` · `/en/ux-design-skill/knowledge-base/` | TopAppBar · KBHero · KBPageTypes · KBFrameworks · KBPatterns · KBSources · Footer |
+| The three `changelog/` pages (+ EN) | TopAppBar · ChangelogSection · Footer |
+| `/ux-design-skill/instrukcja/` · `/en/ux-design-skill/how-it-works/`; `/free-skills/guide/` · `/en/free-skills/guide/` | TopAppBar · long text written in the page, on SectionWithIcon · Footer |
+| `/ux-design-skill/regulamin/` · `/en/ux-design-skill/terms/`; `/ux-design-skill/polityka-prywatnosci/` · `/en/ux-design-skill/privacy-policy/` | TopAppBar · long text styled by the page's own `.prose-custom` block · CookieTable (privacy policy only) · Footer |
+| `/answer/` · `/en/answer/` | TopAppBar · EmailAnswerSection · Footer |
+
+The long-text pages have no section components: their markup lives in the page file, and in Figma they are composed in the page frame from library text styles and parts.
 
 ---
 
@@ -163,43 +223,54 @@ sections/use-cases/
   CaseCard.astro        ← colocated, not ui/CaseCard.astro
 ```
 
-**This project's adherence.** The two sections most likely to trigger T3 (repeated items ≥3) are `UseCasesSection` (use case cards), `ProblemsSection` (problem items), `ProcessSection` (step items), `ArchitectureSection` (layer items), `FAQSection` (FAQ items), and `PricingSection` (pricing tier cards). T9 fires on any section whose shell exceeds ~120 lines. In both cases, the extracted item subcomponent is colocated with the parent section.
+**This project's adherence.** Repeated items (T3) are extracted and colocated with their section: `CaseCard`, `ExampleCard`, `ProblemCard`, `DecisionCard`, `FAQItem`, `PricingTier`, `ComparisonRow`, `PlatformCard`, `KnowledgeColumn`, `ChangelogEntry`, `TryFreeCard`, `DemoStage`. The interactive pieces (the testimonials slider, the knowledge base's page-type tabs, the video popovers, the sign-up form, the sale-window script) are plain inline scripts in their Astro components; the site has no framework islands.
 
-Promotion to `ui/` is governed by **strict T2**: a colocated subcomponent is promoted to `src/components/ui/` only when it is actually imported from a second section or page. No preemptive promotion. The two existing `ui/` primitives (`ChecklistItem` and `SectionWithIcon`) both satisfy T2 — they are used across multiple sections.
+Promotion to `ui/` is governed by **strict T2**: a colocated subcomponent is promoted to `src/components/ui/` only when it is actually imported from a second section or page. No preemptive promotion. Four parts in `ui/` have a single importer today — `StageCard` (ProcessSection), `ChecklistItem` and `RatingStars` (HeroSection), `FullScreenDialog` (FreeSkillForm); the rule applies to new parts.
 
 ---
 
 ## 6. i18n strategy
 
-The project prepares for internationalisation at the content layer only. Every content collection entry uses a locale code as its entry ID (e.g., `pl.mdx`, `pl.yaml`). Every section loads content through a single `getCurrentLocale()` call (`src/lib/i18n.ts`), which is currently a stub returning the hardcoded default `'pl'`. No `/en/` routes, no language switcher, and no middleware are shipped in this project. When an English locale lands in a future project, the follow-up work is: add EN content entries, extend `getCurrentLocale()` to read from the request context, add routing, and add a switcher — the section code and content schemas require no changes.
+Polish is the default locale and lives at the root; English lives under `/en/` (Astro's `i18n` in `astro.config.mjs`, `prefixDefaultLocale: false`). Each English page is its own file under `src/pages/en/`, with English slugs where the Polish ones differ (`knowledge-base/` for `baza-wiedzy/`). `BaseLayout` adds hreflang alternates for both languages; there is no visible language switcher.
+
+Components take the language from the URL with `localeFromPathname(Astro.url.pathname)` (`src/lib/i18n.ts`) rather than `Astro.currentLocale`, which can be undefined in shared layouts. Content follows two id conventions:
+
+- **Locale-keyed entries**: `pl.yaml` / `en.yaml` (or `.mdx`), or `pl/` and `en/` folders for collections with one file per item. Read with `requireLocalizedEntry()` and `getLocalizedCollection()`.
+- **Page variants** at the collection's root: `skill-lp` (UXDS), `free-audit-skill`, `free-planning-skill`; the English twin adds `-en` (`localizedId()`). Read with `requireEntry()`, which takes a fallback id.
+
+A missing English entry falls back to Polish. Copy that lives in components (the `kb/` sections, `FreeSkillForm`, ArchitectureSection's defaults, PricingSection, PricingTier) is written as `COPY_PL` / `COPY_EN` objects or `locale === 'en'` choices.
 
 ---
 
 ## 7. Content collections
 
-All collections are defined and Zod-validated in `src/content.config.ts`. The locale-as-entry-id pattern means the entry ID for Polish content is always `'pl'`.
+All collections are defined and Zod-validated in `src/content.config.ts`, with their files under `src/content/<collection>/`.
 
-| Collection name | Format | Content shape |
-|---|---|---|
-| `hero` | MDX singleton per locale | Badge, headline, optional emphasis fragment, subheadline, checklist array (title + description), CTA link, optional note |
-| `use-cases` | MDX per item per locale | Order, number label, title, audience label, bullet list, optional quote, links array |
-| `use-cases-examples` | YAML per locale | Array of example links (label, href, optional icon, optional sub-label) |
-| `problems` | MDX per item per locale | Order, icon name, title; prose body in MDX slot |
-| `origin` | MDX singleton per locale | Badge, heading, callout quote, comparisons array (label + description); prose body in MDX slot |
-| `comparison` | YAML singleton per locale | Badge, heading, columns array (key, label, highlight flag), rows array (feature + per-column cell with status + text) |
-| `process` | MDX per item per locale | Order, title, output label, output link, output icon, quote, shape identifier |
-| `pricing` | MDX per tier per locale | Order, name, sub-label, old price, price, highlight flag, optional bg class, features array |
-| `demo` | YAML singleton per locale | Badge, heading, intro, stages array (label + title + description), optional CTA link |
-| `try-free` | YAML singleton per locale | Badge, heading, intro, button labels, cards array (skill, analytics surface, question, name, text, page link) |
-| `platform` | YAML singleton per locale | Badge, heading, optional intro, platforms array (icon + name + desc), contents array (label + desc), requirements array |
-| `knowledge-base` | YAML singleton per locale | Badge, heading, optional intro, pageTypes / frameworks / patterns arrays (name + sub) |
-| `architecture` | MDX per item per locale | Order, icon name, label, title, desc |
-| `faqs` | MDX per item per locale | Order, question string, optional link; answer prose in MDX slot |
-| `author` | MDX singleton per locale | Badge, heading, nameFirst, nameLast, role, bio (frontmatter), email, contactNote, experienceLabel, experienceValue |
-| `testimonials` | YAML singleton per locale | Badge, heading, subheading, items array (pullQuote, body, name, optional company as label + optional href, photo as an `image()` path into `src/assets/testimonials/`) |
-| `changelog` | MDX per version, in one folder per product with one subfolder per locale (`{product}/{pl,en}/`) | Version string, date string (range allowed), title, description, changes array |
-| `nav` | YAML singleton per locale | Links array, CTA link |
-| `footer` | YAML singleton per locale | Flat links array, optional legal string |
+| Collection | Format and entries | Content shape | Read by |
+|---|---|---|---|
+| `hero` | MDX, page variants (`skill-lp`, `free-audit-skill`, `free-planning-skill`, each + `-en`) and `pl` | Badge, badge icon and note, headline in three parts (lead, emphasis, tail), tagline, bullets, primary and optional secondary CTA, optional video label, optional `countdownTarget: sale`, optional rating | HeroSection |
+| `proof-gallery` | YAML, page variants and `pl` | Badge, heading, lead, cards (title, description, optional shape, link) | The landing pages → ProcessSection |
+| `value-props` | YAML, `skill-lp` (+ `-en`) and `pl` | Optional badge, heading, cards (title, description, optional quote, links) | UXDS → UseCasesSection |
+| `process` | MDX per step, `pl/` and `en/` | Order, title, optional output label, link, icon, quote and shape; description in the body | UXDS → ProcessSection |
+| `landscape` | YAML, `skill-lp` (+ `-en`) and `pl` | Badge, heading, optional lead, cards (`default` or `highlight`, title, description, optional bullets and `sampleLabel`), optional closing line | LandscapeSection |
+| `comparison` | YAML, `skill-lp` (+ `-en`) and `pl` | Badge, heading, optional lead, columns (key, label, optional sub, highlight flag), rows (feature + per-column cell with status + text) | ComparisonSection |
+| `boundaries` | YAML, `pl`/`en` and the free-page variants | Badge, heading, optional intro, items (icon, optional label, title, description) | The landing pages → ProblemsSection |
+| `install` | YAML, `pl`/`en` | As `boundaries`, plus optional footer note and link | UXDS and Audit → ProblemsSection |
+| `testimonials` | YAML, `pl`/`en` | Badge, heading, subheading, items (pullQuote, body, name, optional company as label + optional href, photo as an `image()` path into `src/assets/testimonials/`) | TestimonialsSection |
+| `pricing` | MDX per package, `pl/` and `en/` (`founder`, `solo`, `studio`) | Order, name, group, value, list and sale price, list and sale checkout URL, highlight flag, optional bg, features | PricingSection |
+| `try-free` | YAML, `pl`/`en` | Badge, heading, intro (may hold the download-count placeholder), button labels, cards (skill, analytics surface, question, name, text, page link) | TryFreeSection |
+| `architecture` | MDX per decision, `pl/` and `en/` | Order, icon name, label, title, desc | ArchitectureSection (default decisions) |
+| `platform` | YAML, `pl`/`en` | Badge, heading, optional intro, contents heading and note, platforms (icon, name, desc, optional note), contents (label, desc), requirements | PlatformSection |
+| `knowledge-base` | YAML, `pl`/`en` | Badge, heading, optional intro, pageTypes / frameworks / patterns arrays (name + sub) | KnowledgeBaseSection |
+| `faqs` | MDX per question, `pl/` and `en/` | Order, question, optional link; answer in the body | FAQSection |
+| `author` | MDX, `pl`/`en` | Badge, heading, nameFirst, nameLast, role, bio, email, contactNote, optional linkedIn, experienceLabel, experienceValue | AuthorSection, EmailAnswerSection |
+| `final-cta` | YAML, `pl`/`en` and the free-page variants | Heading, intro, CTA, optional note, optional secondary links | The landing pages → DemoSection |
+| `changelog` | MDX per version, one folder per product with one subfolder per locale (`<product>/pl/`, `<product>/en/`) | Version string, date string (range allowed), title, description, changes array | ChangelogSection |
+| `email-answers` | YAML, `pl`/`en` | Page title and description, fallback text, answers (`mail`, `odp`, heading, text) | The answer pages, EmailAnswerSection |
+| `nav` | YAML, `pl`/`en` | Links array, CTA link | TopAppBar |
+| `footer` | YAML, `pl`/`en` | Flat links array, optional legal string | Footer |
+| `consent` | YAML, `pl`/`en` | Banner and preferences text, the cookie list (schema in `src/lib/consent-config.ts`) | BaseLayout (the banner), CookieTable — see section 9 |
+| `use-cases`, `use-cases-examples`, `problems`, `demo`, `free-trial` | Polish only | Case studies, example links, pain points, demo stages, free-trial stages | Only the showcase (`/design-system/sections/`); `free-trial` also the archived page |
 
 ---
 
@@ -208,9 +279,9 @@ All collections are defined and Zod-validated in `src/content.config.ts`. The lo
 A standalone showcase lives at `/design-system/` and is driven by `src/layouts/PreviewLayout.astro`. It has four routes:
 
 - `/design-system/` — overview with 3-card grid linking to sub-pages
-- `/design-system/tokens/` — every color, type scale step, spacing token, and radius rendered live
-- `/design-system/components/` — ui/ primitives with prop tables and live previews, plus the consent banner preview (`#consent-banner`, see section 9)
-- `/design-system/sections/` — every section rendered live with its real content collection data
+- `/design-system/tokens/` — every color, spacing token and radius rendered live, with a hand-picked list of type samples (not the full set in section 2.3)
+- `/design-system/components/` — prop tables and live previews of four parts (`Button`, `LinkArrow`, `ChecklistItem`, `SectionWithIcon`), the note on colocated subcomponents, and the consent banner preview (`#consent-banner`, see section 9). The other six parts are not shown there.
+- `/design-system/sections/` — the sections rendered live with their real content collection data, including the showcase-only collections; the `kb/` sections and `EmailAnswerSection` are not on it
 
 The showcase is `noindex, nofollow` (set in `PreviewLayout.astro` head). It is not part of the main user-facing site but serves as the canary: if a section can't render cleanly in the showcase with its default content, decomposition isn't clean enough — fix it.
 
@@ -241,7 +312,7 @@ The cookie banner and its preferences window are not a component of ours: they a
 
 **Where it lives.**
 
-- Text and cookie list: `src/content/consent/pl.yaml` and `en.yaml` (the `consent` collection). The same entries feed the privacy policies' cookie table.
+- Text and cookie list: `src/content/consent/pl.yaml` and `en.yaml` (the `consent` collection). The same entries feed the privacy policies' cookie table (`CookieTable`).
 - Config builder: `src/lib/consent-config.ts` — `buildConsentConfig(content, language)`; raise `CONSENT_REVISION` to ask everyone again.
 - Theme: `src/styles/cookieconsent-theme.css`, imported right after `vanilla-cookieconsent/dist/cookieconsent.css`.
 - Runner: `src/scripts/consent.ts`, on every `BaseLayout` page.
