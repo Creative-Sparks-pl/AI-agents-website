@@ -31,6 +31,7 @@ Look up every changed file (`git diff --name-only`) and run every suite its rows
 |---|---|---|
 | Docs only | `docs/`, `.wm/`, `design.md`, `AGENTS.md`, `README.md`, `CHANGELOG.md`, and the `"version"` lines of `package.json` and `package-lock.json` | no tests |
 | Agent skills | `.claude/skills/` | no tests: they are instructions for agents, and no test, build step or deployment reads them |
+| Figma Code Connect templates | `figma/`, `figma.config.json` | no tests: only the Code Connect CLI reads them (it publishes the mappings to Figma); no test, build step or deployment does |
 | Wording only | prose sentences in `src/content/` (except `src/content/consent/`) or in the markup of `src/pages/`, with nothing else changed (see the rule above) | build only |
 | Email answer texts | `src/content/email-answers/` | build + unit + the email answer page's section test (`tests/screenshots/email-answer.spec.ts`) |
 | Content text with no new link, video or embed | text in `src/content/` (except `src/content/consent/`) | build + that page's section test (the spec in `tests/screenshots/` that opens the page; a page with none gets build only) |
