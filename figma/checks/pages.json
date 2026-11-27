@@ -1,0 +1,14 @@
+{
+  "fileKey": "uSPmRV0KIyNTpOLO4TcYRU",
+  "pages": [
+    { "slug": "ux-design-skill", "d": "14:2723", "p": "23:3330", "accept": "HeroSection" },
+    { "slug": "free-homepage-ux-audit-skill", "d": "27:8618", "p": "27:9891", "accept": "HeroSection" },
+    { "slug": "free-website-planning-skill", "d": "27:10987", "p": "27:11918", "accept": "HeroSection" },
+    { "slug": "ux-design-skill-changelog", "d": "33:6870", "p": "33:7476", "accept": "ChangelogSection" },
+    { "slug": "ux-design-skill-baza-wiedzy", "d": "36:716", "p": "36:1649" },
+    { "slug": "answer", "d": "37:245", "p": "37:383" },
+    { "slug": "ux-design-skill-regulamin", "d": "33:6726", "p": "33:6786" },
+    { "slug": "free-skills-guide", "d": "53:1144", "p": "55:1599", "accept": "guide" },
+    { "slug": "ux-design-skill-instrukcja", "d": "54:1985", "p": "55:3461", "accept": "instrukcja" }
+  ]
+}
