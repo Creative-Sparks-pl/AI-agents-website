@@ -15,6 +15,8 @@ All in the Fuse Collective team's Creative Sparks project (`29837153`). Each fil
 | **Creative Sparks — Website** · https://www.figma.com/design/uSPmRV0KIyNTpOLO4TcYRU | `uSPmRV0KIyNTpOLO4TcYRU` | The nine live Polish pages at 1440 and 390, built only from web-library instances; no local component, variable or style. Web library enabled in it. |
 | OLD REFERENCE — agents.creativesparks.pl hero (until 2026-11-27; now: Creative Sparks — Website) | `wqLetBg3T80mr4UkjK3RgZ` | The file used before 2026-11-27 (pages Hero 4:13, Components 4:14, Sign-up pop-up 28:454). Reference only: do not edit, do not build on it. |
 
+A file's name, last change and pages over REST: `GET https://api.figma.com/v1/files/<key>?depth=1` (header `X-Figma-Token`).
+
 ### Pages
 
 - **Brand base:** Cover 0:1 · Colours 1:46 · Type 1:47 · Logo 1:48 · Icons 1:49.
