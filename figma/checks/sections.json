@@ -1,0 +1,170 @@
+{
+  "fileKey": "zDsBjCordPVukR38UY5GAS",
+  "sections": [
+    {
+      "name": "HeroSection",
+      "desktop": "15:173",
+      "phone": "15:174",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "TopAppBar",
+      "desktop": "45:23",
+      "phone": "45:56",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "Footer",
+      "desktop": "46:89",
+      "phone": "46:117",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "ProblemsSection",
+      "desktop": "48:8",
+      "phone": "48:111",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "ProcessSection",
+      "desktop": "49:3",
+      "phone": "49:152",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "ArchitectureSection",
+      "desktop": "53:25",
+      "phone": "53:269",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "DemoSection",
+      "desktop": "60:3",
+      "phone": "60:84",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "FAQSection",
+      "desktop": "63:67",
+      "phone": "63:252",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "TestimonialsSection",
+      "desktop": "67:5",
+      "phone": "67:151",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "AuthorSection",
+      "desktop": "71:2",
+      "phone": "71:105",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "UseCasesSection",
+      "desktop": "79:15",
+      "phone": "79:119",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "TryFreeSection",
+      "desktop": "81:83",
+      "phone": "81:226",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "PricingSection",
+      "desktop": "88:122",
+      "phone": "88:393",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "PricingSection (sale)",
+      "block": "PricingSection",
+      "desktop": "88:626",
+      "phone": "88:886",
+      "measurements": "figma/measurements/sale/ux-design-skill-pricing-sale-{w}.json"
+    },
+    {
+      "name": "PlatformSection",
+      "desktop": "93:27",
+      "phone": "93:200",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "LandscapeSection",
+      "desktop": "94:79",
+      "phone": "94:248",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "KnowledgeBaseSection",
+      "desktop": "86:11",
+      "phone": "86:361",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "ComparisonSection",
+      "desktop": "90:887",
+      "phone": "90:1070",
+      "page": "ux-design-skill"
+    },
+    {
+      "name": "ChangelogSection",
+      "desktop": "94:641",
+      "phone": "94:964",
+      "page": "ux-design-skill-changelog",
+      "accepted": {
+        "1440": "0.5 px per entry from Figma rounding 37.5 px lines (12 px by entry 25); accepted by the owner 2026-11-27"
+      }
+    },
+    {
+      "name": "EmailAnswerSection",
+      "desktop": "96:2",
+      "phone": "96:26",
+      "page": "answer"
+    },
+    {
+      "name": "KBHero",
+      "desktop": "85:34",
+      "phone": "85:62",
+      "page": "ux-design-skill-baza-wiedzy"
+    },
+    {
+      "name": "KBPageTypes",
+      "desktop": "88:1174",
+      "phone": "88:1381",
+      "page": "ux-design-skill-baza-wiedzy"
+    },
+    {
+      "name": "KBFrameworks",
+      "desktop": "91:7",
+      "phone": "91:131",
+      "page": "ux-design-skill-baza-wiedzy"
+    },
+    {
+      "name": "KBPatterns",
+      "desktop": "93:630",
+      "phone": "93:750",
+      "page": "ux-design-skill-baza-wiedzy"
+    },
+    {
+      "name": "KBSources",
+      "desktop": "94:402",
+      "phone": "94:533",
+      "page": "ux-design-skill-baza-wiedzy"
+    },
+    {
+      "name": "FreeSkillForm (part)",
+      "block": "DemoSection",
+      "desktop": "31:6",
+      "phone": "31:97",
+      "page": "free-website-planning-skill",
+      "args": [
+        "--part",
+        "FreeSkillForm"
+      ]
+    }
+  ]
+}

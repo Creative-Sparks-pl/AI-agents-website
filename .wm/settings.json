@@ -2,7 +2,7 @@
   "repo_layout": {
     "code": ["src/"],
     "notes": ["design.md", "docs/"],
-    "skip": ["public/", "scripts/", "tests/", ".vscode/"]
+    "skip": ["public/", "scripts/", "tests/", ".vscode/", "figma/"]
   },
   "discovery": {
     "contract_files": ["design.md", "src/content.config.ts"]
